@@ -1,0 +1,31 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# ccao
+
+A package to manage, distribute, and version control commonly-used
+CCAO assessment functions.
+
+## Installation
+
+You can install the released version of assessR directly from GitLab by running the following R command after installing `remotes`:
+
+```{r, eval=FALSE}
+remotes::install_git("https://gitlab.com/ccao-data-science---modeling/packages/ccao")
+```
+
+Once it is installed, you can use it just like any other package. Simply
+call `library(ccao)` at the beginning of your script.
+
