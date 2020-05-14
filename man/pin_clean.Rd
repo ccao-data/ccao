@@ -15,7 +15,7 @@ A vector of clean PINs with no whitespace or separators.
 }
 \description{
 Remove common separators, whitespace, and trailing characters
-from Property Index Numbers (PINs). This function is pecifically formatted
+from Property Index Numbers (PINs). This function is specifically formatted
 for PINs, which are expected to be 10 or 14 digit numbers saved as
 characters (PINs often have leading zeros).
 }
