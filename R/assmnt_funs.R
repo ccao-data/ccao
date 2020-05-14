@@ -24,11 +24,13 @@
 #'   in the calculation.
 #'
 #' @examples
+#' 
+#' library(assessr)
 #'
 #' # Load the included dataset
 #' data("ratios_sample")
 #'
-#' cod_func(ratios_sample$ratios, trim = c(0.05, 0.95), bootstrap_n = 100)
+#' cod_func(ratios_sample$ratio, trim = c(0.05, 0.95), bootstrap_n = 100)
 #' @family assmnt_functions
 #' @export
 cod_func <- function(ratios,
@@ -122,13 +124,15 @@ cod_func <- function(ratios,
 #' @param sales A vector of sales the same length as \code{ratios}.
 #'
 #' @examples
+#' 
+#' library(assessr)
 #'
 #' # Load the included dataset
 #' data("ratios_sample")
 #'
 #' prd_func(
-#'   ratios_sample$ratios,
-#'   ratios_sample$sales,
+#'   ratios_sample$ratio,
+#'   ratios_sample$sale_price,
 #'   trim = c(0.05, 0.95),
 #'   bootstrap_n = 100
 #' )
@@ -233,14 +237,16 @@ prd_func <- function(ratios,
 #' @param assessed_values A vector AVs the same length as \code{ratios}.
 #'
 #' @examples
+#' 
+#' library(assessr)
 #'
 #' # Load the included dataset
 #' data("ratios_sample")
 #'
 #' prb_func(
-#'   ratios_sample$ratios,
-#'   ratios_sample$sales,
-#'   ratios_sample$assessed_values,
+#'   ratios_sample$ratio,
+#'   ratios_sample$sale_price,
+#'   ratios_sample$assessed,
 #'   trim = c(0.05, 0.95)
 #' )
 #' @family assmnt_functions

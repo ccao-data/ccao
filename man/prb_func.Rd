@@ -51,13 +51,15 @@ bootstrapping.
 }
 \examples{
 
+library(assessr)
+
 # Load the included dataset
 data("ratios_sample")
 
 prb_func(
-  ratios_sample$ratios,
-  ratios_sample$sales,
-  ratios_sample$assessed_values,
+  ratios_sample$ratio,
+  ratios_sample$sale_price,
+  ratios_sample$assessed,
   trim = c(0.05, 0.95)
 )
 }

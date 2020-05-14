@@ -12,6 +12,8 @@ A data frame with 197 rows and 7 variables:
   \item{assessment_level}{Level of assessment for the property class}
   \item{regression_class}{Boolean indicating whether or not this class is
   included in CAMA regressions}
+  \item{reporting_class}{Reporting class used for internal CCAO reports
+  and aggregate statistics}
   \item{class_code}{Full class code of the property sub-class, character}
   \item{class_desc}{Human-readable description of the property sub-class}
 }

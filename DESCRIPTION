@@ -23,6 +23,6 @@ Suggests:
     lintr,
     covr
 Remotes:
-    git::https://gitlab.com/ccao-data-science---modeling/packages/assessr
+    gitlab::ccao-data-science---modeling/packages/assessr
 Depends: 
     R (>= 2.10)

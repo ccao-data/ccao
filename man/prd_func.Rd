@@ -48,12 +48,14 @@ models.
 }
 \examples{
 
+library(assessr)
+
 # Load the included dataset
 data("ratios_sample")
 
 prd_func(
-  ratios_sample$ratios,
-  ratios_sample$sales,
+  ratios_sample$ratio,
+  ratios_sample$sale_price,
   trim = c(0.05, 0.95),
   bootstrap_n = 100
 )
