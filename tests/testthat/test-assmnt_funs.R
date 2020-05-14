@@ -1,12 +1,13 @@
 context("load data")
 
 # Load the ratios sample dataset for testing
+library(assessr)
 data("ratios_sample")
 
 # Extract the components of the dataframe as vectors
-ratios <- ratios_sample$ratios
-sales <- ratios_sample$sales
-assessed_values <- ratios_sample$assessed_values
+ratios <- ratios_sample$ratio
+sales <- ratios_sample$sale_price
+assessed_values <- ratios_sample$assessed
 
 
 ##### TEST cod_func() #####

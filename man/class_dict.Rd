@@ -5,20 +5,26 @@
 \alias{class_dict}
 \title{Data dictionary of Cook County property classes.}
 \format{
-A data frame with 15 rows and 2 variables:
+A data frame with 197 rows and 7 variables:
 \describe{
-  \item{class_code}{Class code, numeric}
-  \item{desc}{Human-readable description of the property class}
+  \item{major_class_code}{First digit of class code, major class}
+  \item{major_class_type}{Human-readable description of the major class}
+  \item{assessment_level}{Level of assessment for the property class}
+  \item{regression_class}{Boolean indicating whether or not this class is
+  included in CAMA regressions}
+  \item{class_code}{Full class code of the property sub-class, character}
+  \item{class_desc}{Human-readable description of the property sub-class}
 }
 }
 \usage{
 class_dict
 }
 \description{
-A dataset containing a translation for residential class codes to
-human-readable class descriptions.
+A dataset containing a translation for property class codes to
+human-readable class descriptions. Also describes which classes are included
+in residential regressions and reporting classes.
 }
 \note{
-Only includes residential classes.
+Includes all Cook County real property classes.
 }
 \keyword{datasets}

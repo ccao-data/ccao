@@ -5,12 +5,12 @@
 \alias{cdu_dict}
 \title{Codes used by the CCAO to identify certain distinct property situations.}
 \format{
-A data frame with 28 rows and 4 variables:
+A data frame with 47 rows and 4 variables:
 \describe{
-  \item{cdu_code}{Common name of the township}
-  \item{cdu_type}{Two-digit code used to identify the township}
-  \item{cdu_value}{Actual meaning of CDU code}
-  \item{cdu_value_short}{Actual meaning of CDU code, shortened}
+  \item{cdu_code}{Two-letter code containing the CDU, as shown in the AS400}
+  \item{cdu_type}{Class/type of property the CDU applies to}
+  \item{cdu_desc}{Full description of the CDU}
+  \item{cdu_desc_short}{Short description of the CDU}
 }
 }
 \usage{
@@ -19,5 +19,9 @@ cdu_dict
 \description{
 A dataset containing a lookup of CDU codes. These codes are kind of a mess
 and have been created and used inconsistently over the years.
+}
+\details{
+They can indicate special property types or specific incentives applied to
+a property.
 }
 \keyword{datasets}

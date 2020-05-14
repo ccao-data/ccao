@@ -35,16 +35,22 @@
 
 #' Data dictionary of Cook County property classes.
 #'
-#' A dataset containing a translation for residential class codes to
-#' human-readable class descriptions.
+#' A dataset containing a translation for property class codes to
+#' human-readable class descriptions. Also describes which classes are included
+#' in residential regressions and reporting classes.
 #'
-#' @format A data frame with 15 rows and 2 variables:
+#' @format A data frame with 197 rows and 7 variables:
 #' \describe{
-#'   \item{class_code}{Class code, numeric}
-#'   \item{desc}{Human-readable description of the property class}
+#'   \item{major_class_code}{First digit of class code, major class}
+#'   \item{major_class_type}{Human-readable description of the major class}
+#'   \item{assessment_level}{Level of assessment for the property class}
+#'   \item{regression_class}{Boolean indicating whether or not this class is
+#'   included in CAMA regressions}
+#'   \item{class_code}{Full class code of the property sub-class, character}
+#'   \item{class_desc}{Human-readable description of the property sub-class}
 #' }
 #'
-#' @note Only includes residential classes.
+#' @note Includes all Cook County real property classes.
 "class_dict"
 
 
@@ -53,30 +59,15 @@
 #' A dataset containing a lookup of CDU codes. These codes are kind of a mess
 #' and have been created and used inconsistently over the years.
 #'
-#' @format A data frame with 28 rows and 4 variables:
+#' They can indicate special property types or specific incentives applied to
+#' a property.
+#'
+#' @format A data frame with 47 rows and 4 variables:
 #' \describe{
-#'   \item{cdu_code}{Common name of the township}
-#'   \item{cdu_type}{Two-digit code used to identify the township}
-#'   \item{cdu_value}{Actual meaning of CDU code}
-#'   \item{cdu_value_short}{Actual meaning of CDU code, shortened}
+#'   \item{cdu_code}{Two-letter code containing the CDU, as shown in the AS400}
+#'   \item{cdu_type}{Class/type of property the CDU applies to}
+#'   \item{cdu_desc}{Full description of the CDU}
+#'   \item{cdu_desc_short}{Short description of the CDU}
 #' }
 #'
 "cdu_dict"
-
-
-#' Sample of ratio and sales data used by the CCAO to evaluate assessment
-#' performance.
-#'
-#' This sample was take from Evanston and New Trier in 2019. Ratios are
-#' calculated using assessor certified (post-appeal) values.
-#'
-#' @format A data frame with 2979 observation and 4 variables:
-#' \describe{
-#'   \item{ratios}{Sales ratio representing assessed value / sale price}
-#'   \item{sales}{The recorded sale price of this property}
-#'   \item{town}{Township name the property is in}
-#'   \item{assessed_values}{The value predicted by CCAO assessment models,
-#'   including any appeals have been applied}
-#' }
-#'
-"ratios_sample"
