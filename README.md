@@ -37,8 +37,6 @@ plot(ccao::town_shp[1], main = "Township Boundaries")
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
-
-
 # Plot township boundaries with neighborhoods
 plot(ccao::nbhd_shp[1], main = "Townships with Neighborhoods")
 ```

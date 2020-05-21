@@ -37,8 +37,6 @@ library(ccao)
 
 # Plot township boundaries alone
 plot(ccao::town_shp[1], main = "Township Boundaries")
-
-
 # Plot township boundaries with neighborhoods
 plot(ccao::nbhd_shp[1], main = "Townships with Neighborhoods")
 
