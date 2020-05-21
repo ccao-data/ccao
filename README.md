@@ -11,7 +11,7 @@ functions, see
 
 ## Installation
 
-You can install the released version of assessR directly from GitLab by
+You can install the released version of `ccao` directly from GitLab by
 running the following R command after installing `remotes`:
 
 ``` r
@@ -20,3 +20,27 @@ remotes::install_gitlab("ccao-data-science---modeling/packages/ccao")
 
 Once it is installed, you can use it just like any other package. Simply
 call `library(ccao)` at the beginning of your script.
+
+## Example Usage
+
+This package contains spatial dataframes representing CCAO
+administrative boundaries.
+
+``` r
+library(sf)
+library(ccao)
+
+# Plot township boundaries alone
+plot(ccao::town_shp[1], main = "Township Boundaries")
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+``` r
+
+
+# Plot township boundaries with neighborhoods
+plot(ccao::nbhd_shp[1], main = "Townships with Neighborhoods")
+```
+
+<img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
