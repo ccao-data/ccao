@@ -29,7 +29,7 @@ Once it is installed, you can use it just like any other package. Simply call `l
 
 ## Example Usage
 
-This package contains spatial dataframes representing CCAO administrative boundaries. 
+This package contains spatial dataframes representing CCAO administrative boundaries. Note that you **must have the `sf` package installed and loaded** in order to correctly load spatial dataframes.
 
 ```{r, message=FALSE}
 library(sf)

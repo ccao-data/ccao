@@ -24,7 +24,8 @@ call `library(ccao)` at the beginning of your script.
 ## Example Usage
 
 This package contains spatial dataframes representing CCAO
-administrative boundaries.
+administrative boundaries. Note that you **must have the `sf` package
+installed and loaded** in order to correctly load spatial dataframes.
 
 ``` r
 library(sf)
