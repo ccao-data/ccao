@@ -62,7 +62,7 @@
 #' Data frame of recodes for CCAO modeling neighborhoods.
 #'
 #' A dataset of neighborhood recodes for CCAO modeling. These neighborhoods
-#' either don't exist or are errors in the data. Can be easily be used with 
+#' either don't exist or are errors in the data. Can be easily be used with
 #' dplyr's recode. See examples.
 #'
 #' @format A data frame with 58 rows and 5 variables:
@@ -74,20 +74,20 @@
 #'   \item{recode_to}{Neighborhood to recode TO from town_nbhd. In other words,
 #'   values coded as town_nbhd should be replaced with recoded_to}
 #' }
-#' 
-#' @examples 
-#' 
+#'
+#' @examples
+#'
 #' \dontrun{
-#' 
+#'
 #' library(dplyr)
-#' 
+#'
 #' # Create a named list of recodes to use with dplyr::recode
 #' vals <- ccao::nbhd_recode$recode_to
 #' names(vals) <- ccao::nbhd_recode$town_nbhd
-#' 
+#'
 #' # Create test recode data
 #' test_nbhds <- c("12122", "28103", "39010", "34220", "12000")
-#' 
+#'
 #' # Use dplyr to recode all values. Triple !!! expands the named vector vals
 #' # into individual arguments passed to recode()
 #' recode(test_nbhds, !!!recodes)

@@ -36,6 +36,7 @@ test_that("bad input data stops execution", {
 
 test_that("incomplete data stops execution unless suppressed", {
   expect_condition(ccao_cod(runif(29)))
+  expect_silent(ccao_cod(runif(29), suppress = TRUE))
   expect_equal(
     unname(ccao_cod(runif(29), suppress = TRUE)),
     list(NA, NA, NA, 25)
@@ -72,6 +73,7 @@ test_that("bad input data stops execution", {
 
 test_that("incomplete data stops execution unless suppressed", {
   expect_condition(ccao_prd(runif(29), runif(29)))
+  expect_silent(ccao_prd(runif(29), runif(29), suppress = TRUE))
   expect_equal(
     unname(ccao_prd(runif(29), runif(29), suppress = TRUE)),
     list(NA, NA, NA, 25)
@@ -107,6 +109,7 @@ test_that("bad input data stops execution", {
 
 test_that("incomplete data stops execution unless suppressed", {
   expect_condition(ccao_prb(runif(29), runif(29)))
+  expect_silent(ccao_prb(runif(29), runif(29), suppress = TRUE))
   expect_equal(
     unname(ccao_prb(runif(29), runif(29), suppress = TRUE)),
     list(NA, NA, NA, 25)

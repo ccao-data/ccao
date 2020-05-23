@@ -63,12 +63,12 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
   assessr:::check_inputs(ratio)
 
   # Remove top and bottom 5% of ratios according to CCAO SOPs
-  no_outliers <- ratio[!assessr::is_outlier(
+  no_outliers <- ratio[suppressWarnings(!assessr::is_outlier(
     ratio,
     method = "quantile",
     probs = c(0.05, 0.95),
     na.rm = na.rm
-  )]
+  ))]
 
   # Only sample with 30+ observations are reliable for sales ratio studies
   # If less than 30, return only NAs and warn
@@ -89,15 +89,12 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
     # Generate empty output list and stop if N < 30 unless suppress
     out <- list(NA, NA, NA, length(no_outliers))
 
-    if (!suppress) {
-      stop("Less than 30 observations, too few for sale reliable ratio stats")
-    }
+    if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
 
   names(out) <- c("COD", "COD_CI", "COD_MET", "COD_N")
   return(out)
 }
-
 
 
 #' @describeIn ccao_funs Return named list of CCAO SOP compliant PRD statistics.
@@ -118,12 +115,12 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   )
 
   # Remove top and bottom 5% of ratios according to CCAO SOPs, output dataframe
-  no_outliers_df <- ratios_df[!assessr::is_outlier(
+  no_outliers_df <- ratios_df[suppressWarnings(!assessr::is_outlier(
     ratios_df$ratio,
     method = "quantile",
     probs = c(0.05, 0.95),
     na.rm = na.rm
-  ), ]
+  )), ]
 
   # Only sample with 30+ observations are reliable for sales ratio studies
   # If less than 30, return only NAs and warn
@@ -153,9 +150,7 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
     # Generate empty output list and stop if N < 30 unless suppress
     out <- list(NA, NA, NA, nrow(no_outliers_df))
 
-    if (!suppress) {
-      stop("Less than 30 observations, too few for sale reliable ratio stats")
-    }
+    if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
 
   names(out) <- c("PRD", "PRD_CI", "PRD_MET", "PRD_N")
@@ -181,12 +176,12 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   )
 
   # Remove top and bottom 5% of ratios according to CCAO SOPs, output dataframe
-  no_outliers_df <- ratios_df[!assessr::is_outlier(
+  no_outliers_df <- ratios_df[suppressWarnings(!assessr::is_outlier(
     ratios_df$ratio,
     method = "quantile",
     probs = c(0.05, 0.95),
     na.rm = na.rm
-  ), ]
+  )), ]
 
   # Only sample with 30+ observations are reliable for sales ratio studies
   # If less than 30, return only NAs and warn
@@ -215,9 +210,7 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
     # Generate empty output list and stop if N < 30 unless suppress
     out <- list(NA, NA, NA, nrow(no_outliers_df))
 
-    if (!suppress) {
-      stop("Less than 30 observations, too few for sale reliable ratio stats")
-    }
+    if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
 
   names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_N")
