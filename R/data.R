@@ -59,25 +59,46 @@
 "class_dict"
 
 
-#' Data dictionary for CCAO township codes and triads.
+#' Data frame of recodes for CCAO modeling neighborhoods.
 #'
-#' A dataset containing a lookup of various townships and their
-#' respective triads.
+#' A dataset of neighborhood recodes for CCAO modeling. These neighborhoods
+#' either don't exist or are errors in the data. Can be easily be used with 
+#' dplyr's recode. See examples.
 #'
-#' @format A data frame with 38 rows and 4 variables:
+#' @format A data frame with 58 rows and 5 variables:
 #' \describe{
 #'   \item{township_name}{Common name of the township}
 #'   \item{township_code}{Two-digit code used to identify the township}
-#'   \item{triad_code}{Single-digit code of the triad the township is in}
-#'   \item{triad_name}{Common name of the triad the township is in}
+#'   \item{nbhd}{Three-digit assessor neighborhood code, zero-padded}
+#'   \item{town_nbhd}{Combined township code and neighborhood}
+#'   \item{recode_to}{Neighborhood to recode TO from town_nbhd. In other words,
+#'   values coded as town_nbhd should be replaced with recoded_to}
+#' }
+#' 
+#' @examples 
+#' 
+#' \dontrun{
+#' 
+#' library(dplyr)
+#' 
+#' # Create a named list of recodes to use with dplyr::recode
+#' vals <- ccao::nbhd_recode$recode_to
+#' names(vals) <- ccao::nbhd_recode$town_nbhd
+#' 
+#' # Create test recode data
+#' test_nbhds <- c("12122", "28103", "39010", "34220", "12000")
+#' 
+#' # Use dplyr to recode all values. Triple !!! expands the named vector vals
+#' # into individual arguments passed to recode()
+#' recode(test_nbhds, !!!recodes)
 #' }
 #'
-"town_dict"
+"nbhd_recode"
 
 
-#' Simple features (sf) dataframe of CCAO neighborhoods.
+#' Simple features (sf) data frame of CCAO neighborhoods.
 #'
-#' An \code{sf} spatial dataframe containing geometries, names, and codes for
+#' An \code{sf} spatial data frame containing geometries, names, and codes for
 #' CCAO neighborhoods. Generated manually on 5/20/2020. Use for thematic maps
 #' only; these boundaries are recovered from old files and may not be accurate.
 #'
@@ -94,9 +115,25 @@
 "nbhd_shp"
 
 
-#' Simple features (sf) dataframe of Cook County townships.
+#' Data dictionary for CCAO township codes and triads.
 #'
-#' An \code{sf} spatial dataframe containing geometries, names, and codes for
+#' A dataset containing a lookup of various townships and their
+#' respective triads.
+#'
+#' @format A data frame with 38 rows and 4 variables:
+#' \describe{
+#'   \item{township_name}{Common name of the township}
+#'   \item{township_code}{Two-digit code used to identify the township}
+#'   \item{triad_code}{Single-digit code of the triad the township is in}
+#'   \item{triad_name}{Common name of the triad the township is in}
+#' }
+#'
+"town_dict"
+
+
+#' Simple features (sf) data frame of Cook County townships.
+#'
+#' An \code{sf} spatial data frame containing geometries, names, and codes for
 #' Cook County political/administrative townships. Use for thematic
 #' mapping only.
 #'

@@ -3,7 +3,7 @@
 \docType{data}
 \name{town_shp}
 \alias{town_shp}
-\title{Simple features (sf) dataframe of Cook County townships.}
+\title{Simple features (sf) data frame of Cook County townships.}
 \format{
 A spatial data frame with 38 geometries and 3 variables.
 \describe{
@@ -18,7 +18,7 @@ A spatial data frame with 38 geometries and 3 variables.
 town_shp
 }
 \description{
-An \code{sf} spatial dataframe containing geometries, names, and codes for
+An \code{sf} spatial data frame containing geometries, names, and codes for
 Cook County political/administrative townships. Use for thematic
 mapping only.
 }

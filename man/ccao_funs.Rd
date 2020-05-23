@@ -44,17 +44,17 @@ to Cook County Assessor's Office Standard Operating Procedures (SOPs).
 
 The main SOPs affecting these calculations are:
 
-1. Outlier trimming. Sales ratio performance statistics are quite sensitive 
+1. Outlier trimming. Sales ratio performance statistics are quite sensitive
 to outliers. As a result, the top and bottom 5\% of the input vector(s) are
 always dropped.
 
 2. Minimum sample size. Sales ratio performance statistics can be inaccurate
-or misleading when the input sample is small. As a result, samples with less 
+or misleading when the input sample is small. As a result, samples with less
 than 30 observations after trimming outliers will stop execution or will
-return NA if \code{suppress = TRUE}. 
+return NA if \code{suppress = TRUE}.
 
 For more information on how each statistic or its confidence interval is
-calculated. See its respective function in the 
+calculated. See its respective function in the
 \href{https://gitlab.com/ccao-data-science---modeling/packages/assessr}{AssessR package}.
 }
 \section{Functions}{
@@ -75,6 +75,5 @@ df <- assessr::ratios_sample
 ccao_cod(df$ratio)
 ccao_prd(df$assessed, df$sale_price)
 ccao_prb(df$assessed, df$sale_price)
-
 }
 \concept{ccao_funs}
