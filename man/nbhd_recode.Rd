@@ -20,7 +20,7 @@ nbhd_recode
 }
 \description{
 A dataset of neighborhood recodes for CCAO modeling. These neighborhoods
-either don't exist or are errors in the data. Can be easily be used with 
+either don't exist or are errors in the data. Can be easily be used with
 dplyr's recode. See examples.
 }
 \examples{
