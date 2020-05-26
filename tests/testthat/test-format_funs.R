@@ -24,10 +24,13 @@ test_that("bad input data stops execution", {
     c(222, 333),
     tmpf
   ))
+  expect_condition(format_as400(sdf$town, sdf$pin, sdf$val, tmpf, "resident"))
   expect_condition(format_as400(sdf$town, sdf$pin, sdf$val, tempfile()))
 })
 
 test_that("output is as expected", {
   expect_null(format_as400(sdf$town, sdf$pin, sdf$val, tmpf))
   expect_known_hash(read.table(tmpf), hash = "103ef62271")
+  expect_null(format_as400(sdf$town, sdf$pin, sdf$val, tmpf, type = "condo"))
+  expect_known_hash(read.table(tmpf), hash = "3991febe4d")
 })

@@ -7,13 +7,16 @@
 #' @param pin Fourteen digit property index number (PIN)
 #' @param pred_value Predicted/model value for the specified PIN
 #' @param file Output file to write to; file extension should be .txt
+#' @param type Change file output style. Options are \code{"res"} or 
+#' \code{"condo"}. Res outputs 80 character fixed width files while condo 
+#' outputs 21 character files.
 #'
 #' @return A fixed-width text file saved to the location specified by
 #' \code{file}, containing the values of \code{town_code}, \code{pin},
 #' \code{pred_value}.
 #'
 #' @export
-format_as400 <- function(town_code, pin, pred_value, file) {
+format_as400 <- function(town_code, pin, pred_value, file, type = "res") {
 
   # Check that file extension is .txt, which is necessary for AS400 upload
   if (strsplit(basename(file), split = "\\.")[[1]][-1] != "txt") {
@@ -24,6 +27,7 @@ format_as400 <- function(town_code, pin, pred_value, file) {
 
   # Input checks to ensure things are as expected
   stopifnot(
+    type %in% c("res", "condo"),
     length(town_code) == length(pin),
     length(town_code) == length(pred_value),
     nchar(town_code) == 2,
@@ -36,11 +40,24 @@ format_as400 <- function(town_code, pin, pred_value, file) {
     all(!grepl("[^0-9]", pred_value))
   )
 
-  # Format values as a fixed-width string
-  formatted_vals <- paste0(
-    town_code, " ", pin, "           ",
-    sprintf("%09d", pred_value), "                                          A"
-  )
+  # Format values as a fixed-width strings and check all lines are correct len
+  if (type == "res") {
+    formatted_vals <- paste0(
+      town_code, " ", pin, "           ",
+      sprintf("%09d", pred_value), "                                          A"
+    )
+    
+    stopifnot(sapply(formatted_vals, nchar) == 80)
+    
+  } else {
+    formatted_vals <- paste0(
+      town_code,
+      substr(pin, 1, 10),
+      sprintf("%09d", pred_value)
+    )
+    
+    stopifnot(sapply(formatted_vals, nchar) == 21)
+  }
 
   # Output formatted value as a fixed-width text file
   utils::write.table(

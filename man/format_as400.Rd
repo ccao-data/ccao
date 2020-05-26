@@ -4,7 +4,7 @@
 \alias{format_as400}
 \title{Format Predicted Values for Upload to AS/400}
 \usage{
-format_as400(town_code, pin, pred_value, file)
+format_as400(town_code, pin, pred_value, file, type = "res")
 }
 \arguments{
 \item{town_code}{Two digit township code for the specified PIN}
@@ -14,9 +14,13 @@ format_as400(town_code, pin, pred_value, file)
 \item{pred_value}{Predicted/model value for the specified PIN}
 
 \item{file}{Output file to write to; file extension should be .txt}
+
+\item{type}{Change file output style. Options are \code{"res"} or 
+\code{"condo"}. Res outputs 80 character fixed width files while condo 
+outputs 21 character files.}
 }
 \value{
-A fixed-width text file saved to the location specified by 
+A fixed-width text file saved to the location specified by
 \code{file}, containing the values of \code{town_code}, \code{pin},
 \code{pred_value}.
 }
