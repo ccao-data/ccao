@@ -3,6 +3,7 @@
 export(ccao_cod)
 export(ccao_prb)
 export(ccao_prd)
+export(format_as400)
 export(pin_clean)
 export(pin_format_pretty)
 export(town_convert)

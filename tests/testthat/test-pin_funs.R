@@ -13,9 +13,9 @@ test_that("clean output is correct", {
 })
 
 test_that("incorrect inputs throw warning", {
-  expect_warning(pin_clean(c(pins, "0004423a3232")))
-  expect_warning(pin_clean(list(pins, 44323888322)))
-  expect_warning(pin_clean(c(44323888322, 03223232123)))
+  expect_condition(pin_clean(c(pins, "0004423a3232")))
+  expect_condition(pin_clean(list(pins, 44323888322)))
+  expect_condition(pin_clean(c(44323888322, 03223232123)))
   expect_condition(pin_clean(data.frame(pins)))
 })
 
