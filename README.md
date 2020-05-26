@@ -51,6 +51,11 @@ call `library(ccao)` at the beginning of your script.
   - `town_get_assmnt_year()` returns assessment year nearest to the
     `year` argument for a given input township
 
+-----
+
+  - `format_as400()` formats predicted values in the specification
+    necessary to upload to the AS/400
+
 ##### Data currently included in `ccao`:
 
   - `cdu_dict` is a dictionary of CCAO condition-desirability-utility
