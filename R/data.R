@@ -99,8 +99,11 @@
 #' Simple features (sf) data frame of CCAO neighborhoods.
 #'
 #' An \code{sf} spatial data frame containing geometries, names, and codes for
-#' CCAO neighborhoods. Generated manually on 5/20/2020. Use for thematic maps
-#' only; these boundaries are recovered from old files and may not be accurate.
+#' CCAO neighborhoods. Use for thematic maps only; these boundaries are 
+#' recovered from old files and may not be perfectly accurate.
+#' 
+#' NOTE: These boundaries are a simplified version of the boundaries available 
+#' in the data-raw/ folder.
 #'
 #' @format A spatial data frame with 845 geometries and 6 variables.
 #' \describe{
@@ -136,6 +139,9 @@
 #' An \code{sf} spatial data frame containing geometries, names, and codes for
 #' Cook County political/administrative townships. Use for thematic
 #' mapping only.
+#' 
+#' NOTE: These boundaries are a simplified version of the boundaries available 
+#' in the data-raw/ folder.
 #'
 #' @format A spatial data frame with 38 geometries and 3 variables.
 #' \describe{

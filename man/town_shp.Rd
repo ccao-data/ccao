@@ -22,4 +22,8 @@ An \code{sf} spatial data frame containing geometries, names, and codes for
 Cook County political/administrative townships. Use for thematic
 mapping only.
 }
+\details{
+NOTE: These boundaries are a simplified version of the boundaries available 
+in the data-raw/ folder.
+}
 \keyword{datasets}
