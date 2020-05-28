@@ -1,9 +1,4 @@
-library(sf)
-library(rmapshaper)
-library(magrittr)
-
-# Simplify shapes and then save as .rda
-town_shp <- st_read("data-raw/town_shp.geojson") %>%
-  ms_simplify(keep = 0.3, keep_shapes = TRUE, snap = TRUE)
+# Load shapes and save them as .rda
+town_shp <- sf::st_read("data-raw/town_shp.geojson")
 
 usethis::use_data(town_shp, overwrite = TRUE, compress = "xz")

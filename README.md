@@ -73,8 +73,10 @@ call `library(ccao)` at the beginning of your script.
   - `town_shp` is a spatial (sf) data frame containing boundaries of
     Cook County townships<sup>1</sup>
 
-<sup>1</sup> The `sf` library **must** be loaded first in order to load
-this data
+<sup>1</sup> :warning: The `sf` library **must** be loaded first in
+order to load this data. If you encounter the error `C stack usage
+{number} is too close to the limit` when loading the data, update your
+version of `sf`
 
 ## Example Usage
 
