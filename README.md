@@ -58,6 +58,8 @@ call `library(ccao)` at the beginning of your script.
 
 ##### Data currently included in `ccao`:
 
+  - `ccao_colors` is a named list of CCAO Comms Department colors, see
+    below for palette
   - `cdu_dict` is a dictionary of CCAO condition-desirability-utility
     (CDU) codes. These codes are usually used to represent different
     incentive conditions
@@ -100,3 +102,7 @@ plot(ccao::nbhd_shp[1], main = "Townships with Neighborhoods")
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
+
+## CCAO Colors
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />

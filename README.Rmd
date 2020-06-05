@@ -50,6 +50,7 @@ Once it is installed, you can use it just like any other package. Simply call `l
 
 ##### Data currently included in `ccao`:
 
+* `ccao_colors` is a named list of CCAO Comms Department colors, see below for palette
 * `cdu_dict` is a dictionary of CCAO condition-desirability-utility (CDU) codes. These codes are usually used to represent different incentive conditions
 * `chars_dict` is a crosswalk of human-readable translations of CCAO database characteristic codes
 * `class_dict` is a dictionary of property class numeric codes and their human-readable equivalent
@@ -75,3 +76,24 @@ plot(ccao::town_shp[1], main = "Township Boundaries")
 plot(ccao::nbhd_shp[1], main = "Townships with Neighborhoods")
 
 ```
+
+## CCAO Colors
+
+```{r, echo=FALSE, fig.height=2}
+library(ggplot2)
+
+ggplot() +
+  geom_tile(aes(x = 1:12, y = 1), fill = ccao::ccao_colors) +
+  geom_text(
+    aes(x = 1:12, y = 1, label = names(ccao::ccao_colors)),
+    angle = 90,
+    vjust = 0.3
+  ) +
+  scale_x_discrete(expand = c(0, 0)) + 
+  scale_y_discrete(expand = c(0, 0)) + 
+  theme_minimal() +
+  theme(
+    axis.title = element_blank()
+  )
+```
+

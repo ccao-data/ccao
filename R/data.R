@@ -1,3 +1,14 @@
+#' Official CCAO color palette
+#'
+#' The CCAO Communications Department created a palette of colors used widely 
+#' throughout CCAO press materials and visualizations. Navy, gold, and
+#' buttermilk are the colors used in the CCAO logo.
+#'
+#' @format A named list containing 12 CCAO colors
+#'
+"ccao_colors"
+
+
 #' Codes used by the CCAO to identify certain distinct property situations.
 #'
 #' A dataset containing a lookup of CDU codes. These codes are kind of a mess
