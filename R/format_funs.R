@@ -7,8 +7,8 @@
 #' @param pin Fourteen digit property index number (PIN)
 #' @param pred_value Predicted/model value for the specified PIN
 #' @param file Output file to write to; file extension should be .txt
-#' @param type Change file output style. Options are \code{"res"} or 
-#' \code{"condo"}. Res outputs 80 character fixed width files while condo 
+#' @param type Change file output style. Options are \code{"res"} or
+#' \code{"condo"}. Res outputs 80 character fixed width files while condo
 #' outputs 21 character files.
 #'
 #' @return A fixed-width text file saved to the location specified by
@@ -46,16 +46,15 @@ format_as400 <- function(town_code, pin, pred_value, file, type = "res") {
       town_code, " ", pin, "           ",
       sprintf("%09d", pred_value), "                                          A"
     )
-    
+
     stopifnot(sapply(formatted_vals, nchar) == 80)
-    
   } else {
     formatted_vals <- paste0(
       town_code,
       substr(pin, 1, 10),
       sprintf("%09d", pred_value)
     )
-    
+
     stopifnot(sapply(formatted_vals, nchar) == 21)
   }
 

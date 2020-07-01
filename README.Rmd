@@ -50,6 +50,7 @@ Once it is installed, you can use it just like any other package. Simply call `l
 
 ##### Data currently included in `ccao`:
 
+* `appeal_dict` is a dictionary of appeal reason codes used in CCAO internal systems.
 * `ccao_colors` is a named list of CCAO Comms Department colors, see below for palette
 * `cdu_dict` is a dictionary of CCAO condition-desirability-utility (CDU) codes. These codes are usually used to represent different incentive conditions
 * `chars_dict` is a crosswalk of human-readable translations of CCAO database characteristic codes

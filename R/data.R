@@ -1,6 +1,20 @@
+#' Appeal reason codes used by the CCAO AS/400 system
+#'
+#' A dataset containing a lookup of codes for appeal rejection/acceptance. These
+#' codes are primarily used in the DKEMPL SQL table. See the \href{https://prodassets.cookcountyassessor.com/s3fs-public/form_documents/reasoncodes.pdf}{CCAO website} for a PDF version. # nolint
+#'
+#' @format A data frame with 78 rows and 2 variables:
+#' \describe{
+#'   \item{reason_code}{Numeric code used in the AS/400 system}
+#'   \item{reason_desc}{Text description/translation of the numeric code}
+#' }
+#'
+"appeals_dict"
+
+
 #' Official CCAO color palette
 #'
-#' The CCAO Communications Department created a palette of colors used widely 
+#' The CCAO Communications Department created a palette of colors used widely
 #' throughout CCAO press materials and visualizations. Navy, gold, and
 #' buttermilk are the colors used in the CCAO logo.
 #'
@@ -110,10 +124,10 @@
 #' Simple features (sf) data frame of CCAO neighborhoods.
 #'
 #' An \code{sf} spatial data frame containing geometries, names, and codes for
-#' CCAO neighborhoods. Use for thematic maps only; these boundaries are 
+#' CCAO neighborhoods. Use for thematic maps only; these boundaries are
 #' recovered from old files and may not be perfectly accurate.
-#' 
-#' NOTE: These boundaries are a simplified version of the boundaries available 
+#'
+#' NOTE: These boundaries are a simplified version of the boundaries available
 #' in the data-raw/ folder.
 #'
 #' @format A spatial data frame with 845 geometries and 6 variables.
@@ -150,8 +164,8 @@
 #' An \code{sf} spatial data frame containing geometries, names, and codes for
 #' Cook County political/administrative townships. Use for thematic
 #' mapping only.
-#' 
-#' NOTE: These boundaries are a simplified version of the boundaries available 
+#'
+#' NOTE: These boundaries are a simplified version of the boundaries available
 #' in the data-raw/ folder.
 #'
 #' @format A spatial data frame with 38 geometries and 3 variables.

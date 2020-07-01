@@ -58,6 +58,8 @@ call `library(ccao)` at the beginning of your script.
 
 ##### Data currently included in `ccao`:
 
+  - `appeal_dict` is a dictionary of appeal reason codes used in CCAO
+    internal systems.
   - `ccao_colors` is a named list of CCAO Comms Department colors, see
     below for palette
   - `cdu_dict` is a dictionary of CCAO condition-desirability-utility
