@@ -20,11 +20,11 @@ nbhd_shp
 }
 \description{
 An \code{sf} spatial data frame containing geometries, names, and codes for
-CCAO neighborhoods. Use for thematic maps only; these boundaries are 
+CCAO neighborhoods. Use for thematic maps only; these boundaries are
 recovered from old files and may not be perfectly accurate.
 }
 \details{
-NOTE: These boundaries are a simplified version of the boundaries available 
+NOTE: These boundaries are a simplified version of the boundaries available
 in the data-raw/ folder.
 }
 \keyword{datasets}

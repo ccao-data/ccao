@@ -15,8 +15,8 @@ format_as400(town_code, pin, pred_value, file, type = "res")
 
 \item{file}{Output file to write to; file extension should be .txt}
 
-\item{type}{Change file output style. Options are \code{"res"} or 
-\code{"condo"}. Res outputs 80 character fixed width files while condo 
+\item{type}{Change file output style. Options are \code{"res"} or
+\code{"condo"}. Res outputs 80 character fixed width files while condo
 outputs 21 character files.}
 }
 \value{

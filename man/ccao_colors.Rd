@@ -11,7 +11,7 @@ A named list containing 12 CCAO colors
 ccao_colors
 }
 \description{
-The CCAO Communications Department created a palette of colors used widely 
+The CCAO Communications Department created a palette of colors used widely
 throughout CCAO press materials and visualizations. Navy, gold, and
 buttermilk are the colors used in the CCAO logo.
 }

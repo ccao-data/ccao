@@ -105,8 +105,12 @@ town_get_triad <- function(town, name = FALSE) {
 #' @param year Default current year. Year to find assessment year closest to.
 #'   For example, entering 1995 will find the closest assessment year to 1995
 #'   for all the entered triads.
+#' @param round_type Default nearest. The type of rounding to use to find the
+#'   closest assessment year. Nearest will find the nearest. Floor will find the
+#'   assessment year prior to \code{year}. Ceiling will find the assessment year
+#'   after \code{year}.
 #'
-#' @return Numeric vector of assessment years closest to the year entered.
+#' @return Numeric vector of assessment years relative to the year entered.
 #'   Returns NA for towns that cannot be found.
 #'
 #' @examples
@@ -114,6 +118,8 @@ town_get_triad <- function(town, name = FALSE) {
 #' town_get_assmnt_year("Evanston")
 #'
 #' town_get_assmnt_year(c("Lyons", "10", "Worth"), year = 1997)
+#' 
+#' town_get_assmnt_year(c("Lyons", "10", "25"), round_type = "floor")
 #' @export
 town_get_assmnt_year <- function(town,
                                  year = as.integer(format(Sys.Date(), "%Y")),

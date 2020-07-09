@@ -16,6 +16,6 @@ appeals_dict
 }
 \description{
 A dataset containing a lookup of codes for appeal rejection/acceptance. These
-codes are primarily used in the DKEMPL SQL table. See the \href{https://prodassets.cookcountyassessor.com/s3fs-public/form_documents/reasoncodes.pdf}{CCAO website} for a PDF version.
+codes are primarily used in the DKEMPL SQL table. See the \href{https://prodassets.cookcountyassessor.com/s3fs-public/form_documents/reasoncodes.pdf}{CCAO website} for a PDF version. # nolint
 }
 \keyword{datasets}

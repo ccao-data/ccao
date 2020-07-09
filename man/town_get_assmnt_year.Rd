@@ -4,7 +4,11 @@
 \alias{town_get_assmnt_year}
 \title{Get the nearest assessment year of a township}
 \usage{
-town_get_assmnt_year(town, year = as.integer(format(Sys.Date(), "\%Y")))
+town_get_assmnt_year(
+  town,
+  year = as.integer(format(Sys.Date(), "\%Y")),
+  round_type = "nearest"
+)
 }
 \arguments{
 \item{town}{Vector of township names or numeric codes. Township name
@@ -13,9 +17,14 @@ must be title case to match correctly.}
 \item{year}{Default current year. Year to find assessment year closest to.
 For example, entering 1995 will find the closest assessment year to 1995
 for all the entered triads.}
+
+\item{round_type}{Default nearest. The type of rounding to use to find the
+closest assessment year. Nearest will find the nearest. Floor will find the
+assessment year prior to \code{year}. Ceiling will find the assessment year
+after \code{year}.}
 }
 \value{
-Numeric vector of assessment years closest to the year entered.
+Numeric vector of assessment years relative to the year entered.
   Returns NA for towns that cannot be found.
 }
 \description{
@@ -31,4 +40,6 @@ Ex. \code{town_get_assmnt_year("Evanston")} outputs \code{2019}
 town_get_assmnt_year("Evanston")
 
 town_get_assmnt_year(c("Lyons", "10", "Worth"), year = 1997)
+
+town_get_assmnt_year(c("Lyons", "10", "25"), round_type = "floor")
 }
