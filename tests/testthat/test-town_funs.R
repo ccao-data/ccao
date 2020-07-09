@@ -68,18 +68,22 @@ towns <- c("Evanston", "Lyons", "25", "10", "77", "West Chicago")
 
 test_that("output is correct", {
   expect_equal(
-    town_get_assmnt_year(towns, 2020),
+    town_get_assmnt_year(towns, 2020, round_type = "floor"),
     c(2019, 2020, 2019, 2019, 2018, 2018)
   )
   expect_equal(
     town_get_assmnt_year(towns, 1995),
     c(1995, 1996, 1995, 1995, 1994, 1994)
   )
+  expect_equal(
+    town_get_assmnt_year(towns, 1995, round_type = "ceiling"),
+    c(1998, 1996, 1998, 1998, 1997, 1997)
+  )
 })
 
 test_that("Missing values are handled correctly", {
   expect_equal(
-    town_get_assmnt_year(c(towns, NA, NULL, NaN, "02")),
+    town_get_assmnt_year(c(towns, NA, NULL, NaN, "02"), round_type = "floor"),
     c(2019, 2020, 2019, 2019, 2018, 2018, NA, NA, NA)
   )
 })

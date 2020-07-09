@@ -116,7 +116,8 @@ town_get_triad <- function(town, name = FALSE) {
 #' town_get_assmnt_year(c("Lyons", "10", "Worth"), year = 1997)
 #' @export
 town_get_assmnt_year <- function(town,
-                                 year = as.integer(format(Sys.Date(), "%Y"))) {
+                                 year = as.integer(format(Sys.Date(), "%Y")),
+                                 round_type = "nearest") {
 
   # Input error handling
   stopifnot(
@@ -124,7 +125,7 @@ town_get_assmnt_year <- function(town,
     is.character(town), # input must be character
     is.numeric(year), # year must be numeric
     year >= 1991, # year must be greater than 1991
-    year <= as.integer(format(Sys.Date(), "%Y")) # year must be less than now
+    round_type %in% c("nearest", "ceiling", "floor")
   )
 
   # Get the triad of the entered town(s)
@@ -132,23 +133,29 @@ town_get_assmnt_year <- function(town,
 
   # Create a vector of years, starting in 1991. Use this vector to create a
   # dataframe of years and the triad evaluated in each year.
-  years <- 1991:(as.integer(format(Sys.Date(), "%Y")))
+  years <- 1991:((as.integer(format(Sys.Date(), "%Y"))) + 100)
   years_df <- data.frame(
     year = years,
     triad = rep_len(1:3, length(years))
   )
 
-  # For each triad in the input list, get the years they were assessessed,
+  # For each triad in the input list, get the years they were assessesed,
   # between 1991 and the current year
   years_for_this_triad <- lapply(
     triads,
     function(x) years_df[which(years_df$triad == x), 1]
   )
 
-  # Lookup the nearest year to the one entered for each of the given triads
+  # Depending on the round type, look up the year of the nearest assessment
+  # relative to the input year
   out <- as.numeric(sapply(
     years_for_this_triad,
-    function(x) x[which.min(abs(x - year))]
+    switch(
+      round_type,
+      nearest = function(x) x[which.min(abs(x - year))],
+      ceiling = function(x) x[findInterval(year, x) + 1],
+      floor   = function(x) x[findInterval(year, x)]
+    )
   ))
 
   return(out)
