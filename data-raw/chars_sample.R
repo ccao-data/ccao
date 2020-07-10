@@ -15,7 +15,7 @@ CCAODATA <- dbConnect(
 
 # Gather a full universe of PINs
 universe <- dbGetQuery(
-  CCAODATA, 
+  CCAODATA,
   glue_sql(
     "
     SELECT * 
@@ -26,12 +26,12 @@ universe <- dbGetQuery(
     min_year = current_year - 7,
     max_year = current_year
   )
-) 
+)
 
 # If current tax year is same also a  reassessment year for target_township,
 # years prior should be 4. If current tax year is not a reassessment year for
-# target_township, make sure to keep in consideration for which years 288s 
-# are valid when defining years_prior, i.e. a 288 can last up to 6 years 
+# target_township, make sure to keep in consideration for which years 288s
+# are valid when defining years_prior, i.e. a 288 can last up to 6 years
 # depending on when it was filed
 addchars <- dbGetQuery(
   CCAODATA,
@@ -58,7 +58,7 @@ sample_pins <- addchars %>%
   filter(TAX_YEAR <= 2014) %>%
   filter(QU_SQFT_BLD != 0 & (QU_ROOF != 0 | QU_BASEMENT_FINISH != 0)) %>%
   pull(QU_PIN)
-  
+
 chars_sample_addchars <- addchars %>%
   filter(QU_PIN %in% sample_pins)
 

@@ -64,8 +64,8 @@
 #' Sample dataset from the ADDCHARS SQL table
 #'
 #' A dataset containing a small subsample of rows from the ADDCHARS table. This
-#' sample can be used with \code{chars_sparsify()} to generate sparse data frames
-#' suitable for joining onto \code{chars_sample_universe}.
+#' sample can be used with \code{chars_sparsify()} to generate sparse data
+#' frames suitable for joining onto \code{chars_sample_universe}.
 #'
 #' @source This data was extracted from SQL by the script at
 #' \code{data-raw/chars_sample.R}.
@@ -75,7 +75,7 @@
 #' Sample dataset from the VW_RES_UNIVERSE SQL view
 #'
 #' A dataset containing a small subsample of rows from the VW_RES_UNIVERSE view.
-#' The PINs present in this subsample match those present in 
+#' The PINs present in this subsample match those present in
 #' \code{chars_sample_addchars}.
 #'
 #' @source This data was extracted from SQL by the script at
