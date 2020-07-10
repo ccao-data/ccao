@@ -14,12 +14,12 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
+    rlang (>= 0.4.7),
     stats,
     assessr,
     dplyr (>= 1.0.0.9000),
     tidyr (>= 1.1.0),
-    magrittr,
-    rlang (>= 0.4.7)
+    magrittr
 RoxygenNote: 7.1.0
 Suggests: 
     devtools,
@@ -28,7 +28,6 @@ Suggests:
     covr
 Remotes:  
     gitlab::ccao-data-science---modeling/packages/assessr,
-    tidyverse/dplyr,
-    r-lib/rlang
+    tidyverse/dplyr
 Depends: 
     R (>= 3.5.0)
