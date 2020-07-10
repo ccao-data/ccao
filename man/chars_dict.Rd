@@ -3,7 +3,7 @@
 \docType{data}
 \name{chars_dict}
 \alias{chars_dict}
-\title{Data dictionary for CCAO characteristic values.}
+\title{Data dictionary for CCAO characteristic values}
 \format{
 A data frame with 61 rows and 4 variables:
 \describe{

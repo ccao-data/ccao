@@ -3,7 +3,7 @@
 \docType{data}
 \name{class_dict}
 \alias{class_dict}
-\title{Data dictionary of Cook County property classes.}
+\title{Data dictionary of Cook County property classes}
 \format{
 A data frame with 197 rows and 7 variables:
 \describe{

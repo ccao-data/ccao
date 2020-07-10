@@ -3,7 +3,7 @@
 \docType{data}
 \name{nbhd_shp}
 \alias{nbhd_shp}
-\title{Simple features (sf) data frame of CCAO neighborhoods.}
+\title{Simple features (sf) data frame of CCAO neighborhoods}
 \format{
 A spatial data frame with 845 geometries and 6 variables.
 \describe{

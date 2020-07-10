@@ -3,7 +3,7 @@
 \docType{data}
 \name{town_dict}
 \alias{town_dict}
-\title{Data dictionary for CCAO township codes and triads.}
+\title{Data dictionary for CCAO township codes and triads}
 \format{
 A data frame with 38 rows and 4 variables:
 \describe{

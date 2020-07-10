@@ -3,7 +3,7 @@
 \docType{data}
 \name{nbhd_recode}
 \alias{nbhd_recode}
-\title{Data frame of recodes for CCAO modeling neighborhoods.}
+\title{Data frame of recodes for CCAO modeling neighborhoods}
 \format{
 A data frame with 58 rows and 5 variables:
 \describe{

@@ -5,7 +5,7 @@
 \alias{ccao_cod}
 \alias{ccao_prd}
 \alias{ccao_prb}
-\title{Calculate Sales Ratio Statistics Using CCAO SOPs}
+\title{Calculate sales ratio statistics using CCAO SOPs}
 \usage{
 ccao_cod(ratio, suppress = FALSE, na.rm = FALSE)
 
