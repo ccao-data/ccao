@@ -118,7 +118,7 @@ town_get_triad <- function(town, name = FALSE) {
 #' town_get_assmnt_year("Evanston")
 #'
 #' town_get_assmnt_year(c("Lyons", "10", "Worth"), year = 1997)
-#' 
+#'
 #' town_get_assmnt_year(c("Lyons", "10", "25"), round_type = "floor")
 #' @export
 town_get_assmnt_year <- function(town,
@@ -159,8 +159,8 @@ town_get_assmnt_year <- function(town,
     switch(
       round_type,
       nearest = function(x) x[which.min(abs(x - year))],
-      ceiling = function(x) x[findInterval(year, x) + 1],
-      floor   = function(x) x[findInterval(year, x)]
+      floor   = function(x) x[findInterval(year, x)],
+      ceiling = function(x) x[findInterval(year, x) + !(year %in% x)],
     )
   ))
 

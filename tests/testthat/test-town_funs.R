@@ -77,7 +77,7 @@ test_that("output is correct", {
   )
   expect_equal(
     town_get_assmnt_year(towns, 1995, round_type = "ceiling"),
-    c(1998, 1996, 1998, 1998, 1997, 1997)
+    c(1995, 1996, 1995, 1995, 1997, 1997)
   )
 })
 
