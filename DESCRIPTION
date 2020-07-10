@@ -1,7 +1,7 @@
 Package: ccao
 Type: Package
 Title: Convenience Functions and Datasets for the Cook County Assessor's Office
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(
     person(given = "Dan", family = "Snow", email="dsnow@cookcountyassessor.com", role=c("aut", "cre"))
     )
@@ -15,7 +15,10 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     stats,
-    assessr
+    assessr,
+    dplyr,
+    tidyr,
+    magrittr
 RoxygenNote: 7.1.0
 Suggests: 
     devtools,
@@ -25,4 +28,4 @@ Suggests:
 Remotes:
     gitlab::ccao-data-science---modeling/packages/assessr
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
