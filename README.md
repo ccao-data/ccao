@@ -82,7 +82,7 @@ order to load this data. If you encounter the error `C stack usage
 {number} is too close to the limit` when loading the data, update your
 version of `sf`
 
-## Example Usage
+## Common Spatial Boundaries
 
 This package contains spatial data frames representing CCAO
 administrative boundaries. Note that you **must have the `sf` package
@@ -105,6 +105,99 @@ plot(ccao::nbhd_shp[1], main = "Townships with Neighborhoods")
 
 <img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
 
+## Handling for 288s (Home Improvement Exemptions)
+
+``` r
+library(dplyr)
+library(tidyr)
+library(knitr)
+
+# Choose a random sample PIN from the sample ADDCHARS data
+sample_chars <- ccao::chars_sample_addchars %>%
+  filter(QU_PIN == "05342230050000")
+
+# This PIN has an increase in square footage and added a garage over two
+# separate years
+sample_chars %>%
+  select(QU_PIN, TAX_YEAR, QU_TOWN, QU_GARAGE_ATTACHED, QU_SQFT_BLD) %>%
+  kable(format = "markdown", digits = 3)
+```
+
+| QU\_PIN        | TAX\_YEAR | QU\_TOWN | QU\_GARAGE\_ATTACHED | QU\_SQFT\_BLD |
+| :------------- | --------: | -------: | -------------------: | ------------: |
+| 05342230050000 |      2014 |       23 |                    0 |           135 |
+| 05342230050000 |      2015 |       23 |                    2 |             0 |
+
+``` r
+
+# Sparsify the data. Both of these 288s end in 2018, but one starts in 2014 
+# and one starts in 2015
+sparse_chars <- sample_chars %>%
+  ccao::chars_sparsify(
+    pin_col = QU_PIN,
+    year_col = TAX_YEAR, 
+    town_col = as.character(QU_TOWN),
+    upload_date_col = QU_UPLOAD_DATE,
+    additive_cols = any_of(ccao:::chars_get_type("ADD", "col_addchars")),
+    replacement_cols = any_of(ccao:::chars_get_type("REPLACE", "col_addchars"))
+  ) %>%
+  mutate(QU_CLASS = substr(QU_CLASS, 1, 3))
+
+# The resulting sparse data can be joined onto any data containing CCAOSFCHARS
+sparse_chars %>%
+  select(QU_PIN, YEAR, QU_GARAGE_ATTACHED, QU_SQFT_BLD) %>%
+  kable(format = "markdown", digits = 3)
+```
+
+| QU\_PIN        | YEAR | QU\_GARAGE\_ATTACHED | QU\_SQFT\_BLD |
+| :------------- | ---: | -------------------: | ------------: |
+| 05342230050000 | 2014 |                    0 |           135 |
+| 05342230050000 | 2015 |                    2 |           135 |
+| 05342230050000 | 2016 |                    2 |           135 |
+| 05342230050000 | 2017 |                    2 |           135 |
+| 05342230050000 | 2018 |                    2 |           135 |
+
+``` r
+
+# Here is an example data frame where the sparse data is merged onto
+# characteristic data and the characteristics are then updated using mutate()
+updated_chars <- chars_sample_universe %>%
+  filter(PIN %in% sample_chars$QU_PIN) %>%
+  left_join(sparse_chars, by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR")) %>%
+  arrange(PIN, TAX_YEAR) %>%
+  rowwise() %>%
+  mutate(
+    across(
+      any_of(ccao:::chars_get_type("ADD", "col_data")),
+      function(x, y = cur_column()) sum(x, get(ccao:::chars_get_col(y)), na.rm = T)
+    ),
+    across(
+      any_of(ccao:::chars_get_type("REPLACE", "col_data")),
+      function(x, y = cur_column()) replace_na(get(ccao:::chars_get_col(y)), x)
+    )
+  )
+
+# Show updated characteristics vs ADDCHARS
+updated_chars %>%
+  mutate(ACTIVE_288 = !is.na(QU_SQFT_BLD)) %>%
+  select(
+    PIN, ACTIVE_288, TAX_YEAR, GAR1_ATT,
+    BLDG_SF, QU_GARAGE_ATTACHED, QU_SQFT_BLD
+  ) %>%
+  kable(format = "markdown", digits = 3)
+```
+
+| PIN            | ACTIVE\_288 | TAX\_YEAR | GAR1\_ATT | BLDG\_SF | QU\_GARAGE\_ATTACHED | QU\_SQFT\_BLD |
+| :------------- | :---------- | --------: | --------: | -------: | -------------------: | ------------: |
+| 05342230050000 | FALSE       |      2013 |         0 |     2478 |                   NA |            NA |
+| 05342230050000 | TRUE        |      2014 |         0 |     2613 |                    0 |           135 |
+| 05342230050000 | TRUE        |      2015 |         2 |     2613 |                    2 |           135 |
+| 05342230050000 | TRUE        |      2016 |         2 |     2613 |                    2 |           135 |
+| 05342230050000 | TRUE        |      2017 |         2 |      135 |                    2 |           135 |
+| 05342230050000 | TRUE        |      2018 |         2 |     2613 |                    2 |           135 |
+| 05342230050000 | FALSE       |      2019 |         2 |     2613 |                   NA |            NA |
+| 05342230050000 | FALSE       |      2020 |         2 |     2613 |                   NA |            NA |
+
 ## CCAO Colors
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
