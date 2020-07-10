@@ -23,7 +23,7 @@
 "ccao_colors"
 
 
-#' Codes used by the CCAO to identify certain distinct property situations.
+#' Codes used by the CCAO to identify certain distinct property situations
 #'
 #' A dataset containing a lookup of CDU codes. These codes are kind of a mess
 #' and have been created and used inconsistently over the years.
@@ -42,7 +42,7 @@
 "cdu_dict"
 
 
-#' Data dictionary for CCAO characteristic values.
+#' Data dictionary for CCAO characteristic values
 #'
 #' A dataset containing human-readable version of numeric characteristic
 #' encodings of property characteristic data.
@@ -61,7 +61,29 @@
 "chars_dict"
 
 
-#' Data dictionary of Cook County property classes.
+#' Sample dataset from the ADDCHARS SQL table
+#'
+#' A dataset containing a small subsample of rows from the ADDCHARS table. This
+#' sample can be used with \code{chars_sparsify()} to generate sparse data frames
+#' suitable for joining onto \code{chars_sample_universe}.
+#'
+#' @source This data was extracted from SQL by the script at
+#' \code{data-raw/chars_sample.R}.
+"chars_sample_addchars"
+
+
+#' Sample dataset from the VW_RES_UNIVERSE SQL view
+#'
+#' A dataset containing a small subsample of rows from the VW_RES_UNIVERSE view.
+#' The PINs present in this subsample match those present in 
+#' \code{chars_sample_addchars}.
+#'
+#' @source This data was extracted from SQL by the script at
+#' \code{data-raw/chars_sample.R}.
+"chars_sample_universe"
+
+
+#' Data dictionary of Cook County property classes
 #'
 #' A dataset containing a translation for property class codes to
 #' human-readable class descriptions. Also describes which classes are included
@@ -84,7 +106,7 @@
 "class_dict"
 
 
-#' Data frame of recodes for CCAO modeling neighborhoods.
+#' Data frame of recodes for CCAO modeling neighborhoods
 #'
 #' A dataset of neighborhood recodes for CCAO modeling. These neighborhoods
 #' either don't exist or are errors in the data. Can be easily be used with
@@ -121,7 +143,7 @@
 "nbhd_recode"
 
 
-#' Simple features (sf) data frame of CCAO neighborhoods.
+#' Simple features (sf) data frame of CCAO neighborhoods
 #'
 #' An \code{sf} spatial data frame containing geometries, names, and codes for
 #' CCAO neighborhoods. Use for thematic maps only; these boundaries are
@@ -143,7 +165,7 @@
 "nbhd_shp"
 
 
-#' Data dictionary for CCAO township codes and triads.
+#' Data dictionary for CCAO township codes and triads
 #'
 #' A dataset containing a lookup of various townships and their
 #' respective triads.
@@ -159,7 +181,7 @@
 "town_dict"
 
 
-#' Simple features (sf) data frame of Cook County townships.
+#' Simple features (sf) data frame of Cook County townships
 #'
 #' An \code{sf} spatial data frame containing geometries, names, and codes for
 #' Cook County political/administrative townships. Use for thematic
