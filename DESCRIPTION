@@ -18,7 +18,8 @@ Imports:
     assessr,
     dplyr (>= 1.0.0.9000),
     tidyr (>= 1.1.0),
-    magrittr
+    magrittr,
+    rlang (>= 0.4.6)
 RoxygenNote: 7.1.0
 Suggests: 
     devtools,
