@@ -16,8 +16,8 @@ LazyData: true
 Imports:
     stats,
     assessr,
-    dplyr,
-    tidyr,
+    dplyr (>= 1.0.0.9000),
+    tidyr (>= 1.1.0),
     magrittr
 RoxygenNote: 7.1.0
 Suggests: 
@@ -25,7 +25,8 @@ Suggests:
     testthat,
     lintr,
     covr
-Remotes:
-    gitlab::ccao-data-science---modeling/packages/assessr
+Remotes: 
+    gitlab::ccao-data-science---modeling/packages/assessr,
+    tidyverse/dplyr
 Depends: 
     R (>= 3.5.0)
