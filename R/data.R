@@ -42,6 +42,22 @@
 "cdu_dict"
 
 
+#' List crosswalk of CCAOSFCHARS columns and their ADDCHARS equivalents
+#'
+#' A list containing vectors of column names that match those found in the
+#' CCAOSFCHARS and ADDCHARS SQL tables. Can be used to translate between
+#' tables.
+#'
+#' @format A list with 4 items:
+#' \describe{
+#'   \item{add_target}{Target columns with additive characteristics}
+#'   \item{add_source}{Cols with source of data to add to \code{add_target}}
+#'   \item{rep_target}{Target columns with characteristics to be replaced}
+#'   \item{rep_source}{Cols with source of data to replace in \code{rep_target}}
+#' }
+#'
+"chars_cols"
+
 #' Data dictionary for CCAO characteristic values
 #'
 #' A dataset containing human-readable version of numeric characteristic

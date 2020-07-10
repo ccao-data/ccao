@@ -1,21 +1,3 @@
-chars_get_col <- function(col) {
-  ac_dict$col_addchars[
-    which(ac_dict$col_data %in% col)
-  ]
-}
-
-
-chars_get_type <- function(type, col) {
-  unlist(
-    ac_dict[
-      which(ac_dict$col_type == type),
-      which(names(ac_dict) == col)
-    ],
-    use.names = FALSE
-  )
-}
-
-
 #' Determine active years for a Home Improvement Exemption (288)
 #'
 #' @description The State of Illinois has a home improvement exemption program
@@ -146,15 +128,15 @@ chars_288_active <- function(start_year, town) {
 #'   ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal to
 #'   100, then 100 sqft get added to the existing square footage of the
 #'   property. The easiest way to specify all additive columns is to use the
-#'   built-in dictionary function,
-#'   \code{any_of(ccao:::chars_get_type("ADD", "col_data"))}.
+#'   built-in crosswalk,
+#'   \code{any_of(ccao::chars_cols$add_target)}.
 #' @param replacement_cols A tidyselect selection of columns which contain
 #'   replacement characteristic values. These are values such as number of rooms
 #'   which get OVERWRITE existing characteristics. For example, if QU_ROOMS is
 #'   equal to 3, then the property will be update to have 3 total rooms.
 #'   The easiest way to specify all replacement columns is to use the
-#'   built-in dictionary function,
-#'   \code{any_of(ccao:::chars_get_type("REPLACE", "col_data"))}.
+#'   built-in crosswalk,
+#'   \code{any_of(ccao::chars_cols$rep_target)}.
 #'
 #' @note Use dplyr/tidyselect syntax for specifying column names. For example,
 #'   use \code{QU_PIN} instead of \code{"QU_PIN"}.
@@ -168,10 +150,10 @@ chars_288_active <- function(start_year, town) {
 #' data("chars_sample_addchars")
 #'
 #' chars_sparsify(
-#'   chars_sample_addchars,
+#'   data = chars_sample_addchars,
 #'   QU_PIN, TAX_YEAR, as.character(QU_TOWN), QU_UPLOAD_DATE,
-#'   any_of(ccao:::chars_get_type("ADD", "col_addchars")),
-#'   any_of(ccao:::chars_get_type("REPLACE", "col_addchars"))
+#'   any_of(any_of(ccao::chars_cols$add_target)),
+#'   any_of(any_of(ccao::chars_cols$rep_target))
 #' )
 #' @md
 #' @importFrom magrittr %>%
@@ -202,4 +184,68 @@ chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
       dplyr::across({{ replacement_cols }}, dplyr::last)
     ) %>%
     dplyr::rename(YEAR = has_active_288)
+}
+
+
+# Unexported utility function to lookup equivalent ADDCHARS column given
+# a CCAOSFCHARS column
+chars_get_col <- function(col) {
+  source_cols <- c(ccao::chars_cols$add_source, ccao::chars_cols$rep_source)
+  target_cols <- c(ccao::chars_cols$add_target, ccao::chars_cols$rep_target)
+  source_cols[which(target_cols %in% col)]
+}
+
+
+#' Update characteristic values using values from ADDCHARS
+#'
+#' @description Function used to update the characteristic values of a
+#' data frame containing both the original characteristic value (CCAOSFCHARS)
+#' and the value to add or replace it with (ADDCHARS). This function expect a
+#' data frame formatted using \code{chars_sparsify}.
+#'
+#' @param data A data frame containing CCAOSFCHARS columns AND their equivalent
+#'   ADDCHARS columns.
+#' @param additive_targets A character vector of CCAOSFCHARS column names that
+#'   should have characteristics added to them from their equivalent ADDCHARS
+#'   column, which must also be present.
+#' @param replacement_targets A character vector of CCAOSFCHARS column names
+#'   that should have characteristics replaced using their equivalent ADDCHARS
+#'   column, which must also be present.
+#'
+#' @return A data frame with updated additive and replacement target columns.
+#'
+#' @importFrom magrittr %>%
+#' @family chars_funs
+#' @export
+chars_update <- function(data,
+                         additive_targets = ccao::chars_cols$add_target,
+                         replacement_targets = ccao::chars_cols$rep_target) {
+
+  # Make sure columns are actually present and related to CHARS
+  stopifnot(
+    all(additive_targets %in% colnames(data)),
+    all(replacement_targets %in% colnames(data)),
+    all(additive_targets %in% ccao::chars_cols$add_target),
+    all(replacement_targets %in% ccao::chars_cols$rep_target)
+  )
+
+  # Given an input dataset, this code will lookup each of the CCAOSFCHARS
+  # columns specified and ADD or REPLACE their values using the equivalent
+  # ADDCHARS column
+  data %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::any_of(additive_targets),
+        function(x, y = dplyr::cur_column()) {
+          sum(x, get(chars_get_col(y)), na.rm = T)
+        }
+      ),
+      dplyr::across(
+        dplyr::any_of(replacement_targets),
+        function(x, y = dplyr::cur_column()) {
+          tidyr::replace_na(get(chars_get_col(y)), x)
+        }
+      )
+    )
 }

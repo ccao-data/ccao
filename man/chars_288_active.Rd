@@ -15,16 +15,16 @@ or the same length as \code{start_year}.}
 }
 \value{
 A list of numeric vectors containing the active years for each value
-  of the input vectors. The list will always be N long, where N is the 
+  of the input vectors. The list will always be N long, where N is the
   length of the longest input vector.
 }
 \description{
 The State of Illinois has a home improvement exemption program
 which allows property owners to deduct up to $75,000 per year of any value
-created by improvements to a residential property. 
+created by improvements to a residential property.
 
 This has the effect of essentially "freezing" a home's characteristics at
-whatever they were prior to the start of the improvement project. For 
+whatever they were prior to the start of the improvement project. For
 example, if a property owner adds an additional bedroom and applies for a
 288, the property will be valued as if the new bedroom does not exist until
 the 288 expires and as long as the increase in valuation is less than
@@ -53,10 +53,10 @@ chars_288_active(2015, c("77", "Evanston", "10"))
 
 # Pairwise lookup (2015 for Evanston, 2017 for Northfield)
 chars_288_active(c(2015, 2017), c("Evanston", "Northfield"))
-
 }
 \seealso{
 Other chars_funs: 
-\code{\link{chars_sparsify}()}
+\code{\link{chars_sparsify}()},
+\code{\link{chars_update}()}
 }
 \concept{chars_funs}

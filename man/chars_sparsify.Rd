@@ -32,16 +32,16 @@ characteristic values. These are values such as square feet which get
 ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal to
 100, then 100 sqft get added to the existing square footage of the
 property. The easiest way to specify all additive columns is to use the
-built-in dictionary function,
-\code{any_of(ccao:::chars_get_type("ADD", "col_data"))}.}
+built-in crosswalk,
+\code{any_of(ccao::chars_cols$add_target)}.}
 
 \item{replacement_cols}{A tidyselect selection of columns which contain
 replacement characteristic values. These are values such as number of rooms
 which get OVERWRITE existing characteristics. For example, if QU_ROOMS is
 equal to 3, then the property will be update to have 3 total rooms.
 The easiest way to specify all replacement columns is to use the
-built-in dictionary function,
-\code{any_of(ccao:::chars_get_type("REPLACE", "col_data"))}.}
+built-in crosswalk,
+\code{any_of(ccao::chars_cols$rep_target)}.}
 }
 \value{
 A sparsified data frame of characteristic updates per PIN per year.
@@ -94,15 +94,15 @@ use \code{QU_PIN} instead of \code{"QU_PIN"}.
 data("chars_sample_addchars")
 
 chars_sparsify(
-  chars_sample_addchars,
+  data = chars_sample_addchars,
   QU_PIN, TAX_YEAR, as.character(QU_TOWN), QU_UPLOAD_DATE,
-  any_of(ccao:::chars_get_type("ADD", "col_addchars")),
-  any_of(ccao:::chars_get_type("REPLACE", "col_addchars"))
-) 
-
+  any_of(any_of(ccao::chars_cols$add_target)),
+  any_of(any_of(ccao::chars_cols$rep_target))
+)
 }
 \seealso{
 Other chars_funs: 
-\code{\link{chars_288_active}()}
+\code{\link{chars_288_active}()},
+\code{\link{chars_update}()}
 }
 \concept{chars_funs}

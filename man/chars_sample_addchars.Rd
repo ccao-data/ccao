@@ -16,7 +16,7 @@ chars_sample_addchars
 }
 \description{
 A dataset containing a small subsample of rows from the ADDCHARS table. This
-sample can be used with \code{chars_sparsify()} to generate sparse data frames
-suitable for joining onto \code{chars_sample_universe}.
+sample can be used with \code{chars_sparsify()} to generate sparse data
+frames suitable for joining onto \code{chars_sample_universe}.
 }
 \keyword{datasets}
