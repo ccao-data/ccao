@@ -5,7 +5,7 @@ Version: 0.4.0
 Authors@R: c(
     person(given = "Dan", family = "Snow", email="dsnow@cookcountyassessor.com", role=c("aut", "cre"))
     )
-Date: 2020-05-22
+Date: 2020-07-10
 Description: A set of functions used widely through the Cook County Assessor's
     valuation pipeline. The intention is to standardize the usage of critical
     functions across all users and scripts by having them all depend on a single
@@ -14,20 +14,18 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    rlang (>= 0.4.7),
-    dplyr (>= 1.0.0.9000),
-    tidyr (>= 1.1.0),
+    assessr,
+    dplyr (>= 1.0.0),
     magrittr,
     stats,
-    assessr
+    tidyr (>= 1.1.0)
 RoxygenNote: 7.1.0
 Suggests: 
+    covr,
     devtools,
-    testthat,
     lintr,
-    covr
+    testthat
 Remotes:  
-    gitlab::ccao-data-science---modeling/packages/assessr,
-    tidyverse/dplyr
+    gitlab::ccao-data-science---modeling/packages/assessr
 Depends: 
     R (>= 3.5.0)
