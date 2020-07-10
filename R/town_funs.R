@@ -131,6 +131,7 @@ town_get_assmnt_year <- function(town,
     is.character(town), # input must be character
     is.numeric(year), # year must be numeric
     year >= 1991, # year must be greater than 1991
+    year < ((as.integer(format(Sys.Date(), "%Y"))) + 100),
     round_type %in% c("nearest", "ceiling", "floor")
   )
 
