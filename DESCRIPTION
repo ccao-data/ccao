@@ -19,15 +19,16 @@ Imports:
     dplyr (>= 1.0.0.9000),
     tidyr (>= 1.1.0),
     magrittr,
-    rlang (>= 0.4.6)
+    rlang (>= 0.4.7)
 RoxygenNote: 7.1.0
 Suggests: 
     devtools,
     testthat,
     lintr,
     covr
-Remotes: 
+Remotes:  
     gitlab::ccao-data-science---modeling/packages/assessr,
-    tidyverse/dplyr
+    tidyverse/dplyr,
+    r-lib/rlang
 Depends: 
     R (>= 3.5.0)
