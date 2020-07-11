@@ -4,21 +4,17 @@
 \alias{chars_update}
 \title{Update characteristic values using values from ADDCHARS}
 \usage{
-chars_update(
-  data,
-  additive_targets = ccao::chars_cols$add_target,
-  replacement_targets = ccao::chars_cols$rep_target
-)
+chars_update(data, additive_target, replacement_target)
 }
 \arguments{
 \item{data}{A data frame containing CCAOSFCHARS columns AND their equivalent
 ADDCHARS columns.}
 
-\item{additive_targets}{A character vector of CCAOSFCHARS column names that
-should have characteristics added to them from their equivalent ADDCHARS
-column, which must also be present.}
+\item{additive_target}{A tidyselect selection of CCAOSFCHARS column names
+that should have characteristics added to them from their equivalent
+ADDCHARS column, which must also be present.}
 
-\item{replacement_targets}{A character vector of CCAOSFCHARS column names
+\item{replacement_target}{A tidyselect selection of CCAOSFCHARS column names
 that should have characteristics replaced using their equivalent ADDCHARS
 column, which must also be present.}
 }
@@ -27,7 +23,7 @@ A data frame with updated additive and replacement target columns.
 }
 \description{
 Function used to update the characteristic values of a
-data frame containing both the original characteristic value (CCAOSFCHARS) 
+data frame containing both the original characteristic value (CCAOSFCHARS)
 and the value to add or replace it with (ADDCHARS). This function expect a
 data frame formatted using \code{chars_sparsify}.
 }

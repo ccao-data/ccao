@@ -61,15 +61,23 @@ chars_288_active <- function(start_year, town) {
   # start_year + 8 will be active based on the town's reassessment cycle
   mapply(
     function(x, y) {
-      potentially_active_years <- x:(x + 8)
+      if (is.na(x)) {
+        return(NA_real_)
+      }
+      else if (is.na(y)) {
+        return(NA_character_)
+      }
+      else {
+        potentially_active_years <- x:(x + 8)
 
-      idx <- potentially_active_years >= x &
-        potentially_active_years < max(
-          x + 4,
-          ccao::town_get_assmnt_year(y, x + 4, round_type = "ceiling")
-        )
+        idx <- potentially_active_years >= x &
+          potentially_active_years < max(
+            x + 4,
+            ccao::town_get_assmnt_year(y, x + 4, round_type = "ceiling")
+          )
 
-      return(potentially_active_years[idx])
+        return(potentially_active_years[idx])
+      }
     },
     x = start_year,
     y = town,
@@ -112,9 +120,9 @@ chars_288_active <- function(start_year, town) {
 #' | 12345  | 2020 | 300         | 1        |
 #'
 #' Each PIN will have a row for each year that the 288 is active and a column
-#' for each characteristic specified by \code{additive_cols} and
-#' \code{replacement_cols}. This table can be easily left joined to modeling
-#' data to update characteristic values. See README.rmd for examples.
+#' for each characteristic specified by \code{additive_source} and
+#' \code{replacement_source}. This table can be easily left joined to modeling
+#' data to update characteristic values. See README.Rmd for examples.
 #'
 #' @param data A data frame containing ADDCHARS columns.
 #' @param pin_col A column name specifying the PIN column. Usually QU_PIN.
@@ -123,23 +131,24 @@ chars_288_active <- function(start_year, town) {
 #' @param upload_date_col A column name specifying the upload date of the 288,
 #'   this is use to determine which 288 take precedence if multiple 288s were
 #'   filed in the same year. Usually QU_UPLOAD_DATE.
-#' @param additive_cols A tidyselect selection of columns which contain additive
-#'   characteristic values. These are values such as square feet which get
-#'   ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal to
-#'   100, then 100 sqft get added to the existing square footage of the
+#' @param additive_source A tidyselect selection of columns which contains
+#'   additive characteristic values. These are values such as square feet which
+#'   get ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal
+#'   to 100, then 100 sqft get added to the existing square footage of the
 #'   property. The easiest way to specify all additive columns is to use the
 #'   built-in crosswalk,
-#'   \code{any_of(ccao::chars_cols$add_target)}.
-#' @param replacement_cols A tidyselect selection of columns which contain
+#'   \code{any_of(ccao::chars_cols$add_source)}.
+#' @param replacement_source A tidyselect selection of columns which contains
 #'   replacement characteristic values. These are values such as number of rooms
 #'   which get OVERWRITE existing characteristics. For example, if QU_ROOMS is
 #'   equal to 3, then the property will be update to have 3 total rooms.
 #'   The easiest way to specify all replacement columns is to use the
 #'   built-in crosswalk,
-#'   \code{any_of(ccao::chars_cols$rep_target)}.
+#'   \code{any_of(ccao::chars_cols$rep_source)}.
 #'
 #' @note Use dplyr/tidyselect syntax for specifying column names. For example,
-#'   use \code{QU_PIN} instead of \code{"QU_PIN"}.
+#'   use \code{QU_PIN} instead of \code{"QU_PIN"}, or use a tidyselect function
+#'   such as \code{starts_with("QU_")}.
 #'
 #' @return A sparsified data frame of characteristic updates per PIN per year.
 #' See above for example.
@@ -150,17 +159,20 @@ chars_288_active <- function(start_year, town) {
 #' data("chars_sample_addchars")
 #'
 #' chars_sparsify(
-#'   data = chars_sample_addchars,
-#'   QU_PIN, TAX_YEAR, as.character(QU_TOWN), QU_UPLOAD_DATE,
-#'   any_of(any_of(ccao::chars_cols$add_target)),
-#'   any_of(any_of(ccao::chars_cols$rep_target))
+#'   chars_sample_addchars,
+#'   pin_col = QU_PIN,
+#'   year_col = TAX_YEAR,
+#'   town_col = as.character(QU_TOWN),
+#'   upload_date_col = QU_UPLOAD_DATE,
+#'   additive_source = any_of(chars_cols$add_source),
+#'   replacement_source = any_of(chars_cols$rep_source)
 #' )
 #' @md
 #' @importFrom magrittr %>%
 #' @family chars_funs
 #' @export
 chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
-                           additive_cols, replacement_cols) {
+                           additive_source, replacement_source) {
   has_active_288 <- NULL
   town <- NULL
 
@@ -169,8 +181,8 @@ chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
     dplyr::arrange({{ pin_col }}, {{ year_col }}, {{ upload_date_col }}) %>%
     dplyr::summarize(
       town = dplyr::first({{ town_col }}),
-      dplyr::across({{ additive_cols }}, sum),
-      dplyr::across({{ replacement_cols }}, dplyr::last)
+      dplyr::across({{ additive_source }}, sum),
+      dplyr::across({{ replacement_source }}, dplyr::last)
     ) %>%
     dplyr::mutate(has_active_288 = ccao::chars_288_active(
       {{ year_col }},
@@ -180,8 +192,8 @@ chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
     dplyr::group_by({{ pin_col }}, has_active_288) %>%
     dplyr::arrange({{ pin_col }}, has_active_288, {{ year_col }}) %>%
     dplyr::summarize(
-      dplyr::across({{ additive_cols }}, sum),
-      dplyr::across({{ replacement_cols }}, dplyr::last)
+      dplyr::across({{ additive_source }}, sum),
+      dplyr::across({{ replacement_source }}, dplyr::last)
     ) %>%
     dplyr::rename(YEAR = has_active_288)
 }
@@ -205,10 +217,10 @@ chars_get_col <- function(col) {
 #'
 #' @param data A data frame containing CCAOSFCHARS columns AND their equivalent
 #'   ADDCHARS columns.
-#' @param additive_targets A character vector of CCAOSFCHARS column names that
-#'   should have characteristics added to them from their equivalent ADDCHARS
-#'   column, which must also be present.
-#' @param replacement_targets A character vector of CCAOSFCHARS column names
+#' @param additive_target A tidyselect selection of CCAOSFCHARS column names
+#'   that should have characteristics added to them from their equivalent
+#'   ADDCHARS column, which must also be present.
+#' @param replacement_target A tidyselect selection of CCAOSFCHARS column names
 #'   that should have characteristics replaced using their equivalent ADDCHARS
 #'   column, which must also be present.
 #'
@@ -217,17 +229,7 @@ chars_get_col <- function(col) {
 #' @importFrom magrittr %>%
 #' @family chars_funs
 #' @export
-chars_update <- function(data,
-                         additive_targets = ccao::chars_cols$add_target,
-                         replacement_targets = ccao::chars_cols$rep_target) {
-
-  # Make sure columns are actually present and related to CHARS
-  stopifnot(
-    all(additive_targets %in% colnames(data)),
-    all(replacement_targets %in% colnames(data)),
-    all(additive_targets %in% ccao::chars_cols$add_target),
-    all(replacement_targets %in% ccao::chars_cols$rep_target)
-  )
+chars_update <- function(data, additive_target, replacement_target) {
 
   # Given an input dataset, this code will lookup each of the CCAOSFCHARS
   # columns specified and ADD or REPLACE their values using the equivalent
@@ -236,13 +238,13 @@ chars_update <- function(data,
     dplyr::rowwise() %>%
     dplyr::mutate(
       dplyr::across(
-        dplyr::any_of(additive_targets),
+        {{ additive_target }},
         function(x, y = dplyr::cur_column()) {
           sum(x, get(chars_get_col(y)), na.rm = T)
         }
       ),
       dplyr::across(
-        dplyr::any_of(replacement_targets),
+        {{ replacement_target }},
         function(x, y = dplyr::cur_column()) {
           tidyr::replace_na(get(chars_get_col(y)), x)
         }

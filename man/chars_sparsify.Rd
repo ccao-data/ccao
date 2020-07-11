@@ -10,8 +10,8 @@ chars_sparsify(
   year_col,
   town_col,
   upload_date_col,
-  additive_cols,
-  replacement_cols
+  additive_source,
+  replacement_source
 )
 }
 \arguments{
@@ -27,21 +27,21 @@ chars_sparsify(
 this is use to determine which 288 take precedence if multiple 288s were
 filed in the same year. Usually QU_UPLOAD_DATE.}
 
-\item{additive_cols}{A tidyselect selection of columns which contain additive
-characteristic values. These are values such as square feet which get
-ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal to
-100, then 100 sqft get added to the existing square footage of the
+\item{additive_source}{A tidyselect selection of columns which contains
+additive characteristic values. These are values such as square feet which
+get ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal
+to 100, then 100 sqft get added to the existing square footage of the
 property. The easiest way to specify all additive columns is to use the
 built-in crosswalk,
-\code{any_of(ccao::chars_cols$add_target)}.}
+\code{any_of(ccao::chars_cols$add_source)}.}
 
-\item{replacement_cols}{A tidyselect selection of columns which contain
+\item{replacement_source}{A tidyselect selection of columns which contains
 replacement characteristic values. These are values such as number of rooms
 which get OVERWRITE existing characteristics. For example, if QU_ROOMS is
 equal to 3, then the property will be update to have 3 total rooms.
 The easiest way to specify all replacement columns is to use the
 built-in crosswalk,
-\code{any_of(ccao::chars_cols$rep_target)}.}
+\code{any_of(ccao::chars_cols$rep_source)}.}
 }
 \value{
 A sparsified data frame of characteristic updates per PIN per year.
@@ -80,13 +80,14 @@ This function will transform it into:\tabular{llll}{
 
 
 Each PIN will have a row for each year that the 288 is active and a column
-for each characteristic specified by \code{additive_cols} and
-\code{replacement_cols}. This table can be easily left joined to modeling
-data to update characteristic values. See README.rmd for examples.
+for each characteristic specified by \code{additive_source} and
+\code{replacement_source}. This table can be easily left joined to modeling
+data to update characteristic values. See README.Rmd for examples.
 }
 \note{
 Use dplyr/tidyselect syntax for specifying column names. For example,
-use \code{QU_PIN} instead of \code{"QU_PIN"}.
+use \code{QU_PIN} instead of \code{"QU_PIN"}, or use a tidyselect function
+such as \code{starts_with("QU_")}.
 }
 \examples{
 
@@ -94,10 +95,13 @@ use \code{QU_PIN} instead of \code{"QU_PIN"}.
 data("chars_sample_addchars")
 
 chars_sparsify(
-  data = chars_sample_addchars,
-  QU_PIN, TAX_YEAR, as.character(QU_TOWN), QU_UPLOAD_DATE,
-  any_of(any_of(ccao::chars_cols$add_target)),
-  any_of(any_of(ccao::chars_cols$rep_target))
+  chars_sample_addchars,
+  pin_col = QU_PIN,
+  year_col = TAX_YEAR,
+  town_col = as.character(QU_TOWN),
+  upload_date_col = QU_UPLOAD_DATE,
+  additive_source = any_of(chars_cols$add_source),
+  replacement_source = any_of(chars_cols$rep_source)
 )
 }
 \seealso{

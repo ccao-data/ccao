@@ -133,8 +133,8 @@ sparse_chars <- sample_chars %>%
     year_col = TAX_YEAR, 
     town_col = as.character(QU_TOWN),
     upload_date_col = QU_UPLOAD_DATE,
-    additive_cols = any_of(chars_cols$add_source),
-    replacement_cols = any_of(chars_cols$rep_source)
+    additive_source = any_of(chars_cols$add_source),
+    replacement_source = any_of(chars_cols$rep_source)
   ) %>%
   mutate(QU_CLASS = substr(QU_CLASS, 1, 3))
 
@@ -150,8 +150,8 @@ updated_chars <- chars_sample_universe %>%
   left_join(sparse_chars, by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR")) %>%
   arrange(PIN, TAX_YEAR) %>%
   chars_update(
-    additive_targets = ccao::chars_cols$add_target,
-    replacement_targets = ccao::chars_cols$rep_target
+    additive_target = any_of(ccao::chars_cols$add_target),
+    replacement_target = any_of(ccao::chars_cols$rep_target)
   )
 
 # Show updated characteristics vs ADDCHARS
