@@ -123,15 +123,16 @@ and more consistent. Two sample datasets, `chars_sample_addchars` and
 `chars_sample_universe` are included to simulate real-world use. The
 `chars_sample_addchars` dataset is a direct sample of data from the
 ADDCHARS SQL table and includes individual rows listing the PIN, start
-date, and characteristic updates associated with a 288 Home Improvement
-Exemption. This data format is difficult to work with and complicated by
-that fact that multiple 288s can be active at the same time for
-different periods, and some columns from ADDCHARS add to existing
-characteristics, while some overwrite existing characteristics.
+date, class, and characteristic updates associated with a 288 Home
+Improvement Exemption. This data format is difficult to work with and
+complicated by that fact that multiple 288s can be active at the same
+time for different periods, and some columns from ADDCHARS add to
+existing characteristics, while some overwrite existing characteristics.
 
 The included `chars_sparsify()` function transforms these single rows
 into a sparse data frame which lists a row and characteristic update per
-PIN per year. This is most easily visualized with a mock dataset:
+PIN per year per class. This is most easily visualized with a mock
+dataset:
 
 The base ADDCHARS data syntax looks like:
 
@@ -166,28 +167,35 @@ library(ccao)
 
 # Choose a random sample PIN from the sample ADDCHARS data
 sample_chars <- chars_sample_addchars %>%
-  filter(QU_PIN == "05342230050000")
+  filter(QU_PIN == "05273000030000")
 
-# This PIN has an increase in square footage and added a garage over two
-# separate years
+# This PIN has a basement and garage renovation followed by a bathroom reno
+# three years later
 sample_chars %>%
-  select(QU_PIN, TAX_YEAR, QU_TOWN, QU_GARAGE_ATTACHED, QU_SQFT_BLD) %>%
+  select(
+    QU_PIN, TAX_YEAR, QU_CLASS,
+    QU_TOWN, QU_GARAGE_SIZE, QU_SQFT_BLD, QU_BEDS
+  ) %>%
   kable(format = "markdown", digits = 3)
 ```
 
-| QU\_PIN        | TAX\_YEAR | QU\_TOWN | QU\_GARAGE\_ATTACHED | QU\_SQFT\_BLD |
-| :------------- | --------: | -------: | -------------------: | ------------: |
-| 05342230050000 |      2014 |       23 |                    0 |           135 |
-| 05342230050000 |      2015 |       23 |                    2 |             0 |
+| QU\_PIN        | TAX\_YEAR | QU\_CLASS | QU\_TOWN | QU\_GARAGE\_SIZE | QU\_SQFT\_BLD | QU\_BEDS |
+| :------------- | --------: | --------: | -------: | ---------------: | ------------: | -------: |
+| 05273000030000 |      2015 |     20600 |       23 |                3 |             0 |        0 |
+| 05273000030000 |      2018 |     20600 |       23 |                0 |           384 |        1 |
 
 ``` r
 
-# Sparsify the data. Both of these 288s end in 2018, but one starts in 2014 
-# and one starts in 2015
+# Sparsify the data. You can see that one 288 ends roughly when the other one
+# begins. NOTE: the mutate() on QU_CLASS here is because sometime QU_CLASS is
+# equal to 0 (mostly for garage renovations). This is an easy fix
 sparse_chars <- sample_chars %>%
+  arrange(QU_PIN, TAX_YEAR, QU_CLASS) %>%
+  mutate(QU_CLASS = ifelse(QU_CLASS == 0, lag(QU_CLASS), QU_CLASS)) %>%
   chars_sparsify(
     pin_col = QU_PIN,
     year_col = TAX_YEAR, 
+    class_col = QU_CLASS,
     town_col = as.character(QU_TOWN),
     upload_date_col = QU_UPLOAD_DATE,
     additive_source = any_of(chars_cols$add_source),
@@ -197,17 +205,22 @@ sparse_chars <- sample_chars %>%
 
 # The resulting sparse data can be joined onto any data containing CCAOSFCHARS
 sparse_chars %>%
-  select(QU_PIN, YEAR, QU_GARAGE_ATTACHED, QU_SQFT_BLD) %>%
+  select(
+    QU_PIN, YEAR, QU_CLASS, QU_GARAGE_SIZE, 
+    QU_SQFT_BLD, QU_BEDS, NUM_288S_ACTIVE
+  ) %>%
   kable(format = "markdown", digits = 3)
 ```
 
-| QU\_PIN        | YEAR | QU\_GARAGE\_ATTACHED | QU\_SQFT\_BLD |
-| :------------- | ---: | -------------------: | ------------: |
-| 05342230050000 | 2014 |                    0 |           135 |
-| 05342230050000 | 2015 |                    2 |           135 |
-| 05342230050000 | 2016 |                    2 |           135 |
-| 05342230050000 | 2017 |                    2 |           135 |
-| 05342230050000 | 2018 |                    2 |           135 |
+| QU\_PIN        | YEAR | QU\_CLASS | QU\_GARAGE\_SIZE | QU\_SQFT\_BLD | QU\_BEDS | NUM\_288S\_ACTIVE |
+| :------------- | ---: | :-------- | ---------------: | ------------: | -------: | ----------------: |
+| 05273000030000 | 2015 | 206       |                3 |             0 |        0 |                 1 |
+| 05273000030000 | 2016 | 206       |                3 |             0 |        0 |                 1 |
+| 05273000030000 | 2017 | 206       |                3 |             0 |        0 |                 1 |
+| 05273000030000 | 2018 | 206       |                3 |           384 |        1 |                 2 |
+| 05273000030000 | 2019 | 206       |                0 |           384 |        1 |                 1 |
+| 05273000030000 | 2020 | 206       |                0 |           384 |        1 |                 1 |
+| 05273000030000 | 2021 | 206       |                0 |           384 |        1 |                 1 |
 
 ``` r
 
@@ -215,7 +228,10 @@ sparse_chars %>%
 # characteristic data and the characteristics are then updated using chars_update()
 updated_chars <- chars_sample_universe %>%
   filter(PIN %in% sample_chars$QU_PIN) %>%
-  left_join(sparse_chars, by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR")) %>%
+  left_join(
+    sparse_chars,
+    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
+  ) %>%
   arrange(PIN, TAX_YEAR) %>%
   chars_update(
     additive_target = any_of(ccao::chars_cols$add_target),
@@ -224,24 +240,30 @@ updated_chars <- chars_sample_universe %>%
 
 # Show updated characteristics vs ADDCHARS
 updated_chars %>%
-  mutate(ACTIVE_288 = !is.na(QU_SQFT_BLD)) %>%
   select(
-    PIN, ACTIVE_288, TAX_YEAR, GAR1_ATT,
-    BLDG_SF, QU_GARAGE_ATTACHED, QU_SQFT_BLD
+    PIN, TAX_YEAR, CLASS, NUM_288S_ACTIVE, GAR1_SIZE, QU_GARAGE_SIZE,
+    BLDG_SF, QU_SQFT_BLD, BEDS, QU_BEDS
   ) %>%
+  arrange(PIN, CLASS, TAX_YEAR) %>%
   kable(format = "markdown", digits = 3)
 ```
 
-| PIN            | ACTIVE\_288 | TAX\_YEAR | GAR1\_ATT | BLDG\_SF | QU\_GARAGE\_ATTACHED | QU\_SQFT\_BLD |
-| :------------- | :---------- | --------: | --------: | -------: | -------------------: | ------------: |
-| 05342230050000 | FALSE       |      2013 |         0 |     2478 |                   NA |            NA |
-| 05342230050000 | TRUE        |      2014 |         0 |     2613 |                    0 |           135 |
-| 05342230050000 | TRUE        |      2015 |         2 |     2613 |                    2 |           135 |
-| 05342230050000 | TRUE        |      2016 |         2 |     2613 |                    2 |           135 |
-| 05342230050000 | TRUE        |      2017 |         2 |      135 |                    2 |           135 |
-| 05342230050000 | TRUE        |      2018 |         2 |     2613 |                    2 |           135 |
-| 05342230050000 | FALSE       |      2019 |         2 |     2613 |                   NA |            NA |
-| 05342230050000 | FALSE       |      2020 |         2 |     2613 |                   NA |            NA |
+| PIN            | TAX\_YEAR | CLASS | NUM\_288S\_ACTIVE | GAR1\_SIZE | QU\_GARAGE\_SIZE | BLDG\_SF | QU\_SQFT\_BLD | BEDS | QU\_BEDS |
+| :------------- | --------: | :---- | ----------------: | ---------: | ---------------: | -------: | ------------: | ---: | -------: |
+| 05273000030000 |      2015 | 202   |                NA |          1 |               NA |      928 |            NA |    2 |       NA |
+| 05273000030000 |      2016 | 202   |                NA |          1 |               NA |      928 |            NA |    2 |       NA |
+| 05273000030000 |      2017 | 202   |                NA |         NA |               NA |        0 |            NA |    0 |       NA |
+| 05273000030000 |      2018 | 202   |                NA |          1 |               NA |      928 |            NA |    2 |       NA |
+| 05273000030000 |      2019 | 202   |                NA |          1 |               NA |      928 |            NA |    2 |       NA |
+| 05273000030000 |      2020 | 202   |                NA |          1 |               NA |      928 |            NA |    2 |       NA |
+| 05273000030000 |      2013 | 206   |                NA |          1 |               NA |     2637 |            NA |    5 |       NA |
+| 05273000030000 |      2014 | 206   |                NA |          1 |               NA |     2637 |            NA |    5 |       NA |
+| 05273000030000 |      2015 | 206   |                 1 |          3 |                3 |     2637 |             0 |    5 |        0 |
+| 05273000030000 |      2016 | 206   |                 1 |          3 |                3 |     2637 |             0 |    5 |        0 |
+| 05273000030000 |      2017 | 206   |                 1 |          3 |                3 |      928 |             0 |    2 |        0 |
+| 05273000030000 |      2018 | 206   |                 2 |          3 |                3 |     3916 |           384 |    6 |        1 |
+| 05273000030000 |      2019 | 206   |                 1 |          0 |                0 |     3916 |           384 |    6 |        1 |
+| 05273000030000 |      2020 | 206   |                 1 |          0 |                0 |     3916 |           384 |    6 |        1 |
 
 ## Common Spatial Boundaries
 

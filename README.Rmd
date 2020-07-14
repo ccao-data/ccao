@@ -81,9 +81,9 @@ This has the effect of essentially "freezing" a home's characteristics at whatev
 [Per Illinois statute](https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003502000K15-180), 288s expire after 4 years or until the next assessment cycle, whichever is longer. For example, a 288 received in 2016 for a property in Northfield
 (with assessment years 2016, 2019, and 2022) will last 6 years (until 2021, the year before the 2022 reassessment).
 
-The `chars_` set of functions are designed to make handling 288s simpler and more consistent. Two sample datasets, `chars_sample_addchars` and `chars_sample_universe` are included to simulate real-world use. The `chars_sample_addchars` dataset is a direct sample of data from the ADDCHARS SQL table and includes individual rows listing the PIN, start date, and characteristic updates associated with a 288 Home Improvement Exemption. This data format is difficult to work with and complicated by that fact that multiple 288s can be active at the same time for different periods, and some columns from ADDCHARS add to existing characteristics, while some overwrite existing characteristics.
+The `chars_` set of functions are designed to make handling 288s simpler and more consistent. Two sample datasets, `chars_sample_addchars` and `chars_sample_universe` are included to simulate real-world use. The `chars_sample_addchars` dataset is a direct sample of data from the ADDCHARS SQL table and includes individual rows listing the PIN, start date, class, and characteristic updates associated with a 288 Home Improvement Exemption. This data format is difficult to work with and complicated by that fact that multiple 288s can be active at the same time for different periods, and some columns from ADDCHARS add to existing characteristics, while some overwrite existing characteristics.
 
-The included `chars_sparsify()` function transforms these single rows into a sparse data frame which lists a row and characteristic update per PIN per year. This is most easily visualized with a mock dataset:
+The included `chars_sparsify()` function transforms these single rows into a sparse data frame which lists a row and characteristic update per PIN per year per class. This is most easily visualized with a mock dataset:
 
 The base ADDCHARS data syntax looks like:
 
@@ -117,20 +117,27 @@ library(ccao)
 
 # Choose a random sample PIN from the sample ADDCHARS data
 sample_chars <- chars_sample_addchars %>%
-  filter(QU_PIN == "05342230050000")
+  filter(QU_PIN == "05273000030000")
 
-# This PIN has an increase in square footage and added a garage over two
-# separate years
+# This PIN has a basement and garage renovation followed by a bathroom reno
+# three years later
 sample_chars %>%
-  select(QU_PIN, TAX_YEAR, QU_TOWN, QU_GARAGE_ATTACHED, QU_SQFT_BLD) %>%
+  select(
+    QU_PIN, TAX_YEAR, QU_CLASS,
+    QU_TOWN, QU_GARAGE_SIZE, QU_SQFT_BLD, QU_BEDS
+  ) %>%
   kable(format = "markdown", digits = 3)
 
-# Sparsify the data. Both of these 288s end in 2018, but one starts in 2014 
-# and one starts in 2015
+# Sparsify the data. You can see that one 288 ends roughly when the other one
+# begins. NOTE: the mutate() on QU_CLASS here is because sometime QU_CLASS is
+# equal to 0 (mostly for garage renovations). This is an easy fix
 sparse_chars <- sample_chars %>%
+  arrange(QU_PIN, TAX_YEAR, QU_CLASS) %>%
+  mutate(QU_CLASS = ifelse(QU_CLASS == 0, lag(QU_CLASS), QU_CLASS)) %>%
   chars_sparsify(
     pin_col = QU_PIN,
     year_col = TAX_YEAR, 
+    class_col = QU_CLASS,
     town_col = as.character(QU_TOWN),
     upload_date_col = QU_UPLOAD_DATE,
     additive_source = any_of(chars_cols$add_source),
@@ -140,14 +147,20 @@ sparse_chars <- sample_chars %>%
 
 # The resulting sparse data can be joined onto any data containing CCAOSFCHARS
 sparse_chars %>%
-  select(QU_PIN, YEAR, QU_GARAGE_ATTACHED, QU_SQFT_BLD) %>%
+  select(
+    QU_PIN, YEAR, QU_CLASS, QU_GARAGE_SIZE, 
+    QU_SQFT_BLD, QU_BEDS, NUM_288S_ACTIVE
+  ) %>%
   kable(format = "markdown", digits = 3)
 
 # Here is an example data frame where the sparse data is merged onto
 # characteristic data and the characteristics are then updated using chars_update()
 updated_chars <- chars_sample_universe %>%
   filter(PIN %in% sample_chars$QU_PIN) %>%
-  left_join(sparse_chars, by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR")) %>%
+  left_join(
+    sparse_chars,
+    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
+  ) %>%
   arrange(PIN, TAX_YEAR) %>%
   chars_update(
     additive_target = any_of(ccao::chars_cols$add_target),
@@ -156,11 +169,11 @@ updated_chars <- chars_sample_universe %>%
 
 # Show updated characteristics vs ADDCHARS
 updated_chars %>%
-  mutate(ACTIVE_288 = !is.na(QU_SQFT_BLD)) %>%
   select(
-    PIN, ACTIVE_288, TAX_YEAR, GAR1_ATT,
-    BLDG_SF, QU_GARAGE_ATTACHED, QU_SQFT_BLD
+    PIN, TAX_YEAR, CLASS, NUM_288S_ACTIVE, GAR1_SIZE, QU_GARAGE_SIZE,
+    BLDG_SF, QU_SQFT_BLD, BEDS, QU_BEDS
   ) %>%
+  arrange(PIN, CLASS, TAX_YEAR) %>%
   kable(format = "markdown", digits = 3)
 
 ```
