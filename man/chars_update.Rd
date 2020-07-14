@@ -30,6 +30,7 @@ data frame formatted using \code{chars_sparsify}.
 \seealso{
 Other chars_funs: 
 \code{\link{chars_288_active}()},
+\code{\link{chars_fix_age}()},
 \code{\link{chars_sparsify}()}
 }
 \concept{chars_funs}
