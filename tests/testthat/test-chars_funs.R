@@ -39,7 +39,7 @@ test_that("bad input data stops execution", {
 context("test chars_sparsify()")
 
 # Create simple test case using fake data
-chars_sparsify_simple_data <- data.frame(
+chars_sparsify_simple_data <- dplyr::tibble(
   QU_PIN = c("123456", "123456", "123456"),
   TAX_YEAR = c(2013, 2015, 2020),
   QU_CLASS = c("206", "206", "206"),
@@ -51,7 +51,7 @@ chars_sparsify_simple_data <- data.frame(
 )
 
 # Create the correct, expected output
-chars_sparsify_simple_correct <- data.frame(
+chars_sparsify_simple_correct <- dplyr::tibble(
   QU_PIN = rep("123456", 11),
   YEAR = c(2013:2018, 2020:2024),
   QU_CLASS = rep("206", 11),
@@ -98,10 +98,12 @@ test_that("data is identical to known good output", {
 
 context("test chars_update()")
 
-chars_fake_universe <- data.frame(
+chars_fake_universe <- dplyr::tibble(
   PIN = rep("123456", 11),
   TAX_YEAR = c(2013:2018, 2020:2024),
   CLASS = rep("206", 11),
+  TOWN = rep("25", 11),
+  AGE = c(rep(80, 3), rep(83, 3), rep(86, 2), rep(89, 3)),
   BEDS = c(rep(2, 6), rep(3, 5)),
   BLDG_SF = c(600, 600, rep(700, 4), rep(1100, 5)),
   GAR1_SIZE = c(rep(0, 6), rep(3, 5))
@@ -131,5 +133,43 @@ updated_chars <- chars_sample_universe %>%
 # Test that output is identical to previous output
 test_that("data is identical to known good output", {
   expect_known_hash(updated_chars, hash = "d93d814772")
-  expect_known_hash(chars_fake_updated, hash = "2c55dbd29d")
+  expect_known_hash(chars_fake_updated, hash = "46349a642a")
+})
+
+
+##### TEST chars_fix_age() #####
+
+context("test chars_fix_age()")
+
+age_test <- dplyr::tibble(
+  age = c(120, 120, 123),
+  year = c(2014, 2015, 2016),
+  town = rep("25", 3)
+)
+
+test_that("output is as expected", {
+  expect_equal(
+    chars_fix_age(age_test$age, age_test$year, age_test$town),
+    c(121, 122, 123)
+  )
+  expect_equal(
+    chars_fix_age(
+      chars_fake_universe$AGE,
+      chars_fake_universe$TAX_YEAR,
+      chars_fake_universe$TOWN
+    ),
+    c(80:85, 87:91)
+  )
+})
+
+test_that("bad input data throws errors", {
+  expect_condition(chars_fix_age(80, 1990, "cat"))
+  expect_condition(chars_fix_age(80:90, 2010:2015, "25"))
+  expect_equal(chars_fix_age(80, 2010, "cat"), NA_real_)
+})
+
+test_that("missing data inputs returns NA outputs", {
+  expect_equal(chars_fix_age(NA_real_, 2010, "25"), NA_real_)
+  expect_equal(chars_fix_age(120, NA_real_, "25"), NA_real_)
+  expect_equal(chars_fix_age(120, 2010, NA_character_), NA_character_)
 })
