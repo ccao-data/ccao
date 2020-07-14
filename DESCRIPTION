@@ -19,13 +19,13 @@ Imports:
     magrittr,
     stats,
     tidyr (>= 1.1.0)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
     covr,
     devtools,
     lintr,
     testthat
-Remotes:  
+Remotes: 
     gitlab::ccao-data-science---modeling/packages/assessr
 Depends: 
     R (>= 3.5.0)

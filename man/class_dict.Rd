@@ -16,6 +16,10 @@ A data frame with 197 rows and 7 variables:
   and aggregate statistics}
   \item{class_code}{Full class code of the property sub-class, character}
   \item{class_desc}{Human-readable description of the property sub-class}
+  \item{min_size}{Integer of minimum size for 200-class property codes}
+  \item{max_size}{Integer of maximum size for 200-class property codes}
+  \item{min_age}{Integer of minimum age for 200-class property codes}
+  \item{max_age}{Integer of maximum age for 200-class property codes}
 }
 }
 \usage{

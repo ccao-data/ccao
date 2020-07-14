@@ -64,6 +64,11 @@ call `library(ccao)` at the beginning of your script.
 
 -----
 
+  - `check_class()` checks if a property class falls within its expected
+    square footage and age boundaries
+
+-----
+
   - `format_as400()` formats predicted values in the specification
     necessary to upload to the AS/400
 
