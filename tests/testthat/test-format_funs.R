@@ -12,6 +12,7 @@ sdf <- data.frame(
 
 # Create tempfile to save to
 tmpf <- tempfile(fileext = ".txt")
+tmpf_png <- tempfile(fileext = ".png")
 
 test_that("bad input data stops execution", {
   expect_condition(format_as400(sdf$town[1:2], sdf$pin, sdf$val, tmpf))
@@ -25,7 +26,7 @@ test_that("bad input data stops execution", {
     tmpf
   ))
   expect_condition(format_as400(sdf$town, sdf$pin, sdf$val, tmpf, "resident"))
-  expect_condition(format_as400(sdf$town, sdf$pin, sdf$val, tempfile()))
+  expect_condition(format_as400(sdf$town, sdf$pin, sdf$val, tmpf_png))
 })
 
 test_that("output is as expected", {
