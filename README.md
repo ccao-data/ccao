@@ -55,6 +55,8 @@ call `library(ccao)` at the beginning of your script.
 
   - `chars_288_active()` returns a vector of active years given a 288
     start date and township
+  - `chars_fix_age()` fix CCAO property ages only updating every
+    assessment cycle
   - `chars_sparsify()` converts ADDCHARS SQL data to a sparse format
     that can be joined to normal chars datasets
   - `chars_update()` updates the specified characteristic columns using
