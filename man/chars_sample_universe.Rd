@@ -5,7 +5,7 @@
 \alias{chars_sample_universe}
 \title{Sample dataset from the VW_RES_UNIVERSE SQL view}
 \format{
-An object of class \code{data.frame} with 234 rows and 62 columns.
+An object of class \code{data.frame} with 1397 rows and 57 columns.
 }
 \source{
 This data was extracted from SQL by the script at

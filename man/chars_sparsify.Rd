@@ -8,6 +8,7 @@ chars_sparsify(
   data,
   pin_col,
   year_col,
+  class_col,
   town_col,
   upload_date_col,
   additive_source,
@@ -21,11 +22,15 @@ chars_sparsify(
 
 \item{year_col}{A column name specifying the year column. Usually TAX_YEAR.}
 
-\item{town_col}{A column name specifying the town column. Usually QU_TOWN.}
+\item{class_col}{A column name specifying the class column. Usually QU_CLASS.}
+
+\item{town_col}{A column name specifying the town column. Usually QU_TOWN.
+This is used to determine the length of the 288, given the starting date
+specified by \code{year_col}.}
 
 \item{upload_date_col}{A column name specifying the upload date of the 288,
 this is use to determine which 288 take precedence if multiple 288s were
-filed in the same year. Usually QU_UPLOAD_DATE.}
+filed in the same year (the latest one is chosen). Usually QU_UPLOAD_DATE.}
 
 \item{additive_source}{A tidyselect selection of columns which contains
 additive characteristic values. These are values such as square feet which
@@ -50,16 +55,22 @@ See above for example.
 \description{
 The ADDCHARS SQL table includes individual rows listing the PIN,
 start date, and characteristic updates associated with a 288 Home Improvement
-Exemption. This data format is difficult to work with and complicated by that
+Exemption. This data format is difficult to work with and complicated by the
 fact that multiple 288s can be active at the same time for different periods,
 and some columns from ADDCHARS add to existing characteristics, while some
-overwrite existing characteristics.
+overwrite existing characteristics. Additionally, 288s can be active for
+multi-code properties, meaning that one building (out of N) could have an
+improvement while the others remain untouched.
 
 The goal of this function is to transform these single rows into a sparse
-data frame which lists a row and characteristic update per PIN per year.
-This is most easily visualized with a mock dataset.
+data frame which lists a row and characteristic update per PIN per YEAR
+per CLASS. CLASS is needed so that if multiple buildings lie on the same
+PIN, they can be joined by PIN, YEAR, and CLASS.
 
-The base ADDCHARS data syntax looks like:\tabular{llllll}{
+The transformation caused by this function is most easily visualized
+with a mock dataset.
+
+The base ADDCHARS data looks like this:\tabular{llllll}{
    QU_PIN \tab TAX_YEAR \tab QU_TOWN \tab QU_UPLOAD_DATE \tab QU_SQFT_BLD \tab QU_ROOMS \cr
    12345 \tab 2013 \tab 77 \tab 130702 \tab 200 \tab 0 \cr
    12345 \tab 2015 \tab 77 \tab 150703 \tab 300 \tab 1 \cr
@@ -98,6 +109,7 @@ chars_sparsify(
   chars_sample_addchars,
   pin_col = QU_PIN,
   year_col = TAX_YEAR,
+  class_col = QU_CLASS,
   town_col = as.character(QU_TOWN),
   upload_date_col = QU_UPLOAD_DATE,
   additive_source = any_of(chars_cols$add_source),

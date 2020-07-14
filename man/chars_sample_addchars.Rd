@@ -5,7 +5,7 @@
 \alias{chars_sample_addchars}
 \title{Sample dataset from the ADDCHARS SQL table}
 \format{
-An object of class \code{data.frame} with 64 rows and 62 columns.
+An object of class \code{data.frame} with 108 rows and 62 columns.
 }
 \source{
 This data was extracted from SQL by the script at
