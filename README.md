@@ -55,7 +55,7 @@ call `library(ccao)` at the beginning of your script.
 
   - `chars_288_active()` returns a vector of active years given a 288
     start date and township
-  - `chars_fix_age()` fix CCAO property ages only updating every
+  - `chars_fix_age()` fixes CCAO property ages that only update every
     assessment cycle
   - `chars_sparsify()` converts ADDCHARS SQL data to a sparse format
     that can be joined to normal chars datasets
@@ -264,8 +264,8 @@ updated_chars %>%
 | 05273000030000 |      2016 | 206   |                 1 |          3 |                3 |     2637 |             0 |    5 |        0 |
 | 05273000030000 |      2017 | 206   |                 1 |          3 |                3 |      928 |             0 |    2 |        0 |
 | 05273000030000 |      2018 | 206   |                 2 |          3 |                3 |     3916 |           384 |    6 |        1 |
-| 05273000030000 |      2019 | 206   |                 1 |          0 |                0 |     3916 |           384 |    6 |        1 |
-| 05273000030000 |      2020 | 206   |                 1 |          0 |                0 |     3916 |           384 |    6 |        1 |
+| 05273000030000 |      2019 | 206   |                 1 |          7 |                0 |     3916 |           384 |    6 |        1 |
+| 05273000030000 |      2020 | 206   |                 1 |          7 |                0 |     3916 |           384 |    6 |        1 |
 
 ## Common Spatial Boundaries
 
