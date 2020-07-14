@@ -132,12 +132,14 @@ town_get_assmnt_year <- function(town,
     is.numeric(year), # year must be numeric
     year >= 1991, # year must be greater than 1991
     year < ((as.integer(format(Sys.Date(), "%Y"))) + 100),
-    round_type %in% c("nearest", "ceiling", "floor")
+    round_type %in% c("nearest", "ceiling", "floor"),
+    # Input vectors must be same len OR one of them must be len == 1
+    xor(
+      length(town) == length(year) & length(town) != 1,
+      (length(town) == 1 | length(year) == 1)
+    )
   )
-
-  # Get the triad of the entered town(s)
-  triads <- town_get_triad(town)
-
+  
   # Create a vector of years, starting in 1991. Use this vector to create a
   # dataframe of years and the triad evaluated in each year.
   years <- 1991:((as.integer(format(Sys.Date(), "%Y"))) + 100)
@@ -145,25 +147,36 @@ town_get_assmnt_year <- function(town,
     year = years,
     triad = rep_len(1:3, length(years))
   )
-
-  # For each triad in the input list, get the years they were assessesed,
-  # between 1991 and the current year
-  years_for_this_triad <- lapply(
-    triads,
-    function(x) years_df[which(years_df$triad == x), 1]
+  
+  # Map over inputs
+  mapply(
+    function(x, y) {
+  
+      # Get the triad of the entered town(s)
+      triads <- town_get_triad(x)
+    
+      # For each triad in the input list, get the years they were assessesed,
+      # between 1991 and the current year
+      years_for_this_triad <- lapply(
+        triads,
+        function(x) years_df[which(years_df$triad == x), 1]
+      )
+    
+      # Depending on the round type, look up the year of the nearest assessment
+      # relative to the input year
+      out <- as.numeric(sapply(
+        years_for_this_triad,
+        switch(
+          round_type,
+          nearest = function(x) x[which.min(abs(x - y))],
+          floor   = function(x) x[findInterval(y, x)],
+          ceiling = function(x) x[findInterval(y, x) + !(y %in% x)],
+        )
+      ))
+    },
+    x = town,
+    y = year,
+    SIMPLIFY = TRUE,
+    USE.NAMES = FALSE
   )
-
-  # Depending on the round type, look up the year of the nearest assessment
-  # relative to the input year
-  out <- as.numeric(sapply(
-    years_for_this_triad,
-    switch(
-      round_type,
-      nearest = function(x) x[which.min(abs(x - year))],
-      floor   = function(x) x[findInterval(year, x)],
-      ceiling = function(x) x[findInterval(year, x) + !(year %in% x)],
-    )
-  ))
-
-  return(out)
 }
