@@ -90,16 +90,22 @@ chars_288_active <- function(start_year, town) {
 #'
 #' @description The ADDCHARS SQL table includes individual rows listing the PIN,
 #' start date, and characteristic updates associated with a 288 Home Improvement
-#' Exemption. This data format is difficult to work with and complicated by that
+#' Exemption. This data format is difficult to work with and complicated by the
 #' fact that multiple 288s can be active at the same time for different periods,
 #' and some columns from ADDCHARS add to existing characteristics, while some
-#' overwrite existing characteristics.
+#' overwrite existing characteristics. Additionally, 288s can be active for
+#' multi-code properties, meaning that one building (out of N) could have an
+#' improvement while the others remain untouched.
 #'
 #' The goal of this function is to transform these single rows into a sparse
-#' data frame which lists a row and characteristic update per PIN per year.
-#' This is most easily visualized with a mock dataset.
+#' data frame which lists a row and characteristic update per PIN per YEAR
+#' per CLASS. CLASS is needed so that if multiple buildings lie on the same
+#' PIN, they can be joined by PIN, YEAR, and CLASS.
 #'
-#' The base ADDCHARS data syntax looks like:
+#' The transformation caused by this function is most easily visualized
+#' with a mock dataset.
+#'
+#' The base ADDCHARS data looks like this:
 #'
 #' | QU_PIN     | TAX_YEAR | QU_TOWN | QU_UPLOAD_DATE | QU_SQFT_BLD | QU_ROOMS |
 #' |------------|----------|---------|----------------|-------------|----------|
@@ -127,10 +133,13 @@ chars_288_active <- function(start_year, town) {
 #' @param data A data frame containing ADDCHARS columns.
 #' @param pin_col A column name specifying the PIN column. Usually QU_PIN.
 #' @param year_col A column name specifying the year column. Usually TAX_YEAR.
+#' @param class_col A column name specifying the class column. Usually QU_CLASS.
 #' @param town_col A column name specifying the town column. Usually QU_TOWN.
+#'   This is used to determine the length of the 288, given the starting date
+#'   specified by \code{year_col}.
 #' @param upload_date_col A column name specifying the upload date of the 288,
 #'   this is use to determine which 288 take precedence if multiple 288s were
-#'   filed in the same year. Usually QU_UPLOAD_DATE.
+#'   filed in the same year (the latest one is chosen). Usually QU_UPLOAD_DATE.
 #' @param additive_source A tidyselect selection of columns which contains
 #'   additive characteristic values. These are values such as square feet which
 #'   get ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal
@@ -162,6 +171,7 @@ chars_288_active <- function(start_year, town) {
 #'   chars_sample_addchars,
 #'   pin_col = QU_PIN,
 #'   year_col = TAX_YEAR,
+#'   class_col = QU_CLASS,
 #'   town_col = as.character(QU_TOWN),
 #'   upload_date_col = QU_UPLOAD_DATE,
 #'   additive_source = any_of(chars_cols$add_source),
@@ -171,29 +181,64 @@ chars_288_active <- function(start_year, town) {
 #' @importFrom magrittr %>%
 #' @family chars_funs
 #' @export
-chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
-                           additive_source, replacement_source) {
+chars_sparsify <- function(data, pin_col, year_col, class_col, town_col,
+                           upload_date_col, additive_source, replacement_source) { # nolint
   has_active_288 <- NULL
   town <- NULL
 
+  # Get the last nonzero element of a vector. Used to get the latest
+  # "replacement" characteristic for each 288
+  last_nonzero_element <- function(x) {
+    idx <- x != 0
+    ifelse(any(idx), x[max(which((idx)))], 0)
+  }
+
+  # Goal here is to transform our data from single rows specifying 288s that
+  # are active for X years to a dataset of X rows with the characteristic
+  # updates for each year. To do this, we first eliminate multiple 288s active
+  # on the same PIN, YEAR, and CLASS (say someone made 2 improvements in 1 year)
+  # by summing the additive characteristics and taking the latest replacement
+  # ones
   data %>%
-    dplyr::group_by({{ pin_col }}, {{ year_col }}) %>%
-    dplyr::arrange({{ pin_col }}, {{ year_col }}, {{ upload_date_col }}) %>%
+    dplyr::group_by({{ pin_col }}, {{ year_col }}, {{ class_col }}) %>%
+    dplyr::arrange(
+      {{ pin_col }},
+      {{ year_col }},
+      {{ class_col }},
+      {{ upload_date_col }}
+    ) %>%
     dplyr::summarize(
       town = dplyr::first({{ town_col }}),
       dplyr::across({{ additive_source }}, sum),
-      dplyr::across({{ replacement_source }}, dplyr::last)
+      dplyr::across({{ replacement_source }}, last_nonzero_element)
     ) %>%
+
+    # Next, for each single 288 row, we determine the years it will be active
+    # by taking the start year and town. This list gets put into a new variable
+    # and then expanded using unnest(), which creates a duplicate row for each
+    # value of the list
     dplyr::mutate(has_active_288 = ccao::chars_288_active(
       {{ year_col }},
       as.character(town)
     )) %>%
     tidyr::unnest(has_active_288) %>%
-    dplyr::group_by({{ pin_col }}, has_active_288) %>%
-    dplyr::arrange({{ pin_col }}, has_active_288, {{ year_col }}) %>%
+
+    # The number of rows in our dataset is now equal to # of unique PINS * # of
+    # classes per PIN * # of years active for each PIN/class combination
+    # Our final step is to merge the 288 characteristic updates by PIN and class
+    # For each year a PIN/class combo has active 288s, we sum the additive chars
+    # and take the last nonzero value for replacement
+    dplyr::group_by({{ pin_col }}, has_active_288, {{ class_col }}) %>%
+    dplyr::arrange(
+      {{ pin_col }},
+      has_active_288,
+      {{ class_col }},
+      {{ year_col }}
+    ) %>%
     dplyr::summarize(
       dplyr::across({{ additive_source }}, sum),
-      dplyr::across({{ replacement_source }}, dplyr::last)
+      dplyr::across({{ replacement_source }}, last_nonzero_element),
+      NUM_288S_ACTIVE = dplyr::n()
     ) %>%
     dplyr::rename(YEAR = has_active_288)
 }
@@ -246,7 +291,9 @@ chars_update <- function(data, additive_target, replacement_target) {
       dplyr::across(
         {{ replacement_target }},
         function(x, y = dplyr::cur_column()) {
-          tidyr::replace_na(get(chars_get_col(y)), x)
+          source_col <- get(chars_get_col(y))
+          idx <- !is.na(source_col) & source_col != 0
+          replace(x, idx, source_col)
         }
       )
     )
