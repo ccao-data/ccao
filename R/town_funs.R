@@ -139,7 +139,7 @@ town_get_assmnt_year <- function(town,
       (length(town) == 1 | length(year) == 1)
     )
   )
-  
+
   # Create a vector of years, starting in 1991. Use this vector to create a
   # dataframe of years and the triad evaluated in each year.
   years <- 1991:((as.integer(format(Sys.Date(), "%Y"))) + 100)
@@ -147,21 +147,21 @@ town_get_assmnt_year <- function(town,
     year = years,
     triad = rep_len(1:3, length(years))
   )
-  
+
   # Map over inputs
   mapply(
     function(x, y) {
-  
+
       # Get the triad of the entered town(s)
       triads <- town_get_triad(x)
-    
+
       # For each triad in the input list, get the years they were assessesed,
       # between 1991 and the current year
       years_for_this_triad <- lapply(
         triads,
         function(x) years_df[which(years_df$triad == x), 1]
       )
-    
+
       # Depending on the round type, look up the year of the nearest assessment
       # relative to the input year
       out <- as.numeric(sapply(
