@@ -1,3 +1,70 @@
+#' Fix the AGE variable in CCAO data
+#'
+#' @description The AGE variable in many CCAO datasets only updates when a
+#' property is reassessed. This function will calculate the correct age of
+#' a property given a township, current year, and age. It can be used with
+#' \code{mutate()} to calculate a "true" age column.
+#'
+#' @param age A numeric vector of ages. Must be either 1 long or the same length
+#'   as one of the other two inputs.
+#' @param year A numeric vector of tax years. Usually the TAX_YEAR column.
+#'   Must be either 1 long or the same length as one of the other two inputs.
+#' @param town A character vector of town codes or names. Must be either 1 long
+#'   or the same length as one of the other two inputs.
+#'
+#' @return A numeric vector of "true" ages the same length as the longest input
+#'   vector.
+#'
+#' @examples
+#'
+#' # Simplest case, get true age of one property
+#' chars_fix_age(80, 2015, "Evanston")
+#'
+#' # Getting many ages for different towns
+#' chars_fix_age(80, 2015, c("Evanston", "Niles"))
+#'
+#' # Creating mock data then fixing a column
+#' df <- dplyr::tibble(
+#'   age = c(120, 120, 123),
+#'   year = c(2014, 2015, 2016),
+#'   town = rep("25", 3)
+#' )
+#'
+#' df$true_age <- chars_fix_age(df$age, df$year, df$town)
+#' @family chars_funs
+#' @export
+chars_fix_age <- function(age, year, town) {
+
+  # Input checking and error handling
+  stopifnot(
+    is.numeric(age),
+    is.na(age) | age >= 0, # Age must be greater than 0 or NA
+    is.numeric(year), # Input years must be numeric
+    is.character(town) # Input vector must be char.
+  )
+
+  # Loop through inputs and calculate the true age for each set
+  mapply(
+    function(x, y, z) {
+      if (is.na(x) | is.na(y)) {
+        return(NA_real_)
+      } else if (is.na(z)) {
+        return(NA_character_)
+      } else {
+        year_diff <- y - ccao::town_get_assmnt_year(z, y, round_type = "floor")
+
+        return(x + year_diff)
+      }
+    },
+    x = age,
+    y = year,
+    z = town,
+    SIMPLIFY = TRUE,
+    USE.NAMES = FALSE
+  )
+}
+
+
 #' Determine active years for a Home Improvement Exemption (288)
 #'
 #' @description The State of Illinois has a home improvement exemption program
@@ -51,10 +118,11 @@ chars_288_active <- function(start_year, town) {
   stopifnot(
     is.numeric(start_year), # Input years must be numeric
     is.character(town), # Input vector must be char.
+    # Input vectors must be same len OR one of them must be len == 1
     xor(
       length(start_year) == length(town) & length(start_year) != 1,
       (length(start_year) == 1 | length(town) == 1)
-    ) # Input vectors must be same len OR one of them must be len == 1
+    )
   )
 
   # Loop through inputs and calculate which years between start_year and
@@ -63,11 +131,9 @@ chars_288_active <- function(start_year, town) {
     function(x, y) {
       if (is.na(x)) {
         return(NA_real_)
-      }
-      else if (is.na(y)) {
+      } else if (is.na(y)) {
         return(NA_character_)
-      }
-      else {
+      } else {
         potentially_active_years <- x:(x + 8)
 
         idx <- potentially_active_years >= x &
