@@ -267,12 +267,7 @@ chars_sparsify <- function(data, pin_col, year_col, class_col, town_col,
   # ones
   data %>%
     dplyr::group_by({{ pin_col }}, {{ year_col }}, {{ class_col }}) %>%
-    dplyr::arrange(
-      {{ pin_col }},
-      {{ year_col }},
-      {{ class_col }},
-      {{ upload_date_col }}
-    ) %>%
+    dplyr::arrange({{ upload_date_col }}, .by_group = TRUE) %>%
     dplyr::summarize(
       town = dplyr::first({{ town_col }}),
       dplyr::across({{ additive_source }}, sum),
@@ -295,12 +290,7 @@ chars_sparsify <- function(data, pin_col, year_col, class_col, town_col,
     # For each year a PIN/class combo has active 288s, we sum the additive chars
     # and take the last nonzero value for replacement
     dplyr::group_by({{ pin_col }}, has_active_288, {{ class_col }}) %>%
-    dplyr::arrange(
-      {{ pin_col }},
-      has_active_288,
-      {{ class_col }},
-      {{ year_col }}
-    ) %>%
+    dplyr::arrange({{ year_col }}, .by_group = TRUE) %>%
     dplyr::summarize(
       dplyr::across({{ additive_source }}, sum),
       dplyr::across({{ replacement_source }}, last_nonzero_element),
