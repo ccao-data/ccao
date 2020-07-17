@@ -37,73 +37,84 @@ call `library(ccao)` at the beginning of your script.
 
 -----
 
-  - `pin_format_pretty()` adds dash separators to input PINs to make
-    them human-readable
-  - `pin_clean()` removes separators and whitespace from input PINs and
+  - `pin_clean()` Remove separators and whitespace from input PINs and
     warns if a PIN is invalid
+  - `pin_format_pretty()` Add dash separators to input PINs to make them
+    human-readable
 
 -----
 
-  - `town_convert()` converts from township name to township number and
+  - `town_convert()` Convert from township name to township number and
     visa versa
-  - `town_get_triad()` returns the triad code or name of the input
-    town(s)
-  - `town_get_assmnt_year()` returns assessment year nearest to the
+  - `town_get_assmnt_year()` Return assessment year nearest to the
     `year` argument for a given input township
+  - `town_get_triad()` Return the triad code or name of the input
+    town(s)
 
 -----
 
-  - `chars_288_active()` returns a vector of active years given a 288
+  - `chars_288_active()` Return a vector of active years given a 288
     start date and township
-  - `chars_fix_age()` fixes CCAO property ages that only update every
+  - `chars_fix_age()` Fix CCAO property ages that only update every
     assessment cycle
-  - `chars_sparsify()` converts ADDCHARS SQL data to a sparse format
-    that can be joined to normal chars datasets
-  - `chars_update()` updates the specified characteristic columns using
+  - `chars_sparsify()` Convert ADDCHARS SQL data to a sparse format that
+    can be joined to normal chars datasets
+  - `chars_update()` Update the specified characteristic columns using
     each column’s ADDCHARS data
 
 -----
 
-  - `check_class()` checks if a property class falls within its expected
-    square footage and age boundaries
+  - `vars_rename()` Bulk rename variable from CCAO SQL to standardized
+    or pretty names and visa versa
+  - `vars_check_class()` Check if a property class falls within its
+    expected square footage and age boundaries
 
 -----
 
-  - `format_as400()` formats predicted values in the specification
+  - `format_as400()` Format predicted values in the specification
     necessary to upload to the AS/400
 
 ##### Data currently included in `ccao`:
 
-  - `appeal_dict` is a dictionary of appeal reason codes used in CCAO
-    internal systems.
-  - `ccao_colors` is a named list of CCAO Comms Department colors, see
-    below for palette
-  - `cdu_dict` is a dictionary of CCAO condition-desirability-utility
-    (CDU) codes. These codes are usually used to represent different
-    incentive conditions
-  - `chars_cols` is a list crosswalk of CCAOSFCHARS columns and their
+  - `appeal_dict` Dictionary of appeal reason codes used in CCAO
+    internal systems
+  - `cdu_dict` Dictionary of CCAO condition-desirability-utility (CDU)
+    codes. These codes are usually used to represent different incentive
+    conditions
+  - `class_dict` Dictionary of property class numeric codes and their
+    human-readable equivalent
+  - `town_dict` Crosswalk of township names, their equivalent numeric
+    codes, and the triad they are in
+  - `vars_dict` Crosswalk of human-readable translations of CCAO
+    database characteristic codes, modeling variables, and metadata
+
+-----
+
+  - `nbhd_recodes` Recodes for individual neighborhoods
+  - `nbhd_shp` Spatial (sf) data frame containing boundaries of CCAO
+    neighborhoods<sup>1</sup>
+  - `town_shp` Spatial (sf) data frame containing boundaries of Cook
+    County townships<sup>1</sup>
+
+-----
+
+  - `chars_cols` List crosswalk of CCAOSFCHARS columns and their
     ADDCHARS equivalents
-  - `chars_dict` is a crosswalk of human-readable translations of CCAO
-    database characteristic codes
-  - `chars_sample_addchars` is a sample of data extracted from the
-    ADDCHARS SQL table
-  - `chars_sample_universe` is a sample of data extracted from the
+  - `chars_sample_addchars` Sample of data extracted from the ADDCHARS
+    SQL table
+  - `chars_sample_universe` Sample of data extracted from the
     VW\_RES\_UNIVERSE view. It contains the same PINS as
     `chars_sample_addchars`.
-  - `class_dict` is a dictionary of property class numeric codes and
-    their human-readable equivalent
-  - `nbhd_recodes` contains recodes for individual neighborhoods
-  - `nbhd_shp` is a spatial (sf) data frame containing boundaries of
-    CCAO neighborhoods<sup>1</sup>
-  - `town_dict` is a crosswalk of township names, their equivalent
-    numeric codes, and the triad they are in
-  - `town_shp` is a spatial (sf) data frame containing boundaries of
-    Cook County townships<sup>1</sup>
+
+-----
+
+  - `ccao_colors` Named list of CCAO Comms Department colors, see below
+    for palette
 
 <sup>1</sup> :warning: The `sf` library **must** be loaded first in
-order to load this data. If you encounter the error `C stack usage
-{number} is too close to the limit` when loading the data, update your
-version of `sf`
+order to load spatial data frames. If you encounter the error `C stack
+usage {number} is too close to the limit` when loading the data, update
+your version of `sf`
 
 ## Handling for 288s (Home Improvement Exemptions)
 
