@@ -58,24 +58,6 @@
 #'
 "chars_cols"
 
-#' Data dictionary for CCAO characteristic values
-#'
-#' A dataset containing human-readable version of numeric characteristic
-#' encodings of property characteristic data.
-#'
-#' @format A data frame with 61 rows and 4 variables:
-#' \describe{
-#'   \item{char_name}{Column name of variable in CCAO SQL server}
-#'   \item{char_code}{Value code used in CCAO SQL server and in paper forms}
-#'   \item{char_value}{Actual meaning of char_code}
-#'   \item{char_value_short}{Actual meaning of char_code, shortened}
-#' }
-#'
-#' @source This dictionary was manually created from paper forms as a
-#'   translation of numeric variables. char_value_short is the equivalent of
-#'   what is used on the AS400 property info screens
-"chars_dict"
-
 
 #' Sample dataset from the ADDCHARS SQL table
 #'
@@ -220,3 +202,40 @@
 #' }
 #'
 "town_shp"
+
+
+#' Data dictionary for CCAO variables
+#'
+#' A crosswalk of CCAO variable names used in SQL, modeling, and open data. Also
+#' includes a translation of numeric character codes to their human-readable
+#' value (ROOF_CNST = 1 becomes ROOF_CNST = Shingle/Asphalt).
+#'
+#' @format A data frame with 171 rows and 12 variables:
+#' \describe{
+#'   \item{var_name_sql}{Column name of variable as stored in CCAO SQL servers}
+#'   \item{var_name_addchars}{Column name of variable when stored in the
+#'   ADDCHARS SQL table}
+#'   \item{var_name_standard}{Column name used for flat files, open data, and
+#'   modeling}
+#'   \item{var_name_pretty}{Human-readable column name used for publication}
+#'   \item{var_type}{Variable type: meta = identifying information; char =
+#'   characteristics retrieved from SQL; time = calculated time variable; ind =
+#'   calculated logical/indicator variable; econ = calculated economic
+#'   information; geo = attached/calculated geographic information}
+#'   \item{var_data_type}{R data type variable values should be stored as}
+#'   \item{var_is_predictor}{Logical value indicating whether to use variable
+#'   in modeling on the right-hand side. Left-hand side is always sale price}
+#'   \item{var_is_published}{Logical value indicating whether to publish in
+#'   open data}
+#'   \item{var_code}{Factor value for categorical variable. These are the values
+#'   stored in the AS/400}
+#'   \item{var_value}{Human-readable translation of factor value}
+#'   \item{var_value_short}{Human-readable translation of factor value, but as
+#'   short as possible}
+#'   \item{var_notes}{Field descriptions and caveats}
+#' }
+#'
+#' @source This dictionary was manually created from paper forms as a
+#'   translation of numeric variables. char_value_short is the equivalent of
+#'   what is used on the AS400 property info screens
+"vars_dict"
