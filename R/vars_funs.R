@@ -102,7 +102,7 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard") {
   to <- paste0("var_name_", names_to)
 
   # Rename, replacing any NAs with the original column names
-  names_wm <- vars_dict[[to]][match(names(data), vars_dict[[from]])]
+  names_wm <- ccao::vars_dict[[to]][match(names(data), ccao::vars_dict[[from]])]
   names_wm[is.na(names_wm)] <- names(data)[is.na(names_wm)]
 
   names(data) <- names_wm
