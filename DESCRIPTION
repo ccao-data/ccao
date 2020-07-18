@@ -17,6 +17,7 @@ Imports:
     assessr,
     dplyr (>= 1.0.0),
     magrittr,
+    rlang,
     stats,
     tidyr (>= 1.1.0)
 RoxygenNote: 7.1.1
