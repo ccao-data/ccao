@@ -222,9 +222,18 @@ library(ggplot2)
 ggplot() +
   geom_tile(aes(x = 1:12, y = 1), fill = ccao::ccao_colors) +
   geom_text(
-    aes(x = 1:12, y = 1, label = names(ccao::ccao_colors)),
+    aes(
+      x = 1:12,
+      y = 1,
+      label = names(ccao::ccao_colors),
+      color = c(rep("1", 5), "2", rep("1", 5), "2")
+    ),
     angle = 90,
     vjust = 0.3
+  ) +
+  scale_color_manual(
+    guide = FALSE,
+    values = c("1" = "black", "2" = "white")
   ) +
   scale_x_discrete(expand = c(0, 0)) + 
   scale_y_discrete(expand = c(0, 0)) + 
