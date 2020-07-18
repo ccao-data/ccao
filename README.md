@@ -64,6 +64,8 @@ call `library(ccao)` at the beginning of your script.
 
 -----
 
+  - `vars_recode()` Bulk recode AS/400 numerically encoded
+    characteristics data to a human-readable format
   - `vars_rename()` Bulk rename variable from CCAO SQL to standardized
     or pretty names and visa versa
   - `vars_check_class()` Check if a property class falls within its
@@ -110,6 +112,8 @@ call `library(ccao)` at the beginning of your script.
 
   - `ccao_colors` Named list of CCAO Comms Department colors, see below
     for palette
+
+-----
 
 <sup>1</sup> :warning: The `sf` library **must** be loaded first in
 order to load spatial data frames. If you encounter the error `C stack
