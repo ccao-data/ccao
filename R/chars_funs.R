@@ -3,7 +3,7 @@
 #' @description The AGE variable in many CCAO datasets only updates when a
 #' property is reassessed. This function will calculate the correct age of
 #' a property given a township, current year, and age. It can be used with
-#' \code{mutate()} to calculate a "true" age column.
+#' \code{\link[dplyr]{mutate}} to calculate a "true" age column.
 #'
 #' @param age A numeric vector of ages. Must be either 1 long or the same length
 #'   as one of the other two inputs.
@@ -245,12 +245,11 @@ chars_288_active <- function(start_year, town) {
 #' )
 #' @md
 #' @importFrom magrittr %>%
+#' @importFrom rlang .data
 #' @family chars_funs
 #' @export
 chars_sparsify <- function(data, pin_col, year_col, class_col, town_col,
                            upload_date_col, additive_source, replacement_source) { # nolint
-  has_active_288 <- NULL
-  town <- NULL
 
   # Get the last nonzero element of a vector. Used to get the latest
   # "replacement" characteristic for each 288
@@ -280,23 +279,23 @@ chars_sparsify <- function(data, pin_col, year_col, class_col, town_col,
     # value of the list
     dplyr::mutate(has_active_288 = ccao::chars_288_active(
       {{ year_col }},
-      as.character(town)
+      as.character(.data$town)
     )) %>%
-    tidyr::unnest(has_active_288) %>%
+    tidyr::unnest(.data$has_active_288) %>%
 
     # The number of rows in our dataset is now equal to # of unique PINS * # of
     # classes per PIN * # of years active for each PIN/class combination
     # Our final step is to merge the 288 characteristic updates by PIN and class
     # For each year a PIN/class combo has active 288s, we sum the additive chars
     # and take the last nonzero value for replacement
-    dplyr::group_by({{ pin_col }}, has_active_288, {{ class_col }}) %>%
+    dplyr::group_by({{ pin_col }}, .data$has_active_288, {{ class_col }}) %>%
     dplyr::arrange({{ year_col }}, .by_group = TRUE) %>%
     dplyr::summarize(
       dplyr::across({{ additive_source }}, sum),
       dplyr::across({{ replacement_source }}, last_nonzero_element),
       NUM_288S_ACTIVE = dplyr::n()
     ) %>%
-    dplyr::rename(YEAR = has_active_288)
+    dplyr::rename(YEAR = .data$has_active_288)
 }
 
 
@@ -314,7 +313,7 @@ chars_get_col <- function(col) {
 #' @description Function used to update the characteristic values of a
 #' data frame containing both the original characteristic value (CCAOSFCHARS)
 #' and the value to add or replace it with (ADDCHARS). This function expect a
-#' data frame formatted using \code{chars_sparsify}.
+#' data frame formatted using \code{\link{chars_sparsify}}.
 #'
 #' @param data A data frame containing CCAOSFCHARS columns AND their equivalent
 #'   ADDCHARS columns.

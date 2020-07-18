@@ -2,7 +2,7 @@
 #'
 #' Remove common separators, whitespace, and trailing characters
 #' from Property Index Numbers (PINs). This function is specifically formatted
-#' for PINs, which are expected to be 10 or 14 digit numbers saved as
+#' for PINs, which are expected to be 10 or 14-digit numbers saved as
 #' characters (PINs often have leading zeros).
 #'
 #' @param pin A Property Index Number (PIN) or multiple PINs containing

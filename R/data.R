@@ -33,7 +33,7 @@
 #'
 #' @format A data frame with 47 rows and 4 variables:
 #' \describe{
-#'   \item{cdu_code}{Two-letter code containing the CDU, as shown in the AS400}
+#'   \item{cdu_code}{Two-letter code containing the CDU, as shown in the AS/400}
 #'   \item{cdu_type}{Class/type of property the CDU applies to}
 #'   \item{cdu_desc}{Full description of the CDU}
 #'   \item{cdu_desc_short}{Short description of the CDU}
@@ -237,5 +237,5 @@
 #'
 #' @source This dictionary was manually created from paper forms as a
 #'   translation of numeric variables. char_value_short is the equivalent of
-#'   what is used on the AS400 property info screens
+#'   what is used on the AS/400 property info screens
 "vars_dict"
