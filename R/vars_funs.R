@@ -22,6 +22,7 @@
 #' vars_check_class(50, c(800, 2000), "202")
 #' vars_check_class(50, 1000, c("202", "203"))
 #' @importFrom magrittr %>%
+#' @importFrom rlang .data
 #' @family vars_funs
 #' @export
 vars_check_class <- function(age, sqft, class) {
@@ -34,9 +35,9 @@ vars_check_class <- function(age, sqft, class) {
   )
 
   # Take only the classes from the dictionary which are residential (200)
-  class_code <- NULL
-  res_classes <- ccao::class_dict %>%
-    dplyr::filter(substr(class_code, 1, 1) == "2")
+  res_classes <- dplyr::filter(
+    ccao::class_dict, substr(.data$class_code, 1, 1) == "2"
+  )
 
   # Element-wise comparison to test that age & sqft return the expected class
   mapply(function(x, y, z) {
