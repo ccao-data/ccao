@@ -24,7 +24,7 @@ A numeric vector of "true" ages the same length as the longest input
 The AGE variable in many CCAO datasets only updates when a
 property is reassessed. This function will calculate the correct age of
 a property given a township, current year, and age. It can be used with
-\code{mutate()} to calculate a "true" age column.
+\code{\link[dplyr]{mutate}} to calculate a "true" age column.
 }
 \examples{
 

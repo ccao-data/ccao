@@ -9,21 +9,20 @@ vars_rename(data, names_from = "sql", names_to = "standard")
 \arguments{
 \item{data}{A data frame or tibble with columns to be renamed.}
 
-\item{names_from}{The source/name type of data. See note.}
+\item{names_from}{The source/name type of data. See description}
 
-\item{names_to}{The target names. See note.}
+\item{names_to}{The target names. See description}
 }
 \value{
 The input data frame with columns renamed.
 }
 \description{
-Bulk rename columns from one type of CCAO to another. For example, rename
-all columns pulled from SQL to their standard names used in modeling. Or,
-rename all standard modeling names to "pretty" names for publication.
-Function will overwrite names it finds in \code{vars_dict}, all other names
-in the data will remain unchanged.
-}
-\details{
+Bulk rename columns from one type of CCAO to another. For
+example, rename all columns pulled from SQL to their standard names used
+in modeling. Or, rename all standard modeling names to "pretty" names for
+publication. Function will overwrite names it finds in 
+\code{\link{vars_dict}}, all other names in the data will remain unchanged.
+
 Options for \code{names_from} and \code{names_to} are: \code{"sql"} (
 with names like TAX_YEAR, GAR1_SIZE); \code{"addchars"} (with names like
 QU_AGE, QU_GARAGE_SIZE); \code{"standard"} (with names like meta_tax_year,
@@ -40,6 +39,7 @@ vars_rename(class_dict)
 }
 \seealso{
 Other vars_funs: 
-\code{\link{vars_check_class}()}
+\code{\link{vars_check_class}()},
+\code{\link{vars_recode}()}
 }
 \concept{vars_funs}

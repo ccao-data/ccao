@@ -33,7 +33,7 @@ A data frame with 171 rows and 12 variables:
 \source{
 This dictionary was manually created from paper forms as a
   translation of numeric variables. char_value_short is the equivalent of
-  what is used on the AS400 property info screens
+  what is used on the AS/400 property info screens
 }
 \usage{
 vars_dict

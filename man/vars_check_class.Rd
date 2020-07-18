@@ -18,8 +18,9 @@ the same length as \code{sqft} and \code{age}.}
 }
 \value{
 A logical vector indicating that the specified class falls within
-  the parameters specified by \code{class_dict}. Throws error if input data
-  types are incorrect or if length conditions of input vectors are not met.
+  the parameters specified by \code{\link{class_dict}}. Throws error if input
+  data types are incorrect or if length conditions of input vectors 
+  are not met.
 }
 \description{
 Check property characteristics against class definitions as defined # nolint
@@ -34,6 +35,7 @@ vars_check_class(50, 1000, c("202", "203"))
 }
 \seealso{
 Other vars_funs: 
+\code{\link{vars_recode}()},
 \code{\link{vars_rename}()}
 }
 \concept{vars_funs}

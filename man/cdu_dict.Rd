@@ -7,7 +7,7 @@
 \format{
 A data frame with 47 rows and 4 variables:
 \describe{
-  \item{cdu_code}{Two-letter code containing the CDU, as shown in the AS400}
+  \item{cdu_code}{Two-letter code containing the CDU, as shown in the AS/400}
   \item{cdu_type}{Class/type of property the CDU applies to}
   \item{cdu_desc}{Full description of the CDU}
   \item{cdu_desc_short}{Short description of the CDU}

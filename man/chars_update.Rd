@@ -25,7 +25,7 @@ A data frame with updated additive and replacement target columns.
 Function used to update the characteristic values of a
 data frame containing both the original characteristic value (CCAOSFCHARS)
 and the value to add or replace it with (ADDCHARS). This function expect a
-data frame formatted using \code{chars_sparsify}.
+data frame formatted using \code{\link{chars_sparsify}}.
 }
 \seealso{
 Other chars_funs: 
