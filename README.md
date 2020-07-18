@@ -23,7 +23,7 @@ call `library(ccao)` at the beginning of your script.
 
 ## Included Functions and Data
 
-##### Functions currently included in `ccao`:
+#### Functions currently included in `ccao`:
 
   - `ccao_cod()`, `ccao_prd()`, `ccao_prb()` calculate assessment
     performance statistics in accordance with CCAO Data Science
@@ -76,7 +76,9 @@ call `library(ccao)` at the beginning of your script.
   - `format_as400()` Format predicted values in the specification
     necessary to upload to the AS/400
 
-##### Data currently included in `ccao`:
+#### Data currently included in `ccao`:
+
+##### Dictionaries
 
   - `appeal_dict` Dictionary of appeal reason codes used in CCAO
     internal systems
@@ -90,7 +92,7 @@ call `library(ccao)` at the beginning of your script.
   - `vars_dict` Crosswalk of human-readable translations of CCAO
     database characteristic codes, modeling variables, and metadata
 
------
+##### Spatial Data
 
   - `nbhd_recodes` Recodes for individual neighborhoods
   - `nbhd_shp` Spatial (sf) data frame containing boundaries of CCAO
@@ -98,94 +100,101 @@ call `library(ccao)` at the beginning of your script.
   - `town_shp` Spatial (sf) data frame containing boundaries of Cook
     County townships<sup>1</sup>
 
------
+##### Sample Data
 
-  - `chars_cols` List crosswalk of CCAOSFCHARS columns and their
-    ADDCHARS equivalents
-  - `chars_sample_addchars` Sample of data extracted from the ADDCHARS
-    SQL table
-  - `chars_sample_universe` Sample of data extracted from the
-    VW\_RES\_UNIVERSE view. It contains the same PINS as
-    `chars_sample_addchars`.
+  - `chars_sample_addchars` Sample from the ADDCHARS SQL table
+  - `chars_sample_universe` Sample from the VW\_RES\_UNIVERSE view.
+    Contains same PINS as `chars_sample_addchars`.
 
------
+##### Utility/Other
 
   - `ccao_colors` Named list of CCAO Comms Department colors, see below
     for palette
-
------
+  - `chars_cols` List crosswalk of CCAOSFCHARS columns and their
+    ADDCHARS equivalents
 
 <sup>1</sup> :warning: The `sf` library **must** be loaded first in
 order to load spatial data frames. If you encounter the error `C stack
 usage {number} is too close to the limit` when loading the data, update
 your version of `sf`
 
-## Handling for 288s (Home Improvement Exemptions)
+## Usage
 
-The State of Illinois has a home improvement exemption program which
-allows property owners to deduct up to $75,000 per year of any value
-created by improvements to a residential property.
+### `vars_` Functions
 
-This has the effect of essentially “freezing” a home’s characteristics
-at whatever they were prior to the start of the improvement project. For
-example, if a property owner adds an additional bedroom and applies for
-a 288, the property will be valued as if the new bedroom does not exist
-until the 288 expires and as long as the increase in valuation is less
-than $75,000.
-
-[Per Illinois
-statute](https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003502000K15-180),
-288s expire after 4 years or until the next assessment cycle, whichever
-is longer. For example, a 288 received in 2016 for a property in
-Northfield (with assessment years 2016, 2019, and 2022) will last 6
-years (until 2021, the year before the 2022 reassessment).
-
-The `chars_` set of functions are designed to make handling 288s simpler
-and more consistent. Two sample datasets, `chars_sample_addchars` and
-`chars_sample_universe` are included to simulate real-world use. The
-`chars_sample_addchars` dataset is a direct sample of data from the
-ADDCHARS SQL table and includes individual rows listing the PIN, start
-date, class, and characteristic updates associated with a 288 Home
-Improvement Exemption. This data format is difficult to work with and
-complicated by that fact that multiple 288s can be active at the same
-time for different periods, and some columns from ADDCHARS add to
-existing characteristics, while some overwrite existing characteristics.
-
-The included `chars_sparsify()` function transforms these single rows
-into a sparse data frame which lists a row and characteristic update per
-PIN per year per class. This is most easily visualized with a mock
-dataset:
-
-The base ADDCHARS data syntax looks like:
-
-| QU\_PIN | TAX\_YEAR | QU\_TOWN | QU\_UPLOAD\_DATE | QU\_SQFT\_BLD | QU\_ROOMS |
-| ------- | --------- | -------- | ---------------- | ------------- | --------- |
-| 12345   | 2013      | 77       | 130702           | 200           | 0         |
-| 12345   | 2015      | 77       | 150703           | 300           | 1         |
-
-This function will transform it into:
-
-| QU\_PIN | YEAR | QU\_SQFT\_BLD | QU\_ROOMS |
-| ------- | ---- | ------------- | --------- |
-| 12345   | 2013 | 200           | 0         |
-| 12345   | 2014 | 200           | 0         |
-| 12345   | 2015 | 500           | 1         |
-| 12345   | 2016 | 500           | 1         |
-| 12345   | 2017 | 500           | 1         |
-| 12345   | 2018 | 300           | 1         |
-| 12345   | 2019 | 300           | 1         |
-| 12345   | 2020 | 300           | 1         |
-
-### Chars Function Usage
-
-Below is an example showing the entire process of using the `chars_`
-functions to update characteristics data using an ADDCHARS extract:
+The `vars_` series of functions are designed to simplify working with
+messy CCAO data. Current functions can rename columns to standard
+formats as well as recode numeric factors to their human-readable
+equivalents.
 
 ``` r
 library(dplyr)
 library(tidyr)
 library(knitr)
 library(ccao)
+
+# Construct a fake data frame of commonly occuring CCAO column names and numeric
+# encodings for factors
+df <- tibble(
+  PIN = rep("1234567", 4),
+  GAR1_SIZE = c("1", "3", "0", NA),
+  sale_price = rep(132324, 4),
+  EXT_WALL = c("1", "2", "0", "4"),
+  PORCH = c("1", NA, "3", "2")
+)
+
+df %>%
+  kable(digits = 3)
+```
+
+| PIN     | GAR1\_SIZE | sale\_price | EXT\_WALL | PORCH |
+| :------ | :--------- | ----------: | :-------- | :---- |
+| 1234567 | 1          |      132324 | 1         | 1     |
+| 1234567 | 3          |      132324 | 2         | NA    |
+| 1234567 | 0          |      132324 | 0         | 3     |
+| 1234567 | NA         |      132324 | 4         | 2     |
+
+``` r
+
+# Recode variables 
+df %>%
+  vars_recode(type = "long") %>%
+  kable(digits = 3)
+```
+
+| PIN     | GAR1\_SIZE | sale\_price | EXT\_WALL | PORCH            |
+| :------ | :--------- | ----------: | :-------- | :--------------- |
+| 1234567 | 1 cars     |      132324 | Frame     | Frame Enclosed   |
+| 1234567 | 2 cars     |      132324 | Masonry   | NA               |
+| 1234567 | NA         |      132324 | NA        | None             |
+| 1234567 | NA         |      132324 | Stucco    | Masonry Enclosed |
+
+``` r
+
+# Rename variables to standard, then recode
+df %>%
+  vars_rename(names_to = "pretty") %>%
+  vars_recode(type = "long") %>%
+  kable(digits = 3)
+```
+
+| Property Identification Number | Garage 1 Size | Sale Price | Wall Material | Porch            |
+| :----------------------------- | :------------ | ---------: | :------------ | :--------------- |
+| 1234567                        | 1 cars        |     132324 | Frame         | Frame Enclosed   |
+| 1234567                        | 2 cars        |     132324 | Masonry       | NA               |
+| 1234567                        | NA            |     132324 | NA            | None             |
+| 1234567                        | NA            |     132324 | Stucco        | Masonry Enclosed |
+
+### `chars_` Functions
+
+Below is an example showing the entire process of using the `chars_`
+functions to update characteristics data using an ADDCHARS extract. For
+more information on this process and why it is necessary, visit the
+[Home Improvement
+Exemptions](https://datascience.cookcountyassessor.com/wiki/residential/addchars.md)
+page on the internal DS wiki.
+
+``` r
 
 # Choose a random sample PIN from the sample ADDCHARS data
 sample_chars <- chars_sample_addchars %>%
@@ -262,6 +271,7 @@ updated_chars <- chars_sample_universe %>%
 
 # Show updated characteristics vs ADDCHARS
 updated_chars %>%
+  ungroup() %>%
   select(
     PIN, TAX_YEAR, CLASS, NUM_288S_ACTIVE, GAR1_SIZE, QU_GARAGE_SIZE,
     BLDG_SF, QU_SQFT_BLD, BEDS, QU_BEDS
@@ -287,7 +297,7 @@ updated_chars %>%
 | 05273000030000 |      2019 | 206   |                 1 |          7 |                0 |     3916 |           384 |    6 |        1 |
 | 05273000030000 |      2020 | 206   |                 1 |          7 |                0 |     3916 |           384 |    6 |        1 |
 
-## Common Spatial Boundaries
+### Spatial Data
 
 This package contains spatial data frames representing CCAO
 administrative boundaries. Note that you **must have the `sf` package
@@ -300,15 +310,15 @@ library(sf)
 plot(ccao::town_shp[1], main = "Township Boundaries")
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 ``` r
 # Plot township boundaries with neighborhoods
 plot(ccao::nbhd_shp[1], main = "Townships with Neighborhoods")
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-2.png" width="100%" />
 
 ## CCAO Colors
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
