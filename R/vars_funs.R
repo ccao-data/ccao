@@ -12,7 +12,7 @@
 #'
 #' @return A logical vector indicating that the specified class falls within
 #'   the parameters specified by \code{\link{class_dict}}. Throws error if input
-#'   data types are incorrect or if length conditions of input vectors 
+#'   data types are incorrect or if length conditions of input vectors
 #'   are not met.
 #'
 #' @examples
@@ -65,7 +65,7 @@ vars_check_class <- function(age, sqft, class) {
 #' @description Bulk rename columns from one type of CCAO to another. For
 #' example, rename all columns pulled from SQL to their standard names used
 #' in modeling. Or, rename all standard modeling names to "pretty" names for
-#' publication. Function will overwrite names it finds in 
+#' publication. Function will overwrite names it finds in
 #' \code{\link{vars_dict}}, all other names in the data will remain unchanged.
 #'
 #' Options for \code{names_from} and \code{names_to} are: \code{"sql"} (
@@ -114,7 +114,7 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard") {
 
 
 #' Replace numerically coded variables with human-readable values
-#' 
+#'
 #' @description The AS/400 stores characteristic values in a numerically encoded
 #' format. This function can be used to translate those values into a
 #' human-readable format. For example, EXT_WALL = 2 will become
@@ -128,8 +128,8 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard") {
 #'   EXT_WALL = 1 to EXT_WALL = Frame; \code{"short"}, for EXT_WALL = FRME; and
 #'   \code{"code"}, which keeps the original values (useful for removing
 #'   improperly coded values, see note below).
-#'   
-#' @note Values which are in the data but are NOT in \code{\link{vars_dict}} 
+#'
+#' @note Values which are in the data but are NOT in \code{\link{vars_dict}}
 #'   will be converted to NA. For example, there is no numeric value 3 for AIR,
 #'   so it will become NA.
 #'
@@ -150,13 +150,13 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard") {
 #' @family vars_funs
 #' @export
 vars_recode <- function(data, cols = dplyr::everything(), type = "long") {
-  
+
   # Error/input checking
   stopifnot(
     is.data.frame(data),
     type %in% c("code", "short", "long")
   )
-  
+
   # Translate inputs to column names
   var <- switch(
     type,
@@ -164,9 +164,9 @@ vars_recode <- function(data, cols = dplyr::everything(), type = "long") {
     "long" = "var_value",
     "short" = "var_value_short"
   )
-  
+
   # Convert chars dict into long format that can be easily referenced use
-  # any possible input column names 
+  # any possible input column names
   dict <- ccao::vars_dict %>%
     dplyr::filter(
       .data$var_type == "char" & .data$var_data_type == "categorical"
@@ -180,22 +180,25 @@ vars_recode <- function(data, cols = dplyr::everything(), type = "long") {
       names_to = "var_type",
       values_to = "var_name"
     )
-  
+
   # For each column listed in the input, check if it's a character column
   # If it is, make a lookup table using dict and find the equivalent value
-  dplyr::mutate(data,
-    dplyr::across(dplyr::all_of(cols),
-    function(x, y = dplyr::cur_column()) {
-      if (y %in% dict$var_name) {
-        
-        # Find the rows of the dictionary corresponding to column y
-        var_rows <- which(dict$var_name == y)
-        idx <- match(x, dict$var_code[var_rows])
-        
-        return(dict[[var]][var_rows][idx])
-      } else {
-        return(x)
+  dplyr::mutate(
+    data,
+    dplyr::across(
+      dplyr::all_of(cols),
+      function(x, y = dplyr::cur_column()) {
+        if (y %in% dict$var_name) {
+
+          # Find the rows of the dictionary corresponding to column y
+          var_rows <- which(dict$var_name == y)
+          idx <- match(x, dict$var_code[var_rows])
+
+          return(dict[[var]][var_rows][idx])
+        } else {
+          return(x)
+        }
       }
-    }
-  ))
+    )
+  )
 }

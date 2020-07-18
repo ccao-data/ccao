@@ -69,3 +69,38 @@ test_that("invalid data types stop process", {
   expect_condition(vars_rename(chars_sample_universe, names_to = "HEADT"))
   expect_condition(vars_rename(chars_sample_universe, names_from = "OPEN"))
 })
+
+
+context("test vars_recode()")
+
+##### TEST vars_recode() #####
+
+recode_test_data <- dplyr::tibble(
+  PIN = rep("12345", 4),
+  EXT_WALL = c("1", "2", "0", NA),
+  BSMT = c("1", "3", "4", "5"),
+  value = 1000:1003
+)
+
+recode_correct <- dplyr::tibble(
+  PIN = rep("12345", 4),
+  EXT_WALL = c("Frame", "Masonry", NA, NA),
+  BSMT = c("Full", "Partial", "Crawl", NA),
+  value = 1000:1003
+)
+
+# Test for expected outputs
+test_that("output is as expected", {
+  expect_known_hash(vars_recode(chars_sample_universe), hash = "8ff224c9fb")
+  expect_equivalent(vars_recode(recode_test_data), recode_correct)
+  expect_known_hash(
+    vars_recode(chars_sample_universe, type = "short"),
+    hash = "b97f45a917"
+  )
+})
+
+# Test that invalid inputs throw errors
+test_that("invalid data types stop process", {
+  expect_condition(vars_recode("cat"))
+  expect_condition(vars_recode(chars_sample_universe, type = "HEADT"))
+})

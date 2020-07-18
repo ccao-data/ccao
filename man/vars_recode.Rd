@@ -29,7 +29,7 @@ EXT_WALL = "Frame + Masonry". Note that the values and their translations are
 specified in \code{\link{vars_dict}}.
 }
 \note{
-Values which are in the data but are NOT in \code{\link{vars_dict}} 
+Values which are in the data but are NOT in \code{\link{vars_dict}}
   will be converted to NA. For example, there is no numeric value 3 for AIR,
   so it will become NA.
 }

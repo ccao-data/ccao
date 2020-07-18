@@ -20,7 +20,7 @@ The input data frame with columns renamed.
 Bulk rename columns from one type of CCAO to another. For
 example, rename all columns pulled from SQL to their standard names used
 in modeling. Or, rename all standard modeling names to "pretty" names for
-publication. Function will overwrite names it finds in 
+publication. Function will overwrite names it finds in
 \code{\link{vars_dict}}, all other names in the data will remain unchanged.
 
 Options for \code{names_from} and \code{names_to} are: \code{"sql"} (

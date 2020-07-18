@@ -19,7 +19,7 @@ the same length as \code{sqft} and \code{age}.}
 \value{
 A logical vector indicating that the specified class falls within
   the parameters specified by \code{\link{class_dict}}. Throws error if input
-  data types are incorrect or if length conditions of input vectors 
+  data types are incorrect or if length conditions of input vectors
   are not met.
 }
 \description{
