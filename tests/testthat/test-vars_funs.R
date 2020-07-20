@@ -61,21 +61,21 @@ test_that("output is as expected", {
     names(vars_rename(cdu_dict, names_to = "pretty")),
     c("cdu_code", "cdu_type", "cdu_desc", "cdu_desc_short")
   )
-  expect_equivalent(
+  expect_equal(
     vars_rename(chars_sample_universe[, 14:19], type = "vector"),
     c(
-      meta_key_pin = "DT_KEY_PIN", CONDO_STRATA_10 = "CONDO_STRATA_10",
-      CONDO_STRATA_100 = "CONDO_STRATA_100", chars_apts = "APTS",
-      char_ext_wall = "EXT_WALL", char_roof_cnst = "ROOF_CNST"
+      "meta_key_pin", "CONDO_STRATA_10", "CONDO_STRATA_100",
+      "char_apts", "char_ext_wall", "char_roof_cnst"
     )
   )
 })
 
 # Test that invalid inputs throw errors
 test_that("invalid data types stop process", {
-  expect_condition(vars_rename("cat"))
+  expect_condition(vars_rename(1))
   expect_condition(vars_rename(chars_sample_universe, names_to = "HEADT"))
   expect_condition(vars_rename(chars_sample_universe, names_from = "OPEN"))
+  expect_condition(vars_rename(chars_sample_universe, type = "list"))
 })
 
 

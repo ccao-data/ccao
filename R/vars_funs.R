@@ -95,29 +95,32 @@ vars_check_class <- function(age, sqft, class) {
 #' @export
 vars_rename <- function(data, names_from = "sql", names_to = "standard", type = "inplace") { # nolint
 
-  # Stop if input is not a data frame or if name targets are not within
-  # the preset types
+  # Stop if input is not a data frame of character vector or if name targets are
+  # not within the preset types
   stopifnot(
-    is.data.frame(data),
+    is.data.frame(data) | is.character(data),
     tolower(names_from) %in% c("sql", "addchars", "standard", "pretty"),
     tolower(names_to) %in% c("sql", "addchars", "standard", "pretty"),
     tolower(type) %in% c("inplace", "vector")
   )
 
+  # If the input is a dataframe, extract the names from that dataframe
+  if (is.data.frame(data)) names_lst <- names(data) else names_lst <- data
+
   from <- paste0("var_name_", names_from)
   to <- paste0("var_name_", names_to)
 
-  # Rename, replacing any NAs with the original column names
-  names_wm <- ccao::vars_dict[[to]][match(names(data), ccao::vars_dict[[from]])]
-  names_wm[is.na(names_wm)] <- names(data)[is.na(names_wm)]
+  # Rename using vars_dict, replacing any NAs with the original column names
+  names_wm <- ccao::vars_dict[[to]][match(names_lst, ccao::vars_dict[[from]])]
+  names_wm[is.na(names_wm)] <- names_lst[is.na(names_wm)]
 
-  if (type == "inplace") {
+  # Return names inplace if the input data is a data frame, else return a
+  # character vector of new names
+  if (is.data.frame(data) & type == "inplace") {
     names(data) <- names_wm
     return(data)
-  } else if (type == "vector") {
-    out <- names(data)
-    names(out) <- names_wm
-    return(out)
+  } else if (is.character(data) | type == "vector") {
+    return(names_wm)
   }
 }
 
