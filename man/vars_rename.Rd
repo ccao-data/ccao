@@ -4,7 +4,7 @@
 \alias{vars_rename}
 \title{Translate variable names from different CCAO data sources}
 \usage{
-vars_rename(data, names_from = "sql", names_to = "standard")
+vars_rename(data, names_from = "sql", names_to = "standard", type = "inplace")
 }
 \arguments{
 \item{data}{A data frame or tibble with columns to be renamed.}
@@ -12,6 +12,10 @@ vars_rename(data, names_from = "sql", names_to = "standard")
 \item{names_from}{The source/name type of data. See description}
 
 \item{names_to}{The target names. See description}
+
+\item{type}{Output type. Either \code{"inplace"}, which renames the input
+data frame, or \code{"vector"}, which returns a named character vector with
+the construction new_col_name = old_col_name.}
 }
 \value{
 The input data frame with columns renamed.

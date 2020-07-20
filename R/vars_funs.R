@@ -77,6 +77,9 @@ vars_check_class <- function(age, sqft, class) {
 #' @param data A data frame or tibble with columns to be renamed.
 #' @param names_from The source/name type of data. See description
 #' @param names_to The target names. See description
+#' @param type Output type. Either \code{"inplace"}, which renames the input
+#'   data frame, or \code{"vector"}, which returns a named character vector with
+#'   the construction new_col_name = old_col_name.
 #'
 #' @return The input data frame with columns renamed.
 #'
@@ -90,14 +93,15 @@ vars_check_class <- function(age, sqft, class) {
 #' vars_rename(class_dict)
 #' @family vars_funs
 #' @export
-vars_rename <- function(data, names_from = "sql", names_to = "standard") {
+vars_rename <- function(data, names_from = "sql", names_to = "standard", type = "inplace") { # nolint
 
   # Stop if input is not a data frame or if name targets are not within
   # the preset types
   stopifnot(
     is.data.frame(data),
     tolower(names_from) %in% c("sql", "addchars", "standard", "pretty"),
-    tolower(names_to) %in% c("sql", "addchars", "standard", "pretty")
+    tolower(names_to) %in% c("sql", "addchars", "standard", "pretty"),
+    tolower(type) %in% c("inplace", "vector")
   )
 
   from <- paste0("var_name_", names_from)
@@ -107,9 +111,14 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard") {
   names_wm <- ccao::vars_dict[[to]][match(names(data), ccao::vars_dict[[from]])]
   names_wm[is.na(names_wm)] <- names(data)[is.na(names_wm)]
 
-  names(data) <- names_wm
-
-  return(data)
+  if (type == "inplace") {
+    names(data) <- names_wm
+    return(data)
+  } else if (type == "vector") {
+    out <- names(data)
+    names(out) <- names_wm
+    return(out)
+  }
 }
 
 

@@ -61,6 +61,14 @@ test_that("output is as expected", {
     names(vars_rename(cdu_dict, names_to = "pretty")),
     c("cdu_code", "cdu_type", "cdu_desc", "cdu_desc_short")
   )
+  expect_equivalent(
+    vars_rename(chars_sample_universe[, 14:19], type = "vector"),
+    c(
+      meta_key_pin = "DT_KEY_PIN", CONDO_STRATA_10 = "CONDO_STRATA_10",
+      CONDO_STRATA_100 = "CONDO_STRATA_100", chars_apts = "APTS",
+      char_ext_wall = "EXT_WALL", char_roof_cnst = "ROOF_CNST"
+    )
+  )
 })
 
 # Test that invalid inputs throw errors
