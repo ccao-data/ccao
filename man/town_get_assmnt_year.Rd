@@ -28,11 +28,10 @@ Numeric vector of assessment years relative to the year entered.
   Returns NA for towns that cannot be found.
 }
 \description{
-Input a township name or code and get the assessment year closest to the
-year argument. Current year is the default. Will never return a year higher
-than the current year.
-}
-\details{
+Input a township name or code and get the assessment year
+closest to the year argument. Current year is the default. Will never return
+a year higher than the current year.
+
 Ex. \code{town_get_assmnt_year("Evanston")} outputs \code{2019}
 }
 \examples{

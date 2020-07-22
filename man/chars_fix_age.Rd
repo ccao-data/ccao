@@ -2,7 +2,7 @@
 % Please edit documentation in R/chars_funs.R
 \name{chars_fix_age}
 \alias{chars_fix_age}
-\title{Fix the AGE variable in CCAO data}
+\title{Fix the age variable in CCAO data}
 \usage{
 chars_fix_age(age, year, town)
 }
@@ -42,6 +42,7 @@ df <- dplyr::tibble(
 )
 
 df$true_age <- chars_fix_age(df$age, df$year, df$town)
+df
 }
 \seealso{
 Other chars_funs: 

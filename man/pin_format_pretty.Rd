@@ -2,7 +2,7 @@
 % Please edit documentation in R/pin_funs.R
 \name{pin_format_pretty}
 \alias{pin_format_pretty}
-\title{Format Property Index Numbers (PINs) for pretty printing}
+\title{Add dash separators to input PIN(s)}
 \usage{
 pin_format_pretty(pin, full_length = FALSE)
 }

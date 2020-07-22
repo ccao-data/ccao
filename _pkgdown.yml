@@ -1,0 +1,63 @@
+destination: public
+url: https://ccao-data-science---modeling.gitlab.io/packages/ccao/
+
+reference:
+
+- title: Functions
+- subtitle: Measure Assessment Performance
+  desc: > 
+    Calculate assessment performance statistics in accordance with the CCAO
+    Data Science Department’s Standard Operating Procedure on Sales Ratio Studies.
+    The main changes are enforcement of outlier trimming (top and bottom 5% of
+    ratios are always dropped) and a strict minimum sample size (N must be >= 30).
+    Each function outputs a named list containing the statistic, its confidence
+    interval, whether or not the IAAO standard was met, and the number of
+    observations used to calculate the statistic.
+- contents:
+  - ccao_cod
+  - ccao_prd
+  - ccao_prb
+- subtitle: Format Data
+  desc: Clean and format Property Index Numbers (PINs) and other common CCAO data
+- contents:
+  - pin_clean
+  - pin_format_pretty
+  - format_as400
+- subtitle: Lookup Values
+  desc: Convert between township names, assessment years, and triads
+- contents: 
+  - town_convert
+  - town_get_assmnt_year
+  - town_get_triad
+- subtitle: Mangage Characteristics
+  desc: Recode characteristic values, fix errors, and handle Home Improvement Exemptions (288s)
+- contents:
+  - chars_288_active
+  - chars_fix_age
+  - chars_sparsify
+  - chars_update
+  - vars_check_class
+  - vars_recode
+  - vars_rename
+
+- title: Data
+- subtitle: Dictionaries
+  desc: Lookups and code translations used in functions
+- contents:
+  - ends_with("_dict")
+- subtitle: Spatial Data
+  desc: Spatial boundaries and recodes. Must load `sf` library before using
+- contents:
+  - nbhd_recode
+  - nbhd_shp
+  - town_shp
+- subtitle: Sample Data
+  desc: Sample data frames pulled directly from CCAO SQL
+- contents:
+  - chars_sample_addchars
+  - chars_sample_universe
+- subtitle: Utility
+  desc: Miscellaneous data used throughout the department or in specific functions
+- contents:
+  - ccao_colors
+  - chars_cols

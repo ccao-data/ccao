@@ -2,7 +2,7 @@
 % Please edit documentation in R/pin_funs.R
 \name{pin_clean}
 \alias{pin_clean}
-\title{Clean Property Index Numbers (PINs)}
+\title{Remove separators and whitespace from input PIN(s) and warn if invalid}
 \usage{
 pin_clean(pin)
 }

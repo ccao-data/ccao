@@ -1,4 +1,4 @@
-#' Clean Property Index Numbers (PINs)
+#' Remove separators and whitespace from input PIN(s) and warn if invalid
 #'
 #' Remove common separators, whitespace, and trailing characters
 #' from Property Index Numbers (PINs). This function is specifically formatted
@@ -36,7 +36,7 @@ pin_clean <- function(pin) {
 }
 
 
-#' Format Property Index Numbers (PINs) for pretty printing
+#' Add dash separators to input PIN(s)
 #'
 #' Add separators to cleaned PINs to make them more readable in reports
 #' and other human-ready outputs. This requires 10 or 14 digits PINs as input.

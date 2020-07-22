@@ -2,7 +2,7 @@
 % Please edit documentation in R/chars_funs.R
 \name{chars_sparsify}
 \alias{chars_sparsify}
-\title{Sparsify an ADDCHARS data frame}
+\title{Convert ADDCHARS SQL data to a sparse format that can be joined to other data}
 \usage{
 chars_sparsify(
   data,
@@ -106,7 +106,7 @@ such as \code{starts_with("QU_")}.
 data("chars_sample_addchars")
 
 chars_sparsify(
-  chars_sample_addchars,
+  chars_sample_addchars[1:3, ],
   pin_col = QU_PIN,
   year_col = TAX_YEAR,
   class_col = QU_CLASS,

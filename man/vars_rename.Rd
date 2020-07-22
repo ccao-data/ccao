@@ -2,7 +2,8 @@
 % Please edit documentation in R/vars_funs.R
 \name{vars_rename}
 \alias{vars_rename}
-\title{Translate variable names from different CCAO data sources}
+\title{Bulk rename variables from CCAO SQL to standardized or pretty names
+and visa versa}
 \usage{
 vars_rename(data, names_from = "sql", names_to = "standard", type = "inplace")
 }
@@ -27,19 +28,24 @@ in modeling. Or, rename all standard modeling names to "pretty" names for
 publication. Function will overwrite names it finds in
 \code{\link{vars_dict}}, all other names in the data will remain unchanged.
 
-Options for \code{names_from} and \code{names_to} are: \code{"sql"} (
-with names like TAX_YEAR, GAR1_SIZE); \code{"addchars"} (with names like
-QU_AGE, QU_GARAGE_SIZE); \code{"standard"} (with names like meta_tax_year,
-meta_gar1_size); and \code{"pretty"} (with names like Year, Garage 1 Size)
+Options for \code{names_from} and \code{names_to} are:
+\itemize{
+\item \code{"sql"} (with names like TAX_YEAR, GAR1_SIZE)
+\item \code{"addchars"} (with names like QU_AGE, QU_GARAGE_SIZE)
+\item \code{"standard"} (with names like meta_tax_year, meta_gar1_size)
+\item \code{"pretty"} (with names like Year, Garage 1 Size)
+}
 }
 \examples{
 
 # Rename column names from SQL
-vars_rename(chars_sample_universe)
-vars_rename(chars_sample_universe, names_to = "pretty")
+sample_data <- chars_sample_universe[1:5, 18:27]
+
+vars_rename(sample_data)
+vars_rename(sample_data, names_to = "pretty")
 
 # No renames will occur since no column names here are from SQL
-vars_rename(class_dict)
+vars_rename(class_dict[1:5, 1:5])
 }
 \seealso{
 Other vars_funs: 

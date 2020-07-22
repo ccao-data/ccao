@@ -68,6 +68,10 @@ test_that("output is as expected", {
       "char_apts", "char_ext_wall", "char_roof_cnst"
     )
   )
+  expect_equal(
+    vars_rename(c("APTS", "EXT_WALL", "BEDS")),
+    c("char_apts", "char_ext_wall", "char_beds")
+  )
 })
 
 # Test that invalid inputs throw errors

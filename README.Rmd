@@ -13,210 +13,60 @@ knitr::opts_chunk$set(
 )
 ```
 
-# CCAO Package <a href='https:/glue.tidyverse.org'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# CCAO Package <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 A package to manage, distribute, and version control *CCAO-specific* functions. These functions are used throughout CCAO applications, models, and diagnostics. For generalized versions of assessment-related functions, see [assessR](https://gitlab.com/ccao-data-science---modeling/packages/assessr).
 
+For detailed documentation on included functions and data, [**visit the full reference list**](https://ccao-data-science---modeling.gitlab.io/packages/ccao/reference/).
+
+For examples of specific tasks you can complete with `ccao` functions, see the [**vignettes page**](https://ccao-data-science---modeling.gitlab.io/packages/ccao/articles/index.html).
+
 ## Installation
 
-You can install the released version of `ccao` directly from GitLab by running the following R command after installing `remotes`:
+You can install the released version of `ccao` directly from GitLab by running the following R command after installing [remotes](https://github.com/r-lib/remotes):
 
 ```{r, eval=FALSE}
 remotes::install_gitlab("ccao-data-science---modeling/packages/ccao")
 ```
 
-Once it is installed, you can use it just like any other package. Simply call `library(ccao)` at the beginning of your script.
+## Basic Usage
 
-## Included Functions and Data
-
-#### Functions currently included in `ccao`:
-
-* `ccao_cod()`, `ccao_prd()`, `ccao_prb()` calculate assessment performance statistics in accordance with CCAO Data Science Department's [Standard Operating Procedure on Sales Ratio Studies](https://gitlab.com/ccao-data-science---modeling/documentation/wiki_content/-/blob/f1efdcf7b66ab238efa438ee2f35e659222e76af/sops/sales-ratio-studies.md). The main changes are enforcement of outlier trimming (top and bottom 5% of ratios are always dropped) and a strict minimum sample size (N must be >= 30). Each function outputs a named list containing the statistic, its confidence interval, whether or not the IAAO standard was met, and the number of observations used to calculate the stat. 
-
----
-
-* `pin_clean()` Remove separators and whitespace from input PINs and warns if a PIN is invalid
-* `pin_format_pretty()` Add dash separators to input PINs to make them human-readable
-
----
-
-* `town_convert()` Convert from township name to township number and visa versa
-* `town_get_assmnt_year()` Return assessment year nearest to the `year` argument for a given input township
-* `town_get_triad()` Return the triad code or name of the input town(s)
-
----
-
-* `chars_288_active()` Return a vector of active years given a 288 start date and township
-* `chars_fix_age()` Fix CCAO property ages that only update every assessment cycle
-* `chars_sparsify()` Convert ADDCHARS SQL data to a sparse format that can be joined to normal chars datasets
-* `chars_update()` Update the specified characteristic columns using each column's ADDCHARS data
-
----
-
-* `vars_recode()` Bulk recode AS/400 numerically encoded characteristics data to a human-readable format
-* `vars_rename()` Bulk rename variable from CCAO SQL to standardized or pretty names and visa versa
-* `vars_check_class()` Check if a property class falls within its expected square footage and age boundaries
-
----
-
-* `format_as400()` Format predicted values in the specification necessary to upload to the AS/400
-
-#### Data currently included in `ccao`:
-
-##### Dictionaries
-
-* `appeal_dict` Dictionary of appeal reason codes used in CCAO internal systems
-* `cdu_dict` Dictionary of CCAO condition-desirability-utility (CDU) codes. These codes are usually used to represent different incentive conditions
-* `class_dict` Dictionary of property class numeric codes and their human-readable equivalent
-* `town_dict` Crosswalk of township names, their equivalent numeric codes, and the triad they are in
-* `vars_dict` Crosswalk of human-readable translations of CCAO database characteristic codes, modeling variables, and metadata
-
-##### Spatial Data
-
-* `nbhd_recodes` Recodes for individual neighborhoods
-* `nbhd_shp` Spatial (sf) data frame containing boundaries of CCAO neighborhoods<sup>1</sup>
-* `town_shp` Spatial (sf) data frame containing boundaries of Cook County townships<sup>1</sup> 
-
-##### Sample Data
-
-* `chars_sample_addchars` Sample from the ADDCHARS SQL table
-* `chars_sample_universe` Sample from the VW_RES_UNIVERSE view. Contains same PINS as `chars_sample_addchars`.
-
-##### Utility/Other
-
-* `ccao_colors` Named list of CCAO Comms Department colors, see below for palette
-* `chars_cols` List crosswalk of CCAOSFCHARS columns and their ADDCHARS equivalents
-
-<sup>1</sup> :warning: The `sf` library **must** be loaded first in order to load spatial data frames. If you encounter the error `C stack usage {number} is too close to the limit` when loading the data, update your version of `sf`
-
-## Usage
-
-### `vars_` Functions
-
-The `vars_` series of functions are designed to simplify working with messy CCAO data. Current functions can rename columns to standard formats as well as recode numeric factors to their human-readable equivalents.
+Here is a quick example using `ccao` functions with included sample data:
 
 ```{r, message=FALSE, results='asis'}
-library(dplyr)
-library(tidyr)
-library(knitr)
 library(ccao)
+library(dplyr)
+library(knitr)
 
-# Construct a fake data frame of commonly occuring CCAO column names and numeric
-# encodings for factors
-df <- tibble(
-  PIN = rep("1234567", 4),
-  GAR1_SIZE = c("1", "3", "0", NA),
-  sale_price = rep(132324, 4),
-  EXT_WALL = c("1", "2", "0", "4"),
-  PORCH = c("1", NA, "3", "2")
-)
+# Create a small subsample of data. This is the "raw" data taken from SQL
+sample_data <- chars_sample_universe %>%
+  select(PIN, TAX_YEAR, TOWN_CODE, AGE, GAR1_SIZE, BSMT) %>%
+  slice(8:13) %>%
+  distinct(TAX_YEAR, .keep_all = TRUE)
 
-df %>%
+sample_data %>%
   kable(digits = 3)
 
-# Recode variables 
-df %>%
+# Recode/rename/clean data using town_ and vars_ functions from ccao 
+sample_data %>%
+  mutate(
+    PIN = pin_format_pretty(PIN),
+    `Township Name` = town_convert(TOWN_CODE),
+    `Township Triad` = town_get_triad(TOWN_CODE, name = TRUE),
+    `Next Reass. Year` = town_get_assmnt_year(TOWN_CODE, round_type = "ceiling"),
+    AGE = chars_fix_age(AGE, TAX_YEAR, TOWN_CODE)
+  ) %>%
   vars_recode(type = "long") %>%
-  kable(digits = 3)
-
-# Rename variables to standard, then recode
-df %>%
-  vars_rename(names_to = "pretty") %>%
-  vars_recode(type = "long") %>%
+  vars_rename(names_from = "sql", names_to = "pretty") %>%
   kable(digits = 3)
 
 ```
-
-
-### `chars_` Functions
-
-Below is an example showing the entire process of using the `chars_` functions to update characteristics data using an ADDCHARS extract. For more information on this process and why it is necessary, visit the [Home Improvement Exemptions](https://datascience.cookcountyassessor.com/wiki/residential/addchars.md) page on the internal DS wiki.
-
-```{r, message=FALSE, results='asis'}
-
-# Choose a random sample PIN from the sample ADDCHARS data
-sample_chars <- chars_sample_addchars %>%
-  filter(QU_PIN == "05273000030000")
-
-# This PIN has a basement and garage renovation followed by a bathroom reno
-# three years later
-sample_chars %>%
-  select(
-    QU_PIN, TAX_YEAR, QU_CLASS,
-    QU_TOWN, QU_GARAGE_SIZE, QU_SQFT_BLD, QU_BEDS
-  ) %>%
-  kable(format = "markdown", digits = 3)
-
-# Sparsify the data. You can see that one 288 ends roughly when the other one
-# begins. NOTE: the mutate() on QU_CLASS here is because sometime QU_CLASS is
-# equal to 0 (mostly for garage renovations). This is an easy fix
-sparse_chars <- sample_chars %>%
-  arrange(QU_PIN, TAX_YEAR, QU_CLASS) %>%
-  mutate(QU_CLASS = ifelse(QU_CLASS == 0, lag(QU_CLASS), QU_CLASS)) %>%
-  chars_sparsify(
-    pin_col = QU_PIN,
-    year_col = TAX_YEAR, 
-    class_col = QU_CLASS,
-    town_col = as.character(QU_TOWN),
-    upload_date_col = QU_UPLOAD_DATE,
-    additive_source = any_of(chars_cols$add_source),
-    replacement_source = any_of(chars_cols$rep_source)
-  ) %>%
-  mutate(QU_CLASS = substr(QU_CLASS, 1, 3))
-
-# The resulting sparse data can be joined onto any data containing CCAOSFCHARS
-sparse_chars %>%
-  select(
-    QU_PIN, YEAR, QU_CLASS, QU_GARAGE_SIZE, 
-    QU_SQFT_BLD, QU_BEDS, NUM_288S_ACTIVE
-  ) %>%
-  kable(format = "markdown", digits = 3)
-
-# Here is an example data frame where the sparse data is merged onto
-# characteristic data and the characteristics are then updated using chars_update()
-updated_chars <- chars_sample_universe %>%
-  filter(PIN %in% sample_chars$QU_PIN) %>%
-  left_join(
-    sparse_chars,
-    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
-  ) %>%
-  arrange(PIN, TAX_YEAR) %>%
-  chars_update(
-    additive_target = any_of(ccao::chars_cols$add_target),
-    replacement_target = any_of(ccao::chars_cols$rep_target)
-  )
-
-# Show updated characteristics vs ADDCHARS
-updated_chars %>%
-  ungroup() %>%
-  select(
-    PIN, TAX_YEAR, CLASS, NUM_288S_ACTIVE, GAR1_SIZE, QU_GARAGE_SIZE,
-    BLDG_SF, QU_SQFT_BLD, BEDS, QU_BEDS
-  ) %>%
-  arrange(PIN, CLASS, TAX_YEAR) %>%
-  kable(format = "markdown", digits = 3)
-
-```
-
-
-### Spatial Data
-
-This package contains spatial data frames representing CCAO administrative boundaries. Note that you **must have the `sf` package installed and loaded** in order to correctly load spatial data frames.
-
-```{r, message=FALSE}
-library(sf)
-
-# Plot township boundaries alone
-plot(ccao::town_shp[1], main = "Township Boundaries")
-# Plot township boundaries with neighborhoods
-plot(ccao::nbhd_shp[1], main = "Townships with Neighborhoods")
-
-```
-
 
 ## CCAO Colors
 
-```{r, echo=FALSE, fig.height=2}
+The CCAO Communications Department created a palette of colors for CCAO press materials and visualizations. Navy, gold, and buttermilk are the colors used in the CCAO logo. Typically navy and gold are used for discrete values in plots. The hex codes for these colors are available via the named list `ccao_colors`.
+
+```{r, echo=FALSE, fig.height=1}
 library(ggplot2)
 
 ggplot() +

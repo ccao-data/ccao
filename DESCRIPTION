@@ -10,6 +10,7 @@ Description: A set of functions used widely through the Cook County Assessor's
     valuation pipeline. The intention is to standardize the usage of critical
     functions across all users and scripts by having them all depend on a single
     package.
+URL: https://ccao-data-science---modeling.gitlab.io/packages/ccao/, https://gitlab.com/ccao-data-science---modeling/packages/ccao 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -23,7 +24,10 @@ RoxygenNote: 7.1.1
 Suggests: 
     covr,
     devtools,
+    knitr,
     lintr,
+    pkgdown,
+    rmarkdown,
     testthat
 Remotes: 
     gitlab::ccao-data-science---modeling/packages/assessr

@@ -2,7 +2,7 @@
 % Please edit documentation in R/town_funs.R
 \name{town_convert}
 \alias{town_convert}
-\title{Convert between township number and township name}
+\title{Convert from township name to township number and visa versa}
 \usage{
 town_convert(town)
 }
@@ -15,7 +15,8 @@ Vector or township codes or names equivalent to the input vector.
   Returns NA for towns that cannot be found.
 }
 \description{
-Convert township name to its respective two-digit code and visa-versa.
+Convert township name to its respective two-digit code and
+visa-versa.
 }
 \examples{
 

@@ -1,4 +1,4 @@
-#' Format Predicted Values for Upload to AS/400
+#' Format predicted values for upload to the AS/400
 #'
 #' @description Format input vectors of town, PIN, and predicted values into a
 #' fixed-width (80 character) text file consumable by the CCAO's AS/400 system.

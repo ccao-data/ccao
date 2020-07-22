@@ -1,4 +1,5 @@
-#' Check validity of property class codes in a dataset based on age and size.
+#' Check if a property class falls within its expected square footage and age
+#' boundaries
 #'
 #' @description Check property characteristics against class definitions as defined # nolint
 #' \href{https://datascience.cookcountyassessor.com/wiki/data/class-definitions.pdf}{here}. # nolint
@@ -61,7 +62,8 @@ vars_check_class <- function(age, sqft, class) {
 }
 
 
-#' Translate variable names from different CCAO data sources
+#' Bulk rename variables from CCAO SQL to standardized or pretty names
+#' and visa versa
 #'
 #' @description Bulk rename columns from one type of CCAO to another. For
 #' example, rename all columns pulled from SQL to their standard names used
@@ -69,10 +71,12 @@ vars_check_class <- function(age, sqft, class) {
 #' publication. Function will overwrite names it finds in
 #' \code{\link{vars_dict}}, all other names in the data will remain unchanged.
 #'
-#' Options for \code{names_from} and \code{names_to} are: \code{"sql"} (
-#' with names like TAX_YEAR, GAR1_SIZE); \code{"addchars"} (with names like
-#' QU_AGE, QU_GARAGE_SIZE); \code{"standard"} (with names like meta_tax_year,
-#' meta_gar1_size); and \code{"pretty"} (with names like Year, Garage 1 Size)
+#' Options for \code{names_from} and \code{names_to} are:
+#'
+#' - \code{"sql"} (with names like TAX_YEAR, GAR1_SIZE)
+#' - \code{"addchars"} (with names like QU_AGE, QU_GARAGE_SIZE)
+#' - \code{"standard"} (with names like meta_tax_year, meta_gar1_size)
+#' - \code{"pretty"} (with names like Year, Garage 1 Size)
 #'
 #' @param data A data frame or tibble with columns to be renamed.
 #' @param names_from The source/name type of data. See description
@@ -86,11 +90,14 @@ vars_check_class <- function(age, sqft, class) {
 #' @examples
 #'
 #' # Rename column names from SQL
-#' vars_rename(chars_sample_universe)
-#' vars_rename(chars_sample_universe, names_to = "pretty")
+#' sample_data <- chars_sample_universe[1:5, 18:27]
+#'
+#' vars_rename(sample_data)
+#' vars_rename(sample_data, names_to = "pretty")
 #'
 #' # No renames will occur since no column names here are from SQL
-#' vars_rename(class_dict)
+#' vars_rename(class_dict[1:5, 1:5])
+#' @md
 #' @family vars_funs
 #' @export
 vars_rename <- function(data, names_from = "sql", names_to = "standard", type = "inplace") { # nolint
@@ -125,7 +132,6 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
 }
 
 
-
 #' Replace numerically coded variables with human-readable values
 #'
 #' @description The AS/400 stores characteristic values in a numerically encoded
@@ -134,13 +140,17 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
 #' EXT_WALL = "Frame + Masonry". Note that the values and their translations are
 #' specified in \code{\link{vars_dict}}.
 #'
+#' Options for \code{type} are:
+#'
+#' - \code{"long"}, which transforms EXT_WALL = 1 to EXT_WALL = Frame
+#' - \code{"short"}, which transforms EXT_WALL = 1 to EXT_WALL = FRME
+#' - \code{"code"}, which keeps the original values (useful for removing
+#'   improperly coded values, see note below)
+#'
 #' @param data A data frame or tibble with columns to have values replaced.
 #' @param cols A \code{<tidy-select>} column select or vector of column names.
 #'   Looks for all columns with numerically encoded character values by default.
-#' @param type Output/recode type. Options are: \code{"long"}, which transforms
-#'   EXT_WALL = 1 to EXT_WALL = Frame; \code{"short"}, for EXT_WALL = FRME; and
-#'   \code{"code"}, which keeps the original values (useful for removing
-#'   improperly coded values, see note below).
+#' @param type Output/recode type. See description for options.
 #'
 #' @note Values which are in the data but are NOT in \code{\link{vars_dict}}
 #'   will be converted to NA. For example, there is no numeric value 3 for AIR,
@@ -152,12 +162,19 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
 #' @examples
 #'
 #' # Recode all char columns
-#' vars_recode(chars_sample_universe)
-#' vars_recode(chars_sample_universe, type = "short")
+#' sample_data <- chars_sample_universe[1:5, 18:27]
+#'
+#' sample_data
+#' vars_recode(sample_data)
+#' vars_recode(sample_data, type = "short")
 #'
 #' # Recode only the specified columns
-#' vars_recode(chars_sample_universe, cols = dplyr::starts_with("GAR"))
-#' vars_recode(chars_sample_universe, cols = "GAR1_SIZE")
+#' gar_sample <- chars_sample_universe[1:5, 30:40]
+#'
+#' gar_sample
+#' vars_recode(gar_sample, cols = dplyr::starts_with("GAR"))
+#' vars_recode(gar_sample, cols = "GAR1_SIZE")
+#' @md
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @family vars_funs
