@@ -7,7 +7,7 @@
 .group_validation(df, batch_size = 5)
 }
 \arguments{
-\item{df}{(data.frame) a data frame that must contain the following schema:
+\item{df}{(tibble) a data frame that must contain the following schema:
 Address (character)
 City (character)
 State (character)
@@ -17,7 +17,7 @@ Zip (character)}
 (maximum 5 for USPS API)}
 }
 \value{
-results (data.frame) a data frame with the same fields as the
+results (tibble) a data frame with the same fields as the
   input data frame.
 }
 \description{

@@ -3,24 +3,25 @@ context("test .preprocess_address_data()")
 ##### TEST .preprocess_address_data() #####
 
 # Create input data frame
-address <- c(
-  "  3726 N WILTON ",
-  "7541 W BROWN #J",
-  "13200 BALTIC CR",
-  "11008 KEATING AVE  3E",
-  "15940 S 78TH AV "
+input <- dplyr::tibble(
+  Address = c(
+    "  3726 N WILTON ",
+    "7541 W BROWN #J",
+    "13200 BALTIC CR",
+    "11008 KEATING AVE  3E",
+    "15940 S 78TH AV ",
+    "GARFIELD"
+  ),
+  City = c(
+    "CHICAGO      IL",
+    "FOREST PARK  IL",
+    "	LEMONT       IL",
+    "OAK LAWN     IL",
+    "TINLEY PARK  IL",
+    "CAT"
+  ),
+  Zip = c("60613", "60130", "60439", "60453", "60477", "3")
 )
-city <- c(
-  "CHICAGO      IL",
-  "FOREST PARK  IL",
-  "	LEMONT       IL",
-  "OAK LAWN     IL",
-  "TINLEY PARK  IL"
-)
-zip <- c("60613", "60130", "60439", "60453", "60477")
-
-input <- data.frame(cbind(address, city, zip))
-names(input) <- c("Address", "City", "Zip")
 
 # Apply function to input
 processed <- .preprocess_address_data(input)
@@ -46,10 +47,11 @@ test_that("output is as expected", {
 })
 
 # Create invalid input data frame
-addr <- c("123 Ave", "456 St")
-cty <- c("Chicago", "Philadelphia")
-zip <- c(12345, 67890)
-invalid_df <- data.frame(cbind(addr, cty, zip))
+invalid_df <- dplyr::tibble(
+  addr = c("123 Ave", "456 St"),
+  cty = c("Chicago", "Philadelphia"),
+  zip = c(12345, 67890)
+)
 
 # Test that invalid input throws error
 test_that("invalid schemas stop process", {

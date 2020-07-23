@@ -27,7 +27,7 @@ an address. Either 1 long or the same length as \code{address},
 to API at a time (maximum 5).}
 }
 \value{
-df (data.frame) a data frame with verified address information
+df (tibble) a data frame with verified address information
   from the API for one batch of at most 5 addresses. If an input address
   is found to be nonexistent, it will not show up in the returned data
   frame.

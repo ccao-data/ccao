@@ -7,11 +7,11 @@
 .preprocess_address_data(df)
 }
 \arguments{
-\item{df}{(data.frame) a data frame that includes columns named "Address",
+\item{df}{(tibble) a data frame that includes columns named "Address",
 "City", and "Zip".}
 }
 \value{
-df (data.frame) the pre-processed data frame
+df (tibble) the pre-processed data frame
 }
 \description{
 Preprocess address data before sending to API. This
