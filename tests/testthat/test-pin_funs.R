@@ -36,6 +36,10 @@ test_that("pretty printed output is correct", {
     pin_format_pretty(pins),
     c("04-34-106-008", "01-22-204-003", "14-17-227-008")
   )
+  expect_equal(
+    pin_format_pretty(c("04341060080001", NA, NA)),
+    c("04-34-106-008", NA, NA)
+  )
 })
 
 test_that("pins must be correct length", {
