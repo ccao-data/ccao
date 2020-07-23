@@ -1,6 +1,7 @@
-#' Convert between township number and township name
+#' Convert from township name to township number and visa versa
 #'
-#' Convert township name to its respective two-digit code and visa-versa.
+#' @description Convert township name to its respective two-digit code and
+#' visa-versa.
 #'
 #' @param town Vector of township names or numeric codes. Township name
 #'   must be title case to match correctly.
@@ -41,7 +42,7 @@ town_convert <- function(town) {
 
 #' Get Cook County triad name or number based on township name or code
 #'
-#' Get the triad name or number based on township name or code.
+#' @description Get the triad name or number based on township name or code.
 #' Cook County is split into three sections called triads. These triads are
 #' assessed every three years. Each town lies entirely within a single triad.
 #'
@@ -94,9 +95,9 @@ town_get_triad <- function(town, name = FALSE) {
 
 #' Get the nearest assessment year of a township
 #'
-#' Input a township name or code and get the assessment year closest to the
-#' year argument. Current year is the default. Will never return a year higher
-#' than the current year.
+#' @description Input a township name or code and get the assessment year
+#' closest to the year argument. Current year is the default. Will never return
+#' a year higher than the current year.
 #'
 #' Ex. \code{town_get_assmnt_year("Evanston")} outputs \code{2019}
 #'

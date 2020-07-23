@@ -2,7 +2,7 @@
 % Please edit documentation in R/chars_funs.R
 \name{chars_update}
 \alias{chars_update}
-\title{Update characteristic values using values from ADDCHARS}
+\title{Update characteristic values using joined values from ADDCHARS}
 \usage{
 chars_update(data, additive_target, replacement_target)
 }

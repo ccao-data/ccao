@@ -1,4 +1,4 @@
-#' Fix the AGE variable in CCAO data
+#' Fix the age variable in CCAO data
 #'
 #' @description The AGE variable in many CCAO datasets only updates when a
 #' property is reassessed. This function will calculate the correct age of
@@ -31,6 +31,7 @@
 #' )
 #'
 #' df$true_age <- chars_fix_age(df$age, df$year, df$town)
+#' df
 #' @family chars_funs
 #' @export
 chars_fix_age <- function(age, year, town) {
@@ -65,7 +66,7 @@ chars_fix_age <- function(age, year, town) {
 }
 
 
-#' Determine active years for a Home Improvement Exemption (288)
+#' Return active years given a 288 start date and township
 #'
 #' @description The State of Illinois has a home improvement exemption program
 #' which allows property owners to deduct up to $75,000 per year of any value
@@ -152,7 +153,7 @@ chars_288_active <- function(start_year, town) {
 }
 
 
-#' Sparsify an ADDCHARS data frame
+#' Convert ADDCHARS SQL data to a sparse format that can be joined to other data
 #'
 #' @description The ADDCHARS SQL table includes individual rows listing the PIN,
 #' start date, and characteristic updates associated with a 288 Home Improvement
@@ -234,7 +235,7 @@ chars_288_active <- function(start_year, town) {
 #' data("chars_sample_addchars")
 #'
 #' chars_sparsify(
-#'   chars_sample_addchars,
+#'   chars_sample_addchars[1:3, ],
 #'   pin_col = QU_PIN,
 #'   year_col = TAX_YEAR,
 #'   class_col = QU_CLASS,
@@ -308,7 +309,7 @@ chars_get_col <- function(col) {
 }
 
 
-#' Update characteristic values using values from ADDCHARS
+#' Update characteristic values using joined values from ADDCHARS
 #'
 #' @description Function used to update the characteristic values of a
 #' data frame containing both the original characteristic value (CCAOSFCHARS)

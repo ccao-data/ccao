@@ -12,14 +12,11 @@ vars_recode(data, cols = dplyr::everything(), type = "long")
 \item{cols}{A \code{<tidy-select>} column select or vector of column names.
 Looks for all columns with numerically encoded character values by default.}
 
-\item{type}{Output/recode type. Options are: \code{"long"}, which transforms
-EXT_WALL = 1 to EXT_WALL = Frame; \code{"short"}, for EXT_WALL = FRME; and
-\code{"code"}, which keeps the original values (useful for removing
-improperly coded values, see note below).}
+\item{type}{Output/recode type. See description for options.}
 }
 \value{
 The input data frame with re-encoded values for the specified
-  columns.
+columns.
 }
 \description{
 The AS/400 stores characteristic values in a numerically encoded
@@ -27,21 +24,35 @@ format. This function can be used to translate those values into a
 human-readable format. For example, EXT_WALL = 2 will become
 EXT_WALL = "Frame + Masonry". Note that the values and their translations are
 specified in \code{\link{vars_dict}}.
+
+Options for \code{type} are:
+\itemize{
+\item \code{"long"}, which transforms EXT_WALL = 1 to EXT_WALL = Frame
+\item \code{"short"}, which transforms EXT_WALL = 1 to EXT_WALL = FRME
+\item \code{"code"}, which keeps the original values (useful for removing
+improperly coded values, see note below)
+}
 }
 \note{
 Values which are in the data but are NOT in \code{\link{vars_dict}}
-  will be converted to NA. For example, there is no numeric value 3 for AIR,
-  so it will become NA.
+will be converted to NA. For example, there is no numeric value 3 for AIR,
+so it will become NA.
 }
 \examples{
 
 # Recode all char columns
-vars_recode(chars_sample_universe)
-vars_recode(chars_sample_universe, type = "short")
+sample_data <- chars_sample_universe[1:5, 18:27]
+
+sample_data
+vars_recode(sample_data)
+vars_recode(sample_data, type = "short")
 
 # Recode only the specified columns
-vars_recode(chars_sample_universe, cols = dplyr::starts_with("GAR"))
-vars_recode(chars_sample_universe, cols = "GAR1_SIZE")
+gar_sample <- chars_sample_universe[1:5, 30:40]
+
+gar_sample
+vars_recode(gar_sample, cols = dplyr::starts_with("GAR"))
+vars_recode(gar_sample, cols = "GAR1_SIZE")
 }
 \seealso{
 Other vars_funs: 

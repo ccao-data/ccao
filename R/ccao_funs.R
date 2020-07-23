@@ -1,5 +1,5 @@
 # nolint start
-#' Calculate Sales Ratio Statistics Using CCAO SOPs
+#' Calculate sales ratio statistics using CCAO SOPs
 #'
 #' @description Calculate sales ratio statistics (COD, PRD, PRB) according
 #' to Cook County Assessor's Office Standard Operating Procedures (SOPs).
@@ -47,6 +47,7 @@
 #' ccao_cod(df$ratio)
 #' ccao_prd(df$assessed, df$sale_price)
 #' ccao_prb(df$assessed, df$sale_price)
+#' @md
 #' @family ccao_funs
 #' @name ccao_funs
 NULL

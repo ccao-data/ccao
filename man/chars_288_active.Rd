@@ -2,7 +2,7 @@
 % Please edit documentation in R/chars_funs.R
 \name{chars_288_active}
 \alias{chars_288_active}
-\title{Determine active years for a Home Improvement Exemption (288)}
+\title{Return active years given a 288 start date and township}
 \usage{
 chars_288_active(start_year, town)
 }

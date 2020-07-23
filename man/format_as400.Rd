@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_funs.R
 \name{format_as400}
 \alias{format_as400}
-\title{Format Predicted Values for Upload to AS/400}
+\title{Format predicted values for upload to the AS/400}
 \usage{
 format_as400(town_code, pin, pred_value, file, type = "res")
 }

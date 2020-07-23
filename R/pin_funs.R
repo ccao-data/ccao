@@ -1,4 +1,4 @@
-#' Clean Property Index Numbers (PINs)
+#' Remove separators and whitespace from input PIN(s) and warn if invalid
 #'
 #' Remove common separators, whitespace, and trailing characters
 #' from Property Index Numbers (PINs). This function is specifically formatted
@@ -36,7 +36,7 @@ pin_clean <- function(pin) {
 }
 
 
-#' Format Property Index Numbers (PINs) for pretty printing
+#' Add dash separators to input PIN(s)
 #'
 #' Add separators to cleaned PINs to make them more readable in reports
 #' and other human-ready outputs. This requires 10 or 14 digits PINs as input.
@@ -64,8 +64,8 @@ pin_format_pretty <- function(pin, full_length = FALSE) {
   stopifnot(
     is.vector(pin), # Must be vector input
     is.character(pin), # Input vector must be char.
-    !is.na(as.numeric(pin)), # No non-numbers in PIN
-    nchar(pin) == 10 | nchar(pin) == 14 # PINs 10 or 14 digit
+    !is.na(as.numeric(pin[!is.na(pin)])), # No non-numbers in PIN
+    nchar(pin) == 10 | nchar(pin) == 14 | is.na(pin) # PINs 10 or 14 digit
   )
 
   # Get the last 4 digits of the input PINs
@@ -78,12 +78,15 @@ pin_format_pretty <- function(pin, full_length = FALSE) {
   )
 
   # Create substrings of the initial pins and place dashes between them
-  final_pin <- paste0(
+  dash_pin <- paste0(
     substr(pin, 1, 2), "-",
     substr(pin, 3, 4), "-",
     substr(pin, 5, 7), "-",
     substr(pin, 8, 10), last_4
   )
+
+  # Replace any NA values in the output
+  final_pin <- replace(dash_pin, is.na(pin), NA_character_)
 
   return(final_pin)
 }

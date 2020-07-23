@@ -16,4 +16,9 @@
 ^codecov\.yml$
 ^README\.Rmd$
 ^LICENSE$
+^man-roxygen$
+^_pkgdown\.yml$
+^pkgdown$
+^public$
 ^data-raw$
+^vignettes/articles$

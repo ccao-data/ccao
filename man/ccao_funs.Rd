@@ -5,7 +5,7 @@
 \alias{ccao_cod}
 \alias{ccao_prd}
 \alias{ccao_prb}
-\title{Calculate Sales Ratio Statistics Using CCAO SOPs}
+\title{Calculate sales ratio statistics using CCAO SOPs}
 \usage{
 ccao_cod(ratio, suppress = FALSE, na.rm = FALSE)
 
@@ -34,24 +34,24 @@ length as \code{sale_price}.}
 as \code{assessed}.}
 }
 \value{
-A named list containing the statistic, its 95\% confidence interval,
-  whether or not the statistic meets IAAO standards, and the number of
-  observations used to calculate the statistic (after outliers are removed).
+A named list containing the statistic, its 95\\% confidence interval,
+whether or not the statistic meets IAAO standards, and the number of
+observations used to calculate the statistic (after outliers are removed).
 }
 \description{
 Calculate sales ratio statistics (COD, PRD, PRB) according
 to Cook County Assessor's Office Standard Operating Procedures (SOPs).
 
 The main SOPs affecting these calculations are:
-
-1. Outlier trimming. Sales ratio performance statistics are quite sensitive
-to outliers. As a result, the top and bottom 5\% of the input vector(s) are
+\enumerate{
+\item Outlier trimming. Sales ratio performance statistics are quite sensitive
+to outliers. As a result, the top and bottom 5\\% of the input vector(s) are
 always dropped.
-
-2. Minimum sample size. Sales ratio performance statistics can be inaccurate
+\item Minimum sample size. Sales ratio performance statistics can be inaccurate
 or misleading when the input sample is small. As a result, samples with less
 than 30 observations after trimming outliers will stop execution or will
 return NA if \code{suppress = TRUE}.
+}
 
 For more information on how each statistic or its confidence interval is
 calculated. See its respective function in the
