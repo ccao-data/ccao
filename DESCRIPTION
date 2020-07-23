@@ -18,7 +18,10 @@ Imports:
     dplyr (>= 1.0.0),
     magrittr,
     rlang,
-    tidyr (>= 1.1.0)
+    tidyr (>= 1.1.0),
+    stringr,
+    rvest,
+    xml2
 RoxygenNote: 7.1.1
 Suggests: 
     covr,
