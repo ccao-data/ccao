@@ -61,6 +61,11 @@ Once it is installed, you can use it just like any other package. Simply call `l
 
 * `format_as400()` Format predicted values in the specification necessary to upload to the AS/400
 
+---
+
+* `validate_addresses` Bulk verification and reformatting of address information with the help of the USPS API.
+
+
 #### Data currently included in `ccao`:
 
 ##### Dictionaries
