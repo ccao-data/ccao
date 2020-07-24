@@ -35,10 +35,11 @@
 #'
 #' @examples
 #' address <- "3726 N WILTON"
-#' city <- "CHICAGO  IL"
+#' city <- "CHICAGO  "
+#' state <- "IL"
 #' zip <- "60613"
 #'
-#' validate_addresses(address, city, zip)
+#' validate_addresses(address, city, state, zip)
 #' @importFrom magrittr %>%
 #' @family address_funs
 #' @export
