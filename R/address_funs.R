@@ -4,11 +4,7 @@
 #'   state, city, and zip code data and return a single vector of
 #'   complete, verified, comma-separated addresses.
 #'
-#'   Note that you must create an API key with USPS and set it as
-#'   environmental variable called "USPS_API_KEY" on your local
-#'   machine for this function to work. This can be done by typing
-#'   \code{Sys.setenv("USPS_API_KEY" = "XXXXXXXXXX")} in the RStudio
-#'   console.
+#'   Note that a USPS API key is required to use this function.
 #'
 #' @param address Character string or vector of addresses ({number}
 #'   {streetname} {unit if applicable}). Either 1 long or the same length
@@ -24,9 +20,7 @@
 #'   \code{address}, \code{city}, and \code{zip}.
 #' @param batch_size Default 5. Specifies the number of queries to be
 #'   sent to API at a time (maximum 5).
-#' @param api_key Default "USPS_API_KEY". Specifies the name of an environment
-#'   variable in which the user's API key is saved. Will not run if the API key
-#'   is an empty string, or if it is invalid.
+#' @param api_key Specify a required USPS API key.
 #'
 #' @return A string or vector of verified addresses formatted the following way:
 #'     "{address}, {city}, {state}, {zip}".
@@ -38,13 +32,14 @@
 #' city <- "CHICAGO  "
 #' state <- "IL"
 #' zip <- "60613"
-#'
-#' validate_addresses(address, city, state, zip)
+#' \dontrun{
+#' validate_addresses(address, city, state, zip, api_key = "API_KEY")
+#' }
 #' @importFrom magrittr %>%
 #' @family address_funs
 #' @export
 validate_addresses <- function(address, city, state, zip, batch_size = 5,
-                               api_key = "USPS_API_KEY") {
+                               api_key) {
   stopifnot({
     length(address) == length(city) & length(address) == length(zip) &
       length(address) == length(state)
@@ -53,7 +48,7 @@ validate_addresses <- function(address, city, state, zip, batch_size = 5,
     length(state) != 0
     length(zip) != 0
   })
-  
+
   # Create tibble of address information
   address_df <- dplyr::tibble(Address = address,
                               City = city,
@@ -127,9 +122,7 @@ validate_addresses <- function(address, city, state, zip, batch_size = 5,
 #'   \code{address}, \code{city}, and \code{zip}.
 #' @param batch_size Default 5. Specifies the number of queries to be sent
 #'   to API at a time (maximum 5).
-#' @param api_key Default "USPS_API_KEY". Specifies the name of an environment
-#'   variable in which the user's API key is saved. Will not run if the API key
-#'   is an empty string, or if it is invalid.
+#' @param api_key Specify a required USPS API key.
 #'
 #' @return A tibble with verified address information from the API for one batch
 #'   of at most 5 addresses. If an input address is found to be nonexistent,
@@ -138,7 +131,7 @@ validate_addresses <- function(address, city, state, zip, batch_size = 5,
 #' @importFrom magrittr %>%
 #' @importFrom utils URLencode
 .batch_query_address <- function(address, city, state, zip, batch_size = 5,
-                                 api_key = "USPS_API_KEY") {
+                                 api_key) {
   stopifnot({
     length(address) <= 5 &
       length(city) <= 5 &
@@ -151,11 +144,7 @@ validate_addresses <- function(address, city, state, zip, batch_size = 5,
   # Paste together and encode link with input values to prepare for API query
 
   # Initalize query tree
-  query_so_far <- paste0(
-    '<AddressValidateRequest USERID="',
-    Sys.getenv(api_key),
-    '">'
-  )
+  query_so_far <- paste0('<AddressValidateRequest USERID="', api_key, '">')
 
   # Prevent duplicate records from inputs smaller than batch_size
   if (length(address) < batch_size) {
@@ -232,13 +221,11 @@ validate_addresses <- function(address, city, state, zip, batch_size = 5,
 #'   Zip (character)
 #' @param batch_size Default 5. Specifies the size of a transaction
 #'   (maximum 5 for USPS API)
-#' @param api_key Default "USPS_API_KEY". Specifies the name of an environment
-#'   variable in which the user's API key is saved. Will not run if the API key
-#'   is an empty string, or if it is invalid.
+#' @param api_key Specify a required USPS API key.
 #'
 #' @importFrom rlang .data
 #' @return A tibble with the same fields as the input tibble.
-.group_validation <- function(df, batch_size = 5, api_key = "USPS_API_KEY") {
+.group_validation <- function(df, batch_size = 5, api_key) {
   stopifnot({
     "Address" %in% names(df)
     "City" %in% names(df)

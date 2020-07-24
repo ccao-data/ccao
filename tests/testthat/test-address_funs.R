@@ -1,3 +1,7 @@
+context("get api key")
+
+usps_api_key <- Sys.getenv("USPS_API_KEY")
+
 context("test .preprocess_address_data()")
 
 ##### TEST .preprocess_address_data() #####
@@ -94,7 +98,8 @@ batch_query_output <- .batch_query_address(
   new_input_processed$City[1:5],
   new_input_processed$State[1:5],
   new_input_processed$Zip[1:5],
-  batch_size = 5
+  batch_size = 5,
+  api_key = usps_api_key
 )
 
 # Testing that a batch smaller than 5 will return fewer than
@@ -104,7 +109,8 @@ small_batch_output <- .batch_query_address(
   new_input_processed$Address[1:3],
   new_input_processed$City[1:3],
   new_input_processed$State[1:3],
-  new_input_processed$Zip[1:3]
+  new_input_processed$Zip[1:3],
+  api_key = usps_api_key
 )
 
 # Expected output
@@ -155,13 +161,15 @@ test_that("invalid inputs throw errors", {
     new_input_processed$Address,
     new_input_processed$City,
     new_input_processed$State,
-    new_input_processed$Zip
+    new_input_processed$Zip,
+    api_key = usps_api_key
   ))
   expect_condition(.batch_query_address(new_input_processed$Address[1:5],
     new_input_processed$City[1:5],
     new_input_processed$State[1:5],
     new_input_processed$Zip[1:5],
-    batch_size = 6
+    batch_size = 6,
+    api_key = usps_api_key
   ))
 })
 
@@ -169,7 +177,7 @@ context("test .group_validation()")
 
 ##### TEST .group_validation() #####
 
-output_df <- .group_validation(new_input_processed)
+output_df <- .group_validation(new_input_processed, api_key = usps_api_key)
 
 expected_output <- c(
   "3726 N WILTON AVE, CHICAGO, IL, 60613",
@@ -188,13 +196,13 @@ test_that("output is as expected", {
 
 test_that("invalid input throws error", {
   expect_condition(.group_validation(new_input_processed %>%
-    dplyr::select(Address, City, Zip)))
+    dplyr::select(Address, City, Zip), api_key = usps_api_key))
   expect_condition(.group_validation(new_input_processed %>%
-    dplyr::select(Address, State, Zip)))
+    dplyr::select(Address, State, Zip), api_key = usps_api_key))
   expect_condition(.group_validation(new_input_processed %>%
-    dplyr::select(Address, City, State)))
+    dplyr::select(Address, City, State), api_key = usps_api_key))
   expect_condition(.group_validation(new_input_processed %>%
-    dplyr::select(City, State, Zip)))
+    dplyr::select(City, State, Zip), api_key = usps_api_key))
 })
 
 context("test validate_addresses()")
@@ -204,7 +212,8 @@ context("test validate_addresses()")
 output <- validate_addresses(new_input$Address,
                              new_input$City,
                              new_input$State,
-                             new_input$Zip)
+                             new_input$Zip,
+                             api_key = usps_api_key)
 
 expected_output <- c(
   "3726 N WILTON AVE, CHICAGO, IL, 60613",
@@ -226,24 +235,28 @@ test_that("unequal input vector lengths throw error", {
     new_input$Address[1:5],
     new_input$City,
     new_input$State,
-    new_input$Zip
+    new_input$Zip,
+    api_key = usps_api_key
   ))
   expect_condition(validate_addresses(
     new_input$Address,
     new_input$City[1:5],
     new_input$State,
-    new_input$Zip
+    new_input$Zip,
+    api_key = usps_api_key
   ))
   expect_condition(validate_addresses(
     new_input$Address,
     new_input$City,
     new_input$State[1:5],
-    new_input$Zip
+    new_input$Zip,
+    api_key = usps_api_key
   ))
   expect_condition(validate_addresses(
     new_input$Address,
     new_input$City,
     new_input$State,
-    new_input$Zip[1:5]
+    new_input$Zip[1:5],
+    api_key = usps_api_key
   ))
 })

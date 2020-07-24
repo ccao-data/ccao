@@ -4,7 +4,7 @@
 \alias{.group_validation}
 \title{Validate all addresses within a tibble of addresses}
 \usage{
-.group_validation(df, batch_size = 5, api_key = "USPS_API_KEY")
+.group_validation(df, batch_size = 5, api_key)
 }
 \arguments{
 \item{df}{A tibble that must contain the following schema:
@@ -16,9 +16,7 @@ Zip (character)}
 \item{batch_size}{Default 5. Specifies the size of a transaction
 (maximum 5 for USPS API)}
 
-\item{api_key}{Default "USPS_API_KEY". Specifies the name of an environment
-variable in which the user's API key is saved. Will not run if the API key
-is an empty string, or if it is invalid.}
+\item{api_key}{Specify a required USPS API key.}
 }
 \value{
 A tibble with the same fields as the input tibble.

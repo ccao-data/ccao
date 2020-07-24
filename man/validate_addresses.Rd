@@ -4,14 +4,7 @@
 \alias{validate_addresses}
 \title{Verify and reformat address information with the USPS API}
 \usage{
-validate_addresses(
-  address,
-  city,
-  state,
-  zip,
-  batch_size = 5,
-  api_key = "USPS_API_KEY"
-)
+validate_addresses(address, city, state, zip, batch_size = 5, api_key)
 }
 \arguments{
 \item{address}{Character string or vector of addresses ({number}
@@ -33,9 +26,7 @@ an address. Either 1 long or the same length as \code{address},
 \item{batch_size}{Default 5. Specifies the number of queries to be
 sent to API at a time (maximum 5).}
 
-\item{api_key}{Default "USPS_API_KEY". Specifies the name of an environment
-variable in which the user's API key is saved. Will not run if the API key
-is an empty string, or if it is invalid.}
+\item{api_key}{Specify a required USPS API key.}
 }
 \value{
 A string or vector of verified addresses formatted the following way:
@@ -48,18 +39,15 @@ Bulk verify address information using street address,
   state, city, and zip code data and return a single vector of
   complete, verified, comma-separated addresses.
 
-  Note that you must create an API key with USPS and set it as
-  environmental variable called "USPS_API_KEY" on your local
-  machine for this function to work. This can be done by typing
-  \code{Sys.setenv("USPS_API_KEY" = "XXXXXXXXXX")} in the RStudio
-  console.
+  Note that a USPS API key is required to use this function.
 }
 \examples{
 address <- "3726 N WILTON"
 city <- "CHICAGO  "
 state <- "IL"
 zip <- "60613"
-
-validate_addresses(address, city, state, zip)
+\dontrun{
+validate_addresses(address, city, state, zip, api_key = "API_KEY")
+}
 }
 \concept{address_funs}

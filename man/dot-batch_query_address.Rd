@@ -4,14 +4,7 @@
 \alias{.batch_query_address}
 \title{Perform a single batched address query to the USPS API}
 \usage{
-.batch_query_address(
-  address,
-  city,
-  state,
-  zip,
-  batch_size = 5,
-  api_key = "USPS_API_KEY"
-)
+.batch_query_address(address, city, state, zip, batch_size = 5, api_key)
 }
 \arguments{
 \item{address}{Character string or vector of addresses ({number}
@@ -33,9 +26,7 @@ an address. Either 1 long or the same length as \code{address},
 \item{batch_size}{Default 5. Specifies the number of queries to be sent
 to API at a time (maximum 5).}
 
-\item{api_key}{Default "USPS_API_KEY". Specifies the name of an environment
-variable in which the user's API key is saved. Will not run if the API key
-is an empty string, or if it is invalid.}
+\item{api_key}{Specify a required USPS API key.}
 }
 \value{
 A tibble with verified address information from the API for one batch
