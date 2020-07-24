@@ -39,7 +39,7 @@
 #' @family address_funs
 #' @export
 validate_address <- function(address, city, state, zip, batch_size = 5,
-                               api_key) {
+                             api_key) {
   stopifnot({
     length(address) == length(city) & length(address) == length(zip) &
       length(address) == length(state)
@@ -50,10 +50,12 @@ validate_address <- function(address, city, state, zip, batch_size = 5,
   })
 
   # Create tibble of address information
-  address_df <- dplyr::tibble(Address = address,
-                              City = city,
-                              Zip = zip,
-                              State = state)
+  address_df <- dplyr::tibble(
+    Address = address,
+    City = city,
+    Zip = zip,
+    State = state
+  )
 
   # Reformat columns
   address_df <- .preprocess_address_data(address_df)
@@ -64,7 +66,7 @@ validate_address <- function(address, city, state, zip, batch_size = 5,
     api_key = api_key
   )
 
-  return(validated_addresses)
+  return(validated_addresses[[1]])
 }
 
 
