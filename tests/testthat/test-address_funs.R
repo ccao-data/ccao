@@ -205,11 +205,11 @@ test_that("invalid input throws error", {
     dplyr::select(City, State, Zip), api_key = usps_api_key))
 })
 
-context("test validate_addresses()")
+context("test validate_address()")
 
-##### TEST validate_addresses() #####
+##### TEST validate_address() #####
 
-output <- validate_addresses(new_input$Address,
+output <- validate_address(new_input$Address,
                              new_input$City,
                              new_input$State,
                              new_input$Zip,
@@ -231,28 +231,28 @@ test_that("output is as expected", {
 })
 
 test_that("unequal input vector lengths throw error", {
-  expect_condition(validate_addresses(
+  expect_condition(validate_address(
     new_input$Address[1:5],
     new_input$City,
     new_input$State,
     new_input$Zip,
     api_key = usps_api_key
   ))
-  expect_condition(validate_addresses(
+  expect_condition(validate_address(
     new_input$Address,
     new_input$City[1:5],
     new_input$State,
     new_input$Zip,
     api_key = usps_api_key
   ))
-  expect_condition(validate_addresses(
+  expect_condition(validate_address(
     new_input$Address,
     new_input$City,
     new_input$State[1:5],
     new_input$Zip,
     api_key = usps_api_key
   ))
-  expect_condition(validate_addresses(
+  expect_condition(validate_address(
     new_input$Address,
     new_input$City,
     new_input$State,

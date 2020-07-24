@@ -33,12 +33,12 @@
 #' state <- "IL"
 #' zip <- "60613"
 #' \dontrun{
-#' validate_addresses(address, city, state, zip, api_key = "API_KEY")
+#' validate_address(address, city, state, zip, api_key = "API_KEY")
 #' }
 #' @importFrom magrittr %>%
 #' @family address_funs
 #' @export
-validate_addresses <- function(address, city, state, zip, batch_size = 5,
+validate_address <- function(address, city, state, zip, batch_size = 5,
                                api_key) {
   stopifnot({
     length(address) == length(city) & length(address) == length(zip) &

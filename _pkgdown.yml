@@ -23,7 +23,7 @@ reference:
   - pin_clean
   - pin_format_pretty
   - format_as400
-  - validate_addresses
+  - validate_address
 - subtitle: Lookup Values
   desc: Convert between township names, assessment years, and triads
 - contents: 
