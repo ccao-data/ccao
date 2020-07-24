@@ -2,29 +2,43 @@
 % Please edit documentation in R/address_funs.R
 \name{validate_addresses}
 \alias{validate_addresses}
-\title{Verify and reformat address information with the USPS API.}
+\title{Verify and reformat address information with the USPS API}
 \usage{
-validate_addresses(address, city, zip, batch_size = 5)
+validate_addresses(
+  address,
+  city,
+  state,
+  zip,
+  batch_size = 5,
+  api_key = "USPS_API_KEY"
+)
 }
 \arguments{
-\item{address}{(character) string or vector of addresses ({number}
-{streetname} {unit if applicable}). Either 1 long or the same
-length as \code{city} and \code{zip}.}
+\item{address}{Character string or vector of addresses ({number}
+{streetname} {unit if applicable}). Either 1 long or the same length
+as \code{city}, \code{zip}, and \code{state}.}
 
-\item{city}{(character) string or vector of city and state
-associated with an address ({city} {state}). Either 1 long
-or the same length as \code{address} and \code{zip}.}
+\item{city}{Character string or vector of city and state associated with
+an address ({city} {state}). Either 1 long or the same length as
+\code{address}, \code{zip}, and \code{state}.}
 
-\item{zip}{(character) string or vector of 5-digit zip codes
-associated with an address. Either 1 long or the same length
-as \code{address} and \code{city}.}
+\item{state}{Character string or vector of 2-character state abbreviations
+associated with an address. Either 1 long or the same length as
+\code{address}, \code{city}, and \code{zip}.}
 
-\item{batch_size}{(default 5) specifies the number of queries to be
+\item{zip}{Character string or vector of 5-digit zip codes associated with
+an address. Either 1 long or the same length as \code{address},
+\code{city}, and \code{state}.}
+
+\item{batch_size}{Default 5. Specifies the number of queries to be
 sent to API at a time (maximum 5).}
+
+\item{api_key}{Default "USPS_API_KEY". Specifies the name of an environment
+variable in which the user's API key is saved. Will not run if the API key
+is an empty string, or if it is invalid.}
 }
 \value{
-validated_addresses (character) string or vector of verified
-  addresses formatted the following way:
+A string or vector of verified addresses formatted the following way:
     "{address}, {city}, {state}, {zip}".
   Throws error if input data types are incorrect or if length
   conditions of input vectors are not met.
@@ -39,5 +53,13 @@ Bulk verify address information using street address,
   machine for this function to work. This can be done by typing
   \code{Sys.setenv("USPS_API_KEY" = "XXXXXXXXXX")} in the RStudio
   console.
+}
+\examples{
+address <- "3726 N WILTON"
+city <- "CHICAGO  IL"
+zip <- "60613"
+
+validate_addresses(address, city, zip)
+
 }
 \concept{address_funs}

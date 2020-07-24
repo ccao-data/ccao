@@ -23,13 +23,14 @@ reference:
   - pin_clean
   - pin_format_pretty
   - format_as400
+  - validate_addresses
 - subtitle: Lookup Values
   desc: Convert between township names, assessment years, and triads
 - contents: 
   - town_convert
   - town_get_assmnt_year
   - town_get_triad
-- subtitle: Mangage Characteristics
+- subtitle: Manage Characteristics
   desc: Recode characteristic values, fix errors, and handle Home Improvement Exemptions (288s)
 - contents:
   - chars_288_active

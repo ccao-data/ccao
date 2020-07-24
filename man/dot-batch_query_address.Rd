@@ -2,35 +2,45 @@
 % Please edit documentation in R/address_funs.R
 \name{.batch_query_address}
 \alias{.batch_query_address}
-\title{Perform a single batched address query to the USPS API.}
+\title{Perform a single batched address query to the USPS API}
 \usage{
-.batch_query_address(address, city, state, zip, batch_size = 5)
+.batch_query_address(
+  address,
+  city,
+  state,
+  zip,
+  batch_size = 5,
+  api_key = "USPS_API_KEY"
+)
 }
 \arguments{
-\item{address}{(character) string or vector of addresses ({number}
+\item{address}{Character string or vector of addresses ({number}
 {streetname} {unit if applicable}). Either 1 long or the same length
 as \code{city}, \code{zip}, and \code{state}.}
 
-\item{city}{(character) string or vector of city and state associated with
+\item{city}{Character string or vector of city and state associated with
 an address ({city} {state}). Either 1 long or the same length as
 \code{address}, \code{zip}, and \code{state}.}
 
-\item{state}{(character) string or vector of 2-character state abbreviations
+\item{state}{Character string or vector of 2-character state abbreviations
 associated with an address. Either 1 long or the same length as
 \code{address}, \code{city}, and \code{zip}.}
 
-\item{zip}{(character) string or vector of 5-digit zip codes associated with
+\item{zip}{Character string or vector of 5-digit zip codes associated with
 an address. Either 1 long or the same length as \code{address},
 \code{city}, and \code{state}.}
 
-\item{batch_size}{(default 5) specifies the number of queries to be sent
+\item{batch_size}{Default 5. Specifies the number of queries to be sent
 to API at a time (maximum 5).}
+
+\item{api_key}{Default "USPS_API_KEY". Specifies the name of an environment
+variable in which the user's API key is saved. Will not run if the API key
+is an empty string, or if it is invalid.}
 }
 \value{
-df (tibble) a data frame with verified address information
-  from the API for one batch of at most 5 addresses. If an input address
-  is found to be nonexistent, it will not show up in the returned data
-  frame.
+A tibble with verified address information from the API for one batch
+  of at most 5 addresses. If an input address is found to be nonexistent,
+  it will not show up in the returned tibble.
 }
 \description{
 Generate 1-5 queries from the USPS API

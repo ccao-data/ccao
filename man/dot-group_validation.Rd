@@ -2,27 +2,30 @@
 % Please edit documentation in R/address_funs.R
 \name{.group_validation}
 \alias{.group_validation}
-\title{Validate all addresses within a data frame of addresses.}
+\title{Validate all addresses within a tibble of addresses}
 \usage{
-.group_validation(df, batch_size = 5)
+.group_validation(df, batch_size = 5, api_key = "USPS_API_KEY")
 }
 \arguments{
-\item{df}{(tibble) a data frame that must contain the following schema:
+\item{df}{A tibble that must contain the following schema:
 Address (character)
 City (character)
 State (character)
 Zip (character)}
 
-\item{batch_size}{(numeric, default 5) specifies the size of a transaction
+\item{batch_size}{Default 5. Specifies the size of a transaction
 (maximum 5 for USPS API)}
+
+\item{api_key}{Default "USPS_API_KEY". Specifies the name of an environment
+variable in which the user's API key is saved. Will not run if the API key
+is an empty string, or if it is invalid.}
 }
 \value{
-results (tibble) a data frame with the same fields as the
-  input data frame.
+A tibble with the same fields as the input tibble.
 }
 \description{
-This function takes a dataframe that has been pre-processed with
+This function takes a tibble that has been pre-processed with
   the .preprocess_address_data function. It runs through the address data in
   batches to work with the restrictions of the USPS API using
-  .batch_query_address until all addresses in the dataframe are verified.
+  .batch_query_address until all addresses in the tibble are verified.
 }

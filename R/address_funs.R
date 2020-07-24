@@ -11,16 +11,22 @@
 #'   console.
 #'
 #' @param address Character string or vector of addresses ({number}
-#'   {streetname} {unit, if applicable}). Either 1 long or the same
-#'   length as \code{city} and \code{zip}.
-#' @param city Character string or vector of city and state
-#'   associated with an address ({city} {state}). Either 1 long
-#'   or the same length as \code{address} and \code{zip}.
-#' @param zip Character string or vector of 5-digit zip codes
-#'   associated with an address. Either 1 long or the same length
-#'   as \code{address} and \code{city}.
+#'   {streetname} {unit if applicable}). Either 1 long or the same length
+#'   as \code{city}, \code{zip}, and \code{state}.
+#' @param city Character string or vector of city and state associated with
+#'   an address ({city} {state}). Either 1 long or the same length as
+#'   \code{address}, \code{zip}, and \code{state}.
+#' @param zip Character string or vector of 5-digit zip codes associated with
+#'   an address. Either 1 long or the same length as \code{address},
+#'   \code{city}, and \code{state}.
+#' @param state Character string or vector of 2-character state abbreviations
+#'   associated with an address. Either 1 long or the same length as
+#'   \code{address}, \code{city}, and \code{zip}.
 #' @param batch_size Default 5. Specifies the number of queries to be
-#' sent to API at a time (maximum 5).
+#'   sent to API at a time (maximum 5).
+#' @param api_key Default "USPS_API_KEY". Specifies the name of an environment
+#'   variable in which the user's API key is saved. Will not run if the API key
+#'   is an empty string, or if it is invalid.
 #'
 #' @return A string or vector of verified addresses formatted the following way:
 #'     "{address}, {city}, {state}, {zip}".
@@ -33,26 +39,35 @@
 #' zip <- "60613"
 #'
 #' validate_addresses(address, city, zip)
-#'
 #' @importFrom magrittr %>%
 #' @family address_funs
 #' @export
-validate_addresses <- function(address, city, zip, batch_size = 5) {
+validate_addresses <- function(address, city, state, zip, batch_size = 5,
+                               api_key = "USPS_API_KEY") {
   stopifnot({
-    length(address) == length(city) & length(address) == length(zip)
+    length(address) == length(city) & length(address) == length(zip) &
+      length(address) == length(state)
     length(address) != 0
-    length(city)    != 0
-    length(zip)     != 0
+    length(city) != 0
+    length(state) != 0
+    length(zip) != 0
+    Sys.getenv(api_key) != ""
   })
 
   # Create tibble of address information
-  address_df <- dplyr::tibble(Address = address, City = city, Zip = zip)
+  address_df <- dplyr::tibble(Address = address,
+                              City = city,
+                              Zip = zip,
+                              State = state)
 
   # Reformat columns
   address_df <- .preprocess_address_data(address_df)
 
   # Generate tibble of validated addresses
-  validated_addresses <- .group_validation(address_df, batch_size = batch_size)
+  validated_addresses <- .group_validation(address_df,
+    batch_size = batch_size,
+    api_key = api_key
+  )
 
   return(validated_addresses)
 }
@@ -68,7 +83,7 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
 #' @param df A tibble that includes columns named "Address", "City", and "Zip".
 #'
 #' @return The pre-processed tibble with address data.
-#' 
+#'
 #' @importFrom rlang .data
 #' @importFrom magrittr %>%
 .preprocess_address_data <- function(df) {
@@ -85,11 +100,8 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
     dplyr::mutate(
       Address = gsub("#", " ", stringr::str_trim(.data$Address)),
       City = stringr::str_trim(.data$City),
-      State = stringr::str_sub(.data$City, start = -2),
-      City = stringr::str_trim(
-        stringr::str_sub(.data$City, 1, -3),
-        side = "both"
-      )
+      State = stringr::str_trim(.data$State),
+      City = stringr::str_trim(.data$City)
     )
 
   return(df)
@@ -115,6 +127,9 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
 #'   \code{address}, \code{city}, and \code{zip}.
 #' @param batch_size Default 5. Specifies the number of queries to be sent
 #'   to API at a time (maximum 5).
+#' @param api_key Default "USPS_API_KEY". Specifies the name of an environment
+#'   variable in which the user's API key is saved. Will not run if the API key
+#'   is an empty string, or if it is invalid.
 #'
 #' @return A tibble with verified address information from the API for one batch
 #'   of at most 5 addresses. If an input address is found to be nonexistent,
@@ -122,7 +137,8 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
 #'
 #' @importFrom magrittr %>%
 #' @importFrom utils URLencode
-.batch_query_address <- function(address, city, state, zip, batch_size = 5) {
+.batch_query_address <- function(address, city, state, zip, batch_size = 5,
+                                 api_key = "USPS_API_KEY") {
   stopifnot({
     length(address) <= 5 &
       length(city) <= 5 &
@@ -137,7 +153,7 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
   # Initalize query tree
   query_so_far <- paste0(
     '<AddressValidateRequest USERID="',
-    Sys.getenv("USPS_API_KEY"),
+    Sys.getenv(api_key),
     '">'
   )
 
@@ -167,31 +183,36 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
 
   # SCRAPE DATA #
   # Read html result using xml2 package
-  html_data <- xml2::read_html(final_query)
+  html_data <- xml2::read_html(final_query) %>%
+    rvest::html_nodes("address")
 
   # Grab text of query result for each field using rvest package
   new_address <- html_data %>%
-    rvest::html_nodes("address2") %>%
-    rvest::html_text()
+    xml2::xml_find_first("address2") %>%
+    xml2::xml_text()
 
   new_city <- html_data %>%
-    rvest::html_nodes("city") %>%
-    rvest::html_text()
+    xml2::xml_find_first("city") %>%
+    xml2::xml_text()
 
   new_state <- html_data %>%
-    rvest::html_nodes("state") %>%
-    rvest::html_text()
+    xml2::xml_find_first("state") %>%
+    xml2::xml_text()
 
   new_zip <- html_data %>%
-    rvest::html_nodes("zip5") %>%
-    rvest::html_text()
+    xml2::xml_find_first("zip5") %>%
+    xml2::xml_text()
 
   # END SCRAPE DATA #
 
   # Create {batch_size}-row tibble of results (unless 1 or more addresses
   # in batch are invalid)
-  append <- dplyr::tibble(new_address, new_city, new_state, new_zip)
-  names(append) <- c("Address", "City", "State", "Zip")
+  append <- dplyr::tibble(
+    Address = new_address,
+    City = new_city,
+    State = new_state,
+    Zip = new_zip
+  )
 
   return(append)
 }
@@ -211,11 +232,13 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
 #'   Zip (character)
 #' @param batch_size Default 5. Specifies the size of a transaction
 #'   (maximum 5 for USPS API)
+#' @param api_key Default "USPS_API_KEY". Specifies the name of an environment
+#'   variable in which the user's API key is saved. Will not run if the API key
+#'   is an empty string, or if it is invalid.
 #'
 #' @importFrom rlang .data
 #' @return A tibble with the same fields as the input tibble.
-
-.group_validation <- function(df, batch_size = 5) {
+.group_validation <- function(df, batch_size = 5, api_key = "USPS_API_KEY") {
   stopifnot({
     "Address" %in% names(df)
     "City" %in% names(df)
@@ -262,7 +285,8 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
         city,
         state,
         zip,
-        batch_size = batch_size
+        batch_size = batch_size,
+        api_key = api_key
       )
 
       # Append verified addresses to results tibble
@@ -278,7 +302,8 @@ validate_addresses <- function(address, city, zip, batch_size = 5) {
       .data$State, ", ",
       .data$Zip
     )) %>%
-    dplyr::select(.data$Address)
+    dplyr::select(.data$Address) %>%
+    dplyr::mutate(Address = gsub("NA, NA, NA, NA", NA, .data$Address))
 
   return(results)
 }

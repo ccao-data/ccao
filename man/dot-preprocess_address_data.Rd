@@ -2,16 +2,15 @@
 % Please edit documentation in R/address_funs.R
 \name{.preprocess_address_data}
 \alias{.preprocess_address_data}
-\title{Reformat address data in preparation for API queries.}
+\title{Reformat address data in preparation for API queries}
 \usage{
 .preprocess_address_data(df)
 }
 \arguments{
-\item{df}{(tibble) a data frame that includes columns named "Address",
-"City", and "Zip".}
+\item{df}{A tibble that includes columns named "Address", "City", and "Zip".}
 }
 \value{
-df (tibble) the pre-processed data frame
+The pre-processed tibble with address data.
 }
 \description{
 Preprocess address data before sending to API. This
