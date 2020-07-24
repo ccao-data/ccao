@@ -19,9 +19,15 @@
 pin_clean <- function(pin) {
   stopifnot(
     is.vector(pin), # Must be vector input
-    is.character(pin), # Input vector must be char
-    all(!grepl("[a-z]", pin)) # No alphabet chars
+    is.character(pin) # Input vector must be char
   )
+
+  # No alphabet chars else warn
+  if (any(grepl("[a-z]", pin))) {
+    warning(
+      "PIN(s) contain alphabetical characters, they should be only numbers"
+    )
+  }
 
   # Remove separators and quotes
   out <- gsub(pattern = "-|'|\\\"", replacement = "", as.character(pin))
