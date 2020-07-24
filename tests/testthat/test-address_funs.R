@@ -1,6 +1,8 @@
 context("get api key")
 
+# Load from env variable that is passed via GitLab or .Renviron file
 usps_api_key <- Sys.getenv("USPS_API_KEY")
+if (nchar(usps_api_key) == 0) stop("Missing USPS_API_KEY env variable")
 
 context("test .preprocess_address_data()")
 
@@ -9,29 +11,14 @@ context("test .preprocess_address_data()")
 # Create input data frame
 input <- dplyr::tibble(
   Address = c(
-    "  3726 N WILTON ",
-    "7541 W BROWN #J",
-    "13200 BALTIC CR",
-    "11008 KEATING AVE  3E",
-    "15940 S 78TH AV ",
-    "GARFIELD"
+    "  3726 N WILTON ", "7541 W BROWN #J", "13200 BALTIC CR",
+    "11008 KEATING AVE  3E", "15940 S 78TH AV ", "GARFIELD"
   ),
   City = c(
-    "CHICAGO      ",
-    "FOREST PARK  ",
-    "	LEMONT    ",
-    "OAK LAWN     ",
-    "TINLEY PARK  ",
-    "CAT"
+    "CHICAGO      ", "FOREST PARK  ", "	LEMONT    ",
+    "OAK LAWN     ", "TINLEY PARK  ", "CAT"
   ),
-  State = c(
-    "IL",
-    "IL",
-    "IL",
-    "IL",
-    "IL",
-    "IL"
-  ),
+  State = c("IL", "IL", "IL", "IL", "IL", "IL"),
   Zip = c("60613", "60130", "60439", "60453", "60477", "3")
 )
 
@@ -40,15 +27,13 @@ processed <- .preprocess_address_data(input)
 
 # Create expected output data frame
 new_address <- c(
-  "3726 N WILTON",
-  "7541 W BROWN  J",
-  "13200 BALTIC CR",
-  "11008 KEATING AVE  3E",
-  "15940 S 78TH AV",
-  "GARFIELD"
+  "3726 N WILTON", "7541 W BROWN  J", "13200 BALTIC CR",
+  "11008 KEATING AVE  3E", "15940 S 78TH AV", "GARFIELD"
 )
-new_city <- c("CHICAGO", "FOREST PARK", "LEMONT",
-              "OAK LAWN", "TINLEY PARK", "CAT")
+new_city <- c(
+  "CHICAGO", "FOREST PARK", "LEMONT",
+  "OAK LAWN", "TINLEY PARK", "CAT"
+)
 new_zip <- c("60613", "60130", "60439", "60453", "60477", "3")
 new_state <- c("IL", "IL", "IL", "IL", "IL", "IL")
 
@@ -115,44 +100,53 @@ small_batch_output <- .batch_query_address(
 
 # Expected output
 bq_address <- c(
-  "3726 N WILTON AVE",
-  "7541 BROWN AVE UNIT J",
-  NA,
-  "11008 S KEATING AVE APT 3E",
-  "15940 78TH AVE"
+  "3726 N WILTON AVE", "7541 BROWN AVE UNIT J", NA,
+  "11008 S KEATING AVE APT 3E", "15940 78TH AVE"
 )
 bq_city <- c("CHICAGO", "FOREST PARK", NA, "OAK LAWN", "TINLEY PARK")
 bq_state <- c("IL", "IL", NA, "IL", "IL")
 bq_zip <- c("60613", "60130", NA, "60453", "60477")
 
 # Expected small output
-small_address <- c(
-  "3726 N WILTON AVE",
-  "7541 BROWN AVE UNIT J",
-  NA
-)
+small_address <- c("3726 N WILTON AVE", "7541 BROWN AVE UNIT J", NA)
 small_city <- c("CHICAGO", "FOREST PARK", NA)
 small_state <- c("IL", "IL", NA)
 small_zip <- c("60613", "60130", NA)
 
 # Compare results of function to expected output
 test_that("output is as expected", {
-  expect_equal(compare_na(batch_query_output$Address, bq_address),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE))
-  expect_equal(compare_na(batch_query_output$City, bq_city),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE))
-  expect_equal(compare_na(batch_query_output$State, bq_state),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE))
-  expect_equal(compare_na(batch_query_output$Zip, bq_zip),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE))
-  expect_equal(compare_na(small_batch_output$Address, small_address),
-               c(TRUE, TRUE, TRUE))
-  expect_equal(compare_na(small_batch_output$City, small_city),
-               c(TRUE, TRUE, TRUE))
-  expect_equal(compare_na(small_batch_output$State, small_state),
-               c(TRUE, TRUE, TRUE))
-  expect_equal(compare_na(small_batch_output$Zip, small_zip),
-               c(TRUE, TRUE, TRUE))
+  expect_equal(
+    compare_na(batch_query_output$Address, bq_address),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(batch_query_output$City, bq_city),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(batch_query_output$State, bq_state),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(batch_query_output$Zip, bq_zip),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(small_batch_output$Address, small_address),
+    c(TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(small_batch_output$City, small_city),
+    c(TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(small_batch_output$State, small_state),
+    c(TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(small_batch_output$Zip, small_zip),
+    c(TRUE, TRUE, TRUE)
+  )
 })
 
 # Ensure invalid batch sizes stop process
@@ -190,8 +184,10 @@ expected_output <- c(
 )
 
 test_that("output is as expected", {
-  expect_equal(compare_na(output_df$Address, expected_output),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE))
+  expect_equal(
+    compare_na(output_df$Address, expected_output),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
 })
 
 test_that("invalid input throws error", {
@@ -209,11 +205,13 @@ context("test validate_address()")
 
 ##### TEST validate_address() #####
 
-output <- validate_address(new_input$Address,
-                             new_input$City,
-                             new_input$State,
-                             new_input$Zip,
-                             api_key = usps_api_key)
+output <- validate_address(
+  new_input$Address,
+  new_input$City,
+  new_input$State,
+  new_input$Zip,
+  api_key = usps_api_key
+)
 
 expected_output <- c(
   "3726 N WILTON AVE, CHICAGO, IL, 60613",
@@ -226,8 +224,10 @@ expected_output <- c(
 )
 
 test_that("output is as expected", {
-  expect_equal(compare_na(output$Address, expected_output),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE))
+  expect_equal(
+    compare_na(output, expected_output),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
 })
 
 test_that("unequal input vector lengths throw error", {
