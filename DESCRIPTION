@@ -19,7 +19,11 @@ Imports:
     dplyr (>= 1.0.0),
     magrittr,
     rlang,
-    tidyr (>= 1.1.0)
+    rvest,
+    stringr,
+    tidyr (>= 1.1.0),
+    utils,
+    xml2
 RoxygenNote: 7.1.1
 Suggests: 
     covr,

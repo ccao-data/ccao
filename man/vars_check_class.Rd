@@ -2,7 +2,8 @@
 % Please edit documentation in R/vars_funs.R
 \name{vars_check_class}
 \alias{vars_check_class}
-\title{Check if a property class falls within its expected square footage and age boundaries}
+\title{Check if a property class falls within its expected square footage and age
+boundaries}
 \usage{
 vars_check_class(age, sqft, class)
 }
