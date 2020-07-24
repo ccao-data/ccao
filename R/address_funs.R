@@ -52,7 +52,6 @@ validate_addresses <- function(address, city, state, zip, batch_size = 5,
     length(city) != 0
     length(state) != 0
     length(zip) != 0
-    Sys.getenv(api_key) != ""
   })
   
   # Create tibble of address information
