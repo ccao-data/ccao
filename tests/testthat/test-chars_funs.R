@@ -122,7 +122,7 @@ chars_fake_updated <- chars_fake_universe %>%
 # Join to fake universe data
 updated_chars <- chars_sample_universe %>%
   dplyr::left_join(
-    chars_sparsify_complex %>% dplyr::mutate(QU_CLASS = as.character(QU_CLASS)),
+    chars_sparsify_complex %>% dplyr::mutate(QU_CLASS = substr(QU_CLASS, 1, 3)),
     by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
   ) %>%
   chars_update(
@@ -133,7 +133,7 @@ updated_chars <- chars_sample_universe %>%
 # Test with groups applied
 updated_chars_groups <- chars_sample_universe %>%
   dplyr::left_join(
-    chars_sparsify_complex %>% dplyr::mutate(QU_CLASS = as.character(QU_CLASS)),
+    chars_sparsify_complex %>% dplyr::mutate(QU_CLASS = substr(QU_CLASS, 1, 3)),
     by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
   ) %>%
   dplyr::group_by(TAX_YEAR) %>%
@@ -145,8 +145,8 @@ updated_chars_groups <- chars_sample_universe %>%
 # Test that output is identical to previous output
 test_that("data is identical to known good output", {
   expect_known_hash(chars_fake_updated, hash = "64a26a3b64")
-  expect_known_hash(updated_chars, hash = "10246b9174")
-  expect_known_hash(updated_chars_groups, hash = "0ee1cf5b06")
+  expect_known_hash(updated_chars, hash = "926ce6652f")
+  expect_known_hash(updated_chars_groups, hash = "d8c855e13a")
 })
 
 
