@@ -130,10 +130,23 @@ updated_chars <- chars_sample_universe %>%
     replacement_target = any_of(ccao::chars_cols$rep_target)
   )
 
+# Test with groups applied
+updated_chars_groups <- chars_sample_universe %>%
+  dplyr::left_join(
+    chars_sparsify_complex %>% dplyr::mutate(QU_CLASS = as.character(QU_CLASS)),
+    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
+  ) %>%
+  dplyr::group_by(TAX_YEAR) %>%
+  chars_update(
+    additive_target = any_of(ccao::chars_cols$add_target),
+    replacement_target = any_of(ccao::chars_cols$rep_target)
+  )
+
 # Test that output is identical to previous output
 test_that("data is identical to known good output", {
-  expect_known_hash(updated_chars, hash = "d93d814772")
-  expect_known_hash(chars_fake_updated, hash = "46349a642a")
+  expect_known_hash(chars_fake_updated, hash = "64a26a3b64")
+  expect_known_hash(updated_chars, hash = "10246b9174")
+  expect_known_hash(updated_chars_groups, hash = "0ee1cf5b06")
 })
 
 

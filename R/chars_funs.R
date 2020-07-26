@@ -336,12 +336,11 @@ chars_update <- function(data, additive_target, replacement_target) {
   # columns specified and ADD or REPLACE their values using the equivalent
   # ADDCHARS column
   data %>%
-    dplyr::rowwise() %>%
     dplyr::mutate(
       dplyr::across(
         {{ additive_target }},
         function(x, y = dplyr::cur_column()) {
-          sum(x, get(chars_get_col(y)), na.rm = T)
+          rowSums(cbind(x, get(chars_get_col(y))), na.rm = T)
         }
       ),
       dplyr::across(
@@ -349,7 +348,7 @@ chars_update <- function(data, additive_target, replacement_target) {
         function(x, y = dplyr::cur_column()) {
           source_col <- get(chars_get_col(y))
           idx <- !is.na(source_col) & source_col != 0
-          replace(x, idx, source_col)
+          replace(x, which(idx), source_col[idx])
         }
       )
     )

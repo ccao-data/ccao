@@ -115,22 +115,38 @@ small_zip <- c("60613", "60130", NA)
 
 # Compare results of function to expected output
 test_that("output is as expected", {
-  expect_equal(compare_na(batch_query_output$Address, bq_address),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE))
-  expect_equal(compare_na(batch_query_output$City, bq_city),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE))
-  expect_equal(compare_na(batch_query_output$State, bq_state),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE))
-  expect_equal(compare_na(batch_query_output$Zip, bq_zip),
-               c(TRUE, TRUE, TRUE, TRUE, TRUE))
-  expect_equal(compare_na(small_batch_output$Address, small_address),
-               c(TRUE, TRUE, TRUE))
-  expect_equal(compare_na(small_batch_output$City, small_city),
-               c(TRUE, TRUE, TRUE))
-  expect_equal(compare_na(small_batch_output$State, small_state),
-               c(TRUE, TRUE, TRUE))
-  expect_equal(compare_na(small_batch_output$Zip, small_zip),
-               c(TRUE, TRUE, TRUE))
+  expect_equal(
+    compare_na(batch_query_output$Address, bq_address),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(batch_query_output$City, bq_city),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(batch_query_output$State, bq_state),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(batch_query_output$Zip, bq_zip),
+    c(TRUE, TRUE, TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(small_batch_output$Address, small_address),
+    c(TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(small_batch_output$City, small_city),
+    c(TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(small_batch_output$State, small_state),
+    c(TRUE, TRUE, TRUE)
+  )
+  expect_equal(
+    compare_na(small_batch_output$Zip, small_zip),
+    c(TRUE, TRUE, TRUE)
+  )
 })
 
 # Ensure invalid batch sizes stop process
