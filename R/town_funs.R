@@ -27,7 +27,7 @@ town_convert <- function(town) {
 
   # Return town name for two digit numeric codes and numeric codes
   # for town name
-  out <- ifelse(nchar(town) != 2 & !is.na(is.numeric(town)),
+  out <- ifelse(nchar(town) != 2 & suppressWarnings(is.na(as.numeric(town))),
     as.character(ccao::town_dict$township_code[
       match(town, ccao::town_dict$township_name)
     ]),
