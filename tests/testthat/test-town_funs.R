@@ -35,6 +35,8 @@ test_that("incorrect inputs throw errors", {
 
 ##### TEST town_get_triad() #####
 
+context("test town_get_triad()")
+
 towns <- c("Evanston", "Lyons", "25", "10", "77", "West Chicago")
 
 test_that("output is correct", {
@@ -64,6 +66,8 @@ test_that("incorrect inputs throw errors", {
 
 ##### TEST town_get_assmnt_year() #####
 
+context("test town_get_assmnt_year()")
+
 towns <- c("Evanston", "Lyons", "25", "10", "77", "West Chicago")
 
 test_that("output is correct", {
@@ -78,6 +82,14 @@ test_that("output is correct", {
   expect_equal(
     town_get_assmnt_year(towns, 1995, round_type = "ceiling"),
     c(1995, 1996, 1995, 1995, 1997, 1997)
+  )
+  expect_equal(
+    town_get_assmnt_year(towns[1:3], c(2008, 2003, 2020), round_type = "floor"),
+    c(2007, 2002, 2019)
+  )
+  expect_equal(
+    town_get_assmnt_year(towns, 2001:2006, round_type = "ceiling"),
+    c(2001, 2002, 2004, 2004, 2006, 2006)
   )
 })
 

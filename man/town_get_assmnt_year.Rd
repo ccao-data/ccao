@@ -16,9 +16,10 @@ must be title case to match correctly.}
 
 \item{year}{Default current year. Year to find assessment year closest to.
 For example, entering 1995 will find the closest assessment year to 1995
-for all the entered triads.}
+for all the entered triads. Can also be a vector of years the same length
+as \code{town}.}
 
-\item{round_type}{Default nearest. The type of rounding to use to find the
+\item{round_type}{Default "nearest". The type of rounding to use to find the
 closest assessment year. Nearest will find the nearest. Floor will find the
 assessment year prior to \code{year}. Ceiling will find the assessment year
 after \code{year}.}
