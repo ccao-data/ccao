@@ -69,6 +69,13 @@ test_that("output is as expected", {
     )
   )
   expect_equal(
+    vars_rename(
+      c("apts", "condition_desirability_and_utility", "per_ass"),
+      names_from = "socrata"
+    ),
+    c("char_apts", "meta_cdu", "char_per_ass")
+  )
+  expect_equal(
     vars_rename(c("APTS", "EXT_WALL", "BEDS")),
     c("char_apts", "char_ext_wall", "char_beds")
   )
@@ -91,14 +98,16 @@ recode_test_data <- dplyr::tibble(
   PIN = rep("12345", 4),
   EXT_WALL = c("1", "2", "0", NA),
   BSMT = c("1", "3", "4", "5"),
-  value = 1000:1003
+  value = 1000:1003,
+  roof_cnst = c("1", "2", "4", "3")
 )
 
 recode_correct <- dplyr::tibble(
   PIN = rep("12345", 4),
   EXT_WALL = c("Frame", "Masonry", NA, NA),
   BSMT = c("Full", "Partial", "Crawl", NA),
-  value = 1000:1003
+  value = 1000:1003,
+  roof_cnst = c("Shingle + Asphalt", "Tar + Gravel", "Shake", "Slate")
 )
 
 # Test for expected outputs

@@ -32,6 +32,7 @@ Options for \code{names_from} and \code{names_to} are:
 \itemize{
 \item \code{"sql"} (with names like TAX_YEAR, GAR1_SIZE)
 \item \code{"addchars"} (with names like QU_AGE, QU_GARAGE_SIZE)
+\item \code{"socrata"} (with names like tax_year, gar1_size)
 \item \code{"standard"} (with names like meta_tax_year, meta_gar1_size)
 \item \code{"pretty"} (with names like Year, Garage 1 Size)
 }

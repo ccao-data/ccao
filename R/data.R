@@ -215,6 +215,7 @@
 #'   \item{var_name_sql}{Column name of variable as stored in CCAO SQL servers}
 #'   \item{var_name_addchars}{Column name of variable when stored in the
 #'   ADDCHARS SQL table}
+#'   \item{var_name_socrata}{Column name used for the Cook County Data Portal}
 #'   \item{var_name_standard}{Column name used for flat files, open data, and
 #'   modeling}
 #'   \item{var_name_pretty}{Human-readable column name used for publication}

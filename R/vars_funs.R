@@ -75,6 +75,7 @@ vars_check_class <- function(age, sqft, class) {
 #'
 #' - \code{"sql"} (with names like TAX_YEAR, GAR1_SIZE)
 #' - \code{"addchars"} (with names like QU_AGE, QU_GARAGE_SIZE)
+#' - \code{"socrata"} (with names like tax_year, gar1_size)
 #' - \code{"standard"} (with names like meta_tax_year, meta_gar1_size)
 #' - \code{"pretty"} (with names like Year, Garage 1 Size)
 #'
@@ -102,12 +103,14 @@ vars_check_class <- function(age, sqft, class) {
 #' @export
 vars_rename <- function(data, names_from = "sql", names_to = "standard", type = "inplace") { # nolint
 
+  pos_names <- c("sql", "addchars", "socrata", "standard", "pretty")
+
   # Stop if input is not a data frame of character vector or if name targets are
   # not within the preset types
   stopifnot(
     is.data.frame(data) | is.character(data),
-    tolower(names_from) %in% c("sql", "addchars", "standard", "pretty"),
-    tolower(names_to) %in% c("sql", "addchars", "standard", "pretty"),
+    tolower(names_from) %in% pos_names,
+    tolower(names_to) %in% pos_names,
     tolower(type) %in% c("inplace", "vector")
   )
 
