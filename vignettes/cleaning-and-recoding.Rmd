@@ -1,5 +1,5 @@
 ---
-title: "Cleaning and Recoding"
+title: "Cleaning and recoding"
 ---
 
 ```{r, include = FALSE}

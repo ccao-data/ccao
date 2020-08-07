@@ -1,5 +1,5 @@
 ---
-title: "Working with 288 Data"
+title: "Working with 288 data"
 ---
 
 ```{r, include = FALSE}

@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# CCAO Package <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# CCAO package <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 A package to manage, distribute, and version control *CCAO-specific* functions. These functions are used throughout CCAO applications, models, and diagnostics. For generalized versions of assessment-related functions, see [assessR](https://gitlab.com/ccao-data-science---modeling/packages/assessr).
 
@@ -29,7 +29,7 @@ You can install the released version of `ccao` directly from GitLab by running t
 remotes::install_gitlab("ccao-data-science---modeling/packages/ccao")
 ```
 
-## Basic Usage
+## Basic usage
 
 Here is a quick example using `ccao` functions with included sample data:
 
@@ -62,7 +62,7 @@ sample_data %>%
 
 ```
 
-## CCAO Colors
+## CCAO colors
 
 The CCAO Communications Department created a palette of colors for CCAO press materials and visualizations. Navy, gold, and buttermilk are the colors used in the CCAO logo. Typically navy and gold are used for discrete values in plots. The hex codes for these colors are available via the named list `ccao_colors`.
 

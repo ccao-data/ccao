@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# CCAO Package <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# CCAO package <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 A package to manage, distribute, and version control *CCAO-specific*
 functions. These functions are used throughout CCAO applications,
@@ -27,7 +27,7 @@ running the following R command after installing
 remotes::install_gitlab("ccao-data-science---modeling/packages/ccao")
 ```
 
-## Basic Usage
+## Basic usage
 
 Here is a quick example using `ccao` functions with included sample
 data:
@@ -77,7 +77,7 @@ sample_data %>%
 | 05-08-104-012                  | 2013 | 23            |  80 | 4 cars        | Slab     | New Trier     | North          |             2022 |
 | 05-08-104-012                  | 2014 | 23            |  81 | 4 cars        | Slab     | New Trier     | North          |             2022 |
 
-## CCAO Colors
+## CCAO colors
 
 The CCAO Communications Department created a palette of colors for CCAO
 press materials and visualizations. Navy, gold, and buttermilk are the

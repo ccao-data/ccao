@@ -4,7 +4,7 @@ url: https://ccao-data-science---modeling.gitlab.io/packages/ccao/
 reference:
 
 - title: Functions
-- subtitle: Measure Assessment Performance
+- subtitle: Measure assessment performance
   desc: > 
     Calculate assessment performance statistics in accordance with the CCAO
     Data Science Department’s Standard Operating Procedure on Sales Ratio Studies.
@@ -17,20 +17,20 @@ reference:
   - ccao_cod
   - ccao_prd
   - ccao_prb
-- subtitle: Format Data
+- subtitle: Format data
   desc: Clean and format Property Index Numbers (PINs) and other common CCAO data
 - contents:
   - pin_clean
   - pin_format_pretty
   - format_as400
   - validate_address
-- subtitle: Lookup Values
+- subtitle: Lookup values
   desc: Convert between township names, assessment years, and triads
 - contents: 
   - town_convert
   - town_get_assmnt_year
   - town_get_triad
-- subtitle: Manage Characteristics
+- subtitle: Manage characteristics
   desc: Recode characteristic values, fix errors, and handle Home Improvement Exemptions (288s)
 - contents:
   - chars_288_active
@@ -46,13 +46,13 @@ reference:
   desc: Lookups and code translations used in functions
 - contents:
   - ends_with("_dict")
-- subtitle: Spatial Data
+- subtitle: Spatial data
   desc: Spatial boundaries and recodes. Must load `sf` library before using
 - contents:
   - nbhd_recode
   - nbhd_shp
   - town_shp
-- subtitle: Sample Data
+- subtitle: Sample data
   desc: Sample data frames pulled directly from CCAO SQL
 - contents:
   - chars_sample_addchars
