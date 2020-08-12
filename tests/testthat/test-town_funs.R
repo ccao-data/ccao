@@ -98,10 +98,13 @@ test_that("Missing values are handled correctly", {
     town_get_assmnt_year(c(towns, NA, NULL, NaN, "02"), round_type = "floor"),
     c(2019, 2020, 2019, 2019, 2018, 2018, NA, NA, NA)
   )
+  expect_equal(town_get_assmnt_year(NA_character_, 2010:2012), rep(NA_real_, 3))
+  expect_equal(town_get_assmnt_year(c("25", NA), 2014:2015), c(2013, NA))
 })
 
 test_that("incorrect inputs throw errors", {
-  expect_condition(town_get_assmnt_year(data.frame(towns)))
-  expect_condition(town_get_assmnt_year(list(towns)))
-  expect_condition(town_get_assmnt_year(c(02, 11, 10)))
+  expect_error(town_get_assmnt_year(data.frame(towns)))
+  expect_error(town_get_assmnt_year(list(towns)))
+  expect_error(town_get_assmnt_year(c(02, 11, 10)))
+  expect_error(town_get_assmnt_year(c("10", "77"), 2010:2014))
 })

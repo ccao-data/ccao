@@ -115,6 +115,10 @@ town_get_assmnt_year <- function(town,
                                  year = as.integer(format(Sys.Date(), "%Y")),
                                  round_type = "nearest") {
 
+  # Replace NAs, feed through function then return to NA in final output
+  year_na_idx <- is.na(year)
+  year[year_na_idx] <- as.integer(format(Sys.Date(), "%Y"))
+
   # Input error handling
   stopifnot(
     is.vector(town), # input must be vector
@@ -122,12 +126,7 @@ town_get_assmnt_year <- function(town,
     is.numeric(year), # year must be numeric
     year >= 1991, # year must be greater than 1991
     year < ((as.integer(format(Sys.Date(), "%Y"))) + 100),
-    round_type %in% c("nearest", "ceiling", "floor"),
-    # Input vectors must be same len OR one of them must be len == 1
-    xor(
-      length(town) == length(year) & length(town) != 1,
-      (length(town) == 1 | length(year) == 1)
-    )
+    round_type %in% c("nearest", "ceiling", "floor")
   )
 
   # Create a vector of years, starting in 1991. Use this vector to create a
@@ -149,26 +148,33 @@ town_get_assmnt_year <- function(town,
   )
 
   # Map over inputs
-  out <- mapply(
-    function(x, y) {
+  out <- tryCatch({
+      mapply(
+        function(x, y) {
 
-      # Depending on the round type, look up the year of the nearest assessment
-      # relative to the input year
-      switch(
-        round_type,
-        nearest = x[which.min(abs(x - y))],
-        floor   = x[findInterval(y, x)],
-        ceiling = x[findInterval(y, x) + !(y %in% x)],
+          # Depending on the round type, look up the year of the nearest
+          # assessment relative to the input year
+          switch(
+            round_type,
+            nearest = x[which.min(abs(x - y))],
+            floor   = x[findInterval(y, x)],
+            ceiling = x[findInterval(y, x) + !(y %in% x)],
+          )
+        },
+        x = years_for_this_triad,
+        y = year,
+        SIMPLIFY = TRUE,
+        USE.NAMES = FALSE
       )
     },
-    x = years_for_this_triad,
-    y = year,
-    SIMPLIFY = TRUE,
-    USE.NAMES = FALSE
+    error = function(e) e,
+    warning = function(w) {
+      stop("Longer argument must be a multiple of length of shorter")
+    }
   )
 
   # Replace bad inputs with NA
-  out <- as.numeric(replace(out, is.na(triads) | is.na(year), NA))
+  out <- as.numeric(replace(out, is.na(triads) | year_na_idx, NA))
 
   return(out)
 }

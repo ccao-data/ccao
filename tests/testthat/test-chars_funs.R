@@ -20,17 +20,22 @@ test_that("output is as expected", {
   expect_equal(chars_288_out_long, list(2017:2021, 2013:2018))
   expect_equal(
     chars_288_active(2010, c("25", NA)),
-    list(2010:2015, NA_character_)
+    list(2010:2015, NA_real_)
   )
   expect_equal(
     chars_288_active(c(2010, NA), c("25", "10")),
     list(2010:2015, NA_real_)
   )
+  expect_equal(
+    chars_288_active(NA_real_, c("25", "10")),
+    list(NA_real_, NA_real_)
+  )
 })
 
 test_that("bad input data stops execution", {
-  expect_condition(chars_288_active(c(2013, 2010), c("25", "10", "25")))
-  expect_condition(chars_288_active(1980, c("25", "10", "25")))
+  expect_error(chars_288_active(c(2013, 2010), c("25", "10", "25")))
+  expect_error(chars_288_active(1980, c("25", "10", "25")))
+  expect_error(chars_288_active(2010:2013, c("25", "10", "10")))
 })
 
 
@@ -176,13 +181,14 @@ test_that("output is as expected", {
 })
 
 test_that("bad input data throws errors", {
-  expect_condition(chars_fix_age(80, 1990, "cat"))
-  expect_condition(chars_fix_age(80:90, 2010:2015, "25"))
+  expect_error(chars_fix_age(80, 1990, "cat"))
+  expect_error(chars_fix_age(80:90, 2010:2015, "25"))
+  expect_error(chars_fix_age(80:82, 2010:2011, "25"))
   expect_equal(chars_fix_age(80, 2010, "cat"), NA_real_)
 })
 
 test_that("missing data inputs returns NA outputs", {
   expect_equal(chars_fix_age(NA_real_, 2010, "25"), NA_real_)
   expect_equal(chars_fix_age(120, NA_real_, "25"), NA_real_)
-  expect_equal(chars_fix_age(120, 2010, NA_character_), NA_character_)
+  expect_equal(chars_fix_age(120, 2010, NA_character_), NA_real_)
 })

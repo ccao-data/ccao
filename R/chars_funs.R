@@ -44,25 +44,15 @@ chars_fix_age <- function(age, year, town) {
     is.character(town) # Input vector must be char.
   )
 
-  # Loop through inputs and calculate the true age for each set
-  mapply(
-    function(x, y, z) {
-      if (is.na(x) | is.na(y)) {
-        return(NA_real_)
-      } else if (is.na(z)) {
-        return(NA_character_)
-      } else {
-        year_diff <- y - ccao::town_get_assmnt_year(z, y, round_type = "floor")
+  # Calculate the year offset to add to age
+  year_diff <- year - town_get_assmnt_year(town, year, round_type = "floor")
 
-        return(x + year_diff)
-      }
-    },
-    x = age,
-    y = year,
-    z = town,
-    SIMPLIFY = TRUE,
-    USE.NAMES = FALSE
-  )
+  # Throw error if length of age isn't multiple of other two args
+  if (length(age) %% length(year_diff) != 0) {
+    stop("Longer argument must be a multiple of length of shorter")
+  }
+
+  return(age + year_diff)
 }
 
 
@@ -118,38 +108,40 @@ chars_288_active <- function(start_year, town) {
   # Input checking and error handling
   stopifnot(
     is.numeric(start_year), # Input years must be numeric
-    is.character(town), # Input vector must be char.
-    # Input vectors must be same len OR one of them must be len == 1
-    xor(
-      length(start_year) == length(town) & length(start_year) != 1,
-      (length(start_year) == 1 | length(town) == 1)
-    )
+    is.character(town) # Input vector must be char.
   )
 
   # Loop through inputs and calculate which years between start_year and
   # start_year + 8 will be active based on the town's reassessment cycle
-  mapply(
-    function(x, y) {
-      if (is.na(x)) {
-        return(NA_real_)
-      } else if (is.na(y)) {
-        return(NA_character_)
-      } else {
-        potentially_active_years <- x:(x + 8)
+  out <- tryCatch({
+      mapply(
+        function(x, y) {
+          if (is.na(x) | is.na(y)) {
+            return(NA_real_)
+          } else {
+            potentially_active_years <- x:(x + 8)
 
-        idx <- potentially_active_years >= x &
-          potentially_active_years < max(
-            x + 4,
-            ccao::town_get_assmnt_year(y, x + 4, round_type = "ceiling")
-          )
+            idx <- potentially_active_years >= x &
+              potentially_active_years < max(
+                x + 4,
+                ccao::town_get_assmnt_year(y, x + 4, round_type = "ceiling")
+              )
 
-        return(potentially_active_years[idx])
-      }
+            return(potentially_active_years[idx])
+          }
+        },
+        x = start_year,
+        y = town,
+        SIMPLIFY = FALSE
+      )
     },
-    x = start_year,
-    y = town,
-    SIMPLIFY = FALSE
+    error = function(e) stop(e),
+    warning = function(w) {
+      stop("Longer argument must be a multiple of length of shorter")
+    }
   )
+
+  return(out)
 }
 
 
