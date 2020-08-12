@@ -16,13 +16,16 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    assessr (>= 0.3.0),
+    assessr (>= 0.4.0),
     dplyr (>= 1.0.0),
+    gstat,
     magrittr,
     rlang,
     rvest,
+    sf,
     stringr,
     tidyr (>= 1.1.0),
+    tidyselect,
     utils,
     xml2
 RoxygenNote: 7.1.1
