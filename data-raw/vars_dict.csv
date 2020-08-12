@@ -48,22 +48,22 @@ GAR1_SIZE,QU_GARAGE_SIZE,gar1_size,char_gar1_size,Garage 1 Size,char,categorical
 GAR1_SIZE,QU_GARAGE_SIZE,gar1_size,char_gar1_size,Garage 1 Size,char,categorical,TRUE,TRUE,TRUE,6,3.5 cars,3.5CAR,
 GAR1_SIZE,QU_GARAGE_SIZE,gar1_size,char_gar1_size,Garage 1 Size,char,categorical,TRUE,TRUE,TRUE,7,0 cars,0CAR,
 GAR1_SIZE,QU_GARAGE_SIZE,gar1_size,char_gar1_size,Garage 1 Size,char,categorical,TRUE,TRUE,TRUE,8,4 cars,4CAR,
-GAR2_AREA,,gar2_area,char_gar2_area,Garage 2 Area,char,categorical,TRUE,FALSE,FALSE,1,Yes,YES,"Is Garage 2 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
-GAR2_AREA,,gar2_area,char_gar2_area,Garage 2 Area,char,categorical,TRUE,FALSE,FALSE,2,No,NO,"Is Garage 2 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
-GAR2_ATT,,gar2_att,char_gar2_att,Garage 2 Attached,char,categorical,TRUE,FALSE,FALSE,1,Yes,YES,
-GAR2_ATT,,gar2_att,char_gar2_att,Garage 2 Attached,char,categorical,TRUE,FALSE,FALSE,2,No,NO,
-GAR2_CNST,,gar2_cnst,char_gar2_cnst,Garage 2 Material,char,categorical,TRUE,FALSE,FALSE,1,Frame,FRAM,
-GAR2_CNST,,gar2_cnst,char_gar2_cnst,Garage 2 Material,char,categorical,TRUE,FALSE,FALSE,2,Masonry,MASR,
-GAR2_CNST,,gar2_cnst,char_gar2_cnst,Garage 2 Material,char,categorical,TRUE,FALSE,FALSE,3,Frame + Masonry,FRMA,
-GAR2_CNST,,gar2_cnst,char_gar2_cnst,Garage 2 Material,char,categorical,TRUE,FALSE,FALSE,4,Stucco,STUC,
-GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,1,1 cars,1CAR,
-GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,2,1.5 cars,1.5CAR,
-GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,3,2 cars,2CAR,
-GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,4,2.5 cars,2.5CAR,
-GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,5,3 cars,3CAR,
-GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,6,3.5 cars,3.5CAR,
-GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,7,0 cars,0CAR,
-GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,8,4 cars,4CAR,
+GAR2_AREA,,gar2_area,char_gar2_area,Garage 2 Area,char,categorical,FALSE,FALSE,FALSE,1,Yes,YES,"Is Garage 2 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
+GAR2_AREA,,gar2_area,char_gar2_area,Garage 2 Area,char,categorical,FALSE,FALSE,FALSE,2,No,NO,"Is Garage 2 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
+GAR2_ATT,,gar2_att,char_gar2_att,Garage 2 Attached,char,categorical,FALSE,FALSE,FALSE,1,Yes,YES,
+GAR2_ATT,,gar2_att,char_gar2_att,Garage 2 Attached,char,categorical,FALSE,FALSE,FALSE,2,No,NO,
+GAR2_CNST,,gar2_cnst,char_gar2_cnst,Garage 2 Material,char,categorical,FALSE,FALSE,FALSE,1,Frame,FRAM,
+GAR2_CNST,,gar2_cnst,char_gar2_cnst,Garage 2 Material,char,categorical,FALSE,FALSE,FALSE,2,Masonry,MASR,
+GAR2_CNST,,gar2_cnst,char_gar2_cnst,Garage 2 Material,char,categorical,FALSE,FALSE,FALSE,3,Frame + Masonry,FRMA,
+GAR2_CNST,,gar2_cnst,char_gar2_cnst,Garage 2 Material,char,categorical,FALSE,FALSE,FALSE,4,Stucco,STUC,
+GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,1,1 cars,1CAR,
+GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,2,1.5 cars,1.5CAR,
+GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,3,2 cars,2CAR,
+GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,4,2.5 cars,2.5CAR,
+GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,5,3 cars,3CAR,
+GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,6,3.5 cars,3.5CAR,
+GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,7,0 cars,0CAR,
+GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,8,4 cars,4CAR,
 HBATH,QU_HALF_BATH,hbath,char_hbath,Half Baths,char,numeric,TRUE,FALSE,TRUE,,,,"Number of half baths, defined as bathrooms without a shower or bathtub."
 HD_SF,,hd_sf,char_hd_sf,Land Square Feet,char,numeric,TRUE,TRUE,TRUE,,,,"Square feet of the land (not just the building) of the property. Note that land is divided into 'plots' and 'parcels' - this field applies to parcels, identified by PIN."
 HEAT,QU_HEAT,heat,char_heat,Central Heating,char,categorical,TRUE,TRUE,TRUE,1,Warm Air Furnace,FURN,
