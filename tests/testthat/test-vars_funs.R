@@ -73,7 +73,7 @@ test_that("output is as expected", {
       c("apts", "condition_desirability_and_utility", "per_ass"),
       names_from = "socrata"
     ),
-    c("char_apts", "meta_cdu", "char_per_ass")
+    c("char_apts", "meta_cdu", "meta_per_ass")
   )
   expect_equal(
     vars_rename(c("APTS", "EXT_WALL", "BEDS")),
