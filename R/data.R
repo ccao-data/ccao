@@ -224,10 +224,12 @@
 #'   calculated logical/indicator variable; econ = calculated economic
 #'   information; geo = attached/calculated geographic information}
 #'   \item{var_data_type}{R data type variable values should be stored as}
-#'   \item{var_is_predictor}{Logical value indicating whether to use variable
-#'   in modeling on the right-hand side. Left-hand side is always sale price}
 #'   \item{var_is_published}{Logical value indicating whether to publish in
 #'   open data}
+#'   \item{var_is_clustered}{Logical value indicating whether to use variable
+#'   in comparables clustering algorithm}
+#'   \item{var_is_predictor}{Logical value indicating whether to use variable
+#'   in modeling on the right-hand side. Left-hand side is always sale price}
 #'   \item{var_code}{Factor value for categorical variable. These are the values
 #'   stored in the AS/400}
 #'   \item{var_value}{Human-readable translation of factor value}
