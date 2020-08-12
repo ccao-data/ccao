@@ -104,8 +104,8 @@ OHEAT,,oheat,char_oheat,Other Heating,char,categorical,TRUE,TRUE,TRUE,4,Solar,SO
 OHEAT,,oheat,char_oheat,Other Heating,char,categorical,TRUE,TRUE,TRUE,5,None,NONE,
 OT_IMPR,,ot_impr,char_ot_impr,Other Improvements,char,numeric,TRUE,FALSE,FALSE,,,,
 other_perc,,other_perc,geo_other_perc,Percent Pop. Other,geo,numeric,FALSE,FALSE,FALSE,,,,Other population percentage of the census tract containing the property centroid.
-DT_PER_ASS,,dt_per_ass,char_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
-PER_ASS,,per_ass,char_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
+DT_PER_ASS,,dt_per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
+PER_ASS,,per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
 PIN,QU_PIN,pin,meta_pin,Property Identification Number,meta,character,TRUE,FALSE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
 PORCH,QU_PORCH,porch,char_porch,Porch,char,categorical,TRUE,TRUE,TRUE,1,Frame Enclosed,FRAM,
 PORCH,QU_PORCH,porch,char_porch,Porch,char,categorical,TRUE,TRUE,TRUE,2,Masonry Enclosed,MSRY,
