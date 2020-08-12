@@ -15,7 +15,6 @@ ATTIC_TYPE,QU_ATTIC_FINISH,attic_type,char_attic_type,Attic Type,char,categorica
 ATTIC_TYPE,QU_ATTIC_FINISH,attic_type,char_attic_type,Attic Type,char,categorical,TRUE,TRUE,TRUE,2,Partial,PT,
 ATTIC_TYPE,QU_ATTIC_FINISH,attic_type,char_attic_type,Attic Type,char,categorical,TRUE,TRUE,TRUE,3,None,NO,
 BEDS,QU_BEDS,beds,char_beds,Bedrooms,char,numeric,TRUE,FALSE,TRUE,,,,"Number of bedrooms in the property, defined based on building square footage and the judgement of the person in the field."
-black_perc,,,geo_black_perc,Percent Pop. Black,geo,numeric,FALSE,FALSE,FALSE,,,,Black population percentage of the census tract containing the property centroid.
 BLDG_SF,QU_SQFT_BLD,bldg_sf,char_bldg_sf,Building Square Feet,char,numeric,TRUE,TRUE,TRUE,,,,As measured from the exterior of the building.
 BSMT,QU_BASEMENT_TYPE,bsmt,char_bsmt,Basement,char,categorical,TRUE,TRUE,TRUE,1,Full,FL,
 BSMT,QU_BASEMENT_TYPE,bsmt,char_bsmt,Basement,char,categorical,TRUE,TRUE,TRUE,2,Slab,SL,
@@ -24,23 +23,14 @@ BSMT,QU_BASEMENT_TYPE,bsmt,char_bsmt,Basement,char,categorical,TRUE,TRUE,TRUE,4,
 BSMT_FIN,QU_BASEMENT_FINISH,bsmt_fin,char_bsmt_fin,Basement Finish,char,categorical,TRUE,TRUE,TRUE,1,Formal Rec Room,REC,
 BSMT_FIN,QU_BASEMENT_FINISH,bsmt_fin,char_bsmt_fin,Basement Finish,char,categorical,TRUE,TRUE,TRUE,2,Apartment,APT,
 BSMT_FIN,QU_BASEMENT_FINISH,bsmt_fin,char_bsmt_fin,Basement Finish,char,categorical,TRUE,TRUE,TRUE,3,Unfinished,UNF,
-CDU,,condition_desirability_and_utility,meta_cdu,"Condition, Desirability, and Utility",meta,character,TRUE,FALSE,FALSE,,,,"Dozens of codes attached to face sheet that denote a number of seemingly unrelated characteristics associated with a PIN, ranging from condition to types of subsidies. This field does not match across the SQL server/AS-400."
-census_tract,,tractce,geo_census_tract,Census Tract,geo,character,FALSE,FALSE,FALSE,,,,Last 6 digits of GEOID for matched census tract (tract ID only).
-centroid_x,,centroid_x,geo_longitude,Longitude,geo,numeric,TRUE,FALSE,FALSE,,,,"Longitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
-centroid_y,,centroid_y,geo_latitude,Latitude,geo,numeric,TRUE,FALSE,FALSE,,,,"Latitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
-CLASS,QU_CLASS,class,meta_class,Property Class,meta,character,TRUE,FALSE,FALSE,,,,
 CNST_QLTY,QU_CONSTRUCT_QUALITY,cnst_qlty,char_cnst_qlty,Construction Quality,char,categorical,TRUE,FALSE,FALSE,1,Deluxe,DLXE,"In general, this field is not used consistently and is therefore not useful for analytical purposes"
 CNST_QLTY,QU_CONSTRUCT_QUALITY,cnst_qlty,char_cnst_qlty,Construction Quality,char,categorical,TRUE,FALSE,FALSE,2,Average,AVG,"In general, this field is not used consistently and is therefore not useful for analytical purposes"
 CNST_QLTY,QU_CONSTRUCT_QUALITY,cnst_qlty,char_cnst_qlty,Construction Quality,char,categorical,TRUE,FALSE,FALSE,3,Poor,POOR,"In general, this field is not used consistently and is therefore not useful for analytical purposes"
-commissioner_dist,,,geo_commissioner_dist,Cook County Commissioner District,geo,character,FALSE,FALSE,FALSE,,,,
-DOC_NO,,doc_no,meta_document_num,Sale Deed Number,meta,character,TRUE,FALSE,FALSE,,,,
 EXT_WALL,QU_EXTERIOR_WALL,ext_wall,char_ext_wall,Wall Material,char,categorical,TRUE,TRUE,TRUE,1,Frame,FRAM,
 EXT_WALL,QU_EXTERIOR_WALL,ext_wall,char_ext_wall,Wall Material,char,categorical,TRUE,TRUE,TRUE,2,Masonry,MASR,
 EXT_WALL,QU_EXTERIOR_WALL,ext_wall,char_ext_wall,Wall Material,char,categorical,TRUE,TRUE,TRUE,3,Frame + Masonry,FRMA,
 EXT_WALL,QU_EXTERIOR_WALL,ext_wall,char_ext_wall,Wall Material,char,categorical,TRUE,TRUE,TRUE,4,Stucco,STUC,
 FBATH,QU_FULL_BATH,fbath,char_fbath,Full Baths,char,numeric,TRUE,FALSE,TRUE,,,,"Number of full bathrooms, defined as having a bath or shower. If this value is missing, the default value is set to 1."
-FIPS,,,geo_fips,FIPS Code,geo,character,FALSE,FALSE,FALSE,,,,
-floodplain,,floodplain,geo_floodplain,Floodplain,geo,logical,TRUE,FALSE,TRUE,,,,
 FRPL,QU_FIRE_PLACE,frpl,char_frpl,Fireplaces,char,numeric,TRUE,FALSE,TRUE,,,,"Number of fireplaces, counted as the number of flues one can see from the outside of the building."
 GAR1_AREA,QU_GARAGE_AREA,gar1_area,char_gar1_area,Garage 1 Area,char,categorical,TRUE,FALSE,TRUE,1,Yes,YES,"Is Garage 1 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
 GAR1_AREA,QU_GARAGE_AREA,gar1_area,char_gar1_area,Garage 1 Area,char,categorical,TRUE,FALSE,TRUE,2,No,NO,"Is Garage 1 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
@@ -74,55 +64,27 @@ GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FA
 GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,6,3.5 cars,3.5CAR,
 GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,7,0 cars,0CAR,
 GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,TRUE,FALSE,FALSE,8,4 cars,4CAR,
-geoid,,,geo_geoid,Full GEOID,geo,character,TRUE,FALSE,FALSE,,,,Full 11-digit GEOID for matched census tract.
 HBATH,QU_HALF_BATH,hbath,char_hbath,Half Baths,char,numeric,TRUE,FALSE,TRUE,,,,"Number of half baths, defined as bathrooms without a shower or bathtub."
 HD_SF,,hd_sf,char_hd_sf,Land Square Feet,char,numeric,TRUE,TRUE,TRUE,,,,"Square feet of the land (not just the building) of the property. Note that land is divided into 'plots' and 'parcels' - this field applies to parcels, identified by PIN."
 HEAT,QU_HEAT,heat,char_heat,Central Heating,char,categorical,TRUE,TRUE,TRUE,1,Warm Air Furnace,FURN,
 HEAT,QU_HEAT,heat,char_heat,Central Heating,char,categorical,TRUE,TRUE,TRUE,2,Hot Water Steam,STM,
 HEAT,QU_HEAT,heat,char_heat,Central Heating,char,categorical,TRUE,TRUE,TRUE,3,Electric Heater,ELEC,
 HEAT,QU_HEAT,heat,char_heat,Central Heating,char,categorical,TRUE,TRUE,TRUE,4,None,NONE,
-his_perc,,,geo_his_perc,Percent Pop. Hispanic,geo,numeric,FALSE,FALSE,FALSE,,,,Hispanic population percentage of the census tract containing the property centroid.
-DT_KEY_PIN,,key_pin,meta_key_pin,Key PIN,meta,character,TRUE,FALSE,FALSE,,,,Need to clarify definition.
-KEY_PIN,,key_pin,meta_key_pin,Key PIN,meta,character,TRUE,FALSE,FALSE,,,,Need to clarify definition.
-MAILING_ADDRESS,,,geo_mailing_address,Mailing Address,geo,character,FALSE,FALSE,FALSE,,,,
-MAILING_CITY,,,geo_mailing_city,Mailing City,geo,character,FALSE,FALSE,FALSE,,,,
-MAILING_ZIP,,,geo_mailing_zip,Mailing Zip Code,geo,character,FALSE,FALSE,FALSE,,,,
-midincome,,,econ_midincome,Median Income,econ,numeric,TRUE,FALSE,TRUE,,,,Median income of the census tract containing the property centroid.
-DT_MLT_CD,QU_MLT_CD,,meta_multi_code,Multi Code,meta,categorical,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
-MLT_CD,QU_MLT_CD,,meta_multi_code,Multi Code,meta,categorical,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
-MODELING_GROUP,,modeling_group,meta_modeling_group,Modeling Group,meta,character,TRUE,FALSE,FALSE,,,,"Modeling group, as defined by the property class. Properties with class 200, 201, 241, 299 is defined as ""NCHARS"", short for ""no characteristics"", which are condos and vacant land classes. Properties with class 202, 203, 204, 205, 206, 207, 208, 209, 210, 235, 278, and 295 are ""SF"", short for ""single-family."" Properties with class 211 and 212 are ""MF"", short for ""multi-family."""
-MULTI_CODE,QU_MLT_CD,multi_code,meta_multi_code,Multi Code,meta,categorical,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
-MULTI_IND,,multi_ind,ind_multi_code,Multi Code Indicator,ind,logical,TRUE,FALSE,FALSE,,,,"Indicates a property with multiple improvements on one PIN, e.g. a main house and a coach house. NOT to be confused with a property which was part of a multi-pin sale."
-municipality,,,geo_municipality,Municipality,geo,character,FALSE,FALSE,FALSE,,,,
-NBHD,QU_NBHD,nbhd,meta_nbhd,Neighborhood Code,meta,character,FALSE,FALSE,TRUE,,,,
 NCU,QU_NO__COM_UNIT,ncu,char_ncu,Number of Commercial Units,char,numeric,FALSE,FALSE,TRUE,,,,Number of commercial units (the vast majority are for properties with class 212).
-ohare_noise,,o_hare_noise,geo_ohare_noise,O'Hare Noise,geo,logical,TRUE,FALSE,TRUE,,,,
 OHEAT,,oheat,char_oheat,Other Heating,char,categorical,TRUE,TRUE,TRUE,1,Floor Furnace,FURN,
 OHEAT,,oheat,char_oheat,Other Heating,char,categorical,TRUE,TRUE,TRUE,2,Unit Heater,UNIT,
 OHEAT,,oheat,char_oheat,Other Heating,char,categorical,TRUE,TRUE,TRUE,3,Stove,STVE,
 OHEAT,,oheat,char_oheat,Other Heating,char,categorical,TRUE,TRUE,TRUE,4,Solar,SOLR,
 OHEAT,,oheat,char_oheat,Other Heating,char,categorical,TRUE,TRUE,TRUE,5,None,NONE,
 OT_IMPR,,ot_impr,char_ot_impr,Other Improvements,char,numeric,TRUE,FALSE,FALSE,,,,
-other_perc,,other_perc,geo_other_perc,Percent Pop. Other,geo,numeric,FALSE,FALSE,FALSE,,,,Other population percentage of the census tract containing the property centroid.
-DT_PER_ASS,,dt_per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
-PER_ASS,,per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
-PIN,QU_PIN,pin,meta_pin,Property Identification Number,meta,character,TRUE,FALSE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
 PORCH,QU_PORCH,porch,char_porch,Porch,char,categorical,TRUE,TRUE,TRUE,1,Frame Enclosed,FRAM,
 PORCH,QU_PORCH,porch,char_porch,Porch,char,categorical,TRUE,TRUE,TRUE,2,Masonry Enclosed,MSRY,
 PORCH,QU_PORCH,porch,char_porch,Porch,char,categorical,TRUE,TRUE,TRUE,3,None,NONE,
-PRI_EST_BLDG,,pri_est_bldg,meta_est_bldg,Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of building from the prior tax year.
-PRI_EST_LAND,,pri_est_land,meta_est_land,Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of land from the prior tax year.
-PROPERTY_ADDRESS,,property_addr,geo_property_address,Property Address,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
-PROPERTY_APT_NO,,property_apt_no,geo_property_apt_no,Property Apartment Num.,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
-PROPERTY_CITY,,property_city,geo_property_city,Property City,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
-PROPERTY_ZIP,,property_zip,geo_property_zip,Property Zip Code,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
-PUMA,,,geo_puma,Public Use Microdata Area,geo,character,FALSE,FALSE,FALSE,,,,
 RENOVATION,QU_RENOVATION,,char_renovation,Renovation,char,categorical,TRUE,FALSE,FALSE,1,Yes,YES,
 RENOVATION,QU_RENOVATION,,char_renovation,Renovation,char,categorical,TRUE,FALSE,FALSE,2,No,NO,
 REPAIR_CND,QU_STATE_OF_REPAIR,repair_cnd,char_repair_cnd,Repair Condition,char,categorical,TRUE,FALSE,FALSE,1,Above Average,GOOD,"This field is subjective and contains little variation. As such, it is not used for modeling."
 REPAIR_CND,QU_STATE_OF_REPAIR,repair_cnd,char_repair_cnd,Repair Condition,char,categorical,TRUE,FALSE,FALSE,2,Average,AVG,"This field is subjective and contains little variation. As such, it is not used for modeling."
 REPAIR_CND,QU_STATE_OF_REPAIR,repair_cnd,char_repair_cnd,Repair Condition,char,categorical,TRUE,FALSE,FALSE,3,Below Average,POOR,"This field is subjective and contains little variation. As such, it is not used for modeling."
-reps_dist,,,geo_reps_dist,Illinois State Representative District,geo,character,FALSE,FALSE,FALSE,,,,
 ROOF_CNST,QU_ROOF,roof_cnst,char_roof_cnst,Roof Material,char,categorical,TRUE,TRUE,TRUE,1,Shingle + Asphalt,SHAS,
 ROOF_CNST,QU_ROOF,roof_cnst,char_roof_cnst,Roof Material,char,categorical,TRUE,TRUE,TRUE,2,Tar + Gravel,TRGR,
 ROOF_CNST,QU_ROOF,roof_cnst,char_roof_cnst,Roof Material,char,categorical,TRUE,TRUE,TRUE,3,Slate,SLTE,
@@ -130,18 +92,9 @@ ROOF_CNST,QU_ROOF,roof_cnst,char_roof_cnst,Roof Material,char,categorical,TRUE,T
 ROOF_CNST,QU_ROOF,roof_cnst,char_roof_cnst,Roof Material,char,categorical,TRUE,TRUE,TRUE,5,Tile,TILE,
 ROOF_CNST,QU_ROOF,roof_cnst,char_roof_cnst,Roof Material,char,categorical,TRUE,TRUE,TRUE,6,Other,OTHR,
 ROOMS,QU_ROOMS,rooms,char_rooms,Rooms,char,numeric,TRUE,FALSE,TRUE,,,,Number of rooms in the property (excluding baths). Not to be confused with bedrooms
-sale_date,,sale_date,meta_sale_date,Sale Date,meta,date,TRUE,FALSE,FALSE,,,,Date of sale.
-sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,FALSE,FALSE,,,,Market price of sale.
-senate_dist,,,geo_senate_dist,Illinois State Senate District,geo,character,FALSE,FALSE,FALSE,,,,
 SITE,QU_SITE_DESIRE,site,char_site,Site Desirability,char,categorical,TRUE,FALSE,FALSE,1,Beneficial To Value,BTV,This field lacks sufficient variation to be useful for modeling.
 SITE,QU_SITE_DESIRE,site,char_site,Site Desirability,char,categorical,TRUE,FALSE,FALSE,2,Not Relevant To Value,NRTV,This field lacks sufficient variation to be useful for modeling.
 SITE,QU_SITE_DESIRE,site,char_site,Site Desirability,char,categorical,TRUE,FALSE,FALSE,3,Detracts From Value,DFV,This field lacks sufficient variation to be useful for modeling.
-TAX_AMT_PAID,,,econ_tax_amt_paid,Tax Amount Paid,econ,numeric,TRUE,FALSE,TRUE,,,,Tax amount paid by the property owner. Taken from Cook County Treasurer's Office.
-TAX_CD,,,econ_tax_cd,Tax Location Code,econ,character,FALSE,FALSE,FALSE,,,,
-TAX_RATE,,,econ_tax_rate,Tax Rate,econ,numeric,TRUE,FALSE,TRUE,,,,Tax rate paid by the property owner. Taken from Cook County Treasurer's Office.
-TAX_YEAR,,tax_year,meta_year,Year,meta,numeric,TRUE,FALSE,FALSE,,,,
-tif_agencynum,,,geo_tif_agencynum,TIF Agency Number,geo,character,FALSE,FALSE,FALSE,,,,
-TOWN_CODE,QU_TOWN,town_code,meta_town_code,Township Code,meta,character,TRUE,FALSE,TRUE,,,,
 TP_DSGN,QU_TYPE_DESIGN,tp_dsgn,char_tp_dsgn,Cathedral Ceiling,char,categorical,TRUE,FALSE,TRUE,1,Yes,YES,"This field name comes from a variable that is no longer used, but the field name was not changed to reflect Cathedral Ceiling"
 TP_DSGN,QU_TYPE_DESIGN,tp_dsgn,char_tp_dsgn,Cathedral Ceiling,char,categorical,TRUE,FALSE,TRUE,2,No,NO,"This field name comes from a variable that is no longer used, but the field name was not changed to reflect Cathedral Ceiling"
 TP_PLAN,QU_TYPE_PLAN,tp_plan,char_tp_plan,Design Plan,char,categorical,TRUE,FALSE,TRUE,1,Architect,ARCT,
@@ -158,17 +111,64 @@ TYPE_RESD,QU_TYPE_OF_RES,type_resd,char_type_resd,Type of Residence,char,categor
 USE,QU_USE,use_1,char_use,Use,char,categorical,TRUE,TRUE,TRUE,1,Single-Family,SF,
 USE,QU_USE,use_1,char_use,Use,char,categorical,TRUE,TRUE,TRUE,2,Multi-Family,MF,
 VOLUME,QU_VOL,,char_volume,Volume,char,numeric,FALSE,FALSE,FALSE,,,,Need to clarify definition.
+midincome,,,econ_midincome,Median Income,econ,numeric,TRUE,FALSE,TRUE,,,,Median income of the census tract containing the property centroid.
+TAX_AMT_PAID,,,econ_tax_amt_paid,Tax Amount Paid,econ,numeric,TRUE,FALSE,TRUE,,,,Tax amount paid by the property owner. Taken from Cook County Treasurer's Office.
+TAX_CD,,,econ_tax_cd,Tax Location Code,econ,character,FALSE,FALSE,FALSE,,,,
+TAX_RATE,,,econ_tax_rate,Tax Rate,econ,numeric,TRUE,FALSE,TRUE,,,,Tax rate paid by the property owner. Taken from Cook County Treasurer's Office.
+,,,econ_foreclosures_month_town,Number of Foreclosures in Town Per Month,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the month the sale occurred in
+,,,econ_foreclosures_quarter_town,Number of Foreclosures in Town Per Quarter,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the quarter the sale occurred in
+black_perc,,,geo_black_perc,Percent Pop. Black,geo,numeric,FALSE,FALSE,FALSE,,,,Black population percentage of the census tract containing the property centroid.
+census_tract,,tractce,geo_census_tract,Census Tract,geo,character,FALSE,FALSE,FALSE,,,,Last 6 digits of GEOID for matched census tract (tract ID only).
+centroid_x,,centroid_x,geo_longitude,Longitude,geo,numeric,TRUE,FALSE,FALSE,,,,"Longitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
+centroid_y,,centroid_y,geo_latitude,Latitude,geo,numeric,TRUE,FALSE,FALSE,,,,"Latitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
+commissioner_dist,,,geo_commissioner_dist,Cook County Commissioner District,geo,character,FALSE,FALSE,FALSE,,,,
+FIPS,,,geo_fips,FIPS Code,geo,character,FALSE,FALSE,FALSE,,,,
+floodplain,,floodplain,geo_floodplain,Floodplain,geo,logical,TRUE,FALSE,TRUE,,,,
+geoid,,,geo_geoid,Full GEOID,geo,character,TRUE,FALSE,FALSE,,,,Full 11-digit GEOID for matched census tract.
+his_perc,,,geo_his_perc,Percent Pop. Hispanic,geo,numeric,FALSE,FALSE,FALSE,,,,Hispanic population percentage of the census tract containing the property centroid.
+MAILING_ADDRESS,,,geo_mailing_address,Mailing Address,geo,character,FALSE,FALSE,FALSE,,,,
+MAILING_CITY,,,geo_mailing_city,Mailing City,geo,character,FALSE,FALSE,FALSE,,,,
+MAILING_ZIP,,,geo_mailing_zip,Mailing Zip Code,geo,character,FALSE,FALSE,FALSE,,,,
+municipality,,,geo_municipality,Municipality,geo,character,FALSE,FALSE,FALSE,,,,
+ohare_noise,,o_hare_noise,geo_ohare_noise,O'Hare Noise,geo,logical,TRUE,FALSE,TRUE,,,,
+other_perc,,other_perc,geo_other_perc,Percent Pop. Other,geo,numeric,FALSE,FALSE,FALSE,,,,Other population percentage of the census tract containing the property centroid.
+PROPERTY_ADDRESS,,property_addr,geo_property_address,Property Address,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
+PROPERTY_APT_NO,,property_apt_no,geo_property_apt_no,Property Apartment Num.,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
+PROPERTY_CITY,,property_city,geo_property_city,Property City,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
+PROPERTY_ZIP,,property_zip,geo_property_zip,Property Zip Code,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
+PUMA,,,geo_puma,Public Use Microdata Area,geo,character,FALSE,FALSE,FALSE,,,,
+reps_dist,,,geo_reps_dist,Illinois State Representative District,geo,character,FALSE,FALSE,FALSE,,,,
+senate_dist,,,geo_senate_dist,Illinois State Senate District,geo,character,FALSE,FALSE,FALSE,,,,
+tif_agencynum,,,geo_tif_agencynum,TIF Agency Number,geo,character,FALSE,FALSE,FALSE,,,,
 ward,,,geo_ward,City of Chicago Ward,geo,character,FALSE,FALSE,FALSE,,,,
 white_perc,,,geo_white_perc,Percent Pop. White,geo,numeric,FALSE,FALSE,FALSE,,,,White population percentage of the census tract containing the property centroid.
 withinmr100,,,geo_withinmr100,Road Proximity < 100 Feet,geo,logical,TRUE,FALSE,TRUE,,,,Indicates whether the property is within 100 feet of a major road.
 withinmr101300,,near_major_road,geo_withinmr101300,Road Proximity 101 - 300 Feet,geo,logical,TRUE,FALSE,TRUE,,,,Indicates whether the property is between 101 and 300 feet of a major road.
+MULTI_IND,,multi_ind,ind_multi_code,Multi Code Indicator,ind,logical,TRUE,FALSE,FALSE,,,,"Indicates a property with multiple improvements on one PIN, e.g. a main house and a coach house. NOT to be confused with a property which was part of a multi-pin sale."
 ,,,ind_large_home,Large Home,ind,logical,TRUE,FALSE,TRUE,,,,"If true, property class is either 208 or 209."
 ,,,ind_class_error,Class Code Error,ind,logical,TRUE,FALSE,FALSE,,,,"If true, the recorded characteristics do not align with the recorded class. See chars_check_class() function in CCAO package for details."
 ,,,ind_large_lot,Large Lot,ind,logical,TRUE,FALSE,TRUE,,,,"Large lot factor variable, where 1 acre of land (land square feet > 43559) is defined as a large lot. 1 = large lot, 0 = not a large lot."
 ,,,ind_garage,Garage Indicator,ind,logical,TRUE,FALSE,TRUE,,,,Indicates presence of a garage of any size.
 ,,pure_market_filter,ind_pure_market,Pure Market Filter,ind,logical,TRUE,FALSE,FALSE,,,,Indicates whether a sale has pure market/arms length characteristics.
-,,,econ_foreclosures_month_town,Number of Foreclosures in Town Per Month,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the month the sale occurred in
-,,,econ_foreclosures_quarter_town,Number of Foreclosures in Town Per Quarter,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the quarter the sale occurred in
+CDU,,condition_desirability_and_utility,meta_cdu,"Condition, Desirability, and Utility",meta,character,TRUE,FALSE,FALSE,,,,"Dozens of codes attached to face sheet that denote a number of seemingly unrelated characteristics associated with a PIN, ranging from condition to types of subsidies. This field does not match across the SQL server/AS-400."
+CLASS,QU_CLASS,class,meta_class,Property Class,meta,character,TRUE,FALSE,FALSE,,,,
+DOC_NO,,doc_no,meta_document_num,Sale Deed Number,meta,character,TRUE,FALSE,FALSE,,,,
+DT_KEY_PIN,,key_pin,meta_key_pin,Key PIN,meta,character,TRUE,FALSE,FALSE,,,,Need to clarify definition.
+KEY_PIN,,key_pin,meta_key_pin,Key PIN,meta,character,TRUE,FALSE,FALSE,,,,Need to clarify definition.
+DT_MLT_CD,QU_MLT_CD,,meta_multi_code,Multi Code,meta,categorical,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
+MLT_CD,QU_MLT_CD,,meta_multi_code,Multi Code,meta,categorical,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
+MODELING_GROUP,,modeling_group,meta_modeling_group,Modeling Group,meta,character,TRUE,FALSE,FALSE,,,,"Modeling group, as defined by the property class. Properties with class 200, 201, 241, 299 is defined as ""NCHARS"", short for ""no characteristics"", which are condos and vacant land classes. Properties with class 202, 203, 204, 205, 206, 207, 208, 209, 210, 235, 278, and 295 are ""SF"", short for ""single-family."" Properties with class 211 and 212 are ""MF"", short for ""multi-family."""
+MULTI_CODE,QU_MLT_CD,multi_code,meta_multi_code,Multi Code,meta,categorical,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
+NBHD,QU_NBHD,nbhd,meta_nbhd,Neighborhood Code,meta,character,TRUE,FALSE,TRUE,,,,
+DT_PER_ASS,,dt_per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
+PER_ASS,,per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
+PIN,QU_PIN,pin,meta_pin,Property Identification Number,meta,character,TRUE,FALSE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
+PRI_EST_BLDG,,pri_est_bldg,meta_est_bldg,Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of building from the prior tax year.
+PRI_EST_LAND,,pri_est_land,meta_est_land,Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of land from the prior tax year.
+sale_date,,sale_date,meta_sale_date,Sale Date,meta,date,TRUE,FALSE,FALSE,,,,Date of sale.
+sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,FALSE,FALSE,,,,Market price of sale.
+TAX_YEAR,,tax_year,meta_year,Year,meta,numeric,TRUE,FALSE,FALSE,,,,
+TOWN_CODE,QU_TOWN,town_code,meta_town_code,Township Code,meta,character,TRUE,FALSE,TRUE,,,,
 ,,sale_year,time_sale_year,Sale Year,time,numeric,TRUE,FALSE,TRUE,,,,Sale year calculated as the number of years since 1997.
 ,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,FALSE,TRUE,,,,Sale month calculated as the number of months since January 1997.
 ,,sale_month_of_year,time_sale_month_of_year,Sale Month of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of month of year (1-12).
