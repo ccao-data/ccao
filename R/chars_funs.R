@@ -48,7 +48,9 @@ chars_fix_age <- function(age, year, town) {
   year_diff <- year - town_get_assmnt_year(town, year, round_type = "floor")
 
   # Throw error if length of age isn't multiple of other two args
-  if (length(age) %% length(year_diff) != 0) {
+  diffs <- list(age, year_diff)
+  diffs <- diffs[order(sapply(diffs, length), decreasing = TRUE)]
+  if (length(diffs[[1]]) %% length(diffs[[2]]) != 0) {
     stop("Longer argument must be a multiple of length of shorter")
   }
 

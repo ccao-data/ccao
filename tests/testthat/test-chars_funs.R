@@ -30,12 +30,18 @@ test_that("output is as expected", {
     chars_288_active(NA_real_, c("25", "10")),
     list(NA_real_, NA_real_)
   )
+  expect_equal(
+    chars_fix_age(80, 2015, c("Evanston", "Niles")),
+    c(82, 82)
+  )
 })
 
 test_that("bad input data stops execution", {
   expect_error(chars_288_active(c(2013, 2010), c("25", "10", "25")))
   expect_error(chars_288_active(1980, c("25", "10", "25")))
   expect_error(chars_288_active(2010:2013, c("25", "10", "10")))
+  expect_error(chars_fix_age(81:82, 2015, c("Evanston", "Niles", "10")))
+  expect_error(chars_fix_age(81:83, 2015, c("Evanston", "Niles")))
 })
 
 
