@@ -41,7 +41,7 @@ map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NUL
     sf::st_crs(data) == sf::st_crs(boundary) | is.null(boundary),
     length(selected_var) == 1
   )
-  formula <- stats::as.formula(paste(selected_var, "~ 1"))
+  v_formula <- paste(selected_var, "~ 1")
 
   # Jitter points to fix errors in overlapping observations in variogram
   data <- data %>%
@@ -49,7 +49,7 @@ map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NUL
     dplyr::distinct({{ col }})
 
   # Create variogram of values with location data
-  loc_vgm <- gstat::variogram(formula, data)
+  loc_vgm <- gstat::variogram(formula(v_formula), data)
 
   # Fit the variogram using the specified model
   if (is.null(model)) model <- gstat::vgm("Gau")
@@ -71,7 +71,7 @@ map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NUL
 
   # Perform kriging on the dataset with its fitted variogram
   value_kriged <- gstat::krige(
-    formula = formula,
+    formula = formula(v_formula),
     locations = data,
     newdata = grid,
     model = loc_fit_sph,
@@ -79,7 +79,11 @@ map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NUL
   )
 
   # Filter grid so that it conforms to the boundaries of shapefile
-  grid_in_bound <- sf::st_intersects(value_kriged, boundary, sparse = FALSE)
+  grid_in_bound <- sf::st_within(
+    suppressWarnings(sf::st_centroid(value_kriged)),
+    boundary,
+    sparse = FALSE
+  )
   grid_value_kriged <- value_kriged[grid_in_bound, ]
 
   return(grid_value_kriged)

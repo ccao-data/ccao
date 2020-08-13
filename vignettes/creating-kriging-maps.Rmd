@@ -1,6 +1,43 @@
 ---
-title: "Creating kriging maps"
+title: "Creating ratio study maps with kriging"
 ---
+
+<script>
+function plot_switch(id1, id2) {
+    var x = document.getElementById(id1);
+    var y = document.getElementById(id2);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        y.style.display = "none";
+    } else {
+        x.style.display = "none";
+        y.style.display = "block";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  plot_switch('map1', 'map2');
+});
+</script>
+
+<style>
+.toggle_button {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  background: #CD5C5C;
+  padding: 10px;
+  display: inline-block;
+  border: none;
+  width: 36%;
+  margin-top: 2px;
+  margin-bottom: 50px;
+  margin-left: 32%;
+  margin-right: 32%
+}
+</style>
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -24,10 +61,10 @@ assessments <- read_json(
   "https://datacatalog.cookcountyil.gov/resource/uqb9-r7vn.json?$limit=100000&town=17&year=2019",
   simplifyVector = TRUE
 ) %>%
-  select(pin, first_pass)
+  select(pin, certified)
   
 
-# Load 100k rows of sales data for Evanston, then merge on assessed values
+# Load sales data for Evanston, then merge on assessed values for sales
 sales <- read_json(
   "https://datacatalog.cookcountyil.gov/resource/5pge-nu6u.json?$limit=10000&town_code=17",
   simplifyVector = TRUE
@@ -43,20 +80,87 @@ sales <- read_json(
   st_as_sf(coords = c("lon", "lat"), crs = 4326) %>%
   st_transform(3435) %>%
   left_join(assessments, by = "pin")
-```
 
-
-```{r}
-bound <- ccao::town_shp %>%
+# Load the township boundary for Evanston from the ccao package
+boundary <- ccao::town_shp %>%
   filter(township_name == "Evanston") %>%
   st_transform(3435)
+```
 
-temp <- sales %>%
+```{r kriging, message=FALSE, results='hide', warning=FALSE}
+# Calculate the kriging surface for both sales and assessed values
+sales_k <- sales %>%
   st_transform(3435) %>%
-  map_kriging(sale_price, boundary = bound, cellsize = 200, model = vgm("Gau"))
+  map_kriging(
+    sale_price,
+    boundary = boundary,
+    cellsize = 1000,
+    model = gstat::vgm("Gau")
+  ) %>%
+  select(price = var1.pred)
+
+assmnt_k <- sales %>%
+  st_transform(3435) %>%
+  map_kriging(
+    certified,
+    boundary = boundary,
+    cellsize = 1000,
+    model = gstat::vgm("Gau")
+  ) %>%
+  select(price = var1.pred)
 ```
 
-```{r}
-plot(temp[3], border = "transparent")
+```{r create_plot, message=FALSE, eval=FALSE, cache=FALSE}
+# Create a scale using the combined range of both datasets
+plot_lims <- range(c(sales_k$price, assmnt_k$price))
+
+# Create a map of the interpolated data
+create_map <- function(data, plot_lims) {
+  ggplot(data) +
+    geom_sf(aes(fill = price, color = price)) +
+    scale_color_distiller(
+      name = "Sale Price / FMV",
+      palette = "Spectral",
+      labels = scales::dollar,
+      breaks = scales::breaks_extended(9),
+      limits = plot_lims
+    ) +
+    scale_fill_distiller(
+      name = "Sale Price / FMV",
+      palette = "Spectral",
+      labels = scales::dollar,
+      breaks = scales::breaks_extended(9),
+      limits = plot_lims
+    ) +
+    scale_x_continuous(expand = c(0,0)) +
+    theme_void() +
+    theme(
+      legend.margin = margin(l = 40),
+      legend.key.size = unit(1.2, "cm")
+    )
+}
+
+sales_k %>% create_map(plot_lims)
 ```
+
+
+<div id="map1">
+
+#### Map of 2019 Sale Prices in Evanston
+
+```{r, message=FALSE, echo=FALSE, out.width='100%', ref.label="create_plot"}
+```
+</div>
+
+
+<div id="map2">
+
+#### Map of 2019 Certified Assessed Values in Evanston
+
+```{r, message=FALSE, echo=FALSE, out.width='100%'}
+assmnt_k %>% create_map(plot_lims)
+```
+</div>
+
+<button class=toggle_button onclick="plot_switch('map1', 'map2')">Toggle Between Sales and Assessed Values</button>
 

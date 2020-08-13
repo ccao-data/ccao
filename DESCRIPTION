@@ -23,6 +23,7 @@ Imports:
     rlang,
     rvest,
     sf,
+    stars,
     stringr,
     tidyr (>= 1.1.0),
     tidyselect,
@@ -32,10 +33,12 @@ RoxygenNote: 7.1.1
 Suggests: 
     covr,
     devtools,
+    ggplot2,
     knitr,
     lintr,
     pkgdown,
     rmarkdown,
+    scales,
     testthat
 Remotes: 
     gitlab::ccao-data-science---modeling/packages/assessr

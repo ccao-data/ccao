@@ -41,4 +41,3 @@ test_that("bad input data stops execution", {
   expect_error(map_kriging(sales, sale_price, boundary = ccao::town_shp))
   expect_error(map_kriging(sales, sale_price, model = "Gau"))
 })
-
