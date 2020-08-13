@@ -2,9 +2,9 @@
 % Please edit documentation in R/map_funs.R
 \name{map_kriging}
 \alias{map_kriging}
-\title{Create smooth interpolated maps with kriging}
+\title{Create smooth interpolated maps using kriging}
 \usage{
-map_kriging(data, col, boundary = NULL, model = NULL, cellsize = NULL)
+map_kriging(data, col, boundary = NULL, model = NULL, cellsize = NULL, ...)
 }
 \arguments{
 \item{data}{An \code{sf} data frame containing POINT data, preferably in
@@ -18,23 +18,27 @@ geometries. These will be merged and then use to determine which grid
 squares to keep (only those within the boundary will remain). Uses the
 convex hull of \code{data} if \code{NULL}.}
 
-\item{model}{A \code{gstat::vgm()} object passed to 
-\code{gstat::fit.variogram()}. Uses "Gau" if \code{NULL},}
+\item{model}{A \code{gstat::vgm()} object passed to
+\code{gstat::fit.variogram()}. Uses "Gau" if \code{NULL}.}
 
 \item{cellsize}{Numeric value in the same projection units as \code{data}.
-Determines the size of grid cell to create and then use for kriging. For 
+Determines the size of grid cell to create and then use for kriging. For
 example, if the CRS of \code{data} is in meters, then choosing 100 will
 create 100 meter wide cells. Creates a 50x50 grid if \code{NULL}.}
+
+\item{...}{Arguments passed on to \code{gstat::krige()}. Most useful are
+\code{nmax}, \code{nmin}, and \code{maxdist}.}
 }
 \value{
 An \code{sf} data frame containing 1 row for each grid cell created
   according to \code{cellsize}, excluding cells that do not intersect with
-  \code{boundary}. The predicted value is the result of the kriging model.
+  \code{boundary}. Each cell has a corresponding predicted value from
+  the kriging model.
 }
 \description{
 Kriging is a way to interpolate intermediate values using a
   set of points. This function uses kriging to create simple maps using
   a single numeric vector input and a boundary file. The output is a set of
   grid squares within the boundary, where each square has an interpolated
-  value.
+  value based on the values of the points around it.
 }

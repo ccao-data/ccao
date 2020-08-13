@@ -1,10 +1,10 @@
-#' Create smooth interpolated maps with kriging
+#' Create smooth interpolated maps using kriging
 #'
 #' @description Kriging is a way to interpolate intermediate values using a
 #'   set of points. This function uses kriging to create simple maps using
 #'   a single numeric vector input and a boundary file. The output is a set of
 #'   grid squares within the boundary, where each square has an interpolated
-#'   value.
+#'   value based on the values of the points around it.
 #'
 #' @param data An \code{sf} data frame containing POINT data, preferably in
 #'   a planar, meters-based projection e.g. for Illinois, use 3435.
@@ -15,25 +15,29 @@
 #'   squares to keep (only those within the boundary will remain). Uses the
 #'   convex hull of \code{data} if \code{NULL}.
 #' @param model A \code{gstat::vgm()} object passed to
-#'   \code{gstat::fit.variogram()}. Uses "Gau" if \code{NULL},
+#'   \code{gstat::fit.variogram()}. Uses "Gau" if \code{NULL}.
 #' @param cellsize Numeric value in the same projection units as \code{data}.
 #'   Determines the size of grid cell to create and then use for kriging. For
 #'   example, if the CRS of \code{data} is in meters, then choosing 100 will
 #'   create 100 meter wide cells. Creates a 50x50 grid if \code{NULL}.
+#' @param ... Arguments passed on to \code{gstat::krige()}. Most useful are
+#'   \code{nmax}, \code{nmin}, and \code{maxdist}.
 #'
 #' @return An \code{sf} data frame containing 1 row for each grid cell created
 #'   according to \code{cellsize}, excluding cells that do not intersect with
-#'   \code{boundary}. The predicted value is the result of the kriging model.
+#'   \code{boundary}. Each cell has a corresponding predicted value from
+#'   the kriging model.
 #' 
 #' @importFrom dplyr distinct
 #' @export
-map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NULL) { # nolint
+map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NULL, ...) { # nolint
 
   # Extract the selection variable from the col argument
   selected_var <- tidyselect::vars_select(names(data), {{ col }})
 
   # Input checking and error handling
   stopifnot(
+    sf::st_is_valid(data),
     sf::st_crs(data) == sf::st_crs(boundary) | is.null(boundary),
     length(selected_var) == 1
   )
@@ -70,7 +74,8 @@ map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NUL
     formula = formula,
     locations = data,
     newdata = grid,
-    model = loc_fit_sph
+    model = loc_fit_sph,
+    ...
   )
 
   # Filter grid so that it conforms to the boundaries of shapefile
