@@ -115,7 +115,8 @@ chars_288_active <- function(start_year, town) {
 
   # Loop through inputs and calculate which years between start_year and
   # start_year + 8 will be active based on the town's reassessment cycle
-  out <- tryCatch({
+  out <- tryCatch(
+    expr = {
       mapply(
         function(x, y) {
           if (is.na(x) | is.na(y)) {

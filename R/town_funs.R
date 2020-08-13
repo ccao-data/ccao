@@ -148,7 +148,8 @@ town_get_assmnt_year <- function(town,
   )
 
   # Map over inputs
-  out <- tryCatch({
+  out <- tryCatch(
+    expr = {
       mapply(
         function(x, y) {
 
