@@ -1,0 +1,62 @@
+---
+title: "Creating kriging maps"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, message=FALSE}
+# Load libraries for this vignette
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(jsonlite)
+library(assessr)
+library(ccao)
+library(gstat)
+
+# Load assessment data for Evanston
+assessments <- read_json(
+  "https://datacatalog.cookcountyil.gov/resource/uqb9-r7vn.json?$limit=100000&town=17&year=2019",
+  simplifyVector = TRUE
+) %>%
+  select(pin, first_pass)
+  
+
+# Load 100k rows of sales data for Evanston, then merge on assessed values
+sales <- read_json(
+  "https://datacatalog.cookcountyil.gov/resource/5pge-nu6u.json?$limit=10000&town_code=17",
+  simplifyVector = TRUE
+  ) %>%
+  filter(
+    sale_year == 2019,
+    sale_price >= 10000,
+    !class %in% c(211, 212, 299),
+    as.numeric(rooms) <= 14,
+    !is.na(centroid_x)
+  ) %>%
+  select(pin, sale_price, lon = centroid_x, lat = centroid_y) %>%
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) %>%
+  st_transform(3435) %>%
+  left_join(assessments, by = "pin")
+```
+
+
+```{r}
+bound <- ccao::town_shp %>%
+  filter(township_name == "Evanston") %>%
+  st_transform(3435)
+
+temp <- sales %>%
+  st_transform(3435) %>%
+  map_kriging(sale_price, boundary = bound, cellsize = 200, model = vgm("Gau"))
+```
+
+```{r}
+plot(temp[3], border = "transparent")
+```
+
