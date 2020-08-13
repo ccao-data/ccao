@@ -40,6 +40,10 @@ reference:
   - vars_check_class
   - vars_recode
   - vars_rename
+- subtitle: Map values
+  desc: Create thematic and diagnostic maps of CCAO data
+- contents:
+  - map_kriging
 
 - title: Data
 - subtitle: Dictionaries
