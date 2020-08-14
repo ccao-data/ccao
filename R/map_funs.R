@@ -27,7 +27,7 @@
 #'   according to \code{cellsize}, excluding cells that do not intersect with
 #'   \code{boundary}. Each cell has a corresponding predicted value from
 #'   the kriging model.
-#' 
+#'
 #' @importFrom dplyr distinct
 #' @export
 map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NULL, ...) { # nolint
@@ -49,7 +49,7 @@ map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NUL
     dplyr::distinct({{ col }})
 
   # Create variogram of values with location data
-  loc_vgm <- gstat::variogram(formula(v_formula), data)
+  loc_vgm <- gstat::variogram(stats::formula(v_formula), data)
 
   # Fit the variogram using the specified model
   if (is.null(model)) model <- gstat::vgm("Gau")
@@ -71,7 +71,7 @@ map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NUL
 
   # Perform kriging on the dataset with its fitted variogram
   value_kriged <- gstat::krige(
-    formula = formula(v_formula),
+    formula = stats::formula(v_formula),
     locations = data,
     newdata = grid,
     model = loc_fit_sph,

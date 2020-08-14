@@ -31,8 +31,8 @@ kriging_test2 <- map_kriging(
 
 test_that("output has expected attributes", {
   expect_s3_class(kriging_test, "sf")
-  expect_equal(nrow(kriging_test), 258)
-  expect_equal(nrow(kriging_test2), 1664)
+  expect_equal(nrow(kriging_test), 222)
+  expect_equal(nrow(kriging_test2), 1542)
 })
 
 test_that("bad input data stops execution", {

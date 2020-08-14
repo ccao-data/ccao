@@ -10,8 +10,8 @@ map_kriging(data, col, boundary = NULL, model = NULL, cellsize = NULL, ...)
 \item{data}{An \code{sf} data frame containing POINT data, preferably in
 a planar, meters-based projection e.g. for Illinois, use 3435.}
 
-\item{col}{A column to use as the value in the kriging formula \code{y ~ 1},
-passed as a character vector. Usually sale price or assessed value.}
+\item{col}{A column to use as the value in the kriging formula \code{y ~ 1}.
+Usually sale price or assessed value.}
 
 \item{boundary}{An \code{sf} data frame containing a POLYGON or MULTIPOLYGON
 geometries. These will be merged and then use to determine which grid
