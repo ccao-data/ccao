@@ -16,7 +16,7 @@ function plot_switch(id1, id2) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  plot_switch('map1', 'map2');
+  plot_switch('map2', 'map1');
 });
 </script>
 
@@ -39,12 +39,15 @@ document.addEventListener("DOMContentLoaded", function() {
 </style>
 
 
-```{r, include = FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
 ```
+
+## 
 
 ```{r, message=FALSE}
 # Load libraries for this vignette
@@ -58,15 +61,15 @@ library(gstat)
 
 # Load assessment data for Evanston
 assessments <- read_json(
-  "https://datacatalog.cookcountyil.gov/resource/uqb9-r7vn.json?$limit=100000&town=17&year=2019",
+  "https://datacatalog.cookcountyil.gov/resource/uqb9-r7vn.json?$limit=2000000&year=2019",
   simplifyVector = TRUE
 ) %>%
   select(pin, certified)
   
 
-# Load sales data for Evanston, then merge on assessed values for sales
+# Load sales data, keep only 'good' sales, then merge on assessed values for sales
 sales <- read_json(
-  "https://datacatalog.cookcountyil.gov/resource/5pge-nu6u.json?$limit=10000&town_code=17",
+  "https://datacatalog.cookcountyil.gov/resource/5pge-nu6u.json?$limit=500000&sale_year=2019",
   simplifyVector = TRUE
   ) %>%
   filter(
@@ -76,91 +79,111 @@ sales <- read_json(
     as.numeric(rooms) <= 14,
     !is.na(centroid_x)
   ) %>%
+  # Transform lat and lon into Illinois-specific projection
   select(pin, sale_price, lon = centroid_x, lat = centroid_y) %>%
   st_as_sf(coords = c("lon", "lat"), crs = 4326) %>%
   st_transform(3435) %>%
+  # Keep assessed values where an equivalent sale exists
   left_join(assessments, by = "pin")
 
-# Load the township boundary for Evanston from the ccao package
-boundary <- ccao::town_shp %>%
-  filter(township_name == "Evanston") %>%
-  st_transform(3435)
+# Load the township boundary from the ccao package
+boundary <- st_transform(ccao::town_shp, 3435)
 ```
 
 ```{r kriging, message=FALSE, results='hide', warning=FALSE}
-# Calculate the kriging surface for both sales and assessed values
+# Calculate the kriging surface for sales. Takes a VERY long time, depending
+# on the number of sales
 sales_k <- sales %>%
   st_transform(3435) %>%
   map_kriging(
     sale_price,
     boundary = boundary,
     cellsize = 1000,
-    model = gstat::vgm("Gau")
+    model = gstat::vgm("Sph"),
+    nmax = 1000
   ) %>%
   select(price = var1.pred)
 
+# Calculate kriging surface for assessed values
 assmnt_k <- sales %>%
   st_transform(3435) %>%
   map_kriging(
     certified,
     boundary = boundary,
     cellsize = 1000,
-    model = gstat::vgm("Gau")
+    model = gstat::vgm("Sph"),
+    nmax = 1000
   ) %>%
   select(price = var1.pred)
 ```
 
-```{r create_plot, message=FALSE, eval=FALSE, cache=FALSE}
+```{r create_plot, message=FALSE, cache=FALSE}
 # Create a scale using the combined range of both datasets
 plot_lims <- range(c(sales_k$price, assmnt_k$price))
 
+# Create buffered boundary to use as clipping mask for county edges
+boundary_buf <- st_union(boundary) %>%
+  st_buffer(500) %>%
+  st_cast("POLYGON") %>% 
+  st_cast("LINESTRING") %>%
+  st_buffer(700)
+
 # Create a map of the interpolated data
-create_map <- function(data, plot_lims) {
-  ggplot(data) +
+create_map <- function(df, plot_lims) {
+  
+  ggplot(df) +
     geom_sf(aes(fill = price, color = price)) +
+    geom_sf(data = boundary, color = "white", fill = "transparent") +
+    geom_sf(data = boundary_buf, color = "white", fill = "white") +
     scale_color_distiller(
-      name = "Sale Price / FMV",
+      name = "Sale Price / Fair Market Value",
       palette = "Spectral",
+      breaks = scales::extended_breaks(9),
       labels = scales::dollar,
-      breaks = scales::breaks_extended(9),
+      direction = -1,
       limits = plot_lims
     ) +
     scale_fill_distiller(
-      name = "Sale Price / FMV",
+      name = "Sale Price / Fair Market Value",
       palette = "Spectral",
+      breaks = scales::extended_breaks(9),
       labels = scales::dollar,
-      breaks = scales::breaks_extended(9),
+      direction = -1,
       limits = plot_lims
     ) +
-    scale_x_continuous(expand = c(0,0)) +
+    scale_x_continuous(expand = c(0, 0)) +
     theme_void() +
     theme(
-      legend.margin = margin(l = 40),
-      legend.key.size = unit(1.2, "cm")
-    )
+      legend.position = c(0.2, 0.5),
+      legend.key.size = unit(1.2, "cm"),
+      plot.margin = margin()
+    ) 
 }
 
-sales_k %>% create_map(plot_lims)
+# Save and render the final map
+p <- sales_k %>% create_map(plot_lims)
+ggsave("county_sales.png", plot = p, width = 7, height = 7)
 ```
 
 
 <div id="map1">
 
-#### Map of 2019 Sale Prices in Evanston
+### Map of 2019 Sale Prices in Evanston
+![](county_sales.png)
 
-```{r, message=FALSE, echo=FALSE, out.width='100%', ref.label="create_plot"}
-```
 </div>
 
 
 <div id="map2">
 
-#### Map of 2019 Certified Assessed Values in Evanston
+### Map of 2019 Certified Assessed Values in Evanston
+![](county_assessments.png)
 
 ```{r, message=FALSE, echo=FALSE, out.width='100%'}
-assmnt_k %>% create_map(plot_lims)
+p <- assmnt_k %>% create_map(plot_lims)
+ggsave("county_assessments.png", plot = p, width = 7, height = 7)
 ```
 </div>
 
-<button class=toggle_button onclick="plot_switch('map1', 'map2')">Toggle Between Sales and Assessed Values</button>
+<button class=toggle_button onclick="plot_switch('map1', 'map2')">Toggle Between 2019 Sales and Assessed Values</button>
 
