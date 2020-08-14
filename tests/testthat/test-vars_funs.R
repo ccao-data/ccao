@@ -104,18 +104,36 @@ recode_test_data <- dplyr::tibble(
 
 recode_correct <- dplyr::tibble(
   PIN = rep("12345", 4),
-  EXT_WALL = c("Frame", "Masonry", NA, NA),
-  BSMT = c("Full", "Partial", "Crawl", NA),
+  EXT_WALL = factor(
+    c("Frame", "Masonry", NA, NA),
+    levels = c("Frame", "Masonry", "Frame + Masonry", "Stucco")
+  ),
+  BSMT = factor(
+    c("Full", "Partial", "Crawl", NA),
+    levels = c("Full", "Slab", "Partial", "Crawl")
+  ),
   value = 1000:1003,
-  roof_cnst = c("Shingle + Asphalt", "Tar + Gravel", "Shake", "Slate")
+  roof_cnst = factor(
+    c("Shingle + Asphalt", "Tar + Gravel", "Shake", "Slate"),
+    levels = c("Shingle + Asphalt","Tar + Gravel", "Slate", "Shake", "Tile", "Other")
+  )
 )
 
 # Test for expected outputs
 test_that("output is as expected", {
-  expect_known_hash(vars_recode(chars_sample_universe), hash = "8ff224c9fb")
+  expect_known_hash(vars_recode(chars_sample_universe), hash = "dbc001b6f4")
   expect_equivalent(vars_recode(recode_test_data), recode_correct)
+  expect_equivalent(
+    vars_recode(recode_test_data, as_factor = FALSE),
+    recode_correct %>%
+      dplyr::mutate(dplyr::across(where(is.factor), as.character))
+  )
   expect_known_hash(
     vars_recode(chars_sample_universe, type = "short"),
+    hash = "c255ed2f9c"
+  )
+  expect_known_hash(
+    vars_recode(chars_sample_universe, type = "short", as_factor = FALSE),
     hash = "b97f45a917"
   )
 })

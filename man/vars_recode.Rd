@@ -4,7 +4,7 @@
 \alias{vars_recode}
 \title{Replace numerically coded variables with human-readable values}
 \usage{
-vars_recode(data, cols = dplyr::everything(), type = "long")
+vars_recode(data, cols = dplyr::everything(), type = "long", as_factor = TRUE)
 }
 \arguments{
 \item{data}{A data frame or tibble with columns to have values replaced.}
@@ -13,6 +13,10 @@ vars_recode(data, cols = dplyr::everything(), type = "long")
 Looks for all columns with numerically encoded character values by default.}
 
 \item{type}{Output/recode type. See description for options.}
+
+\item{as_factor}{If \code{TRUE}, re-encoded values will be returned as
+factors with their levels pre-specified by the dictionary. Otherwise, will
+return re-encoded values as characters only.}
 }
 \value{
 The input data frame with re-encoded values for the specified

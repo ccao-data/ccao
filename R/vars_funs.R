@@ -154,6 +154,9 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
 #' @param cols A \code{<tidy-select>} column select or vector of column names.
 #'   Looks for all columns with numerically encoded character values by default.
 #' @param type Output/recode type. See description for options.
+#' @param as_factor If \code{TRUE}, re-encoded values will be returned as
+#'   factors with their levels pre-specified by the dictionary. Otherwise, will
+#'   return re-encoded values as characters only.
 #'
 #' @note Values which are in the data but are NOT in \code{\link{vars_dict}}
 #'   will be converted to NA. For example, there is no numeric value 3 for AIR,
@@ -182,7 +185,7 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
 #' @importFrom rlang .data
 #' @family vars_funs
 #' @export
-vars_recode <- function(data, cols = dplyr::everything(), type = "long") {
+vars_recode <- function(data, cols = dplyr::everything(), type = "long", as_factor = TRUE) { # nolint
 
   # Error/input checking
   stopifnot(
@@ -226,8 +229,16 @@ vars_recode <- function(data, cols = dplyr::everything(), type = "long") {
           # Find the rows of the dictionary corresponding to column y
           var_rows <- which(dict$var_name == y)
           idx <- match(x, dict$var_code[var_rows])
-
-          return(dict[[var]][var_rows][idx])
+          
+          if (as_factor) {
+            out <- factor(
+              dict[[var]][var_rows][idx],
+              levels = dict[[var]][var_rows]
+            )
+          } else {
+            out <- dict[[var]][var_rows][idx]
+          }
+          return(out)
         } else {
           return(x)
         }

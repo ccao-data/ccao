@@ -30,8 +30,17 @@ kriging_test2 <- map_kriging(
   maxdist = 300
 )
 
+kriging_test3 <- map_kriging(
+  sales,
+  sale_price,
+  maxdist = 300,
+  model = gstat::vgm("Gau")
+)
+
 test_that("output has expected attributes", {
   expect_s3_class(kriging_test, "sf")
+  expect_s3_class(kriging_test2, "sf")
+  expect_s3_class(kriging_test3, "sf")
   expect_equal(nrow(kriging_test), 222)
   expect_equal(nrow(kriging_test2), 1542)
 })
