@@ -22,3 +22,4 @@
 ^public$
 ^data-raw$
 ^vignettes/articles$
+^.*\.RData$

@@ -32,4 +32,5 @@
 # pkgdown files
 public
 pkgdown
+*.png
 
