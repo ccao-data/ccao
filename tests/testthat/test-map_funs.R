@@ -9,6 +9,7 @@ sales <- assessr:::sales_prepped %>%
 
 # Coerce ccao township boundary to same CRS as sales
 bound <- ccao::town_shp %>%
+  sf::st_set_crs(4326) %>%
   dplyr::filter(township_name == "Evanston") %>%
   sf::st_transform(3435)
 
