@@ -119,8 +119,8 @@ TAX_RATE,,,econ_tax_rate,Tax Rate,econ,numeric,TRUE,FALSE,TRUE,,,,Tax rate paid 
 ,,,econ_foreclosures_quarter_town,Number of Foreclosures in Town Per Quarter,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the quarter the sale occurred in
 black_perc,,,geo_black_perc,Percent Pop. Black,geo,numeric,FALSE,FALSE,FALSE,,,,Black population percentage of the census tract containing the property centroid.
 census_tract,,tractce,geo_census_tract,Census Tract,geo,character,FALSE,FALSE,FALSE,,,,Last 6 digits of GEOID for matched census tract (tract ID only).
-centroid_x,,centroid_x,geo_longitude,Longitude,geo,numeric,TRUE,FALSE,FALSE,,,,"Longitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
-centroid_y,,centroid_y,geo_latitude,Latitude,geo,numeric,TRUE,FALSE,FALSE,,,,"Latitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
+centroid_x,,centroid_x,geo_longitude,Longitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Longitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
+centroid_y,,centroid_y,geo_latitude,Latitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Latitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
 commissioner_dist,,,geo_commissioner_dist,Cook County Commissioner District,geo,character,FALSE,FALSE,FALSE,,,,
 FIPS,,,geo_fips,FIPS Code,geo,character,FALSE,FALSE,FALSE,,,,
 floodplain,,floodplain,geo_floodplain,Floodplain,geo,logical,TRUE,FALSE,TRUE,,,,
@@ -166,7 +166,7 @@ PIN,QU_PIN,pin,meta_pin,Property Identification Number,meta,character,TRUE,FALSE
 PRI_EST_BLDG,,pri_est_bldg,meta_est_bldg,Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of building from the prior tax year.
 PRI_EST_LAND,,pri_est_land,meta_est_land,Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of land from the prior tax year.
 sale_date,,sale_date,meta_sale_date,Sale Date,meta,date,TRUE,FALSE,FALSE,,,,Date of sale.
-sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,FALSE,FALSE,,,,Market price of sale.
+sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,TRUE,TRUE,,,,Market price of sale.
 TAX_YEAR,,tax_year,meta_year,Year,meta,numeric,TRUE,FALSE,FALSE,,,,
 TOWN_CODE,QU_TOWN,town_code,meta_town_code,Township Code,meta,character,TRUE,FALSE,TRUE,,,,
 ,,sale_year,time_sale_year,Sale Year,time,numeric,TRUE,FALSE,TRUE,,,,Sale year calculated as the number of years since 1997.
