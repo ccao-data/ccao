@@ -30,8 +30,8 @@ EXT_WALL,QU_EXTERIOR_WALL,ext_wall,char_ext_wall,Wall Material,char,categorical,
 EXT_WALL,QU_EXTERIOR_WALL,ext_wall,char_ext_wall,Wall Material,char,categorical,TRUE,TRUE,TRUE,2,Masonry,MASR,
 EXT_WALL,QU_EXTERIOR_WALL,ext_wall,char_ext_wall,Wall Material,char,categorical,TRUE,TRUE,TRUE,3,Frame + Masonry,FRMA,
 EXT_WALL,QU_EXTERIOR_WALL,ext_wall,char_ext_wall,Wall Material,char,categorical,TRUE,TRUE,TRUE,4,Stucco,STUC,
-FBATH,QU_FULL_BATH,fbath,char_fbath,Full Baths,char,numeric,TRUE,FALSE,TRUE,,,,"Number of full bathrooms, defined as having a bath or shower. If this value is missing, the default value is set to 1."
-FRPL,QU_FIRE_PLACE,frpl,char_frpl,Fireplaces,char,numeric,TRUE,FALSE,TRUE,,,,"Number of fireplaces, counted as the number of flues one can see from the outside of the building."
+FBATH,QU_FULL_BATH,fbath,char_fbath,Full Baths,char,numeric,TRUE,TRUE,TRUE,,,,"Number of full bathrooms, defined as having a bath or shower. If this value is missing, the default value is set to 1."
+FRPL,QU_FIRE_PLACE,frpl,char_frpl,Fireplaces,char,numeric,TRUE,TRUE,TRUE,,,,"Number of fireplaces, counted as the number of flues one can see from the outside of the building."
 GAR1_AREA,QU_GARAGE_AREA,gar1_area,char_gar1_area,Garage 1 Area,char,categorical,TRUE,FALSE,TRUE,1,Yes,YES,"Is Garage 1 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
 GAR1_AREA,QU_GARAGE_AREA,gar1_area,char_gar1_area,Garage 1 Area,char,categorical,TRUE,FALSE,TRUE,2,No,NO,"Is Garage 1 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
 GAR1_ATT,QU_GARAGE_ATTACHED,gar1_att,char_gar1_att,Garage 1 Attached,char,categorical,TRUE,FALSE,TRUE,1,Yes,YES,
@@ -64,7 +64,7 @@ GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,F
 GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,6,3.5 cars,3.5CAR,
 GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,7,0 cars,0CAR,
 GAR2_SIZE,,gar2_size,char_gar2_size,Garage 2 Size,char,categorical,FALSE,FALSE,FALSE,8,4 cars,4CAR,
-HBATH,QU_HALF_BATH,hbath,char_hbath,Half Baths,char,numeric,TRUE,FALSE,TRUE,,,,"Number of half baths, defined as bathrooms without a shower or bathtub."
+HBATH,QU_HALF_BATH,hbath,char_hbath,Half Baths,char,numeric,TRUE,TRUE,TRUE,,,,"Number of half baths, defined as bathrooms without a shower or bathtub."
 HD_SF,,hd_sf,char_hd_sf,Land Square Feet,char,numeric,TRUE,TRUE,TRUE,,,,"Square feet of the land (not just the building) of the property. Note that land is divided into 'plots' and 'parcels' - this field applies to parcels, identified by PIN."
 HEAT,QU_HEAT,heat,char_heat,Central Heating,char,categorical,TRUE,TRUE,TRUE,1,Warm Air Furnace,FURN,
 HEAT,QU_HEAT,heat,char_heat,Central Heating,char,categorical,TRUE,TRUE,TRUE,2,Hot Water Steam,STM,
@@ -111,10 +111,10 @@ TYPE_RESD,QU_TYPE_OF_RES,type_resd,char_type_resd,Type of Residence,char,categor
 USE,QU_USE,use_1,char_use,Use,char,categorical,TRUE,TRUE,TRUE,1,Single-Family,SF,
 USE,QU_USE,use_1,char_use,Use,char,categorical,TRUE,TRUE,TRUE,2,Multi-Family,MF,
 VOLUME,QU_VOL,,char_volume,Volume,char,numeric,FALSE,FALSE,FALSE,,,,Need to clarify definition.
-midincome,,,econ_midincome,Median Income,econ,numeric,TRUE,FALSE,TRUE,,,,Median income of the census tract containing the property centroid.
-TAX_AMT_PAID,,,econ_tax_amt_paid,Tax Amount Paid,econ,numeric,TRUE,FALSE,TRUE,,,,Tax amount paid by the property owner. Taken from Cook County Treasurer's Office.
+midincome,,,econ_midincome,Median Income,econ,numeric,TRUE,TRUE,TRUE,,,,Median income of the census tract containing the property centroid.
+TAX_AMT_PAID,,,econ_tax_amt_paid,Tax Amount Paid,econ,numeric,TRUE,FALSE,FALSE,,,,Tax amount paid by the property owner. Taken from Cook County Treasurer's Office.
 TAX_CD,,,econ_tax_cd,Tax Location Code,econ,character,FALSE,FALSE,FALSE,,,,
-TAX_RATE,,,econ_tax_rate,Tax Rate,econ,numeric,TRUE,FALSE,TRUE,,,,Tax rate paid by the property owner. Taken from Cook County Treasurer's Office.
+TAX_RATE,,,econ_tax_rate,Tax Rate,econ,numeric,TRUE,TRUE,TRUE,,,,Tax rate paid by the property owner. Taken from Cook County Treasurer's Office.
 ,,,econ_foreclosures_month_town,Number of Foreclosures in Town Per Month,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the month the sale occurred in
 ,,,econ_foreclosures_quarter_town,Number of Foreclosures in Town Per Quarter,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the quarter the sale occurred in
 black_perc,,,geo_black_perc,Percent Pop. Black,geo,numeric,FALSE,FALSE,FALSE,,,,Black population percentage of the census tract containing the property centroid.
@@ -170,6 +170,6 @@ sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,TRUE,TRUE,,,
 TAX_YEAR,,tax_year,meta_year,Year,meta,numeric,TRUE,FALSE,FALSE,,,,
 TOWN_CODE,QU_TOWN,town_code,meta_town_code,Township Code,meta,character,TRUE,FALSE,TRUE,,,,
 ,,sale_year,time_sale_year,Sale Year,time,numeric,TRUE,FALSE,TRUE,,,,Sale year calculated as the number of years since 1997.
-,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,FALSE,TRUE,,,,Sale month calculated as the number of months since January 1997.
+,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,TRUE,TRUE,,,,Sale quarter calculated as the number of quarter since January 1997.
 ,,sale_month_of_year,time_sale_month_of_year,Sale Month of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of month of year (1-12).
 ,,sale_quarter_of_year,time_sale_quarter_of_year,Sale Quarter of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of quarter of year (1-4).
