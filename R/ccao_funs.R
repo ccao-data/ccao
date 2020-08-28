@@ -34,7 +34,7 @@
 #'   remove NA values. If missing values are present but not removed the
 #'   function will output NA.
 #'
-#' @return A named list containing the statistic, its 95\% confidence interval,
+#' @return A named list containing the statistic, its 95% confidence interval,
 #'   whether or not the statistic meets IAAO standards, and the number of
 #'   observations used to calculate the statistic (after outliers are removed).
 #'

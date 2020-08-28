@@ -34,7 +34,7 @@ length as \code{sale_price}.}
 as \code{assessed}.}
 }
 \value{
-A named list containing the statistic, its 95\\% confidence interval,
+A named list containing the statistic, its 95\% confidence interval,
 whether or not the statistic meets IAAO standards, and the number of
 observations used to calculate the statistic (after outliers are removed).
 }
