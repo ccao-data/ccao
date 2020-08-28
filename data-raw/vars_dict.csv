@@ -117,7 +117,7 @@ TAX_CD,,,econ_tax_cd,Tax Location Code,econ,character,FALSE,FALSE,FALSE,,,,
 TAX_RATE,,,econ_tax_rate,Tax Rate,econ,numeric,TRUE,TRUE,TRUE,,,,Tax rate paid by the property owner. Taken from Cook County Treasurer's Office.
 ,,,econ_foreclosures_month_town,Number of Foreclosures in Town Per Month,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the month the sale occurred in
 ,,,econ_foreclosures_quarter_town,Number of Foreclosures in Town Per Quarter,econ,numeric,TRUE,FALSE,TRUE,,,,The number of foreclosures in the property's township during the quarter the sale occurred in
-black_perc,,,geo_black_perc,Percent Pop. Black,geo,numeric,FALSE,FALSE,FALSE,,,,Black population percentage of the census tract containing the property centroid.
+black_perc,,,geo_black_perc,Percent Pop. Black,geo,numeric,TRUE,FALSE,FALSE,,,,Black population percentage of the census tract containing the property centroid.
 census_tract,,tractce,geo_census_tract,Census Tract,geo,character,FALSE,FALSE,FALSE,,,,Last 6 digits of GEOID for matched census tract (tract ID only).
 centroid_x,,centroid_x,geo_longitude,Longitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Longitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
 centroid_y,,centroid_y,geo_latitude,Latitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Latitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
@@ -125,13 +125,13 @@ commissioner_dist,,,geo_commissioner_dist,Cook County Commissioner District,geo,
 FIPS,,,geo_fips,FIPS Code,geo,character,FALSE,FALSE,FALSE,,,,
 floodplain,,floodplain,geo_floodplain,Floodplain,geo,logical,TRUE,FALSE,TRUE,,,,
 geoid,,,geo_geoid,Full GEOID,geo,character,TRUE,FALSE,FALSE,,,,Full 11-digit GEOID for matched census tract.
-his_perc,,,geo_his_perc,Percent Pop. Hispanic,geo,numeric,FALSE,FALSE,FALSE,,,,Hispanic population percentage of the census tract containing the property centroid.
+his_perc,,,geo_his_perc,Percent Pop. Hispanic,geo,numeric,TRUE,FALSE,FALSE,,,,Hispanic population percentage of the census tract containing the property centroid.
 MAILING_ADDRESS,,,geo_mailing_address,Mailing Address,geo,character,FALSE,FALSE,FALSE,,,,
 MAILING_CITY,,,geo_mailing_city,Mailing City,geo,character,FALSE,FALSE,FALSE,,,,
 MAILING_ZIP,,,geo_mailing_zip,Mailing Zip Code,geo,character,FALSE,FALSE,FALSE,,,,
 municipality,,,geo_municipality,Municipality,geo,character,FALSE,FALSE,FALSE,,,,
 ohare_noise,,o_hare_noise,geo_ohare_noise,O'Hare Noise,geo,logical,TRUE,FALSE,TRUE,,,,
-other_perc,,other_perc,geo_other_perc,Percent Pop. Other,geo,numeric,FALSE,FALSE,FALSE,,,,Other population percentage of the census tract containing the property centroid.
+other_perc,,other_perc,geo_other_perc,Percent Pop. Other,geo,numeric,TRUE,FALSE,FALSE,,,,Other population percentage of the census tract containing the property centroid.
 PROPERTY_ADDRESS,,property_addr,geo_property_address,Property Address,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
 PROPERTY_APT_NO,,property_apt_no,geo_property_apt_no,Property Apartment Num.,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
 PROPERTY_CITY,,property_city,geo_property_city,Property City,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
@@ -141,7 +141,7 @@ reps_dist,,,geo_reps_dist,Illinois State Representative District,geo,character,F
 senate_dist,,,geo_senate_dist,Illinois State Senate District,geo,character,FALSE,FALSE,FALSE,,,,
 tif_agencynum,,,geo_tif_agencynum,TIF Agency Number,geo,character,FALSE,FALSE,FALSE,,,,
 ward,,,geo_ward,City of Chicago Ward,geo,character,FALSE,FALSE,FALSE,,,,
-white_perc,,,geo_white_perc,Percent Pop. White,geo,numeric,FALSE,FALSE,FALSE,,,,White population percentage of the census tract containing the property centroid.
+white_perc,,,geo_white_perc,Percent Pop. White,geo,numeric,TRUE,FALSE,FALSE,,,,White population percentage of the census tract containing the property centroid.
 withinmr100,,,geo_withinmr100,Road Proximity < 100 Feet,geo,logical,TRUE,FALSE,TRUE,,,,Indicates whether the property is within 100 feet of a major road.
 withinmr101300,,near_major_road,geo_withinmr101300,Road Proximity 101 - 300 Feet,geo,logical,TRUE,FALSE,TRUE,,,,Indicates whether the property is between 101 and 300 feet of a major road.
 MULTI_IND,,multi_ind,ind_multi_code,Multi Code Indicator,ind,logical,TRUE,FALSE,FALSE,,,,"Indicates a property with multiple improvements on one PIN, e.g. a main house and a coach house. NOT to be confused with a property which was part of a multi-pin sale."
