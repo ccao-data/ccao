@@ -5,7 +5,7 @@
 \alias{vars_dict}
 \title{Data dictionary for CCAO variables}
 \format{
-A data frame with 174 rows and 14 variables:
+A data frame with 175 rows and 14 variables:
 \describe{
   \item{var_name_sql}{Column name of variable as stored in CCAO SQL servers}
   \item{var_name_addchars}{Column name of variable when stored in the
