@@ -173,4 +173,4 @@ TOWN_CODE,QU_TOWN,town_code,meta_town_code,Township Code,meta,character,TRUE,FAL
 ,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,TRUE,TRUE,,,,Sale quarter calculated as the number of quarter since January 1997.
 ,,sale_month_of_year,time_sale_month_of_year,Sale Month of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of month of year (1-12).
 ,,sale_quarter_of_year,time_sale_quarter_of_year,Sale Quarter of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of quarter of year (1-4).
-,,nbhd_med,meta_nbhd_med,Neighborhood Median Sale Price,meta,numeric,TRUE,FALSE,TRUE,,,,Median sale price of a given neighborhood. Used in lieu of neighborhood dummy variables in order to reduce sparsity.
+,,nbhd_avg,meta_nbhd_avg,Neighborhood Mean Sale Price,meta,numeric,TRUE,FALSE,TRUE,,,,Mean sale price of a given neighborhood. Used in lieu of neighborhood dummy variables in order to reduce sparsity.
