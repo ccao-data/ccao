@@ -40,6 +40,16 @@ reference:
   - vars_check_class
   - vars_recode
   - vars_rename
+- subtitle: Standardize SQL data
+  desc: Clean and standardize data from CCAO SQL for use in residential modeling
+  contents:
+  - recp_clean_keep_dict_vars
+  - recp_clean_rename
+  - recp_clean_recode
+  - recp_clean_relocate
+  - recp_feat_time
+  - recp_feat_char_inds
+  - recp_feat_arms_length
 - subtitle: Map values
   desc: Create thematic and diagnostic maps of CCAO data
 - contents:

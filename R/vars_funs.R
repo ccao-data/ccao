@@ -229,7 +229,7 @@ vars_recode <- function(data, cols = dplyr::everything(), type = "long", as_fact
           # Find the rows of the dictionary corresponding to column y
           var_rows <- which(dict$var_name == y)
           idx <- match(x, dict$var_code[var_rows])
-          
+
           if (as_factor) {
             out <- factor(
               dict[[var]][var_rows][idx],

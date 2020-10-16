@@ -19,6 +19,7 @@ Imports:
     assessr (>= 0.4.0),
     dplyr (>= 1.0.0),
     gstat,
+    lubridate,
     magrittr,
     rlang,
     rvest,
