@@ -83,6 +83,7 @@ validate_address <- function(address, city, state, zip, batch_size = 5,
 #'
 #' @importFrom rlang .data
 #' @importFrom magrittr %>%
+#' @noRd
 .preprocess_address_data <- function(df) {
   stopifnot({
     "Address" %in% names(df)
@@ -132,6 +133,7 @@ validate_address <- function(address, city, state, zip, batch_size = 5,
 #'
 #' @importFrom magrittr %>%
 #' @importFrom utils URLencode
+#' @noRd
 .batch_query_address <- function(address, city, state, zip, batch_size = 5,
                                  api_key) {
   stopifnot({
@@ -227,6 +229,7 @@ validate_address <- function(address, city, state, zip, batch_size = 5,
 #'
 #' @importFrom rlang .data
 #' @return A tibble with the same fields as the input tibble.
+#' @noRd
 .group_validation <- function(df, batch_size = 5, api_key) {
   stopifnot({
     "Address" %in% names(df)
