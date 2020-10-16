@@ -115,7 +115,9 @@ recode_correct <- dplyr::tibble(
   value = 1000:1003,
   roof_cnst = factor(
     c("Shingle + Asphalt", "Tar + Gravel", "Shake", "Slate"),
-    levels = c("Shingle + Asphalt","Tar + Gravel", "Slate", "Shake", "Tile", "Other")
+    levels = c(
+      "Shingle + Asphalt", "Tar + Gravel", "Slate", "Shake", "Tile", "Other"
+    )
   )
 )
 
