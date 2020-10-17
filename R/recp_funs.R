@@ -194,7 +194,7 @@ recp_feat_char_inds <- function(data) {
     dplyr::pull(.data$var_name_standard) %>%
     unique()
 
-  data %>%
+  df <- data %>%
     # Create indicator variable for properties that are especially large
     # Create another indicator for homes with potentially erroneous classes
     dplyr::mutate(
@@ -206,13 +206,14 @@ recp_feat_char_inds <- function(data) {
       ),
       ind_multi_code = as.logical(.data$ind_multi_code),
       ind_garage = .data$char_gar1_size != "7"
-    ) %>%
+    )
 
+  df %>%
     # Indicator for complete cases of regression variables
     dplyr::mutate(
       ind_complete_predictors =
         !rowSums(cbind(sapply(
-          dplyr::select(.data, dplyr::any_of(predictors)), is.na
+          dplyr::select(df, dplyr::any_of(predictors)), is.na
         ))) > 0
     )
 }
