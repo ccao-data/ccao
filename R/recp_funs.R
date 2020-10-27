@@ -127,32 +127,13 @@ recp_clean_recode <- function(data) {
 #' @export
 recp_clean_relocate <- function(data) {
   data %>%
-    dplyr::relocate(
-      tidyr::starts_with("meta_")
-    ) %>%
-    dplyr::relocate(
-      tidyr::starts_with("char_"),
-      .after = tidyr::starts_with("meta_")
-    ) %>%
-    dplyr::relocate(
-      tidyr::starts_with("geo_"),
-      .after = tidyr::starts_with("char_")
-    ) %>%
-    dplyr::relocate(
-      tidyr::starts_with("econ_"),
-      .after = tidyr::starts_with("geo_")
-    ) %>%
-    dplyr::relocate(
-      tidyr::starts_with("time_"),
-      .after = tidyr::starts_with("econ_")
-    ) %>%
-    dplyr::relocate(
-      tidyr::starts_with("ind_"),
-      .after = tidyr::starts_with("time_")
-    )
+    dplyr::relocate(tidyr::starts_with("ind_")) %>%
+    dplyr::relocate(tidyr::starts_with("time_")) %>%
+    dplyr::relocate(tidyr::starts_with("econ_")) %>%
+    dplyr::relocate(tidyr::starts_with("geo_")) %>%
+    dplyr::relocate(tidyr::starts_with("char_")) %>%
+    dplyr::relocate(tidyr::starts_with("meta_"))
 }
-
-
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
