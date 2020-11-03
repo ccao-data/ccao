@@ -58,6 +58,7 @@ chars_fix_age <- function(age, year, town) {
 }
 
 
+# nolint start
 #' Return active years given a 288 start date and township
 #'
 #' @description The State of Illinois has a home improvement exemption program
@@ -71,7 +72,7 @@ chars_fix_age <- function(age, year, town) {
 #' the 288 expires and as long as the increase in valuation is less than
 #' $75,000.
 #'
-#' \href{https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003502000K15-180}{Per Illinois statute}, # nolint
+#' \href{https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003502000K15-180}{Per Illinois statute},
 #' 288s expire after 4 years or until the next assessment cycle, whichever is
 #' longer. For example, a 288 received in 2016 for a property in Northfield
 #' (with assessment years 2016, 2019, and 2022) will last 6 years (until 2021,
@@ -105,6 +106,7 @@ chars_fix_age <- function(age, year, town) {
 #' chars_288_active(c(2015, 2017), c("Evanston", "Northfield"))
 #' @family chars_funs
 #' @export
+# nolint end
 chars_288_active <- function(start_year, town) {
 
   # Input checking and error handling
