@@ -111,7 +111,7 @@ TYPE_RESD,QU_TYPE_OF_RES,type_resd,char_type_resd,Type of Residence,char,categor
 USE,QU_USE,use_1,char_use,Use,char,categorical,TRUE,TRUE,TRUE,1,Single-Family,SF,
 USE,QU_USE,use_1,char_use,Use,char,categorical,TRUE,TRUE,TRUE,2,Multi-Family,MF,
 VOLUME,QU_VOL,,char_volume,Volume,char,numeric,FALSE,FALSE,FALSE,,,,Need to clarify definition.
-midincome,,,econ_midincome,Median Income,econ,numeric,TRUE,TRUE,TRUE,,,,Median income of the census tract containing the property centroid.
+midincome,,midincome,econ_midincome,Median Income,econ,numeric,TRUE,TRUE,TRUE,,,,Median income of the census tract containing the property centroid.
 TAX_AMT_PAID,,,econ_tax_amt_paid,Tax Amount Paid,econ,numeric,TRUE,FALSE,FALSE,,,,Tax amount paid by the property owner. Taken from Cook County Treasurer's Office.
 TAX_CD,,,econ_tax_cd,Tax Location Code,econ,character,FALSE,FALSE,FALSE,,,,
 TAX_RATE,,,econ_tax_rate,Tax Rate,econ,numeric,TRUE,TRUE,TRUE,,,,Tax rate paid by the property owner. Taken from Cook County Treasurer's Office.
@@ -122,7 +122,7 @@ census_tract,,tractce,geo_census_tract,Census Tract,geo,character,FALSE,FALSE,FA
 centroid_x,,centroid_x,geo_longitude,Longitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Longitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
 centroid_y,,centroid_y,geo_latitude,Latitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Latitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
 commissioner_dist,,,geo_commissioner_dist,Cook County Commissioner District,geo,character,FALSE,FALSE,FALSE,,,,
-FIPS,,,geo_fips,FIPS Code,geo,character,FALSE,FALSE,FALSE,,,,
+FIPS,,,geo_fips,FIPS Code,geo,character,FALSE,FALSE,FALSE,,,,FIPS code of the municipality containing the property.
 floodplain,,floodplain,geo_floodplain,Floodplain,geo,logical,TRUE,FALSE,TRUE,,,,
 geoid,,,geo_geoid,Full GEOID,geo,character,TRUE,FALSE,FALSE,,,,Full 11-digit GEOID for matched census tract.
 his_perc,,,geo_his_perc,Percent Pop. Hispanic,geo,numeric,TRUE,FALSE,FALSE,,,,Hispanic population percentage of the census tract containing the property centroid.
@@ -152,7 +152,7 @@ MULTI_IND,,multi_ind,ind_multi_code,Multi Code Indicator,ind,logical,TRUE,FALSE,
 ,,pure_market_filter,ind_pure_market,Pure Market Filter,ind,logical,TRUE,FALSE,FALSE,,,,Indicates whether a sale has pure market/arms length characteristics.
 CDU,,condition_desirability_and_utility,meta_cdu,"Condition, Desirability, and Utility",meta,character,TRUE,FALSE,FALSE,,,,"Dozens of codes attached to face sheet that denote a number of seemingly unrelated characteristics associated with a PIN, ranging from condition to types of subsidies. This field does not match across the SQL server/AS-400."
 CLASS,QU_CLASS,class,meta_class,Property Class,meta,character,TRUE,FALSE,FALSE,,,,
-DOC_NO,,doc_no,meta_document_num,Sale Deed Number,meta,character,TRUE,FALSE,FALSE,,,,
+DOC_NO,,doc_no,meta_document_num,Sale Deed Number,meta,character,TRUE,FALSE,FALSE,,,,Docket number of a property sale.
 DT_KEY_PIN,,key_pin,meta_key_pin,Key PIN,meta,character,TRUE,FALSE,FALSE,,,,Need to clarify definition.
 KEY_PIN,,key_pin,meta_key_pin,Key PIN,meta,character,TRUE,FALSE,FALSE,,,,Need to clarify definition.
 DT_MLT_CD,QU_MLT_CD,,meta_multi_code,Multi Code,meta,character,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
@@ -175,3 +175,12 @@ TOWN_CODE,QU_TOWN,town_code,meta_town_code,Township Code,meta,character,TRUE,FAL
 ,,sale_quarter_of_year,time_sale_quarter_of_year,Sale Quarter of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of quarter of year (1-4).
 ,,nbhd_avg,meta_nbhd_avg,Neighborhood Mean Sale Price,meta,numeric,TRUE,FALSE,TRUE,,,,Mean sale price of a given neighborhood. Used in lieu of neighborhood dummy variables in order to reduce sparsity.
 ,,nbhd_med,meta_nbhd_med,Neighborhood Median Sale Price,meta,numeric,TRUE,FALSE,TRUE,,,,Median sale price of a given neighborhood. Used in lieu of neighborhood dummy variables in order to reduce sparsity.
+fs_flood_risk_direction,,flood_risk_direction,geo_fs_flood_risk_direction,Flood Risk Direction,geo,numeric,TRUE,FALSE,TRUE,,,,Flood risk data provided by First Street and academics at UPenn.
+fs_flood_factor,,flood_factor,geo_fs_flood_factor,Flood Risk Factor,geo,numeric,TRUE,FALSE,TRUE,,,,Flood risk data provided by First Street and academics at UPenn.
+school_elem_district,,school_elem_district,geo_school_elem_district,Elementary/Middle School,geo,character,TRUE,FALSE,TRUE,,,,Elementary and middle school district boundaries for Cook County and CPS.
+school_hs_district,,school_hs_district,geo_school_hs_district,High School,geo,character,TRUE,FALSE,TRUE,,,,High school district boundaries for Cook County and CPS.
+asian_perc,,asian_perc,geo_asian_perc,Percent Pop. Asian,geo,numeric,TRUE,FALSE,FALSE,,,,Asian population percentage of the census tract containing the property centroid.
+tract_pop,,tract_pop,geo_tract_pop,Tract Population,geo,numeric,TRUE,FALSE,FALSE,,,,Total population of the Census tract containing the property centroid.
+ssa_name,,ssa_name,geo_ssa_name,Special Service Area Name,geo,character,FALSE,FALSE,FALSE,,,,Name of the City of Chicago Special Service Area the property lies within.
+ssa_no,,ssa_no,geo_ssa_no,Special Service Area Number,geo,character,FALSE,FALSE,FALSE,,,,Number of the City of Chicago Special Service Area the property lies within.
+DEED_TYPE,,deed_type,meta_deed_type,Deed Type,meta,character,TRUE,FALSE,FALSE,,,,Deed type of a property sale. 
