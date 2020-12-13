@@ -123,7 +123,7 @@ centroid_x,,centroid_x,geo_longitude,Longitude,geo,numeric,TRUE,TRUE,FALSE,,,,"L
 centroid_y,,centroid_y,geo_latitude,Latitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Latitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
 commissioner_dist,,,geo_commissioner_dist,Cook County Commissioner District,geo,character,FALSE,FALSE,FALSE,,,,
 FIPS,,,geo_fips,FIPS Code,geo,character,FALSE,FALSE,FALSE,,,,FIPS code of the municipality containing the property.
-floodplain,,floodplain,geo_floodplain,Floodplain,geo,logical,TRUE,FALSE,TRUE,,,,
+floodplain,,floodplain,geo_floodplain,FEMA Floodplain,geo,logical,TRUE,FALSE,TRUE,,,,Indicator for whether property lies within a FEMA-defined floodplain.
 geoid,,,geo_geoid,Full GEOID,geo,character,TRUE,FALSE,FALSE,,,,Full 11-digit GEOID for matched census tract.
 his_perc,,,geo_his_perc,Percent Pop. Hispanic,geo,numeric,TRUE,FALSE,FALSE,,,,Hispanic population percentage of the census tract containing the property centroid.
 MAILING_ADDRESS,,,geo_mailing_address,Mailing Address,geo,character,FALSE,FALSE,FALSE,,,,
@@ -152,17 +152,17 @@ MULTI_IND,,multi_ind,ind_multi_code,Multi Code Indicator,ind,logical,TRUE,FALSE,
 ,,pure_market_filter,ind_pure_market,Pure Market Filter,ind,logical,TRUE,FALSE,FALSE,,,,Indicates whether a sale has pure market/arms length characteristics.
 CDU,,condition_desirability_and_utility,meta_cdu,"Condition, Desirability, and Utility",meta,character,TRUE,FALSE,FALSE,,,,"Dozens of codes attached to face sheet that denote a number of seemingly unrelated characteristics associated with a PIN, ranging from condition to types of subsidies. This field does not match across the SQL server/AS-400."
 CLASS,QU_CLASS,class,meta_class,Property Class,meta,character,TRUE,FALSE,FALSE,,,,
-DOC_NO,,doc_no,meta_document_num,Sale Deed Number,meta,character,TRUE,FALSE,FALSE,,,,Docket number of a property sale.
+DOC_NO,,doc_no,meta_document_num,Sale Document Number,meta,character,TRUE,FALSE,FALSE,,,,"Document number of a property sale, as recorded by the Clerk's office."
 DT_KEY_PIN,,key_pin,meta_key_pin,Key PIN,meta,character,TRUE,FALSE,FALSE,,,,Need to clarify definition.
 KEY_PIN,,key_pin,meta_key_pin,Key PIN,meta,character,TRUE,FALSE,FALSE,,,,Need to clarify definition.
 DT_MLT_CD,QU_MLT_CD,,meta_multi_code,Multi Code,meta,character,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
 MLT_CD,QU_MLT_CD,,meta_multi_code,Multi Code,meta,character,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
 MODELING_GROUP,,modeling_group,meta_modeling_group,Modeling Group,meta,character,TRUE,FALSE,FALSE,,,,"Modeling group, as defined by the property class. Properties with class 200, 201, 241, 299 is defined as ""NCHARS"", short for ""no characteristics"", which are condos and vacant land classes. Properties with class 202, 203, 204, 205, 206, 207, 208, 209, 210, 235, 278, and 295 are ""SF"", short for ""single-family."" Properties with class 211 and 212 are ""MF"", short for ""multi-family."""
 MULTI_CODE,QU_MLT_CD,multi_code,meta_multi_code,Multi Code,meta,categorical,TRUE,FALSE,FALSE,,,,"Field that serves as a key when multiple buildings or improvements exist on the same PIN. Numeric values do not necessary correspond to number of buildings, they can also represent improvements added through Home Improvement Exemptions (288s)."
-NBHD,QU_NBHD,nbhd,meta_nbhd,Neighborhood Code,meta,character,TRUE,FALSE,FALSE,,,,
+NBHD,QU_NBHD,nbhd,meta_nbhd,Neighborhood Code,meta,character,TRUE,FALSE,TRUE,,,,"Assessor neighborhood. First 2 digits are township code, last 3 digits are neighborhood code."
 DT_PER_ASS,,dt_per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
 PER_ASS,,per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
-PIN,QU_PIN,pin,meta_pin,Property Identification Number,meta,character,TRUE,FALSE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
+PIN,QU_PIN,pin,meta_pin,Property Index Number,meta,character,TRUE,FALSE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
 PRI_EST_BLDG,,pri_est_bldg,meta_est_bldg,Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of building from the prior tax year.
 PRI_EST_LAND,,pri_est_land,meta_est_land,Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of land from the prior tax year.
 sale_date,,sale_date,meta_sale_date,Sale Date,meta,date,TRUE,FALSE,FALSE,,,,Date of sale.
@@ -173,8 +173,8 @@ TOWN_CODE,QU_TOWN,town_code,meta_town_code,Township Code,meta,character,TRUE,FAL
 ,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,TRUE,TRUE,,,,Sale quarter calculated as the number of quarter since January 1997.
 ,,sale_month_of_year,time_sale_month_of_year,Sale Month of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of month of year (1-12).
 ,,sale_quarter_of_year,time_sale_quarter_of_year,Sale Quarter of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of quarter of year (1-4).
-,,nbhd_avg,meta_nbhd_avg,Neighborhood Mean Sale Price,meta,numeric,TRUE,FALSE,TRUE,,,,Mean sale price of a given neighborhood. Used in lieu of neighborhood dummy variables in order to reduce sparsity.
-,,nbhd_med,meta_nbhd_med,Neighborhood Median Sale Price,meta,numeric,TRUE,FALSE,TRUE,,,,Median sale price of a given neighborhood. Used in lieu of neighborhood dummy variables in order to reduce sparsity.
+,,nbhd_avg,meta_nbhd_avg,Neighborhood Mean Sale Price,meta,numeric,TRUE,FALSE,FALSE,,,,Mean sale price of a given neighborhood. Can be used in lieu of neighborhood dummy variables in order to reduce sparsity.
+,,nbhd_med,meta_nbhd_med,Neighborhood Median Sale Price,meta,numeric,TRUE,FALSE,FALSE,,,,Median sale price of a given neighborhood. Can be used in lieu of neighborhood dummy variables in order to reduce sparsity.
 fs_flood_risk_direction,,flood_risk_direction,geo_fs_flood_risk_direction,Flood Risk Direction,geo,numeric,TRUE,FALSE,TRUE,,,,Flood risk data provided by First Street and academics at UPenn.
 fs_flood_factor,,flood_factor,geo_fs_flood_factor,Flood Risk Factor,geo,numeric,TRUE,FALSE,TRUE,,,,Flood risk data provided by First Street and academics at UPenn.
 school_elem_district,,school_elem_district,geo_school_elem_district,Elementary/Middle School,geo,character,TRUE,FALSE,TRUE,,,,Elementary and middle school district boundaries for Cook County and CPS.
