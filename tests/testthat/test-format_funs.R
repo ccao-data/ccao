@@ -31,7 +31,7 @@ test_that("bad input data stops execution", {
 
 test_that("output is as expected", {
   expect_null(format_as400(sdf$town, sdf$pin, sdf$val, tmpf))
-  expect_known_hash(read.table(tmpf), hash = "103ef62271")
+  expect_known_hash(read.table(tmpf), hash = "6d416baa79")
   expect_null(format_as400(sdf$town, sdf$pin, sdf$val, tmpf, type = "condo"))
   expect_known_hash(read.table(tmpf), hash = "3991febe4d")
 })
