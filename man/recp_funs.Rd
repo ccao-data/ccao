@@ -19,7 +19,7 @@ recp_clean_recode(data)
 
 recp_clean_relocate(data)
 
-recp_feat_time(data)
+recp_feat_time(data, origin_date = "1997-01-01")
 
 recp_feat_char_inds(data)
 
@@ -35,6 +35,10 @@ columns not present in \code{\link{vars_dict}}.}
 
 \item{names_to}{Set of names to use when renaming variables. Options are
 listed in \code{\link{vars_rename}}.}
+
+\item{origin_date}{Origin date for calculated time variables. For example,
+\code{time_sale_day} will be equal to the number of days between
+\code{origin_date} and date of sale.}
 }
 \value{
 A data frame after the recipes steps are applied.
