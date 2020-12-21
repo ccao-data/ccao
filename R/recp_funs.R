@@ -158,8 +158,8 @@ recp_feat_time <- function(data, origin_date = "1997-01-01") {
         lubridate::ymd(.data$meta_sale_date)
       ),
       time_sale_year = lubridate::year(.data$meta_sale_date),
-      time_sale_quarter = .data$time_interval %/% lubridate::months(3),
-      time_sale_month = .data$time_interval %/% lubridate::months(1),
+      time_sale_quarter = .data$time_interval %/% base::months(3),
+      time_sale_month = .data$time_interval %/% base::months(1),
       time_sale_week = .data$time_interval %/% lubridate::weeks(1),
       time_sale_day = .data$time_interval %/% lubridate::days(1),
 
