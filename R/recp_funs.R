@@ -143,6 +143,10 @@ recp_clean_relocate <- function(data) {
 #' @describeIn recp_funs Create time fixed effect variables for sales using
 #'   1997 as a base year.
 #'
+#' @param origin_date Origin date for calculated time variables. For example,
+#'   \code{time_sale_day} will be equal to the number of days between
+#'   \code{origin_date} and date of sale.
+#'
 #' @family recp_funs
 #' @export
 recp_feat_time <- function(data, origin_date = "1997-01-01") {
@@ -154,10 +158,10 @@ recp_feat_time <- function(data, origin_date = "1997-01-01") {
         lubridate::ymd(.data$meta_sale_date)
       ),
       time_sale_year = lubridate::year(.data$meta_sale_date),
-      time_sale_quarter = (time_interval %/% months(1)) %/% 3,
-      time_sale_month = time_interval %/% months(1),
-      time_sale_week = time_interval %/% weeks(1),
-      time_sale_day = time_interval %/% days(1),
+      time_sale_quarter = .data$time_interval %/% base::months(3),
+      time_sale_month = .data$time_interval %/% base::months(1),
+      time_sale_week = .data$time_interval %/% lubridate::weeks(1),
+      time_sale_day = .data$time_interval %/% lubridate::days(1),
 
       # Get individual components of dates for fixed effects to correct
       # seasonality
@@ -178,7 +182,7 @@ recp_feat_time <- function(data, origin_date = "1997-01-01") {
       time_sale_during_holidays = lubridate::month(
         .data$meta_sale_date) %in% c(11, 12, 1)
     ) %>%
-    dplyr::select(-time_interval)
+    dplyr::select(dplyr::any_of("time_interval"))
 }
 
 
