@@ -182,7 +182,7 @@ recp_feat_time <- function(data, origin_date = "1997-01-01") {
       time_sale_during_holidays = lubridate::month(
         .data$meta_sale_date) %in% c(11, 12, 1)
     ) %>%
-    dplyr::select(dplyr::any_of("time_interval"))
+    dplyr::select(-dplyr::any_of("time_interval"))
 }
 
 
