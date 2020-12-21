@@ -169,10 +169,17 @@ sale_date,,sale_date,meta_sale_date,Sale Date,meta,date,TRUE,FALSE,FALSE,,,,Date
 sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,TRUE,TRUE,,,,Market price of sale.
 TAX_YEAR,,tax_year,meta_year,Year,meta,numeric,TRUE,FALSE,FALSE,,,,
 TOWN_CODE,QU_TOWN,town_code,meta_town_code,Township Code,meta,character,TRUE,FALSE,TRUE,,,,
-,,sale_year,time_sale_year,Sale Year,time,numeric,TRUE,FALSE,TRUE,,,,Sale year calculated as the number of years since 1997.
-,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,TRUE,TRUE,,,,Sale quarter calculated as the number of quarter since January 1997.
-,,sale_month_of_year,time_sale_month_of_year,Sale Month of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of month of year (1-12).
-,,sale_quarter_of_year,time_sale_quarter_of_year,Sale Quarter of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of quarter of year (1-4).
+,,sale_year,time_sale_year,Sale Year,time,numeric,TRUE,FALSE,TRUE,,,,Sale year calculated as the number of years since 0 B.C.E.
+,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,TRUE,TRUE,,,,Sale quarter calculated as the number of quarters since January 1997.
+,,sale_month,time_sale_month,Sale Month,time,numeric,TRUE,FALSE,TRUE,,,,Sale month calculated as the number of months since January 1997.
+,,sale_week,time_sale_week,Sale Week,time,numeric,TRUE,FALSE,TRUE,,,,"Sale week calculated as the number of weeks since January 1st, 1997."
+,,sale_day,time_sale_day,Sale Day,time,numeric,TRUE,FALSE,TRUE,,,,"Sale day calculated as the number of days since January 1st, 1997."
+,,sale_quarter_of_year,time_sale_quarter_of_year,Sale Quarter of Year,time,character,TRUE,FALSE,TRUE,,,,Character encoding of quarter of year (Q1 - Q4).
+,,sale_month_of_year,time_sale_month_of_year,Sale Month of Year,time,character,TRUE,FALSE,TRUE,,,,Character encoding of month of year (Jan - Dec).
+,,sale_week_of_year,time_sale_week_of_year,Sale Week of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of week of year (1 - 52).
+,,sale_day_of_year,time_sale_day_of_year,Sale Day of Year,time,numeric,TRUE,FALSE,TRUE,,,,Numeric encoding of day of year (1 - 365).
+,,sale_during_school_year,time_sale_during_school_year,Sale During School Year,time,logical,TRUE,FALSE,TRUE,,,,Indicator for whether sale occurred during usual school year (September - May).
+,,sale_during_holidays,time_sale_during_holidays,Sale During Holidays,time,logical,TRUE,FALSE,TRUE,,,,Indicator for whether sale occurred during holiday season (November - January).
 ,,nbhd_avg,meta_nbhd_avg,Neighborhood Mean Sale Price,meta,numeric,TRUE,FALSE,FALSE,,,,Mean sale price of a given neighborhood. Can be used in lieu of neighborhood dummy variables in order to reduce sparsity.
 ,,nbhd_med,meta_nbhd_med,Neighborhood Median Sale Price,meta,numeric,TRUE,FALSE,FALSE,,,,Median sale price of a given neighborhood. Can be used in lieu of neighborhood dummy variables in order to reduce sparsity.
 fs_flood_risk_direction,,flood_risk_direction,geo_fs_flood_risk_direction,Flood Risk Direction,geo,numeric,TRUE,FALSE,TRUE,,,,Flood risk data provided by First Street and academics at UPenn.

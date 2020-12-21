@@ -145,18 +145,40 @@ recp_clean_relocate <- function(data) {
 #'
 #' @family recp_funs
 #' @export
-recp_feat_time <- function(data) {
+recp_feat_time <- function(data, origin_date = "1997-01-01") {
   data %>%
     dplyr::mutate(
-      time_sale_year =
-        lubridate::year(.data$meta_sale_date),
-      time_sale_month =
-        (.data$time_sale_year - 1997) * 12 +
-          lubridate::month(.data$meta_sale_date),
-      time_sale_quarter =
-        (.data$time_sale_year - 1997) * 4 +
-          lubridate::quarter(.data$meta_sale_date)
-    )
+      # Calculate interval periods and times since Jan 01, 1997
+      time_interval = lubridate::interval(
+        lubridate::ymd(origin_date),
+        lubridate::ymd(.data$meta_sale_date)
+      ),
+      time_sale_year = lubridate::year(.data$meta_sale_date),
+      time_sale_quarter = (time_interval %/% months(1)) %/% 3,
+      time_sale_month = time_interval %/% months(1),
+      time_sale_week = time_interval %/% weeks(1),
+      time_sale_day = time_interval %/% days(1),
+
+      # Get individual components of dates for fixed effects to correct
+      # seasonality
+      time_sale_quarter_of_year = paste0("Q", as.character(
+        lubridate::quarter(.data$meta_sale_date)
+      )),
+      time_sale_month_of_year = lubridate::month(
+        x = .data$meta_sale_date,
+        label = TRUE,
+        abbr = TRUE
+      ),
+      time_sale_week_of_year = lubridate::week(.data$meta_sale_date),
+      time_sale_day_of_year = lubridate::yday(.data$meta_sale_date),
+
+      # Create indicators for dates that fall in particular months
+      time_sale_during_school_year = lubridate::month(
+        .data$meta_sale_date) %in% c(1:5, 9:12),
+      time_sale_during_holidays = lubridate::month(
+        .data$meta_sale_date) %in% c(11, 12, 1)
+    ) %>%
+    dplyr::select(-time_interval)
 }
 
 
