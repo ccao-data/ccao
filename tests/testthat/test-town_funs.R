@@ -95,7 +95,11 @@ test_that("output is correct", {
 
 test_that("Missing values are handled correctly", {
   expect_equal(
-    town_get_assmnt_year(c(towns, NA, NULL, NaN, "02"), round_type = "floor"),
+    town_get_assmnt_year(
+      c(towns, NA, NULL, NaN, "02"),
+      year = rep(2020, 9),
+      round_type = "floor"
+    ),
     c(2019, 2020, 2019, 2019, 2018, 2018, NA, NA, NA)
   )
   expect_equal(town_get_assmnt_year(NA_character_, 2010:2012), rep(NA_real_, 3))
