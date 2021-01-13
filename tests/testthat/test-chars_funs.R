@@ -102,7 +102,7 @@ test_that("data is identical to known good output", {
     chars_sparsify_simple_results,
     chars_sparsify_simple_correct
   )
-  expect_known_hash(chars_sparsify_complex, hash = "55d47a6b89")
+  expect_known_hash(chars_sparsify_complex, hash = "ef4f85945a")
 })
 
 ##### TEST chars_update() #####
@@ -156,8 +156,8 @@ updated_chars_groups <- chars_sample_universe %>%
 # Test that output is identical to previous output
 test_that("data is identical to known good output", {
   expect_known_hash(chars_fake_updated, hash = "64a26a3b64")
-  expect_known_hash(updated_chars, hash = "926ce6652f")
-  expect_known_hash(updated_chars_groups, hash = "d8c855e13a")
+  expect_known_hash(updated_chars, hash = "aa54c6ec99")
+  expect_known_hash(updated_chars_groups, hash = "8c49d0f763")
 })
 
 

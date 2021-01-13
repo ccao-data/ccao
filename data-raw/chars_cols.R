@@ -1,15 +1,14 @@
 chars_cols <- dplyr::lst(
 
-  # List of columns in dataset that will need to have ADDCHARS values added
+  # List of columns in data set that will need to have ADDCHARS values added
   add_target = c(
-    "APTS", "ROOMS", "BEDS", "FBATH", "HBATH", "BLDG_SF"
+    "ROOMS", "BEDS", "FBATH", "HBATH", "BLDG_SF"
   ),
   add_source = c(
-    "QU_NUM_APTS", "QU_ROOMS", "QU_BEDS",
-    "QU_FULL_BATH", "QU_HALF_BATH", "QU_SQFT_BLD"
+    "QU_ROOMS", "QU_BEDS", "QU_FULL_BATH", "QU_HALF_BATH", "QU_SQFT_BLD"
   ),
 
-  # List of columns in dataset that will need to have ADDCHARS values replaced
+  # List of columns in data set that will need to have ADDCHARS values replaced
   rep_target = c(
     "TYPE_RESD", "USE", "EXT_WALL", "ROOF_CNST", "BSMT", "BSMT_FIN", "HEAT",
     "AIR", "FRPL", "ATTIC_TYPE", "ATTIC_FNSH", "TP_PLAN", "TP_DSGN",
