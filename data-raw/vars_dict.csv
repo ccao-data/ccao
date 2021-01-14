@@ -167,7 +167,7 @@ PIN,QU_PIN,pin,meta_pin,Property Index Number,meta,character,TRUE,FALSE,FALSE,,,
 PRI_EST_BLDG,,pri_est_bldg,meta_pri_yr_board_est_bldg,Prior Year BoR Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of building from the year prior to observation year.
 PRI_EST_LAND,,pri_est_land,meta_pri_yr_board_est_land,Prior Year BoR Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of land from the year prior to observation year.
 CUR_EST_BLDG,,cur_est_bldg,meta_cur_yr_mailed_est_bldg,Assessor Mailed Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor mailed estimated market value of building from the observation year.
-CUR_EST_LAND,,cur_est_land,meta_cur_yr_mailed_est_bldg,Assessor Mailed Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor mailed estimated market value of land from the observation year.
+CUR_EST_LAND,,cur_est_land,meta_cur_yr_mailed_est_land,Assessor Mailed Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor mailed estimated market value of land from the observation year.
 sale_date,,sale_date,meta_sale_date,Sale Date,meta,date,TRUE,FALSE,FALSE,,,,Date of sale.
 sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,TRUE,TRUE,,,,Market price of sale.
 TAX_YEAR,,tax_year,meta_year,Year,meta,numeric,TRUE,FALSE,FALSE,,,,
