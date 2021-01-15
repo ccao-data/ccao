@@ -164,10 +164,12 @@ NBHD,QU_NBHD,nbhd,meta_nbhd,Neighborhood Code,meta,character,TRUE,FALSE,TRUE,,,,
 DT_PER_ASS,,dt_per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent assessed for prorated properties. Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
 PER_ASS,,per_ass,meta_per_ass,Percent Assessed,meta,numeric,TRUE,FALSE,FALSE,,,,"Percent assessed for prorated properties. Percent of ownership of a condo building for a unit as defined by the condominium declaration. If missing, default is 1/n_units."
 PIN,QU_PIN,pin,meta_pin,Property Index Number,meta,character,TRUE,FALSE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
-PRI_EST_BLDG,,pri_est_bldg,meta_pri_yr_board_est_bldg,Prior Year BoR Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of building from the year prior to observation year.
-PRI_EST_LAND,,pri_est_land,meta_pri_yr_board_est_land,Prior Year BoR Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of land from the year prior to observation year.
-CUR_EST_BLDG,,cur_est_bldg,meta_cur_yr_mailed_est_bldg,Assessor Mailed Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor mailed estimated market value of building from the observation year.
-CUR_EST_LAND,,cur_est_land,meta_cur_yr_mailed_est_land,Assessor Mailed Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor mailed estimated market value of land from the observation year.
+PRI_YR_BOR_EST_BLDG,,pri_yr_bor_est_bldg,meta_pri_yr_board_est_bldg,Prior Year BoR Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of building from the year prior to observation year.
+PRI_YR_BOR_EST_LAND,,pri_yr_bor_est_land,meta_pri_yr_board_est_land,Prior Year BoR Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Board of Review final estimated market value of land from the year prior to observation year.
+MAILED_EST_BLDG,,mailed_est_bldg,meta_mailed_est_bldg,Assessor Mailed Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor mailed estimated market value of building from observation year.
+MAILED_EST_LAND,,mailed_est_land,meta_mailed_est_land,Assessor Mailed Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor mailed estimated market value of land from observation year.
+CERTIFIED_EST_BLDG,,certified_est_bldg,meta_certified_est_bldg,Assessor Certified Estimate (Building),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor certified estimated market value of building from observation year.
+CERTIFIED_EST_LAND,,certified_est_land,meta_certified_est_land,Assessor Certified Estimate (Land),meta,numeric,TRUE,FALSE,FALSE,,,,Assessor certified estimated market value of land from observation year.
 sale_date,,sale_date,meta_sale_date,Sale Date,meta,date,TRUE,FALSE,FALSE,,,,Date of sale.
 sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,TRUE,TRUE,,,,Market price of sale.
 TAX_YEAR,,tax_year,meta_year,Year,meta,numeric,TRUE,FALSE,FALSE,,,,
