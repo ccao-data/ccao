@@ -175,8 +175,8 @@ sale_price,,sale_price,meta_sale_price,Sale Price,meta,numeric,TRUE,TRUE,TRUE,,,
 TAX_YEAR,,tax_year,meta_year,Year,meta,numeric,TRUE,FALSE,FALSE,,,,
 TOWN_NAME,,township_name,meta_town_name,Township Name,meta,character,TRUE,FALSE,FALSE,,,,
 TOWN_CODE,QU_TOWN,township,meta_town_code,Township Code,meta,character,TRUE,FALSE,TRUE,,,,
-,,sale_year,time_sale_year,Sale Year,time,numeric,TRUE,FALSE,FALSE,,,,Sale year calculated as the number of years since 0 B.C.E.
-,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,TRUE,FALSE,,,,Sale quarter calculated as the number of quarters since January 1997.
+,,sale_year,time_sale_year,Sale Year,time,numeric,TRUE,FALSE,TRUE,,,,Sale year calculated as the number of years since 0 B.C.E.
+,,sale_quarter,time_sale_quarter,Sale Quarter,time,numeric,TRUE,TRUE,TRUE,,,,Sale quarter calculated as the number of quarters since January 1997.
 ,,sale_month,time_sale_month,Sale Month,time,numeric,TRUE,FALSE,FALSE,,,,Sale month calculated as the number of months since January 1997.
 ,,sale_week,time_sale_week,Sale Week,time,numeric,TRUE,FALSE,TRUE,,,,"Sale week calculated as the number of weeks since January 1st, 1997."
 ,,sale_day,time_sale_week,Sale Day,time,numeric,TRUE,FALSE,FALSE,,,,"Sale day calculated as the number of days since January 1st, 1997."
