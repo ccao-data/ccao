@@ -20,7 +20,7 @@ Imports:
     butcher,
     dplyr (>= 1.0.0),
     gstat,
-    lightgm,
+    lightgbm,
     lubridate,
     magrittr,
     parsnip,
