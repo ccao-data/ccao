@@ -145,7 +145,9 @@ model_predict <- function(spec, recipe, data, exp = TRUE) {
     new_data = recipes::bake(recipe, data, recipes::all_predictors())
   )$.pred
 
-  return(ifelse(exp, exp(pred), pred))
+  if (exp) pred <- exp(pred)
+
+  return(pred)
 }
 
 
