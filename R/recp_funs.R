@@ -5,14 +5,6 @@
 #' into "recipes", similar to the R recipes package. They should be applied
 #' in the order listed below:
 #'
-#' - recp_clean_keep_dict_vars
-#' - recp_clean_rename
-#' - recp_clean_recode
-#' - recp_clean_relocate
-#' - recp_feat_time
-#' - recp_feat_char_inds
-#' - recp_feat_arms_length
-#'
 #' @param data A data frame containing data extracted from CCAO SQL tables.
 #'   Expects either SQL or "standardized" column names as listed in
 #'   \code{\link{vars_dict}}.

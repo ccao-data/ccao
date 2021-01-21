@@ -47,15 +47,6 @@ Data extracted from CCAO SQL tables often requires cleaning and
 transformation before modeling. These functions standardized such actions
 into "recipes", similar to the R recipes package. They should be applied
 in the order listed below:
-\itemize{
-\item recp_clean_keep_dict_vars
-\item recp_clean_rename
-\item recp_clean_recode
-\item recp_clean_relocate
-\item recp_feat_time
-\item recp_feat_char_inds
-\item recp_feat_arms_length
-}
 }
 \section{Functions}{
 \itemize{
