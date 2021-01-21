@@ -289,7 +289,8 @@ chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
       dplyr::across({{ replacement_source }}, last_nonzero_element),
       NUM_288S_ACTIVE = dplyr::n()
     ) %>%
-    dplyr::rename(YEAR = .data$has_active_288)
+    dplyr::rename(YEAR = .data$has_active_288) %>%
+    dplyr::ungroup()
 }
 
 

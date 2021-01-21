@@ -100,7 +100,7 @@ test_that("data is identical to known good output", {
     chars_sparsify_simple_test,
     chars_sparsify_simple_correct
   )
-  expect_known_hash(chars_sample_addchars_sparse, hash = "65153751f3")
+  expect_known_hash(chars_sample_addchars_sparse, hash = "a2ec1fa90d")
 })
 
 ##### TEST chars_update() #####
