@@ -238,8 +238,7 @@ val_townhomes_by_group <- function(data, truth, estimate, class,
       ),
       th_med_pct_adj = tidyr::replace_na(.data$th_med_pct_adj, 0),
       th_med_pct_adj = ifelse(
-        .data$th_num_sales /
-          .data$th_num_in_group >= .data$townhome_min_turnover,
+        .data$th_num_sales / .data$th_num_in_group >= townhome_min_turnover,
         .data$th_med_pct_adj, 0
       )
     ) %>%
@@ -396,8 +395,7 @@ postval_model <- function(data, truth, estimate, class,
     dplyr::left_join(ntile_prop_counts) %>%
     dplyr::mutate(
       ntile_med_pct_adj = ifelse(
-        .data$ntile_num_sales /
-          .data$ntile_num_props >= .data$ntile_min_turnover,
+        .data$ntile_num_sales / .data$ntile_num_props >= ntile_min_turnover,
         .data$ntile_med_pct_adj, 0
       )
     )
