@@ -117,7 +117,7 @@ model_axe_recipe <- function(x) {
 }
 
 
-#' Predict using a trained model and recipe
+#' Predict values using a trained model and recipe
 #'
 #' @description Simple helper function to return predictions from a new data set
 #' given a parsnip specification and recipe. Will exponentiate predictions by

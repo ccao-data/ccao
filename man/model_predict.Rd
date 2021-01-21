@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_funs.R
 \name{model_predict}
 \alias{model_predict}
-\title{Predict using a trained model and recipe}
+\title{Predict values using a trained model and recipe}
 \usage{
 model_predict(spec, recipe, data, exp = TRUE)
 }
