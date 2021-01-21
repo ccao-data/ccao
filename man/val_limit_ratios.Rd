@@ -33,3 +33,13 @@ sales <- c(20000, 15000, 30000, NA, 55000, 40000, NA)
 estimates <- c(30000, 50000, 31000, 10000, 200000, 30000, 20000)
 val_limit_ratios(sales, estimates, lower = 0.7, upper = 2.0)
 }
+\seealso{
+Other valuation_funs: 
+\code{\link{postval_model}()},
+\code{\link{predict.postval_model}()},
+\code{\link{val_assign_ntile}()},
+\code{\link{val_create_ntiles}()},
+\code{\link{val_med_pct_adj}()},
+\code{\link{val_townhomes_by_group}()}
+}
+\concept{valuation_funs}

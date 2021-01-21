@@ -42,3 +42,13 @@ sales <- c(20000, 15000, 30000, NA, 55000, 40000, NA)
 estimates <- c(30000, 20000, 31000, 10000, 100000, 30000, 20000)
 val_med_pct_adj(sales, estimates, min_n = 3, max_abs_adj = 0.4)
 }
+\seealso{
+Other valuation_funs: 
+\code{\link{postval_model}()},
+\code{\link{predict.postval_model}()},
+\code{\link{val_assign_ntile}()},
+\code{\link{val_create_ntiles}()},
+\code{\link{val_limit_ratios}()},
+\code{\link{val_townhomes_by_group}()}
+}
+\concept{valuation_funs}

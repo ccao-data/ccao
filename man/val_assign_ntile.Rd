@@ -26,3 +26,13 @@ cuts <- list(stats::quantile(x, probs = c(0.25, 0.75)))
 
 ccao:::val_assign_ntile(x, cuts)
 }
+\seealso{
+Other valuation_funs: 
+\code{\link{postval_model}()},
+\code{\link{predict.postval_model}()},
+\code{\link{val_create_ntiles}()},
+\code{\link{val_limit_ratios}()},
+\code{\link{val_med_pct_adj}()},
+\code{\link{val_townhomes_by_group}()}
+}
+\concept{valuation_funs}

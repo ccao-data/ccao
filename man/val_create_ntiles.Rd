@@ -29,3 +29,13 @@ ccao:::val_create_ntiles(x, probs = c(0.25, 0.50, 0.75))
 estimates <- c(30000, 50000, 31000, 10000, 200000, 30000, 20000)
 ccao:::val_create_ntiles(estimates, probs = c(0.25, 0.50, 0.75))
 }
+\seealso{
+Other valuation_funs: 
+\code{\link{postval_model}()},
+\code{\link{predict.postval_model}()},
+\code{\link{val_assign_ntile}()},
+\code{\link{val_limit_ratios}()},
+\code{\link{val_med_pct_adj}()},
+\code{\link{val_townhomes_by_group}()}
+}
+\concept{valuation_funs}
