@@ -25,5 +25,4 @@ x <- 1:100
 cuts <- list(stats::quantile(x, probs = c(0.25, 0.75)))
 
 ccao:::val_assign_ntile(x, cuts)
-
 }

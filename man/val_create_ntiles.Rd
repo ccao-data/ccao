@@ -19,7 +19,7 @@ A list containing the ntile breakpoints, bounded by -Inf and Inf.
 \description{
 Create ntiles based on a numeric distribution. Min and max are
 replaced with -Inf and Inf so that new values outside the initial range can
-be used. This function is used in conjunction with 
+be used. This function is used in conjunction with
 \code{\link{val_assign_ntile}}.
 }
 \examples{
@@ -28,5 +28,4 @@ ccao:::val_create_ntiles(x, probs = c(0.25, 0.50, 0.75))
 
 estimates <- c(30000, 50000, 31000, 10000, 200000, 30000, 20000)
 ccao:::val_create_ntiles(estimates, probs = c(0.25, 0.50, 0.75))
-
 }

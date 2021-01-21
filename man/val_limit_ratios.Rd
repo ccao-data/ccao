@@ -21,7 +21,7 @@ A vector of adjusted estimates.
 \description{
 Limit very high and low ratios by capping them to a fixed
 boundary. If a property has a sale, its ratio should be adjusted to be within
-these bounds. 
+these bounds.
 
 For example, a property with an estimate of \$300,000 and a sale of
 \$100,000 will have a sale ratio of 3. This function would lower the estimate
@@ -32,5 +32,4 @@ would become \$200,000.
 sales <- c(20000, 15000, 30000, NA, 55000, 40000, NA)
 estimates <- c(30000, 50000, 31000, 10000, 200000, 30000, 20000)
 val_limit_ratios(sales, estimates, lower = 0.7, upper = 2.0)
-
 }

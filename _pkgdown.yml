@@ -62,6 +62,13 @@ reference:
   - model_lgbm_save
   - model_lgbm_load
   - rm_intermediate
+- subtitle: Adjust estimated values
+  desc: Apply post-modeling adjustments to raw model values
+  contents:
+  - val_med_pct_adj
+  - val_limit_ratios
+  - val_create_ntiles
+  - val_assign_ntile
 - subtitle: Map values
   desc: Create thematic and diagnostic maps of CCAO data
 - contents:

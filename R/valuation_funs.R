@@ -16,7 +16,7 @@
 #' @param estimate Vector of estimated market values. Typically model results.
 #' @param min_n Minimum number of true values needed to make an adjustment. If
 #'   the number of true values is less than \code{min_n}, then the function will
-#'   return 0.
+#'   return NA.
 #' @param max_abs_adj The maximum absolute percentage adjustment that can be
 #'   returned.
 #' @param na.rm Whether or not to remove NAs from inputs.
@@ -89,7 +89,9 @@ val_limit_ratios <- function(truth, estimate, lower, upper) {
     is.numeric(upper),
     length(truth) == length(estimate),
     length(lower) == 1,
-    length(upper) == 1
+    length(upper) == 1,
+    upper > 0,
+    lower > 0
   )
 
   ratio <- estimate / truth
@@ -134,6 +136,7 @@ val_create_ntiles <- function(x, probs, na.rm = TRUE) { # nolint
     unique(stats::quantile(x, probs = probs, na.rm = na.rm, names = FALSE)),
     Inf
   ))
+  output <- ifelse(all(is.na(x)), list(NA_real_), output)
 
   return(output)
 }
@@ -167,7 +170,7 @@ val_assign_ntile <- function(x, ntiles) {
       list(num = x, cuts = ntiles),
       function(num, cuts) as.character(cut(num, breaks = cuts, dig.lab = 10))
     ),
-    NA
+    NA_character_
   )
 
   return(output)

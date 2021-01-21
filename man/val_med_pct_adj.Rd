@@ -13,7 +13,7 @@ val_med_pct_adj(truth, estimate, min_n, max_abs_adj, na.rm = TRUE)
 
 \item{min_n}{Minimum number of true values needed to make an adjustment. If
 the number of true values is less than \code{min_n}, then the function will
-return 0.}
+return NA.}
 
 \item{max_abs_adj}{The maximum absolute percentage adjustment that can be
 returned.}
@@ -32,7 +32,7 @@ values.
 
 This should not be used lightly. In the case of adjusting modeled values
 toward "true" sale prices, it should only be used with high confidence that
-those sales are representative of the overall market. 
+those sales are representative of the overall market.
 
 In practice, the primary use of this function is to adjust ratios at the very
 low and very high end of the market.
@@ -41,5 +41,4 @@ low and very high end of the market.
 sales <- c(20000, 15000, 30000, NA, 55000, 40000, NA)
 estimates <- c(30000, 20000, 31000, 10000, 100000, 30000, 20000)
 val_med_pct_adj(sales, estimates, min_n = 3, max_abs_adj = 0.4)
-
 }
