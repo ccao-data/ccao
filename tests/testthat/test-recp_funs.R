@@ -91,7 +91,15 @@ recode_sample_data <- recp_clean_rename(
 
 # Test for expected outputs
 test_that("output is as expected", {
-  expect_known_hash(recp_clean_recode(recode_sample_data), hash = "041a6fbead")
+  expect_equal(
+    recp_clean_recode(recode_sample_data)[1:2, 4:7],
+    data.frame(
+      char_age = c(58, 65),
+      char_apts = as.factor(c(0, 0)),
+      char_ext_wall = factor(c(2, 2), levels = c(2, 3)),
+      char_roof_cnst = factor(c(1, 1), levels = 1)
+    )
+  )
 })
 
 # Test that invalid inputs throw errors
