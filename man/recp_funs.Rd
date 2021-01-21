@@ -11,9 +11,9 @@
 \alias{recp_feat_arms_length}
 \title{Clean or alter CCAO data using standardized recipes}
 \usage{
-recp_clean_keep_dict_vars(data, cols_to_rm)
+recp_clean_keep_dict_vars(data, cols_to_rm = NULL)
 
-recp_clean_rename(data, names_to = "standard")
+recp_clean_rename(data, ...)
 
 recp_clean_recode(data)
 
@@ -33,8 +33,7 @@ Expects either SQL or "standardized" column names as listed in
 \item{cols_to_rm}{Additional columns to remove when discarding all
 columns not present in \code{\link{vars_dict}}.}
 
-\item{names_to}{Set of names to use when renaming variables. Options are
-listed in \code{\link{vars_rename}}.}
+\item{...}{Arguments passed to \code{\link{vars_rename}}.}
 
 \item{origin_date}{Origin date for calculated time variables. For example,
 \code{time_sale_day} will be equal to the number of days between
@@ -47,7 +46,16 @@ A data frame after the recipes steps are applied.
 Data extracted from CCAO SQL tables often requires cleaning and
 transformation before modeling. These functions standardized such actions
 into "recipes", similar to the R recipes package. They should be applied
-in the order listed below.
+in the order listed below:
+\itemize{
+\item recp_clean_keep_dict_vars
+\item recp_clean_rename
+\item recp_clean_recode
+\item recp_clean_relocate
+\item recp_feat_time
+\item recp_feat_char_inds
+\item recp_feat_arms_length
+}
 }
 \section{Functions}{
 \itemize{

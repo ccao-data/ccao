@@ -1,17 +1,24 @@
 #' Clean or alter CCAO data using standardized recipes
 #'
 #' @description Data extracted from CCAO SQL tables often requires cleaning and
-#'   transformation before modeling. These functions standardized such actions
-#'   into "recipes", similar to the R recipes package. They should be applied
-#'   in the order listed below.
+#' transformation before modeling. These functions standardized such actions
+#' into "recipes", similar to the R recipes package. They should be applied
+#' in the order listed below:
+#'
+#' - recp_clean_keep_dict_vars
+#' - recp_clean_rename
+#' - recp_clean_recode
+#' - recp_clean_relocate
+#' - recp_feat_time
+#' - recp_feat_char_inds
+#' - recp_feat_arms_length
 #'
 #' @param data A data frame containing data extracted from CCAO SQL tables.
 #'   Expects either SQL or "standardized" column names as listed in
 #'   \code{\link{vars_dict}}.
 #' @param cols_to_rm Additional columns to remove when discarding all
 #'   columns not present in \code{\link{vars_dict}}.
-#' @param names_to Set of names to use when renaming variables. Options are
-#'   listed in \code{\link{vars_rename}}.
+#' @param ... Arguments passed to \code{\link{vars_rename}}.
 #'
 #' @return A data frame after the recipes steps are applied.
 #'
@@ -33,7 +40,12 @@ NULL
 #'
 #' @family recp_funs
 #' @export
-recp_clean_keep_dict_vars <- function(data, cols_to_rm) {
+recp_clean_keep_dict_vars <- function(data, cols_to_rm = NULL) {
+  stopifnot(
+    is.data.frame(data),
+    is.character(cols_to_rm) | is.null(cols_to_rm),
+    is.vector(cols_to_rm) | is.null(cols_to_rm)
+  )
 
   # Get all possible column names from the variable dictionary
   cols_to_keep <- ccao::vars_dict %>%
@@ -56,13 +68,13 @@ recp_clean_keep_dict_vars <- function(data, cols_to_rm) {
 #'
 #' @family recp_funs
 #' @export
-recp_clean_rename <- function(data, names_to = "standard") {
+recp_clean_rename <- function(data, ...) {
   data %>%
     dplyr::rename_at(
       dplyr::vars(tidyr::starts_with("DT_")),
       ~ gsub("DT_", "", .x, fixed = TRUE)
     ) %>%
-    ccao::vars_rename(names_to = names_to)
+    ccao::vars_rename(...)
 }
 
 

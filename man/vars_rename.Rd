@@ -22,10 +22,10 @@ the construction new_col_name = old_col_name.}
 The input data frame with columns renamed.
 }
 \description{
-Bulk rename columns from one type of CCAO to another. For
+Bulk rename columns from one type of CCAO data to another. For
 example, rename all columns pulled from SQL to their standard names used
 in modeling. Or, rename all standard modeling names to "pretty" names for
-publication. Function will overwrite names it finds in
+publication. This function will only rename things specified in
 \code{\link{vars_dict}}, all other names in the data will remain unchanged.
 
 Options for \code{names_from} and \code{names_to} are:
