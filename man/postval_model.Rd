@@ -13,9 +13,11 @@ postval_model(
   ntile_probs,
   ntile_min_sales,
   ntile_min_turnover,
+  ntile_max_abs_adj,
   townhome_group_cols,
   townhome_min_sales,
   townhome_min_turnover,
+  townhome_max_abs_adj,
   ratio_cap_upper_bound,
   ratio_cap_lower_bound
 )
@@ -48,6 +50,9 @@ necessary to make a percentage adjustment.}
 \item{ntile_min_turnover}{The minimum amount of turnover within an ntile
 group necessary to make a percentage adjustment.}
 
+\item{ntile_max_abs_adj}{The maximum absolute percentage adjustment to make
+within an ntile group.}
+
 \item{townhome_group_cols}{Character vector of column names in the data
 used to define groups of identical homes. Should contain characteristic
 columns that would not vary for identical units. For example, number of
@@ -59,6 +64,9 @@ to apply a percentage adjustment.}
 \item{townhome_min_turnover}{The minimum amount of turnover within a group
 needed to apply a percentage adjustment. This is to prevent groups with
 dozens of properties from being adjusted by just a few sales.}
+
+\item{townhome_max_abs_adj}{The maximum absolute percentage adjustment to
+make within a townhome group.}
 
 \item{ratio_cap_upper_bound}{The upper bound for sales ratios. Properties
 with ratios higher than this number will have their estimated value set

@@ -11,7 +11,8 @@ val_townhomes_by_group(
   class,
   townhome_group_cols,
   townhome_min_sales,
-  townhome_min_turnover
+  townhome_min_turnover,
+  townhome_max_abs_adj
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ to apply a percentage adjustment.}
 \item{townhome_min_turnover}{The minimum amount of turnover within a group
 needed to apply a percentage adjustment. This is to prevent groups with
 dozens of properties from being adjusted by just a few sales.}
+
+\item{townhome_max_abs_adj}{The maximum absolute percentage adjustment to
+make within a townhome group.}
 }
 \value{
 A summarized dataframe with the adjustment and final value of each
