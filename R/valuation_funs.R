@@ -352,7 +352,7 @@ postval_model <- function(data, truth, estimate, class,
     dplyr::rowwise() %>%
     dplyr::filter(
       !is.null(.data$ntiles_lst),
-      length(.data$ntiles_lst) >= length(.data$ntile_probs + 2),
+      length(.data$ntiles_lst) >= length(ntile_probs + 2),
       !any(is.na(.data$ntiles_lst))
     ) %>%
     dplyr::ungroup()
