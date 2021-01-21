@@ -244,13 +244,14 @@ val_townhomes_by_group <- function(data, truth, estimate, class,
     ) %>%
     dplyr::mutate(
       th_final_value = rowSums(
-        dplyr::tibble(
+        data.frame(
           .data$th_med_est,
           .data$th_med_est * .data$th_med_pct_adj
         ),
         na.rm = TRUE
       )
-    )
+    ) %>%
+    dplyr::ungroup()
 }
 
 
@@ -411,8 +412,7 @@ postval_model <- function(data, truth, estimate, class,
       townhome_min_sales = townhome_min_sales,
       townhome_min_turnover = townhome_min_turnover,
       townhome_max_abs_adj = townhome_max_abs_adj
-    ) %>%
-    dplyr::ungroup()
+    )
 
   # Output "trained" data frames and set class of object
   output <- list(
@@ -474,7 +474,7 @@ predict.postval_model <- function(object, ..., new_data, truth, estimate) {
     dplyr::left_join(object$ntile_adjustments) %>%
     dplyr::mutate(
       {{ estimate }} := rowSums(
-        dplyr::tibble({{ estimate }}, {{ estimate }} * .data$ntile_med_pct_adj),
+        data.frame({{ estimate }}, {{ estimate }} * .data$ntile_med_pct_adj),
         na.rm = TRUE
       ),
       {{ estimate }} := ccao::val_limit_ratios(
