@@ -65,19 +65,18 @@ chars_sparsify_simple_data <- dplyr::tibble(
 chars_sparsify_simple_correct <- dplyr::tibble(
   QU_PIN = rep("123456", 11),
   YEAR = c(2013:2018, 2020:2024),
-  QU_CLASS = rep("206", 11),
   QU_BEDS = c(rep(1, 6), rep(2, 5)),
   QU_SQFT_BLD = c(rep(300, 2), rep(400, 4), rep(200, 5)),
   QU_GARAGE_SIZE = c(0, 0, rep(3, 4), rep(0, 5)),
+  QU_CLASS = rep("206", 11),
   NUM_288S_ACTIVE = c(1, 1, rep(2, 4), rep(1, 5))
 )
 
 # Create results for simple case
-chars_sparsify_simple_results <- chars_sparsify_simple_data %>%
+chars_sparsify_simple_test <- chars_sparsify_simple_data %>%
   chars_sparsify(
     pin_col = QU_PIN,
     year_col = TAX_YEAR,
-    class_col = QU_CLASS,
     town_col = as.character(QU_TOWN),
     upload_date_col = QU_UPLOAD_DATE,
     additive_source = any_of(chars_cols$add_source),
@@ -85,11 +84,10 @@ chars_sparsify_simple_results <- chars_sparsify_simple_data %>%
   )
 
 # Create complex case using sample dataset
-chars_sparsify_complex <- chars_sample_addchars %>%
+chars_sample_addchars_sparse <- chars_sample_addchars %>%
   chars_sparsify(
     pin_col = QU_PIN,
     year_col = TAX_YEAR,
-    class_col = QU_CLASS,
     town_col = as.character(QU_TOWN),
     upload_date_col = QU_UPLOAD_DATE,
     additive_source = any_of(chars_cols$add_source),
@@ -99,31 +97,32 @@ chars_sparsify_complex <- chars_sample_addchars %>%
 # Test dataset equivalence
 test_that("data is identical to known good output", {
   expect_equivalent(
-    chars_sparsify_simple_results,
+    chars_sparsify_simple_test,
     chars_sparsify_simple_correct
   )
-  expect_known_hash(chars_sparsify_complex, hash = "ef4f85945a")
+  expect_known_hash(chars_sample_addchars_sparse, hash = "65153751f3")
 })
 
 ##### TEST chars_update() #####
 
 context("test chars_update()")
 
+# Test mock dataset with only addchars columns
 chars_fake_universe <- dplyr::tibble(
   PIN = rep("123456", 11),
   TAX_YEAR = c(2013:2018, 2020:2024),
-  CLASS = rep("206", 11),
   TOWN = rep("25", 11),
   AGE = c(rep(80, 3), rep(83, 3), rep(86, 2), rep(89, 3)),
   BEDS = c(rep(2, 6), rep(3, 5)),
   BLDG_SF = c(600, 600, rep(700, 4), rep(1100, 5)),
-  GAR1_SIZE = c(rep(0, 6), rep(3, 5))
+  GAR1_SIZE = c(rep(0, 6), rep(3, 5)),
+  CLASS = rep("206", 11)
 )
 
 chars_fake_updated <- chars_fake_universe %>%
   dplyr::left_join(
-    chars_sparsify_simple_results,
-    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
+    chars_sparsify_simple_test,
+    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR")
   ) %>%
   chars_update(
     additive_target = any_of(ccao::chars_cols$add_target),
@@ -131,33 +130,37 @@ chars_fake_updated <- chars_fake_universe %>%
   )
 
 # Join to fake universe data
-updated_chars <- chars_sample_universe %>%
+chars_sample_universe_test <- chars_sample_universe %>%
   dplyr::left_join(
-    chars_sparsify_complex %>% dplyr::mutate(QU_CLASS = substr(QU_CLASS, 1, 3)),
-    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
+    chars_sample_addchars_sparse,
+    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR")
   ) %>%
   chars_update(
     additive_target = any_of(ccao::chars_cols$add_target),
     replacement_target = any_of(ccao::chars_cols$rep_target)
-  )
+  ) %>%
+  dplyr::select(-tidyselect::starts_with("QU_"))
 
 # Test with groups applied
-updated_chars_groups <- chars_sample_universe %>%
+chars_sample_universe_group <- chars_sample_universe %>%
   dplyr::left_join(
-    chars_sparsify_complex %>% dplyr::mutate(QU_CLASS = substr(QU_CLASS, 1, 3)),
-    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
+    chars_sample_addchars_sparse,
+    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR")
   ) %>%
   dplyr::group_by(TAX_YEAR) %>%
   chars_update(
     additive_target = any_of(ccao::chars_cols$add_target),
     replacement_target = any_of(ccao::chars_cols$rep_target)
-  )
+  ) %>%
+  dplyr::select(-tidyselect::starts_with("QU_")) %>%
+  dplyr::ungroup()
 
 # Test that output is identical to previous output
 test_that("data is identical to known good output", {
-  expect_known_hash(chars_fake_updated, hash = "64a26a3b64")
-  expect_known_hash(updated_chars, hash = "aa54c6ec99")
-  expect_known_hash(updated_chars_groups, hash = "8c49d0f763")
+  expect_known_hash(chars_fake_updated, hash = "5d46aea642")
+  expect_identical(chars_sample_universe_test, chars_sample_universe_updated)
+  expect_equivalent(chars_sample_universe_group, chars_sample_universe_updated)
+  expect_known_hash(chars_sample_universe_test, hash = "04ee0bc93f")
 })
 
 

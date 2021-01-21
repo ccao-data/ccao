@@ -158,13 +158,12 @@ chars_288_active <- function(start_year, town) {
 #' fact that multiple 288s can be active at the same time for different periods,
 #' and some columns from ADDCHARS add to existing characteristics, while some
 #' overwrite existing characteristics. Additionally, 288s can be active for
-#' multi-code properties, meaning that one building (out of N) could have an
+#' multi-code properties, meaning that one building on a PIN could have an
 #' improvement while the others remain untouched.
 #'
-#' The goal of this function is to transform these single rows into a sparse
-#' data frame which lists a row and characteristic update per PIN per YEAR
-#' per CLASS. CLASS is needed so that if multiple buildings lie on the same
-#' PIN, they can be joined by PIN, YEAR, and CLASS.
+#' The goal of this function is to transform these single row records into a
+#' sparse data frame which lists a row and characteristic update per PIN
+#' per YEAR.
 #'
 #' The transformation caused by this function is most easily visualized
 #' with a mock dataset.
@@ -189,35 +188,33 @@ chars_288_active <- function(start_year, town) {
 #' | 12345  | 2019 | 300         | 1        |
 #' | 12345  | 2020 | 300         | 1        |
 #'
-#' Each PIN will have a row for each year that the 288 is active and a column
+#' Each PIN will have a row for each year that a 288 is active and a column
 #' for each characteristic specified by \code{additive_source} and
 #' \code{replacement_source}. This table can be easily left joined to modeling
-#' data to update characteristic values. See README.Rmd for examples.
+#' data to update characteristic values.
 #'
 #' @param data A data frame containing ADDCHARS columns.
 #' @param pin_col A column name specifying the PIN column. Usually QU_PIN.
 #' @param year_col A column name specifying the year column. Usually TAX_YEAR.
-#' @param class_col A column name specifying the class column. Usually QU_CLASS.
 #' @param town_col A column name specifying the town column. Usually QU_TOWN.
 #'   This is used to determine the length of the 288, given the starting date
 #'   specified by \code{year_col}.
 #' @param upload_date_col A column name specifying the upload date of the 288,
-#'   this is use to determine which 288 take precedence if multiple 288s were
-#'   filed in the same year (the latest one is chosen). Usually QU_UPLOAD_DATE.
+#'   this is use to determine which replacement characteristics take precedence
+#'   if multiple 288s were filed in the same year (the latest one is chosen).
+#'   Usually QU_UPLOAD_DATE.
 #' @param additive_source A tidyselect selection of columns which contains
 #'   additive characteristic values. These are values such as square feet which
 #'   get ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal
 #'   to 100, then 100 sqft get added to the existing square footage of the
 #'   property. The easiest way to specify all additive columns is to use the
-#'   built-in crosswalk,
-#'   \code{any_of(ccao::chars_cols$add_source)}.
+#'   built-in crosswalk, \code{any_of(ccao::chars_cols$add_source)}.
 #' @param replacement_source A tidyselect selection of columns which contains
 #'   replacement characteristic values. These are values such as number of rooms
 #'   which get OVERWRITE existing characteristics. For example, if QU_ROOMS is
 #'   equal to 3, then the property will be update to have 3 total rooms.
 #'   The easiest way to specify all replacement columns is to use the
-#'   built-in crosswalk,
-#'   \code{any_of(ccao::chars_cols$rep_source)}.
+#'   built-in crosswalk, \code{any_of(ccao::chars_cols$rep_source)}.
 #'
 #' @note Use dplyr/tidyselect syntax for specifying column names. For example,
 #'   use \code{QU_PIN} instead of \code{"QU_PIN"}, or use a tidyselect function
@@ -235,7 +232,6 @@ chars_288_active <- function(start_year, town) {
 #'   chars_sample_addchars[1:3, ],
 #'   pin_col = QU_PIN,
 #'   year_col = TAX_YEAR,
-#'   class_col = QU_CLASS,
 #'   town_col = as.character(QU_TOWN),
 #'   upload_date_col = QU_UPLOAD_DATE,
 #'   additive_source = any_of(chars_cols$add_source),
@@ -246,8 +242,8 @@ chars_288_active <- function(start_year, town) {
 #' @importFrom rlang .data
 #' @family chars_funs
 #' @export
-chars_sparsify <- function(data, pin_col, year_col, class_col, town_col,
-                           upload_date_col, additive_source, replacement_source) { # nolint
+chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
+                           additive_source, replacement_source) {
 
   # Get the last nonzero element of a vector. Used to get the latest
   # "replacement" characteristic for each 288
@@ -263,7 +259,7 @@ chars_sparsify <- function(data, pin_col, year_col, class_col, town_col,
   # by summing the additive characteristics and taking the latest replacement
   # ones
   data %>%
-    dplyr::group_by({{ pin_col }}, {{ year_col }}, {{ class_col }}) %>%
+    dplyr::group_by({{ pin_col }}, {{ year_col }}) %>%
     dplyr::arrange({{ upload_date_col }}, .by_group = TRUE) %>%
     dplyr::summarize(
       town = dplyr::first({{ town_col }}),
@@ -281,12 +277,12 @@ chars_sparsify <- function(data, pin_col, year_col, class_col, town_col,
     )) %>%
     tidyr::unnest(.data$has_active_288) %>%
 
-    # The number of rows in our dataset is now equal to # of unique PINS * # of
-    # classes per PIN * # of years active for each PIN/class combination
-    # Our final step is to merge the 288 characteristic updates by PIN and class
-    # For each year a PIN/class combo has active 288s, we sum the additive chars
+    # The number of rows in our dataset is now equal to # of unique 288s * # of
+    # years active for each PIN. Our final step is to merge the 288
+    # characteristic updates by PIN for years with overlapping 288s.
+    # For each year a PIN has active 288s, we sum the additive chars
     # and take the last nonzero value for replacement
-    dplyr::group_by({{ pin_col }}, .data$has_active_288, {{ class_col }}) %>%
+    dplyr::group_by({{ pin_col }}, .data$has_active_288) %>%
     dplyr::arrange({{ year_col }}, .by_group = TRUE) %>%
     dplyr::summarize(
       dplyr::across({{ additive_source }}, sum),

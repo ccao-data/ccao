@@ -178,9 +178,11 @@ recp_feat_time <- function(data, origin_date = "1997-01-01") {
 
       # Create indicators for dates that fall in particular months
       time_sale_during_school_year = lubridate::month(
-        .data$meta_sale_date) %in% c(1:5, 9:12),
+        .data$meta_sale_date
+      ) %in% c(1:5, 9:12),
       time_sale_during_holidays = lubridate::month(
-        .data$meta_sale_date) %in% c(11, 12, 1)
+        .data$meta_sale_date
+      ) %in% c(11, 12, 1)
     ) %>%
     dplyr::select(-dplyr::any_of("time_interval"))
 }
@@ -234,7 +236,7 @@ recp_feat_char_inds <- function(data) {
 #' @export
 recp_feat_arms_length <- function(data) {
   data %>%
-   dplyr::mutate(
+    dplyr::mutate(
       ind_arms_length =
         .data$meta_modeling_group != "NCHARS"
         & dplyr::between(.data$meta_sale_price, 1e4, 1e7)

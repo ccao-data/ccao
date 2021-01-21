@@ -8,7 +8,6 @@ chars_sparsify(
   data,
   pin_col,
   year_col,
-  class_col,
   town_col,
   upload_date_col,
   additive_source,
@@ -22,31 +21,28 @@ chars_sparsify(
 
 \item{year_col}{A column name specifying the year column. Usually TAX_YEAR.}
 
-\item{class_col}{A column name specifying the class column. Usually QU_CLASS.}
-
 \item{town_col}{A column name specifying the town column. Usually QU_TOWN.
 This is used to determine the length of the 288, given the starting date
 specified by \code{year_col}.}
 
 \item{upload_date_col}{A column name specifying the upload date of the 288,
-this is use to determine which 288 take precedence if multiple 288s were
-filed in the same year (the latest one is chosen). Usually QU_UPLOAD_DATE.}
+this is use to determine which replacement characteristics take precedence
+if multiple 288s were filed in the same year (the latest one is chosen).
+Usually QU_UPLOAD_DATE.}
 
 \item{additive_source}{A tidyselect selection of columns which contains
 additive characteristic values. These are values such as square feet which
 get ADDED to existing characteristics. For example, if QU_SQFT_BLD is equal
 to 100, then 100 sqft get added to the existing square footage of the
 property. The easiest way to specify all additive columns is to use the
-built-in crosswalk,
-\code{any_of(ccao::chars_cols$add_source)}.}
+built-in crosswalk, \code{any_of(ccao::chars_cols$add_source)}.}
 
 \item{replacement_source}{A tidyselect selection of columns which contains
 replacement characteristic values. These are values such as number of rooms
 which get OVERWRITE existing characteristics. For example, if QU_ROOMS is
 equal to 3, then the property will be update to have 3 total rooms.
 The easiest way to specify all replacement columns is to use the
-built-in crosswalk,
-\code{any_of(ccao::chars_cols$rep_source)}.}
+built-in crosswalk, \code{any_of(ccao::chars_cols$rep_source)}.}
 }
 \value{
 A sparsified data frame of characteristic updates per PIN per year.
@@ -59,13 +55,12 @@ Exemption. This data format is difficult to work with and complicated by the
 fact that multiple 288s can be active at the same time for different periods,
 and some columns from ADDCHARS add to existing characteristics, while some
 overwrite existing characteristics. Additionally, 288s can be active for
-multi-code properties, meaning that one building (out of N) could have an
+multi-code properties, meaning that one building on a PIN could have an
 improvement while the others remain untouched.
 
-The goal of this function is to transform these single rows into a sparse
-data frame which lists a row and characteristic update per PIN per YEAR
-per CLASS. CLASS is needed so that if multiple buildings lie on the same
-PIN, they can be joined by PIN, YEAR, and CLASS.
+The goal of this function is to transform these single row records into a
+sparse data frame which lists a row and characteristic update per PIN
+per YEAR.
 
 The transformation caused by this function is most easily visualized
 with a mock dataset.
@@ -90,10 +85,10 @@ This function will transform it into:\tabular{llll}{
 }
 
 
-Each PIN will have a row for each year that the 288 is active and a column
+Each PIN will have a row for each year that a 288 is active and a column
 for each characteristic specified by \code{additive_source} and
 \code{replacement_source}. This table can be easily left joined to modeling
-data to update characteristic values. See README.Rmd for examples.
+data to update characteristic values.
 }
 \note{
 Use dplyr/tidyselect syntax for specifying column names. For example,
@@ -109,7 +104,6 @@ chars_sparsify(
   chars_sample_addchars[1:3, ],
   pin_col = QU_PIN,
   year_col = TAX_YEAR,
-  class_col = QU_CLASS,
   town_col = as.character(QU_TOWN),
   upload_date_col = QU_UPLOAD_DATE,
   additive_source = any_of(chars_cols$add_source),

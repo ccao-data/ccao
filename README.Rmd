@@ -41,8 +41,7 @@ library(knitr)
 # Create a small subsample of data. This is the "raw" data taken from SQL
 sample_data <- chars_sample_universe %>%
   select(PIN, TAX_YEAR, TOWN_CODE, AGE, GAR1_SIZE, BSMT) %>%
-  slice(8:13) %>%
-  distinct(TAX_YEAR, .keep_all = TRUE)
+  slice(c(1, 4, 10))
 
 sample_data %>%
   kable(digits = 3)

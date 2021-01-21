@@ -51,9 +51,9 @@
 #' @format A list with 4 items:
 #' \describe{
 #'   \item{add_target}{Target columns with additive characteristics}
-#'   \item{add_source}{Cols with source of data to add to \code{add_target}}
+#'   \item{add_source}{Columns with data to add to \code{add_target}}
 #'   \item{rep_target}{Target columns with characteristics to be replaced}
-#'   \item{rep_source}{Cols with source of data to replace in \code{rep_target}}
+#'   \item{rep_source}{Columns with data to replace in \code{rep_target}}
 #' }
 #'
 "chars_cols"
@@ -65,8 +65,7 @@
 #' sample can be used with \code{chars_sparsify()} to generate sparse data
 #' frames suitable for joining onto \code{chars_sample_universe}.
 #'
-#' @source This data was extracted from SQL by the script at
-#' \code{data-raw/chars_sample.R}.
+#' @source This data was extracted from SQL manually on 2021-01-20.
 "chars_sample_addchars"
 
 
@@ -76,9 +75,20 @@
 #' The PINs present in this subsample match those present in
 #' \code{chars_sample_addchars}.
 #'
-#' @source This data was extracted from SQL by the script at
-#' \code{data-raw/chars_sample.R}.
+#' @source This data was extracted from SQL manually on 2021-01-20.
 "chars_sample_universe"
+
+
+#' Sample dataset from the VW_RES_UNIVERSE SQL view with 288s applied
+#'
+#' A dataset containing the properties in \code{chars_sample_universe}, but
+#' updated with \code{chars_sparsity()} and \code{chars_update()}. This data is
+#' used as a benchmark to unit test the 288-related functions. It was manually
+#' validated against properties updated by the AS/400.
+#'
+#' @source Hand-updated and validated version of \code{chars_sample_universe}
+#' with 288s applied.
+"chars_sample_universe_updated"
 
 
 #' Data dictionary of Cook County property classes
