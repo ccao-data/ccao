@@ -50,6 +50,28 @@ reference:
   - recp_feat_time
   - recp_feat_char_inds
   - recp_feat_arms_length
+- subtitle: Work with Tidymodels
+  desc: Clean, save, and work with Tidymodels objects
+  contents:
+  - model_get_env
+  - model_axe_tune_data
+  - model_axe_recipe
+  - model_predict
+  - model_lgbm_cap_num_leaves
+  - model_lgbm_update_params
+  - model_lgbm_save
+  - model_lgbm_load
+  - rm_intermediate
+- subtitle: Adjust estimated values
+  desc: Apply post-modeling adjustments to raw model values
+  contents:
+  - val_med_pct_adj
+  - val_limit_ratios
+  - val_create_ntiles
+  - val_assign_ntile
+  - val_townhomes_by_group
+  - postval_model
+  - predict.postval_model
 - subtitle: Map values
   desc: Create thematic and diagnostic maps of CCAO data
 - contents:
