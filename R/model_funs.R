@@ -107,6 +107,8 @@ model_axe_tune_data <- function(x) {
 #'
 #' @export
 model_axe_recipe <- function(x) {
+  stopifnot(class(x) == "recipe")
+
   axed <- rapply(x, butcher::butcher, how = "replace")
   axed <- purrr::list_modify(axed, orig_lvls = NULL)
   class(axed) <- "recipe"

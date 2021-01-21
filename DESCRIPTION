@@ -36,7 +36,7 @@ Imports:
     utils,
     xml2,
     zip
-RoxygenNote: 7.1.2
+RoxygenNote: 7.1.1
 Suggests: 
     covr,
     devtools,
