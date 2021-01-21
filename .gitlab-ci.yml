@@ -91,9 +91,9 @@ test:
   artifacts:
     when: always
     paths:
-      - test-out.xml
+      - ./tests/testthat/test-out.xml
     reports:
-      junit: test-out.xml
+      junit: ./tests/testthat/test-out.xml
      
 # The pages stage will build package documentation using pkgdown, saving the static
 # site content to public/ and creating an artifact that is deployed to GL Pages
