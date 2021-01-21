@@ -21,3 +21,15 @@ a recipe object except the data necessary to use \code{\link[recipes]{bake}}.
 This saves an enormous amount of disk space for certain complicated recipes
 that need to be saved and re-used.
 }
+\seealso{
+Other model_funs: 
+\code{\link{model_axe_tune_data}()},
+\code{\link{model_get_env}()},
+\code{\link{model_lgbm_cap_num_leaves}()},
+\code{\link{model_lgbm_load}()},
+\code{\link{model_lgbm_save}()},
+\code{\link{model_lgbm_update_params}()},
+\code{\link{model_predict}()},
+\code{\link{rm_intermediate}()}
+}
+\concept{model_funs}

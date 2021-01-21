@@ -17,3 +17,15 @@ This is the paired function to \code{model_lgbm_save()}. It loads a zip file
 containing a parsnip specification and LightGBM model, then recombines them
 into a single object.
 }
+\seealso{
+Other model_funs: 
+\code{\link{model_axe_recipe}()},
+\code{\link{model_axe_tune_data}()},
+\code{\link{model_get_env}()},
+\code{\link{model_lgbm_cap_num_leaves}()},
+\code{\link{model_lgbm_save}()},
+\code{\link{model_lgbm_update_params}()},
+\code{\link{model_predict}()},
+\code{\link{rm_intermediate}()}
+}
+\concept{model_funs}

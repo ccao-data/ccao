@@ -11,6 +11,7 @@
 #'
 #' @examples
 #' rm_intermediate("lgbm", keep = "lgbm_params")
+#' @family model_funs
 #' @export
 rm_intermediate <- function(x, keep = NULL) {
   stopifnot(
@@ -55,6 +56,7 @@ rm_intermediate <- function(x, keep = NULL) {
 #' @return Environmental variable specified in \code{x} or the specified default
 #'   if \code{x} is unset.
 #'
+#' @family model_funs
 #' @export
 model_get_env <- function(x, default) {
   stopifnot(
@@ -81,6 +83,7 @@ model_get_env <- function(x, default) {
 #' @return Iteration object from \code{x} but with CV split and attributes
 #'   removed.
 #'
+#' @family model_funs
 #' @export
 model_axe_tune_data <- function(x) {
   stripped <- dplyr::select(x, -tidyselect::any_of("splits"))
@@ -105,6 +108,7 @@ model_axe_tune_data <- function(x) {
 #' @return Recipe object from \code{x} but with environment and factor level
 #'   data removed.
 #'
+#' @family model_funs
 #' @export
 model_axe_recipe <- function(x) {
   stopifnot(class(x) == "recipe")
@@ -133,6 +137,7 @@ model_axe_recipe <- function(x) {
 #' @return A vector of predictions from the model given the data and recipe
 #'   specified.
 #'
+#' @family model_funs
 #' @export
 model_predict <- function(spec, recipe, data, exp = TRUE) {
   pred <- parsnip::predict.model_fit(
@@ -166,6 +171,7 @@ model_predict <- function(spec, recipe, data, exp = TRUE) {
 #' @return A dataframe of parameters with \code{num_leaves} capped at
 #'   \code{2 ^ max_depth - 1}.
 #'
+#' @family model_funs
 #' @export
 model_lgbm_cap_num_leaves <- function(params) {
   params$num_leaves <- ifelse(
@@ -197,6 +203,7 @@ model_lgbm_cap_num_leaves <- function(params) {
 #'
 #' @return A finalized workflow object with updated parameters.
 #'
+#' @family model_funs
 #' @export
 model_lgbm_update_params <- function(wflow, params) {
   wflow$fit$actions$model$spec <- purrr::list_modify(
@@ -217,6 +224,7 @@ model_lgbm_update_params <- function(wflow, params) {
 #' @param model A parsnip specification containing a fit LightGBM model.
 #' @param zipfile A path to save zip file to.
 #'
+#' @family model_funs
 #' @export
 model_lgbm_save <- function(model, zipfile) {
   file_lgbm <- file.path(tempdir(), "lgbm.model")
@@ -240,6 +248,7 @@ model_lgbm_save <- function(model, zipfile) {
 #'
 #' @return A parsnip model fit with LightGBM model.
 #'
+#' @family model_funs
 #' @export
 model_lgbm_load <- function(zipfile) {
   ex_dir <- tempdir()

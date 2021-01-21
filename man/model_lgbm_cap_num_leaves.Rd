@@ -30,3 +30,15 @@ the \code{tree_depth} hyperparameter.
 params <- data.frame(num_leaves = c(60, 600), tree_depth = c(7, 7))
 model_lgbm_cap_num_leaves(params)
 }
+\seealso{
+Other model_funs: 
+\code{\link{model_axe_recipe}()},
+\code{\link{model_axe_tune_data}()},
+\code{\link{model_get_env}()},
+\code{\link{model_lgbm_load}()},
+\code{\link{model_lgbm_save}()},
+\code{\link{model_lgbm_update_params}()},
+\code{\link{model_predict}()},
+\code{\link{rm_intermediate}()}
+}
+\concept{model_funs}

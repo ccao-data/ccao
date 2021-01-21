@@ -21,3 +21,15 @@ any objects with "final" in their name.
 \examples{
 rm_intermediate("lgbm", keep = "lgbm_params")
 }
+\seealso{
+Other model_funs: 
+\code{\link{model_axe_recipe}()},
+\code{\link{model_axe_tune_data}()},
+\code{\link{model_get_env}()},
+\code{\link{model_lgbm_cap_num_leaves}()},
+\code{\link{model_lgbm_load}()},
+\code{\link{model_lgbm_save}()},
+\code{\link{model_lgbm_update_params}()},
+\code{\link{model_predict}()}
+}
+\concept{model_funs}
