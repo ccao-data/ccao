@@ -40,22 +40,19 @@ library(knitr)
 # Create a small subsample of data. This is the "raw" data taken from SQL
 sample_data <- chars_sample_universe %>%
   select(PIN, TAX_YEAR, TOWN_CODE, AGE, GAR1_SIZE, BSMT) %>%
-  slice(8:13) %>%
-  distinct(TAX_YEAR, .keep_all = TRUE)
+  slice(c(1, 4, 10))
 
 sample_data %>%
   kable(digits = 3)
 ```
 
 | PIN            | TAX\_YEAR | TOWN\_CODE | AGE | GAR1\_SIZE | BSMT |
-| :------------- | --------: | :--------- | --: | ---------: | ---: |
-| 02031020010000 |      2018 | 29         |   4 |          3 |    1 |
-| 02031020010000 |      2019 | 29         |   7 |          3 |    1 |
-| 05081040120000 |      2013 | 23         |  80 |          8 |    2 |
-| 05081040120000 |      2014 | 23         |  80 |          8 |    2 |
+|:---------------|----------:|:-----------|----:|-----------:|-----:|
+| 09254040180000 |      2013 | 71         |  57 |          3 |    1 |
+| 09361030150000 |      2020 | 71         |  90 |          1 |    1 |
+| 10254170360000 |      2020 | 75         |  70 |          3 |    1 |
 
 ``` r
-
 # Recode/rename/clean data using town_ and vars_ functions from ccao 
 sample_data %>%
   mutate(
@@ -70,12 +67,11 @@ sample_data %>%
   kable(digits = 3)
 ```
 
-| Property Identification Number | Year | Township Code | Age | Garage 1 Size | Basement | Township Name | Township Triad | Next Reass. Year |
-| :----------------------------- | ---: | :------------ | --: | :------------ | :------- | :------------ | :------------- | ---------------: |
-| 02-03-102-001                  | 2018 | 29            |   6 | 2 cars        | Full     | Palatine      | North          |             2022 |
-| 02-03-102-001                  | 2019 | 29            |   7 | 2 cars        | Full     | Palatine      | North          |             2022 |
-| 05-08-104-012                  | 2013 | 23            |  80 | 4 cars        | Slab     | New Trier     | North          |             2022 |
-| 05-08-104-012                  | 2014 | 23            |  81 | 4 cars        | Slab     | New Trier     | North          |             2022 |
+| Property Index Number | Year | Township Code | Age | Garage 1 Size | Basement | Township Name | Township Triad | Next Reass. Year |
+|:----------------------|-----:|:--------------|----:|:--------------|:---------|:--------------|:---------------|-----------------:|
+| 09-25-404-018         | 2013 | 71            |  58 | 2 cars        | Full     | Jefferson     | City           |             2021 |
+| 09-36-103-015         | 2020 | 71            |  92 | 1 cars        | Full     | Jefferson     | City           |             2021 |
+| 10-25-417-036         | 2020 | 75            |  72 | 2 cars        | Full     | Rogers Park   | City           |             2021 |
 
 ## CCAO colors
 

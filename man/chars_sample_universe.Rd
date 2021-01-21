@@ -5,11 +5,10 @@
 \alias{chars_sample_universe}
 \title{Sample dataset from the VW_RES_UNIVERSE SQL view}
 \format{
-An object of class \code{data.frame} with 1397 rows and 57 columns.
+An object of class \code{data.frame} with 20 rows and 61 columns.
 }
 \source{
-This data was extracted from SQL by the script at
-\code{data-raw/chars_sample.R}.
+This data was extracted from SQL manually on 2021-01-20.
 }
 \usage{
 chars_sample_universe

@@ -40,7 +40,7 @@ context("test vars_rename()")
 # Test for expected outputs
 test_that("output is as expected", {
   expect_equal(
-    names(vars_rename(chars_sample_universe[, 17:28])),
+    names(vars_rename(chars_sample_universe[, 21:32])),
     c(
       "char_apts", "char_ext_wall", "char_roof_cnst", "char_rooms", "char_beds",
       "char_bsmt", "char_bsmt_fin", "char_heat", "char_oheat", "char_air",
@@ -64,8 +64,8 @@ test_that("output is as expected", {
   expect_equal(
     vars_rename(chars_sample_universe[, 14:19], type = "vector"),
     c(
-      "meta_key_pin", "CONDO_STRATA_10", "CONDO_STRATA_100",
-      "char_apts", "char_ext_wall", "char_roof_cnst"
+      "meta_certified_est_land", "meta_modeling_group", "char_age",
+      "meta_multi_code", "meta_per_ass", "meta_cdu"
     )
   )
   expect_equal(
@@ -123,7 +123,7 @@ recode_correct <- dplyr::tibble(
 
 # Test for expected outputs
 test_that("output is as expected", {
-  expect_known_hash(vars_recode(chars_sample_universe), hash = "dbc001b6f4")
+  expect_known_hash(vars_recode(chars_sample_universe), hash = "8c41990e86")
   expect_equivalent(vars_recode(recode_test_data), recode_correct)
   expect_equivalent(
     vars_recode(recode_test_data, as_factor = FALSE),
@@ -132,11 +132,11 @@ test_that("output is as expected", {
   )
   expect_known_hash(
     vars_recode(chars_sample_universe, type = "short"),
-    hash = "c255ed2f9c"
+    hash = "ecd0d79b5d"
   )
   expect_known_hash(
     vars_recode(chars_sample_universe, type = "short", as_factor = FALSE),
-    hash = "b97f45a917"
+    hash = "aed980d873"
   )
 })
 

@@ -5,11 +5,10 @@
 \alias{chars_sample_addchars}
 \title{Sample dataset from the ADDCHARS SQL table}
 \format{
-An object of class \code{data.frame} with 108 rows and 62 columns.
+An object of class \code{data.frame} with 10 rows and 62 columns.
 }
 \source{
-This data was extracted from SQL by the script at
-\code{data-raw/chars_sample.R}.
+This data was extracted from SQL manually on 2021-01-20.
 }
 \usage{
 chars_sample_addchars

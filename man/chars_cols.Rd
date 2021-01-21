@@ -8,9 +8,9 @@
 A list with 4 items:
 \describe{
   \item{add_target}{Target columns with additive characteristics}
-  \item{add_source}{Cols with source of data to add to \code{add_target}}
+  \item{add_source}{Columns with data to add to \code{add_target}}
   \item{rep_target}{Target columns with characteristics to be replaced}
-  \item{rep_source}{Cols with source of data to replace in \code{rep_target}}
+  \item{rep_source}{Columns with data to replace in \code{rep_target}}
 }
 }
 \usage{

@@ -71,6 +71,7 @@ reference:
 - contents:
   - chars_sample_addchars
   - chars_sample_universe
+  - chars_sample_universe_updated
 - subtitle: Utility
   desc: Miscellaneous data used throughout the department or in specific functions
 - contents:

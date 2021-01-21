@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Below is an example showing the entire process of using the `chars_` functions to update characteristics data using an ADDCHARS extract. For more information on this process and why it is necessary, visit the [Home Improvement Exemptions](https://datascience.cookcountyassessor.com/wiki/residential/addchars.md) page on the internal DS wiki.
+Below is an example showing the entire process of using the `chars_` functions to update characteristics data using an ADDCHARS extract.
 
 ```{r, message=FALSE, results='asis'}
 library(ccao)
@@ -19,14 +19,14 @@ library(knitr)
 
 # Choose a random sample PIN from the sample ADDCHARS data
 sample_chars <- chars_sample_addchars %>%
-  filter(QU_PIN == "05273000030000")
+  filter(QU_PIN == "09254040180000")
 
-# This PIN has a basement and garage renovation followed by a bathroom reno
-# three years later
+# This PIN has additional bedrooms, bathrooms, and an additional story added
+# Note that this also updates the class
 sample_chars %>%
   select(
-    QU_PIN, TAX_YEAR, QU_CLASS,
-    QU_TOWN, QU_GARAGE_SIZE, QU_SQFT_BLD, QU_BEDS
+    QU_PIN, TAX_YEAR,
+    QU_BEDS, QU_FULL_BATH, QU_TYPE_OF_RES, QU_CLASS
   ) %>%
   kable(format = "markdown", digits = 3)
 
@@ -34,34 +34,30 @@ sample_chars %>%
 # begins. NOTE: the mutate() on QU_CLASS here is because sometime QU_CLASS is
 # equal to 0 (mostly for garage renovations). This is an easy fix
 sparse_chars <- sample_chars %>%
-  arrange(QU_PIN, TAX_YEAR, QU_CLASS) %>%
-  mutate(QU_CLASS = ifelse(QU_CLASS == 0, lag(QU_CLASS), QU_CLASS)) %>%
   chars_sparsify(
     pin_col = QU_PIN,
     year_col = TAX_YEAR, 
-    class_col = QU_CLASS,
     town_col = as.character(QU_TOWN),
     upload_date_col = QU_UPLOAD_DATE,
     additive_source = any_of(chars_cols$add_source),
     replacement_source = any_of(chars_cols$rep_source)
-  ) %>%
-  mutate(QU_CLASS = substr(QU_CLASS, 1, 3))
+  )
 
 # The resulting sparse data can be joined onto any data containing CCAOSFCHARS
 sparse_chars %>%
   select(
-    QU_PIN, YEAR, QU_CLASS, QU_GARAGE_SIZE, 
-    QU_SQFT_BLD, QU_BEDS, NUM_288S_ACTIVE
+    QU_PIN, YEAR, QU_BEDS, QU_FULL_BATH,
+    QU_TYPE_OF_RES, QU_CLASS, NUM_288S_ACTIVE
   ) %>%
   kable(format = "markdown", digits = 3)
 
-# Here is an example data frame where the sparse data is merged onto
-# characteristic data and the characteristics are then updated using chars_update()
+# Using an example dataset included in the package we can merge the 288 data
+# and then use the chars_update() function to update the relevant PIN
 updated_chars <- chars_sample_universe %>%
   filter(PIN %in% sample_chars$QU_PIN) %>%
   left_join(
     sparse_chars,
-    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR", "CLASS" = "QU_CLASS")
+    by = c("PIN" = "QU_PIN", "TAX_YEAR" = "YEAR")
   ) %>%
   arrange(PIN, TAX_YEAR) %>%
   chars_update(
@@ -69,12 +65,12 @@ updated_chars <- chars_sample_universe %>%
     replacement_target = any_of(ccao::chars_cols$rep_target)
   )
 
-# Show updated characteristics vs ADDCHARS
+# Here are the characteristics as updated by the 288
 updated_chars %>%
   ungroup() %>%
   select(
-    PIN, TAX_YEAR, CLASS, NUM_288S_ACTIVE, GAR1_SIZE, QU_GARAGE_SIZE,
-    BLDG_SF, QU_SQFT_BLD, BEDS, QU_BEDS
+    PIN, TAX_YEAR, CLASS, 
+    BEDS, ROOMS, TYPE_RESD, FBATH, NUM_288S_ACTIVE
   ) %>%
   arrange(PIN, CLASS, TAX_YEAR) %>%
   kable(format = "markdown", digits = 3)
