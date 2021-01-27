@@ -200,3 +200,4 @@ ssa_name,,ssa_name,geo_ssa_name,Special Service Area Name,geo,character,FALSE,FA
 ssa_no,,ssa_no,geo_ssa_no,Special Service Area Number,geo,character,FALSE,FALSE,FALSE,,,,Number of the City of Chicago Special Service Area the property lies within.
 DEED_TYPE,,deed_type,meta_deed_type,Sale Deed Type,meta,character,TRUE,FALSE,FALSE,,,,Deed type of a property sale. 
 NUM_288S_ACTIVE,,num_288s_active,meta_num_288s_active,Number of Active 288s (HIEs),meta,numeric,TRUE,FALSE,FALSE,,,,Number of 288s (Home Improvement Exemptions) active for this property in the given year.
+NUM_288S_ENDED,,num_288s_ended,meta_num_288s_ended,Number of Ended 288s (HIEs),meta,numeric,TRUE,FALSE,FALSE,,,,Number of 288s (Home Improvement Exemptions) that ended in the given year. This is effectively an indicator for properties that have updated characteristics due to a 288 expiring.
