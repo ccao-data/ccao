@@ -18,11 +18,10 @@ reference:
   - ccao_prd
   - ccao_prb
 - subtitle: Format data
-  desc: Clean and format Property Index Numbers (PINs) and other common CCAO data
+  desc: Clean and format Property Index Numbers (PINs) and addresses
 - contents:
   - pin_clean
   - pin_format_pretty
-  - format_as400
   - validate_address
 - subtitle: Lookup values
   desc: Convert between township names, assessment years, and triads
@@ -72,10 +71,12 @@ reference:
   - val_townhomes_by_group
   - postval_model
   - predict.postval_model
-- subtitle: Map values
-  desc: Create thematic and diagnostic maps of CCAO data
+- subtitle: Misc. functions
+  desc: Create thematic maps, upload SQL data, format for AS/400 upload, etc.
 - contents:
   - map_kriging
+  - format_as400
+  - sql_upload
 
 - title: Data
 - subtitle: Dictionaries
