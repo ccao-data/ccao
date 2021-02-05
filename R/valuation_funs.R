@@ -128,6 +128,7 @@ val_limit_ratios <- function(truth, estimate, lower, upper) {
 #' @return A list containing the ntile breakpoints, bounded by -Inf and Inf.
 #'
 #' @family valuation_funs
+#' @export
 val_create_ntiles <- function(x, probs, na.rm = TRUE) { # nolint
   stopifnot(
     is.numeric(x),
@@ -164,6 +165,7 @@ val_create_ntiles <- function(x, probs, na.rm = TRUE) { # nolint
 #'   for each value of \code{x}.
 #'
 #' @family valuation_funs
+#' @export
 val_assign_ntile <- function(x, ntiles) {
   stopifnot(
     is.numeric(x),
