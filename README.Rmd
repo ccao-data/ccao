@@ -29,6 +29,21 @@ You can install the released version of `ccao` directly from GitLab by running t
 remotes::install_gitlab("ccao-data-science---modeling/packages/ccao")
 ```
 
+Occasionally, when using brand-new or source versions of packages, installation [on Windows will fail with the following error](https://github.com/rstudio/renv/issues/162):
+
+```
+DLL 'package_name' not found: maybe not installed for this architecture?
+```
+
+If this happens, try using the following installation command:
+
+```{r, eval=FALSE}
+remotes::install_gitlab(
+  repo = "ccao-data-science---modeling/packages/ccao",
+  INSTALL_opts = "--no-multiarch"
+)
+```
+
 ## Basic usage
 
 Here is a quick example using `ccao` functions with included sample data:
@@ -65,7 +80,7 @@ sample_data %>%
 
 The CCAO Communications Department created a palette of colors for CCAO press materials and visualizations. Navy, gold, and buttermilk are the colors used in the CCAO logo. Typically navy and gold are used for discrete values in plots. The hex codes for these colors are available via the named list `ccao_colors`.
 
-```{r, echo=FALSE, fig.height=1}
+```{r colors, echo=FALSE, fig.height=1}
 library(ggplot2)
 
 ggplot() +

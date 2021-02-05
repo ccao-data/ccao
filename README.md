@@ -27,6 +27,21 @@ running the following R command after installing
 remotes::install_gitlab("ccao-data-science---modeling/packages/ccao")
 ```
 
+Occasionally, when using brand-new or source versions of packages,
+installation [on Windows will fail with the following
+error](https://github.com/rstudio/renv/issues/162):
+
+    DLL 'package_name' not found: maybe not installed for this architecture?
+
+If this happens, try using the following installation command:
+
+``` r
+remotes::install_gitlab(
+  repo = "ccao-data-science---modeling/packages/ccao",
+  INSTALL_opts = "--no-multiarch"
+)
+```
+
 ## Basic usage
 
 Here is a quick example using `ccao` functions with included sample
@@ -81,4 +96,4 @@ colors used in the CCAO logo. Typically navy and gold are used for
 discrete values in plots. The hex codes for these colors are available
 via the named list `ccao_colors`.
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-colors-1.png" width="100%" />
