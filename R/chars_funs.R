@@ -262,9 +262,9 @@ chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
     dplyr::group_by({{ pin_col }}, {{ year_col }}) %>%
     dplyr::arrange({{ upload_date_col }}, .by_group = TRUE) %>%
     dplyr::summarize(
-      town = dplyr::first({{ town_col }}),
       dplyr::across({{ additive_source }}, sum),
-      dplyr::across({{ replacement_source }}, last_nonzero_element)
+      dplyr::across({{ replacement_source }}, last_nonzero_element),
+      town = dplyr::first({{ town_col }})
     ) %>%
 
     # Next, for each single 288 row, we determine the years it will be active
@@ -333,14 +333,15 @@ chars_update <- function(data, additive_target, replacement_target) {
     dplyr::mutate(
       dplyr::across(
         {{ additive_target }},
-        function(x, y = dplyr::cur_column()) {
-          rowSums(cbind(x, get(chars_get_col(y))), na.rm = T)
+        function(x) {
+          source_col <- dplyr::cur_data()[[chars_get_col(dplyr::cur_column())]]
+          rowSums(cbind(x, source_col), na.rm = TRUE)
         }
       ),
       dplyr::across(
         {{ replacement_target }},
-        function(x, y = dplyr::cur_column()) {
-          source_col <- get(chars_get_col(y))
+        function(x) {
+          source_col <- dplyr::cur_data()[[chars_get_col(dplyr::cur_column())]]
           idx <- !is.na(source_col) & source_col != 0
           replace(x, which(idx), source_col[idx])
         }

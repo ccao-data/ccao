@@ -19,7 +19,7 @@ Imports:
     assessr (>= 0.4.3),
     butcher,
     DBI,
-    dplyr (>= 1.0.0),
+    dplyr (>= 1.0.4),
     gstat,
     lightgbm,
     lubridate,
