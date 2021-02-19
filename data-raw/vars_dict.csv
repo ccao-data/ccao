@@ -122,7 +122,7 @@ census_tract,,tract_id,geo_census_tract,Census Tract,geo,character,FALSE,FALSE,F
 centroid_x,,longitude,geo_longitude,Longitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Longitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
 centroid_y,,latitude,geo_latitude,Latitude,geo,numeric,TRUE,TRUE,FALSE,,,,"Latitude coordinate of the property's location, as defined by the centroid of the parcel shape in GIS."
 commissioner_dist,,commissioner_dist,geo_commissioner_dist,Cook County Commissioner District,geo,character,FALSE,FALSE,FALSE,,,,
-FIPS,,municipality_fips,geo_fips,Municipality FIPS Code,geo,character,FALSE,FALSE,FALSE,,,,FIPS code of the municipality containing the property.
+FIPS,,municipality_fips,geo_fips,Municipality FIPS Code,geo,character,FALSE,FALSE,TRUE,,,,FIPS code of the municipality containing the property.
 floodplain,,floodplain,geo_floodplain,FEMA Floodplain,geo,logical,TRUE,FALSE,TRUE,,,,Indicator for whether property lies within a FEMA-defined floodplain.
 geoid,,tract_geoid,geo_geoid,Tract GEOID,geo,character,TRUE,FALSE,FALSE,,,,Full 11-digit GEOID for matched census tract.
 his_perc,,tract_his_perc,geo_his_perc,Tract Percent Pop. Hispanic,geo,numeric,TRUE,FALSE,FALSE,,,,Hispanic population percentage of the census tract containing the property centroid.
@@ -130,7 +130,7 @@ MAILING_ADDRESS,,mailing_address,geo_mailing_address,Mailing Address,geo,charact
 MAILING_STATE,,mailing_state,geo_mailing_state,Mailing State,geo,character,FALSE,FALSE,FALSE,,,,Mailing state of the property owner.
 MAILING_CITY,,mailing_city,geo_mailing_city,Mailing City,geo,character,FALSE,FALSE,FALSE,,,,Mailing city of the property owner.
 MAILING_ZIP,,mailing_zip,geo_mailing_zip,Mailing Zip Code,geo,character,FALSE,FALSE,FALSE,,,,Mailing zip code of the property owner.
-municipality,,municipality,geo_municipality,Municipality Name,geo,character,FALSE,FALSE,FALSE,,,,
+municipality,,municipality,geo_municipality,Municipality Name,geo,character,FALSE,FALSE,TRUE,,,,
 ohare_noise,,ohare_noise,geo_ohare_noise,O'Hare Noise Indicator,geo,logical,TRUE,FALSE,TRUE,,,,
 other_perc,,tract_other_perc,geo_other_perc,Tract Percent Pop. Other,geo,numeric,TRUE,FALSE,FALSE,,,,Other population percentage of the census tract containing the property centroid.
 PROPERTY_ADDRESS,,property_address,geo_property_address,Property Address,geo,character,TRUE,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
