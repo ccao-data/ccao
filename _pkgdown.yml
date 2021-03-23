@@ -100,3 +100,5 @@ reference:
 - contents:
   - ccao_colors
   - chars_cols
+  - coe_codes
+  - equalization_factors
