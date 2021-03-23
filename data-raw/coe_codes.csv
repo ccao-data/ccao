@@ -1,0 +1,96 @@
+coe_code,coe_reason
+1,The Homeowner's Exemption was not applied
+2,The Senior Citizen Exemption was not applied
+3,The 1977 base year was incorrect
+4,The Homeowner Exemption proration was incorrect
+5,The bldg. value was based on the wrong % of ownership
+6,The class was incorrect based on the use of the property
+7,The property was partially exempt
+8,The property should have been assessed as 100% exempt
+9,The land unit price was incorrect
+10,The property should have been priced as a farm
+11,The property was vacant land with res. ownership & use
+12,NONE
+13,A vacancy factor was not applied to the bldg. value
+14,An occupancy factor was not applied to the bldg. value
+15,The property should have been assessed as a split code
+16,The building proration was incorrect
+17,The value was incorrect based on income and exp. data
+18,The property should have been assessed as common area
+19,The land area was incorrect
+20,The assessment was incorrect based on the appraisal
+21,The assessment was incorrect based on the sale price
+22,NONE
+23,The value was incorrect due to a repeated assessment record
+24,NONE
+25,The parcel is located on a flood plain
+26,The value should have been reduced due to fire damage
+27,The veteran's exemption was not applied
+28,An error was made in the home imp. exemption value
+29,NONE
+30,The parcel qualified for a development incentive
+31,No back tax due to a bona fide purchase
+32,The subject is railroad company operating property
+33,The subject qualified for a Landmark Assessment Freeze
+34,The building square foot area was incorrect
+35,The neighborhood code was incorrect
+36,The appeal results were not processed
+37,The value was incorrect due to a transcription error
+38,An error was made in the value and the H.O. Exemption
+39,NONE
+40,The improvement listed does not exist on this parcel
+41,The improvement has been wrecked and removed
+42,The property had the incorrect residential classification
+43,The Senior Freeze Exemption was not applied
+44,The Senior Freeze Exemption value was incorrect
+45,The subject should have been assessed as a model home
+46,The subject was incorrectly assessed due to a road taking
+47,The market value of the condo. garage unit was incorrect
+48,The property class was incorrect; exemptions certified
+49,The omitted assessment interest should be cancelled
+50,The assessment was incorrect based on market data
+51,The value did not reflect market sales and income data
+52,The PTAB triennial reduction was not maintained
+53,The assessment was incorrect based on the letter of value
+54,The market value was incorrect based on the age of the bldg
+55,The land pricing did not reflect wetlands status
+56,The HELP Exemption was not applied
+57,The HELP Exemption value was incorrect
+58,The Homeowner was not applied with correct occupancy factor
+59,The value depreciated by public encumbrance restricting use
+60,Reset extended homeowner base year and EAV
+61,Manual NPHE amount
+62,Disabled person
+63,Returning veteran
+64,Disabled veteran 30-49%
+65,Disabled veteran 50-69%
+66,Returning veteran & disabled 30-49%
+67,Returning veteran & disabled 50-69%
+68,NONE
+69,NONE
+70,Long time home owner income < 75K
+71,Long time home owner income 75K - $100K
+72,Long time H/O income < $75K & disabled person
+73,Long time H/O income < $75K & returning veteran
+74,Long time H/O income < $75K & disabled veteran 30-49%
+75,Long time H/O income <$75K & disabled veteran 50-69%
+76,Long time H/O income <$75K & returning veteran & disabled 30-49%
+77,Long time H/O income <$75K & returning veteran 50-69%
+78,Long time H/O income $75 - 100K & disabled person
+79,Long time H/O income $75 - 100K & returning veteran 
+80,Long time H/O income $75 - 100K & disabled person 30-49%
+81,Long time H/O income $75 - 100K & disabled person 50-69%
+82,Long time H/O income $75 - 100K & returning veteran & disabled person 30-49%
+83,Long time H/O income $75 - 100K & returning veteran & disabled person 50-69%
+84,Disabled
+85,Disabled veteran 30-49%
+86,Disabled veteran 50-69%
+89,Sunset
+90,Disabled person
+91,Returning veteran
+92,Disabled veteran 30-49%
+93,Disabled veteran 50-69%
+94,Returning veteran & disabled 30-49%
+95,Returning veteran & disabled 50-69%
+96,Returning veteran & disabled person
+97,Disabled veteran 70%-100%
