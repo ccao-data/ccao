@@ -29,6 +29,7 @@
 #'   the kriging model.
 #'
 #' @importFrom dplyr distinct
+#' @importFrom rlang .data
 #' @export
 map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NULL, ...) { # nolint
 
@@ -46,7 +47,7 @@ map_kriging <- function(data, col, boundary = NULL, model = NULL, cellsize = NUL
   # Jitter points to fix errors in overlapping observations in variogram
   data <- data %>%
     sf::st_jitter() %>%
-    dplyr::distinct({{ col }})
+    dplyr::distinct({{ col }}, .data$geometry)
 
   # Create variogram of values with location data
   loc_vgm <- gstat::variogram(stats::formula(v_formula), data)
