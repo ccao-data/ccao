@@ -30,9 +30,8 @@ sample_chars %>%
   ) %>%
   kable(format = "markdown", digits = 3)
 
-# Sparsify the data. You can see that one 288 ends roughly when the other one
-# begins. NOTE: the mutate() on QU_CLASS here is because sometime QU_CLASS is
-# equal to 0 (mostly for garage renovations). This is an easy fix
+# Sparsify the data, converting it from a single row with a start year to a row
+# for each year the 288 is active
 sparse_chars <- sample_chars %>%
   chars_sparsify(
     pin_col = QU_PIN,
@@ -65,7 +64,8 @@ updated_chars <- chars_sample_universe %>%
     replacement_target = any_of(ccao::chars_cols$rep_target)
   )
 
-# Here are the characteristics as updated by the 288
+# Here are the characteristics as updated by the 288 (2013 is not updated, 2020
+# is updated)
 updated_chars %>%
   ungroup() %>%
   select(
