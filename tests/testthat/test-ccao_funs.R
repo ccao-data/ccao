@@ -16,6 +16,7 @@ context("test ccao_cod()")
 
 # Calculate COD
 cod_out <- ccao_cod(ratio)
+cod_out_w_outliers <- ccao_cod(c(ratio, rep(1.35, 100), rep(0.2, 50)))
 
 test_that("functions return named list", {
   expect_type(cod_out, "list")
@@ -23,9 +24,16 @@ test_that("functions return named list", {
 })
 
 test_that("output within in expected range", {
-  expect_gt(cod_out$COD, 11)
+  expect_gt(cod_out$COD, 12)
   expect_lt(cod_out$COD, 13)
+  expect_gt(cod_out_w_outliers$COD, 15)
+  expect_lt(cod_out_w_outliers$COD, 16)
 })
+
+test_that(
+  "overlapping CI returns true for CI_MET",
+  expect_true(cod_out_w_outliers$COD_CI_MET)
+)
 
 test_that("bad input data stops execution", {
   expect_condition(ccao_cod(data.frame(ratio)))
@@ -39,7 +47,7 @@ test_that("incomplete data stops execution unless suppressed", {
   expect_silent(ccao_cod(runif(29), suppress = TRUE))
   expect_equal(
     unname(ccao_cod(runif(29), suppress = TRUE)),
-    list(NA, NA, NA, 25)
+    list(NA, NA, NA, NA, 25)
   )
 })
 
@@ -50,6 +58,10 @@ context("test ccao_prd()")
 
 # Calculate PRD from sample
 prd_out <- ccao_prd(assessed, sale_price)
+prd_out_w_outliers <- ccao_prd(
+  c(assessed, rep(1e4, 80)),
+  c(sale_price, rep(1.5e5, 80))
+)
 
 test_that("functions return named list", {
   expect_type(prd_out, "list")
@@ -57,9 +69,16 @@ test_that("functions return named list", {
 })
 
 test_that("output within expected range", {
-  expect_gt(prd_out$PRD, 0.98)
+  expect_gt(prd_out$PRD, 1.01)
   expect_lt(prd_out$PRD, 1.03)
+  expect_gt(prd_out_w_outliers$PRD, 0.97)
+  expect_lt(prd_out_w_outliers$PRD, 0.98)
 })
+
+test_that(
+  "overlapping CI returns true for CI_MET",
+  expect_true(prd_out_w_outliers$PRD_CI_MET)
+)
 
 test_that("bad input data stops execution", {
   expect_condition(ccao_prd(data.frame(assessed), sale_price))
@@ -76,7 +95,7 @@ test_that("incomplete data stops execution unless suppressed", {
   expect_silent(ccao_prd(runif(29), runif(29), suppress = TRUE))
   expect_equal(
     unname(ccao_prd(runif(29), runif(29), suppress = TRUE)),
-    list(NA, NA, NA, 25)
+    list(NA, NA, NA, NA, 25)
   )
 })
 
@@ -87,6 +106,10 @@ context("test ccao_prb()")
 
 # Create a vector of sales the same length as ratio
 prb_out <- ccao_prb(assessed, sale_price)
+prb_out_w_outliers <- ccao_prb(
+  c(assessed, rep(4.5e4, 60)),
+  c(sale_price, rep(1e5, 60))
+)
 
 test_that("functions return named list", {
   expect_type(prb_out, "list")
@@ -94,9 +117,16 @@ test_that("functions return named list", {
 })
 
 test_that("output within expected range", {
-  expect_gt(prb_out$PRB, -0.03)
-  expect_lt(prb_out$PRB, 0.03)
+  expect_gt(prb_out$PRB, -0.01)
+  expect_lt(prb_out$PRB, 0.01)
+  expect_gt(prb_out_w_outliers$PRB, 0.05)
+  expect_lt(prb_out_w_outliers$PRB, 0.06)
 })
+
+test_that(
+  "overlapping CI returns true for CI_MET",
+  expect_true(prb_out_w_outliers$PRB_CI_MET)
+)
 
 test_that("bad input data stops execution", {
   expect_condition(ccao_prd(data.frame(assessed), sale_price))
@@ -112,6 +142,6 @@ test_that("incomplete data stops execution unless suppressed", {
   expect_silent(ccao_prb(runif(29), runif(29), suppress = TRUE))
   expect_equal(
     unname(ccao_prb(runif(29), runif(29), suppress = TRUE)),
-    list(NA, NA, NA, 25)
+    list(NA, NA, NA, NA, 25)
   )
 })

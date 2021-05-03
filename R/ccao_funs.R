@@ -35,7 +35,8 @@
 #'   function will output NA.
 #'
 #' @return A named list containing the statistic, its 95% confidence interval,
-#'   whether or not the statistic meets IAAO standards, and the number of
+#'   whether or not the statistic meets the IAAO standard, whether or not the
+#'   95% confidence interval overlaps the IAAO standard, and the number of
 #'   observations used to calculate the statistic (after outliers are removed).
 #'
 #' @examples
@@ -78,22 +79,29 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
     # Calculate COD of trimmed ratios
     cod_val <- assessr::cod(no_outliers, na.rm = na.rm)
 
-    # Generate output list of COD, CI, standard, and N
+    # Calculate bootstrapped COD confidence interval
+    cod_ci <- assessr::cod_ci(no_outliers, na.rm = na.rm, nboot = 1000)
+
+    # Check if CI range overlaps with IAAO range (statistically meets target)
+    cod_ci_met <- max(cod_ci[1], 5) <= min(cod_ci[2], 15)
+
+    # Generate output list of COD, CI, standard, CI meets standard, and N
     out <- list(
       cod_val,
-      assessr::cod_ci(no_outliers, na.rm = na.rm, nboot = 1000),
+      cod_ci,
       assessr::cod_met(cod_val),
+      cod_ci_met,
       length(no_outliers)
     )
   } else {
 
     # Generate empty output list and stop if N < 30 unless suppress
-    out <- list(NA, NA, NA, length(no_outliers))
+    out <- list(NA, NA, NA, NA, length(no_outliers))
 
     if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
 
-  names(out) <- c("COD", "COD_CI", "COD_MET", "COD_N")
+  names(out) <- c("COD", "COD_CI", "COD_MET", "COD_CI_MET", "COD_N")
   return(out)
 }
 
@@ -134,27 +142,34 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
       na.rm = na.rm
     )
 
-    # Generate output list of PRD, CI, standard, and N
+    # Calculate bootstrapped PRD confidence interval
+    prd_ci <- assessr::prd_ci(
+      no_outliers_df$assessed,
+      no_outliers_df$sale_price,
+      na.rm = na.rm,
+      nboot = 1000
+    )
+
+    # Check if CI range overlaps with IAAO range (statistically meets target)
+    prd_ci_met <- max(prd_ci[1], 0.98) <= min(prd_ci[2], 1.03)
+
+    # Generate output list of PRD, CI, standard, CI meets standard, and N
     out <- list(
       prd_val,
-      assessr::prd_ci(
-        no_outliers_df$assessed,
-        no_outliers_df$sale_price,
-        na.rm = na.rm,
-        nboot = 1000
-      ),
+      prd_ci,
       assessr::prd_met(prd_val),
+      prd_ci_met,
       nrow(no_outliers_df)
     )
   } else {
 
     # Generate empty output list and stop if N < 30 unless suppress
-    out <- list(NA, NA, NA, nrow(no_outliers_df))
+    out <- list(NA, NA, NA, NA, nrow(no_outliers_df))
 
     if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
 
-  names(out) <- c("PRD", "PRD_CI", "PRD_MET", "PRD_N")
+  names(out) <- c("PRD", "PRD_CI", "PRD_MET", "PRD_CI_MET", "PRD_N")
   return(out)
 }
 
@@ -195,25 +210,32 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
       na.rm = na.rm
     )
 
-    # Generate output list of PRD, CI, standard, and N
+    # Calculate bootstrapped PRB confidence interval
+    prb_ci <- assessr::prb_ci(
+      no_outliers_df$assessed,
+      no_outliers_df$sale_price,
+      na.rm = na.rm
+    )
+
+    # Check if CI range overlaps with IAAO range (statistically meets target)
+    prb_ci_met <- max(prb_ci[1], -0.05) <= min(prb_ci[2], 0.05)
+
+    # Generate output list of PRD, CI, standard, CI meets standard, and N
     out <- list(
       prb_val,
-      assessr::prb_ci(
-        no_outliers_df$assessed,
-        no_outliers_df$sale_price,
-        na.rm = na.rm
-      ),
+      prb_ci,
       assessr::prb_met(prb_val),
+      prb_ci_met,
       nrow(no_outliers_df)
     )
   } else {
 
     # Generate empty output list and stop if N < 30 unless suppress
-    out <- list(NA, NA, NA, nrow(no_outliers_df))
+    out <- list(NA, NA, NA, NA, nrow(no_outliers_df))
 
     if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
 
-  names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_N")
+  names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_CI_MET", "PRB_N")
   return(out)
 }

@@ -35,7 +35,8 @@ as \code{assessed}.}
 }
 \value{
 A named list containing the statistic, its 95\% confidence interval,
-whether or not the statistic meets IAAO standards, and the number of
+whether or not the statistic meets the IAAO standard, whether or not the
+95\% confidence interval overlaps the IAAO standard, and the number of
 observations used to calculate the statistic (after outliers are removed).
 }
 \description{
