@@ -266,7 +266,6 @@ chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
       dplyr::across({{ replacement_source }}, last_nonzero_element),
       town = dplyr::first({{ town_col }})
     ) %>%
-
     # Next, for each single 288 row, we determine the years it will be active
     # by taking the start year and town. This list gets put into a new variable
     # and then expanded using unnest(), which creates a duplicate row for each
@@ -276,7 +275,6 @@ chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
       as.character(.data$town)
     )) %>%
     tidyr::unnest(.data$has_active_288) %>%
-
     # The number of rows in our dataset is now equal to # of unique 288s * # of
     # years active for each PIN. Our final step is to merge the 288
     # characteristic updates by PIN for years with overlapping 288s.

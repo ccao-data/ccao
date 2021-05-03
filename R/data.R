@@ -167,7 +167,6 @@
 #' }
 #'
 #' @examples
-#'
 #' \dontrun{
 #'
 #' library(dplyr)

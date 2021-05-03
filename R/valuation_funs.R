@@ -463,14 +463,12 @@ postval_model <- function(data, truth, estimate, class,
 predict.postval_model <- function(object, ..., new_data, truth, estimate) {
   new_data %>%
     dplyr::ungroup() %>%
-
     # Join ntile ranges to unseen data and assign a ntile
     dplyr::left_join(object$ntiles) %>%
     dplyr::mutate(ntile = val_assign_ntile(
       x = {{ estimate }},
       ntiles = .data$ntiles_lst
     )) %>%
-
     # Join percentage adjustments by neighborhood, modeling group, and ntile
     # then apply the adjustment to all properties
     dplyr::left_join(object$ntile_adjustments) %>%
@@ -486,7 +484,6 @@ predict.postval_model <- function(object, ..., new_data, truth, estimate) {
         upper = object$ratio_cap_upper_bound
       )
     ) %>%
-
     # Override townhomes with their own median adjusted estimated value from
     # within the same set of properties
     dplyr::left_join(object$townhome_adjustments) %>%
@@ -497,7 +494,6 @@ predict.postval_model <- function(object, ..., new_data, truth, estimate) {
         {{ estimate }}
       )
     ) %>%
-
     # Return the final estimated value
     dplyr::pull({{ estimate }})
 }

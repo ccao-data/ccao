@@ -15,7 +15,6 @@ chars_cols <- dplyr::lst(
     "CNST_QLTY", "RENOVATION", "SITE", "GAR1_CNST", "GAR1_ATT", "GAR1_AREA",
     "PORCH", "REPAIR_CND", "GAR1_SIZE", "APTS", "CLASS"
   ),
-
   rep_source = c(
     "QU_TYPE_OF_RES", "QU_USE", "QU_EXTERIOR_WALL", "QU_ROOF",
     "QU_BASEMENT_TYPE", "QU_BASEMENT_FINISH", "QU_HEAT", "QU_AIR",

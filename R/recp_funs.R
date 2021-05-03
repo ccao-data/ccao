@@ -101,7 +101,6 @@ recp_clean_recode <- function(data) {
       tidyr::contains("_date"),
       ~ lubridate::as_date(.x, tz = "America/Chicago")
     )) %>%
-
     # Convert vars to their expected types
     dplyr::mutate(dplyr::across(
       dplyr::any_of(cols_numeric),
@@ -115,7 +114,6 @@ recp_clean_recode <- function(data) {
       dplyr::any_of(cols_character),
       ~ as.character(.x)
     )) %>%
-
     # Fix/smooth the AGE variable so that it reflects true AGE (the CCAO age var
     # only updates after each assessment cycle, so it jumps by 3)
     dplyr::mutate(char_age = ccao::chars_fix_age(
@@ -242,16 +240,16 @@ recp_feat_arms_length <- function(data) {
   data %>%
     dplyr::mutate(
       ind_arms_length =
-        .data$meta_modeling_group != "NCHARS"
-        & dplyr::between(.data$meta_sale_price, 1e4, 1e7)
-        & .data$char_bldg_sf > 100 # no super small buildings
-        & .data$char_hd_sf > 0
-        & is.finite(.data$char_bldg_sf)
-        & !.data$ind_class_error # no properties with wrong classes
-        & !is.na(.data$char_bldg_sf)
-        & !is.na(.data$char_hd_sf)
-        & !is.na(.data$char_ext_wall)
-        & dplyr::between(.data$char_rooms, 0, 40)
-        & dplyr::between(.data$char_beds, 0, 18)
+        .data$meta_modeling_group != "NCHARS" &
+          dplyr::between(.data$meta_sale_price, 1e4, 1e7) &
+          .data$char_bldg_sf > 100 # no super small buildings
+        & .data$char_hd_sf > 0 &
+          is.finite(.data$char_bldg_sf) &
+          !.data$ind_class_error # no properties with wrong classes
+        & !is.na(.data$char_bldg_sf) &
+          !is.na(.data$char_hd_sf) &
+          !is.na(.data$char_ext_wall) &
+          dplyr::between(.data$char_rooms, 0, 40) &
+          dplyr::between(.data$char_beds, 0, 18)
     )
 }

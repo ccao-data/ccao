@@ -194,8 +194,7 @@ vars_recode <- function(data, cols = dplyr::everything(), type = "long", as_fact
   )
 
   # Translate inputs to column names
-  var <- switch(
-    type,
+  var <- switch(type,
     "code" = "var_code",
     "long" = "var_value",
     "short" = "var_value_short"

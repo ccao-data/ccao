@@ -155,10 +155,9 @@ town_get_assmnt_year <- function(town,
 
           # Depending on the round type, look up the year of the nearest
           # assessment relative to the input year
-          switch(
-            round_type,
+          switch(round_type,
             nearest = x[which.min(abs(x - y))],
-            floor   = x[findInterval(y, x)],
+            floor = x[findInterval(y, x)],
             ceiling = x[findInterval(y, x) + !(y %in% x)],
           )
         },
