@@ -28,16 +28,15 @@ test_that("output within in expected range", {
   expect_lt(cod_out$COD, 13)
   expect_gt(cod_out_w_outliers$COD, 15)
   expect_lt(cod_out_w_outliers$COD, 16)
+  expect_equal(ccao_cod(c(ratio, rep(NA, 20)), na.rm = TRUE)$COD_N, 881)
 })
 
-test_that(
-  "overlapping CI returns true for CI_MET",
+test_that("overlapping CI returns true for CI_MET", {
   expect_true(cod_out_w_outliers$COD_CI_MET)
-)
+})
 
 test_that("bad input data stops execution", {
   expect_condition(ccao_cod(data.frame(ratio)))
-  expect_condition(ccao_cod(c(ratio, NA)))
   expect_condition(ccao_cod(c(ratio, NaN)))
   expect_condition(ccao_cod(c(ratio, "2")))
 })
@@ -48,6 +47,14 @@ test_that("incomplete data stops execution unless suppressed", {
   expect_equal(
     unname(ccao_cod(runif(29), suppress = TRUE)),
     list(NA, NA, NA, NA, 25)
+  )
+  expect_equal(
+    unname(ccao_cod(c(ratio[1:29], rep(NA, 10)), suppress = TRUE)),
+    list(NA, NA, NA, NA, 25)
+  )
+  expect_equal(
+    unname(ccao_cod(rep(NA_real_, 40), suppress = TRUE)),
+    list(NA, NA, NA, NA, 0)
   )
 })
 
@@ -73,16 +80,19 @@ test_that("output within expected range", {
   expect_lt(prd_out$PRD, 1.03)
   expect_gt(prd_out_w_outliers$PRD, 0.97)
   expect_lt(prd_out_w_outliers$PRD, 0.98)
+  expect_equal(ccao_prd(
+    c(assessed, rep(NA, 80)),
+    c(sale_price, rep(NA, 80)),
+    na.rm = TRUE
+  )$PRD_N, 881)
 })
 
-test_that(
-  "overlapping CI returns true for CI_MET",
+test_that("overlapping CI returns true for CI_MET", {
   expect_true(prd_out_w_outliers$PRD_CI_MET)
-)
+})
 
 test_that("bad input data stops execution", {
   expect_condition(ccao_prd(data.frame(assessed), sale_price))
-  expect_condition(ccao_prd(c(assessed, NA), c(sale_price, 10e5)))
   expect_condition(ccao_prd(c(assessed, NaN), c(sale_price, 10e5)))
   expect_condition(ccao_prd(c(assessed, "2"), c(sale_price, 10e5)))
   expect_condition(ccao_prd(assessed))
@@ -96,6 +106,22 @@ test_that("incomplete data stops execution unless suppressed", {
   expect_equal(
     unname(ccao_prd(runif(29), runif(29), suppress = TRUE)),
     list(NA, NA, NA, NA, 25)
+  )
+  expect_equal(
+    unname(ccao_prd(
+      c(assessed[1:29], rep(NA, 10)),
+      c(sale_price[1:29], rep(NA, 10)),
+      suppress = TRUE
+    )),
+    list(NA, NA, NA, NA, 25)
+  )
+  expect_equal(
+    unname(ccao_prd(
+      rep(NA_real_, 40),
+      rep(NA_real_, 40),
+      suppress = TRUE
+    )),
+    list(NA, NA, NA, NA, 0)
   )
 })
 
@@ -121,16 +147,19 @@ test_that("output within expected range", {
   expect_lt(prb_out$PRB, 0.01)
   expect_gt(prb_out_w_outliers$PRB, 0.05)
   expect_lt(prb_out_w_outliers$PRB, 0.06)
+  expect_equal(ccao_prb(
+    c(assessed, rep(NA, 80)),
+    c(sale_price, rep(NA, 80)),
+    na.rm = TRUE
+  )$PRB_N, 881)
 })
 
-test_that(
-  "overlapping CI returns true for CI_MET",
+test_that("overlapping CI returns true for CI_MET", {
   expect_true(prb_out_w_outliers$PRB_CI_MET)
-)
+})
 
 test_that("bad input data stops execution", {
   expect_condition(ccao_prd(data.frame(assessed), sale_price))
-  expect_condition(ccao_prb(c(assessed, NA), c(sale_price, 10e5)))
   expect_condition(ccao_prb(c(assessed, NaN), c(sale_price, 10e5)))
   expect_condition(ccao_prb(assessed))
   expect_condition(ccao_prb(assessed, c(sale_price, NA)))
@@ -143,5 +172,21 @@ test_that("incomplete data stops execution unless suppressed", {
   expect_equal(
     unname(ccao_prb(runif(29), runif(29), suppress = TRUE)),
     list(NA, NA, NA, NA, 25)
+  )
+  expect_equal(
+    unname(ccao_prb(
+      c(assessed[1:29], rep(NA, 10)),
+      c(sale_price[1:29], rep(NA, 10)),
+      suppress = TRUE
+    )),
+    list(NA, NA, NA, NA, 25)
+  )
+  expect_equal(
+    unname(ccao_prb(
+      rep(NA_real_, 40),
+      rep(NA_real_, 40),
+      suppress = TRUE
+    )),
+    list(NA, NA, NA, NA, 0)
   )
 })

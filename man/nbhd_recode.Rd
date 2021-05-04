@@ -24,7 +24,6 @@ either don't exist or are errors in the data. Can be easily be used with
 dplyr's recode. See examples.
 }
 \examples{
-
 \dontrun{
 
 library(dplyr)

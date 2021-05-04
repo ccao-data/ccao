@@ -68,13 +68,15 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
   no_outliers <- ratio[suppressWarnings(!assessr::is_outlier(
     ratio,
     method = "quantile",
-    probs = c(0.05, 0.95),
-    na.rm = na.rm
+    probs = c(0.05, 0.95)
   ))]
+
+  # Get number of observations used to calculate stat
+  cod_n <- length(no_outliers[!is.na(no_outliers)])
 
   # Only sample with 30+ observations are reliable for sales ratio studies
   # If less than 30, return only NAs and warn
-  if (length(no_outliers) >= 30) {
+  if (cod_n >= 30) {
 
     # Calculate COD of trimmed ratios
     cod_val <- assessr::cod(no_outliers, na.rm = na.rm)
@@ -91,12 +93,12 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
       cod_ci,
       assessr::cod_met(cod_val),
       cod_ci_met,
-      length(no_outliers)
+      cod_n
     )
   } else {
 
     # Generate empty output list and stop if N < 30 unless suppress
-    out <- list(NA, NA, NA, NA, length(no_outliers))
+    out <- list(NA, NA, NA, NA, cod_n)
 
     if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
@@ -127,13 +129,15 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   no_outliers_df <- ratios_df[suppressWarnings(!assessr::is_outlier(
     ratios_df$ratio,
     method = "quantile",
-    probs = c(0.05, 0.95),
-    na.rm = na.rm
+    probs = c(0.05, 0.95)
   )), ]
+
+  # Get number of observations used to calculate stat
+  prd_n <- nrow(no_outliers_df[!is.na(no_outliers_df$ratio), ])
 
   # Only sample with 30+ observations are reliable for sales ratio studies
   # If less than 30, return only NAs and warn
-  if (nrow(no_outliers_df) >= 30) {
+  if (prd_n >= 30) {
 
     # Calculate PRD of trimmed ratios
     prd_val <- assessr::prd(
@@ -159,12 +163,12 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
       prd_ci,
       assessr::prd_met(prd_val),
       prd_ci_met,
-      nrow(no_outliers_df)
+      prd_n
     )
   } else {
 
     # Generate empty output list and stop if N < 30 unless suppress
-    out <- list(NA, NA, NA, NA, nrow(no_outliers_df))
+    out <- list(NA, NA, NA, NA, prd_n)
 
     if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
@@ -195,13 +199,15 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   no_outliers_df <- ratios_df[suppressWarnings(!assessr::is_outlier(
     ratios_df$ratio,
     method = "quantile",
-    probs = c(0.05, 0.95),
-    na.rm = na.rm
+    probs = c(0.05, 0.95)
   )), ]
+
+  # Get number of observations used to calculate stat
+  prb_n <- nrow(no_outliers_df[!is.na(no_outliers_df$ratio), ])
 
   # Only sample with 30+ observations are reliable for sales ratio studies
   # If less than 30, return only NAs and warn
-  if (nrow(no_outliers_df) >= 30) {
+  if (prb_n >= 30) {
 
     # Calculate PRD of trimmed ratios
     prb_val <- assessr::prb(
@@ -226,12 +232,12 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
       prb_ci,
       assessr::prb_met(prb_val),
       prb_ci_met,
-      nrow(no_outliers_df)
+      prb_n
     )
   } else {
 
     # Generate empty output list and stop if N < 30 unless suppress
-    out <- list(NA, NA, NA, NA, nrow(no_outliers_df))
+    out <- list(NA, NA, NA, NA, prb_n)
 
     if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
   }
