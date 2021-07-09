@@ -12,7 +12,7 @@ Description: A set of functions used widely through the Cook County Assessor's
     functions across all users and scripts by having them all depend on a single
     package.
 URL: https://ccao-data-science---modeling.gitlab.io/packages/ccao/, https://gitlab.com/ccao-data-science---modeling/packages/ccao 
-License: GPL-3
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
