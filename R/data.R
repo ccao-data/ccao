@@ -133,23 +133,6 @@
 "coe_codes"
 
 
-#' Data frame containing Cook County equalization factors
-#'
-#' A dataset of Cook County final equalization factors/multipliers. These
-#' multipliers are calculated by the Illinois Department of Revenue in order to
-#' equalize assessment values across Illinois' counties.
-#'
-#' @format A data frame with 40 rows and 2 variables:
-#' \describe{
-#'   \item{year}{The year for the equalization factor}
-#'   \item{equalization_factor}{The equalization factor}
-#' }
-#'
-#' @note Equalization factors in this data frame are final equalization factors,
-#' tentative factors/multipliers are not included.
-"equalization_factors"
-
-
 #' Data frame of recodes for CCAO modeling neighborhoods
 #'
 #' A dataset of neighborhood recodes for CCAO modeling. These neighborhoods
