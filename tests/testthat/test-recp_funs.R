@@ -50,16 +50,6 @@ test_that("output is as expected", {
     )
   )
   expect_equal(
-    names(recp_clean_rename(
-      chars_sample_addchars[, 5:9],
-      names_from = "addchars", names_to = "standard"
-    )),
-    c(
-      "QU_HOME_IMPROVEMENT", "char_use", "char_ext_wall",
-      "char_roof_cnst", "char_bsmt"
-    )
-  )
-  expect_equal(
     names(recp_clean_rename(cdu_dict, names_to = "pretty")),
     c("cdu_code", "cdu_type", "cdu_desc", "cdu_desc_short")
   )

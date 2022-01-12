@@ -22,7 +22,6 @@ reference:
 - contents:
   - pin_clean
   - pin_format_pretty
-  - validate_address
 - subtitle: Lookup values
   desc: Convert between township names, assessment years, and triads
 - contents: 
@@ -33,9 +32,6 @@ reference:
   desc: Recode characteristic values, fix errors, and handle Home Improvement Exemptions (288s)
 - contents:
   - chars_288_active
-  - chars_fix_age
-  - chars_sparsify
-  - chars_update
   - vars_check_class
   - vars_recode
   - vars_rename
@@ -81,18 +77,14 @@ reference:
 - subtitle: Spatial data
   desc: Spatial boundaries and recodes. Must load `sf` library before using
 - contents:
-  - nbhd_recode
   - nbhd_shp
   - town_shp
 - subtitle: Sample data
   desc: Sample data frames pulled directly from CCAO SQL
 - contents:
-  - chars_sample_addchars
   - chars_sample_universe
-  - chars_sample_universe_updated
 - subtitle: Utility
   desc: Miscellaneous data used throughout the department or in specific functions
 - contents:
   - ccao_colors
-  - chars_cols
   - coe_codes
