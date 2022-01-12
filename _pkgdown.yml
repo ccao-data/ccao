@@ -72,12 +72,6 @@ reference:
   - val_townhomes_by_group
   - postval_model
   - predict.postval_model
-- subtitle: Misc. functions
-  desc: Create thematic maps, upload SQL data, format for AS/400 upload, etc.
-- contents:
-  - map_kriging
-  - format_as400
-  - sql_upload
 
 - title: Data
 - subtitle: Dictionaries

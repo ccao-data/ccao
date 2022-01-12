@@ -18,9 +18,7 @@ LazyData: true
 Imports:
     assessr (>= 0.4.4),
     butcher,
-    DBI,
     dplyr (>= 1.0.4),
-    gstat,
     lightgbm,
     lubridate,
     magrittr,
@@ -29,7 +27,6 @@ Imports:
     recipes,
     rlang,
     rvest,
-    sf,
     stars,
     stringr,
     tidyr (>= 1.1.0),
@@ -46,7 +43,6 @@ Suggests:
     lintr,
     pkgdown,
     rmarkdown,
-    RSQLite,
     scales,
     testthat
 Remotes: 
