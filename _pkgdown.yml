@@ -62,13 +62,7 @@ reference:
   desc: Apply post-modeling adjustments to raw model values
   contents:
   - val_round_fmv
-  - val_med_pct_adj
   - val_limit_ratios
-  - val_create_ntiles
-  - val_assign_ntile
-  - val_townhomes_by_group
-  - postval_model
-  - predict.postval_model
 
 - title: Data
 - subtitle: Dictionaries
