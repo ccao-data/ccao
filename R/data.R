@@ -28,33 +28,6 @@
 "cdu_dict"
 
 
-#' List crosswalk of CCAOSFCHARS columns and their ADDCHARS equivalents
-#'
-#' A list containing vectors of column names that match those found in the
-#' CCAOSFCHARS and ADDCHARS SQL tables. Can be used to translate between
-#' tables.
-#'
-#' @format A list with 4 items:
-#' \describe{
-#'   \item{add_target}{Target columns with additive characteristics}
-#'   \item{add_source}{Columns with data to add to \code{add_target}}
-#'   \item{rep_target}{Target columns with characteristics to be replaced}
-#'   \item{rep_source}{Columns with data to replace in \code{rep_target}}
-#' }
-#'
-"chars_cols"
-
-
-#' Sample dataset from the ADDCHARS SQL table
-#'
-#' A dataset containing a small subsample of rows from the ADDCHARS table. This
-#' sample can be used with \code{chars_sparsify()} to generate sparse data
-#' frames suitable for joining onto \code{chars_sample_universe}.
-#'
-#' @source This data was extracted from SQL manually on 2021-01-20.
-"chars_sample_addchars"
-
-
 #' Sample dataset from the VW_RES_UNIVERSE SQL view
 #'
 #' A dataset containing a small subsample of rows from the VW_RES_UNIVERSE view.
@@ -63,18 +36,6 @@
 #'
 #' @source This data was extracted from SQL manually on 2021-01-20.
 "chars_sample_universe"
-
-
-#' Sample dataset from the VW_RES_UNIVERSE SQL view with 288s applied
-#'
-#' A dataset containing the properties in \code{chars_sample_universe}, but
-#' updated with \code{chars_sparsity()} and \code{chars_update()}. This data is
-#' used as a benchmark to unit test the 288-related functions. It was manually
-#' validated against properties updated by the AS/400.
-#'
-#' @source Hand-updated and validated version of \code{chars_sample_universe}
-#' with 288s applied.
-"chars_sample_universe_updated"
 
 
 #' Data dictionary of Cook County property classes
@@ -117,42 +78,6 @@
 #' }
 #'
 "coe_codes"
-
-
-#' Data frame of recodes for CCAO modeling neighborhoods
-#'
-#' A dataset of neighborhood recodes for CCAO modeling. These neighborhoods
-#' either don't exist or are errors in the data. Can be easily be used with
-#' dplyr's recode. See examples.
-#'
-#' @format A data frame with 58 rows and 5 variables:
-#' \describe{
-#'   \item{township_name}{Common name of the township}
-#'   \item{township_code}{Two-digit code used to identify the township}
-#'   \item{nbhd}{Three-digit assessor neighborhood code, zero-padded}
-#'   \item{town_nbhd}{Combined township code and neighborhood}
-#'   \item{recode_to}{Neighborhood to recode TO from town_nbhd. In other words,
-#'   values coded as town_nbhd should be replaced with recoded_to}
-#' }
-#'
-#' @examples
-#' \dontrun{
-#'
-#' library(dplyr)
-#'
-#' # Create a named list of recodes to use with dplyr::recode
-#' vals <- ccao::nbhd_recode$recode_to
-#' names(vals) <- ccao::nbhd_recode$town_nbhd
-#'
-#' # Create test recode data
-#' test_nbhds <- c("12122", "28103", "39010", "34220", "12000")
-#'
-#' # Use dplyr to recode all values. Triple !!! expands the named vector vals
-#' # into individual arguments passed to recode()
-#' recode(test_nbhds, !!!recodes)
-#' }
-#'
-"nbhd_recode"
 
 
 #' Simple features (sf) data frame of CCAO neighborhoods
