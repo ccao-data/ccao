@@ -1,17 +1,3 @@
-#' Appeal reason codes used by the CCAO AS/400 system
-#'
-#' A dataset containing a lookup of codes for appeal rejection/acceptance. These
-#' codes are primarily used in the DKEMPL SQL table. See the \href{https://prodassets.cookcountyassessor.com/s3fs-public/form_documents/reasoncodes.pdf}{CCAO website} for a PDF version. # nolint
-#'
-#' @format A data frame with 78 rows and 2 variables:
-#' \describe{
-#'   \item{reason_code}{Numeric code used in the AS/400 system}
-#'   \item{reason_desc}{Text description/translation of the numeric code}
-#' }
-#'
-"appeals_dict"
-
-
 #' Official CCAO color palette
 #'
 #' The CCAO Communications Department created a palette of colors used widely
