@@ -31,11 +31,9 @@ This function will likely be deprecated by in the near future.
 Other model_funs: 
 \code{\link{model_axe_recipe}()},
 \code{\link{model_axe_tune_data}()},
-\code{\link{model_get_env}()},
 \code{\link{model_lgbm_cap_num_leaves}()},
 \code{\link{model_lgbm_load}()},
 \code{\link{model_lgbm_save}()},
-\code{\link{model_predict}()},
 \code{\link{rm_intermediate}()}
 }
 \concept{model_funs}

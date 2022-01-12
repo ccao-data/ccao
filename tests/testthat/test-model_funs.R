@@ -21,28 +21,6 @@ test_that("invalid data types stop process", {
 })
 
 
-context("test model_get_env()")
-
-##### TEST model_get_env() #####
-
-Sys.setenv("R_TEST_VAR" = "99")
-
-# Test for expected outputs
-test_that("output is as expected", {
-  expect_equal(model_get_env("R_TEST_VAR", "56"), "99")
-  expect_equal(model_get_env("", "56"), "56")
-  expect_equal(model_get_env("", 56), 56)
-  expect_equal(model_get_env("", NA), NA)
-})
-
-# Test that invalid inputs throw errors
-test_that("invalid data types stop process", {
-  expect_condition(model_get_env(9, "56"))
-  expect_condition(model_get_env(c("TEST_VAR", "R_TEST_VAR"), "56"))
-  expect_condition(model_get_env(""))
-})
-
-
 context("test model_axe_tune_data()")
 
 ##### TEST model_axe_tune_data() #####

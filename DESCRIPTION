@@ -22,17 +22,9 @@ Imports:
     lightgbm,
     lubridate,
     magrittr,
-    parsnip,
     purrr,
-    recipes,
     rlang,
-    rvest,
-    stars,
-    stringr,
     tidyr (>= 1.1.0),
-    tidyselect,
-    utils,
-    xml2,
     zip
 RoxygenNote: 7.1.1
 Suggests: 

@@ -49,10 +49,8 @@ reference:
 - subtitle: Work with Tidymodels
   desc: Clean, save, and work with Tidymodels objects
   contents:
-  - model_get_env
   - model_axe_tune_data
   - model_axe_recipe
-  - model_predict
   - model_lgbm_cap_num_leaves
   - model_lgbm_update_params
   - model_lgbm_save
