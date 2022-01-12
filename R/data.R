@@ -65,7 +65,7 @@
 "class_dict"
 
 
-#' Data frame of Certificate of Error reason codes
+#' Data dictionary of Certificate of Error reason codes
 #'
 #' A dataset containing numeric codes and corresponding text explanations for
 #' Certificates of Error (CoEs). These are issued when the Assessor's office
@@ -77,7 +77,7 @@
 #'   \item{coe_reason}{The text explaination for the CoE numeric code}
 #' }
 #'
-"coe_codes"
+"coe_dict"
 
 
 #' Simple features (sf) data frame of CCAO neighborhoods
