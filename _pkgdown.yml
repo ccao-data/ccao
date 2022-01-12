@@ -32,6 +32,7 @@ reference:
   desc: Recode characteristic values, fix errors, and handle Home Improvement Exemptions (288s)
 - contents:
   - chars_288_active
+  - chars_fix_age
   - vars_check_class
   - vars_recode
   - vars_rename
