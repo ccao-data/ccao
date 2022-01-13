@@ -9,7 +9,7 @@
 "ccao_colors"
 
 
-#' Codes used by the CCAO to identify certain distinct property situations
+#' Data dictionary of codes used to identify specific property situations
 #'
 #' A dataset containing a lookup of CDU codes. These codes are kind of a mess
 #' and have been created and used inconsistently over the years.

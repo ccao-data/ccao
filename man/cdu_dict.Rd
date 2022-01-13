@@ -3,7 +3,7 @@
 \docType{data}
 \name{cdu_dict}
 \alias{cdu_dict}
-\title{Codes used by the CCAO to identify certain distinct property situations}
+\title{Data dictionary of codes used to identify specific property situations}
 \format{
 A data frame with 47 rows and 4 variables:
 \describe{
