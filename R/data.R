@@ -139,8 +139,12 @@
 "town_shp"
 
 
-#' Data dictionary for CCAO variables
+#' Data dictionary for legacy CCAO data and variables
 #'
+#' NOTE: This dictionary is deprecated for any processes that use current CCAO
+#' data infrastructure. Use \code{\link{vars_dict}} for the most up-to-date
+#' dictionary.
+#' 
 #' A crosswalk of CCAO variable names used in SQL, modeling, and open data. Also
 #' includes a translation of numeric character codes to their human-readable
 #' value (ROOF_CNST = 1 becomes ROOF_CNST = Shingle/Asphalt).
@@ -176,4 +180,4 @@
 #' @source This dictionary was manually created from paper forms as a
 #'   translation of numeric variables. char_value_short is the equivalent of
 #'   what is used on the AS/400 property info screens
-"vars_dict"
+"vars_dict_legacy"

@@ -23,9 +23,9 @@ The input data frame with re-encoded values for the specified
 columns.
 }
 \description{
-The AS/400 stores characteristic values in a numerically encoded
-format. This function can be used to translate those values into a
-human-readable format. For example, EXT_WALL = 2 will become
+The system of record stores characteristic values in a
+numerically encoded format. This function can be used to translate those
+values into a human-readable format. For example, EXT_WALL = 2 will become
 EXT_WALL = "Frame + Masonry". Note that the values and their translations are
 specified in \code{\link{vars_dict}}.
 
