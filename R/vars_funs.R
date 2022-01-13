@@ -69,15 +69,12 @@ vars_check_class <- function(age, sqft, class) {
 #' example, rename all columns pulled from SQL to their standard names used
 #' in modeling. Or, rename all standard modeling names to "pretty" names for
 #' publication. This function will only rename things specified in
-#' \code{\link{vars_dict}}, all other names in the data will remain unchanged.
+#' the user-supplied \code{dict} argument, all other names in the data will
+#' remain unchanged.
 #'
-#' Options for \code{names_from} and \code{names_to} are:
-#'
-#' - \code{"sql"} (with names like TAX_YEAR, GAR1_SIZE)
-#' - \code{"addchars"} (with names like QU_AGE, QU_GARAGE_SIZE)
-#' - \code{"socrata"} (with names like tax_year, gar1_size)
-#' - \code{"standard"} (with names like meta_tax_year, meta_gar1_size)
-#' - \code{"pretty"} (with names like Year, Garage 1 Size)
+#' Options for \code{names_from} and \code{names_to} are specific to the
+#' specified \code{dict}. Run this function with \code{names_from} equal to
+#' \code{NULL} to see a list of available options for the specified dictionary.
 #'
 #' @param data A data frame or tibble with columns to be renamed.
 #' @param names_from The source/name type of data. See description
@@ -85,6 +82,9 @@ vars_check_class <- function(age, sqft, class) {
 #' @param type Output type. Either \code{"inplace"}, which renames the input
 #'   data frame, or \code{"vector"}, which returns a named character vector with
 #'   the construction new_col_name = old_col_name.
+#' @param dict The dictionary used to translate names. Uses
+#'   \code{\link{vars_dict}} by default. Use \code{\link{vars_dict_legacy}} for
+#'   legacy data column names.
 #'
 #' @return The input data frame with columns renamed.
 #'
@@ -93,24 +93,68 @@ vars_check_class <- function(age, sqft, class) {
 #' # Rename column names from SQL
 #' sample_data <- chars_sample_universe[1:5, 18:27]
 #'
-#' vars_rename(sample_data)
-#' vars_rename(sample_data, names_to = "pretty")
+#' vars_rename(
+#'   data = sample_data,
+#'   names_from = "sql",
+#'   names_to = "standard",
+#'   dict = ccao::vars_dict_legacy
+#' )
+#' vars_rename(
+#'   data = sample_data,
+#'   names_from = "sql",
+#'   names_to = "pretty",
+#'   dict = ccao::vars_dict_legacy
+#' )
 #'
 #' # No renames will occur since no column names here are from SQL
-#' vars_rename(class_dict[1:5, 1:5])
+#' vars_rename(
+#'   data = class_dict[1:5, 1:5],
+#'   names_from = "sql",
+#'   names_to = "pretty",
+#'   dict = ccao::vars_dict_legacy
+#' )
 #' @md
 #' @family vars_funs
 #' @export
-vars_rename <- function(data, names_from = "sql", names_to = "standard", type = "inplace") { # nolint
+vars_rename <- function(data,
+                        names_from = NULL,
+                        names_to = NULL,
+                        type = "inplace",
+                        dict = ccao::vars_dict
+                        ) {
 
-  pos_names <- c("sql", "addchars", "socrata", "standard", "pretty")
+  # Check input data dictionary
+  stopifnot(
+    is.data.frame(dict),
+    sum(startsWith(names(dict), "var_name_")) >= 2,
+    nrow(dict) > 0
+  )
+
+  # Get vector of possible inputs to names_from and names_to from dictionary
+  poss_names_args <- gsub(
+    "var_name_", "",
+    names(dict)[startsWith(names(dict), "var_name_")]
+  )
+
+  # If args aren't in possible, throw error and list possible args
+  if (is.null(names_from)) {
+    stop("names_from must be one of: ", paste(poss_names_args, collapse = ", "))
+  } else if (!names_from %in% poss_names_args) {
+    stop("names_from must be one of: ", paste(poss_names_args, collapse = ", "))
+  }
+
+  if (is.null(names_to)) {
+    stop("names_to must be one of: ", paste(poss_names_args, collapse = ", "))
+  } else if (!names_to %in% poss_names_args) {
+    stop("names_to must be one of: ", paste(poss_names_args, collapse = ", "))
+  }
 
   # Stop if input is not a data frame of character vector or if name targets are
   # not within the preset types
   stopifnot(
     is.data.frame(data) | is.character(data),
-    tolower(names_from) %in% pos_names,
-    tolower(names_to) %in% pos_names,
+    tolower(names_from) %in% poss_names_args,
+    tolower(names_to) %in% poss_names_args,
     tolower(type) %in% c("inplace", "vector")
   )
 
@@ -120,8 +164,8 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
   from <- paste0("var_name_", names_from)
   to <- paste0("var_name_", names_to)
 
-  # Rename using vars_dict, replacing any NAs with the original column names
-  names_wm <- ccao::vars_dict[[to]][match(names_lst, ccao::vars_dict[[from]])]
+  # Rename using dict, replacing any NAs with the original column names
+  names_wm <- dict[[to]][match(names_lst, dict[[from]])]
   names_wm[is.na(names_wm)] <- names_lst[is.na(names_wm)]
 
   # Return names inplace if the input data is a data frame, else return a
@@ -137,11 +181,12 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
 
 #' Replace numerically coded variables with human-readable values
 #'
-#' @description The AS/400 stores characteristic values in a numerically encoded
-#' format. This function can be used to translate those values into a
-#' human-readable format. For example, EXT_WALL = 2 will become
+#' @description The system of record stores characteristic values in a
+#' numerically encoded format. This function can be used to translate those
+#' values into a human-readable format. For example, EXT_WALL = 2 will become
 #' EXT_WALL = "Frame + Masonry". Note that the values and their translations are
-#' specified in \code{\link{vars_dict}}.
+#' must be specified via a user-defined dictionary. The default dictionary is
+#' \code{\link{vars_dict}}.
 #'
 #' Options for \code{type} are:
 #'
@@ -151,12 +196,16 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
 #'   improperly coded values, see note below)
 #'
 #' @param data A data frame or tibble with columns to have values replaced.
-#' @param cols A \code{<tidy-select>} column select or vector of column names.
-#'   Looks for all columns with numerically encoded character values by default.
+#' @param cols A \code{<tidy-select>} column selection or vector of column
+#'   names. Looks for all columns with numerically encoded character
+#'   values by default.
 #' @param type Output/recode type. See description for options.
 #' @param as_factor If \code{TRUE}, re-encoded values will be returned as
 #'   factors with their levels pre-specified by the dictionary. Otherwise, will
 #'   return re-encoded values as characters only.
+#' @param dict The dictionary used to translate encodings. Uses
+#'   \code{\link{vars_dict}} by default. Use \code{\link{vars_dict_legacy}} for
+#'   legacy data column encodings.
 #'
 #' @note Values which are in the data but are NOT in \code{\link{vars_dict}}
 #'   will be converted to NA. For example, there is no numeric value 3 for AIR,
@@ -171,26 +220,62 @@ vars_rename <- function(data, names_from = "sql", names_to = "standard", type = 
 #' sample_data <- chars_sample_universe[1:5, 18:27]
 #'
 #' sample_data
-#' vars_recode(sample_data)
-#' vars_recode(sample_data, type = "short")
+#' vars_recode(
+#'   data = sample_data,
+#'   dict = ccao::vars_dict_legacy
+#' )
+#' vars_recode(
+#'   data= sample_data,
+#'   type = "short",
+#'   dict = ccao::vars_dict_legacy
+#' )
 #'
 #' # Recode only the specified columns
 #' gar_sample <- chars_sample_universe[1:5, 30:40]
 #'
 #' gar_sample
-#' vars_recode(gar_sample, cols = dplyr::starts_with("GAR"))
-#' vars_recode(gar_sample, cols = "GAR1_SIZE")
+#' vars_recode(
+#'   data = gar_sample,
+#'   cols = dplyr::starts_with("GAR"),
+#'   dict = ccao::vars_dict_legacy
+#' )
+#' vars_recode(
+#'   data = gar_sample,
+#'   cols = "GAR1_SIZE",
+#'   dict = ccao::vars_dict_legacy
+#' )
 #' @md
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @family vars_funs
 #' @export
-vars_recode <- function(data, cols = dplyr::everything(), type = "long", as_factor = TRUE) { # nolint
+vars_recode <- function(data,
+                        cols = dplyr::everything(),
+                        type = "long",
+                        as_factor = TRUE,
+                        dict = ccao::vars_dict
+                        ) {
+
+  # Check input data dictionary
+  stopifnot(
+    is.data.frame(dict),
+    sum(startsWith(names(dict), "var_name_")) >= 1,
+    nrow(dict) > 0
+  )
+
+  # Check that the dictionary contains the correct columns
+  if (!any(c("var_code", "var_value", "var_value_short") %in% names(dict))) {
+    stop(
+      "Input dictionary must contain the following columns: ",
+      "var_code, var_value, var_value_short"
+    )
+  }
 
   # Error/input checking
   stopifnot(
     is.data.frame(data),
-    type %in% c("code", "short", "long")
+    type %in% c("code", "short", "long"),
+    is.logical(as_factor)
   )
 
   # Translate inputs to column names
@@ -202,40 +287,40 @@ vars_recode <- function(data, cols = dplyr::everything(), type = "long", as_fact
 
   # Convert chars dict into long format that can be easily referenced use
   # any possible input column names
-  dict <- ccao::vars_dict %>%
+  dict_long <- dict %>%
     dplyr::filter(
       .data$var_type == "char" & .data$var_data_type == "categorical"
     ) %>%
     dplyr::select(
-      .data$var_name_sql:.data$var_name_pretty,
+      dplyr::starts_with("var_name_"),
       .data$var_code:.data$var_value_short
     ) %>%
     tidyr::pivot_longer(
-      .data$var_name_sql:.data$var_name_pretty,
+      dplyr::starts_with("var_name_"),
       names_to = "var_type",
       values_to = "var_name"
     )
 
   # For each column listed in the input, check if it's a character column
-  # If it is, make a lookup table using dict and find the equivalent value
+  # If it is, make a lookup table using dict_long and find the equivalent value
   dplyr::mutate(
     data,
     dplyr::across(
       dplyr::all_of(cols),
       function(x, y = dplyr::cur_column()) {
-        if (y %in% dict$var_name) {
+        if (y %in% dict_long$var_name) {
 
           # Find the rows of the dictionary corresponding to column y
-          var_rows <- which(dict$var_name == y)
-          idx <- match(x, dict$var_code[var_rows])
+          var_rows <- which(dict_long$var_name == y)
+          idx <- match(x, dict_long$var_code[var_rows])
 
           if (as_factor) {
             out <- factor(
-              dict[[var]][var_rows][idx],
-              levels = dict[[var]][var_rows]
+              dict_long[[var]][var_rows][idx],
+              levels = dict_long[[var]][var_rows]
             )
           } else {
-            out <- dict[[var]][var_rows][idx]
+            out <- dict_long[[var]][var_rows][idx]
           }
           return(out)
         } else {

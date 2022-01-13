@@ -57,6 +57,7 @@ reference:
   desc: Lookups for numeric codes used in the assessment system 
 - contents:
   - ends_with("_dict")
+  - ends_with("_dict_legacy")
 - subtitle: Spatial data
   desc: CCAO-specific spatial boundaries. Must load `sf` library before using
 - contents:
