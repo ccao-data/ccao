@@ -506,13 +506,6 @@
       "Repository": "CRAN",
       "Hash": "3354c874f6008f7f1e418526df8ecd8a"
     },
-    "lubridate": {
-      "Package": "lubridate",
-      "Version": "1.8.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "2ff5eedb6ee38fb1b81205c73be1be5a"
-    },
     "magrittr": {
       "Package": "magrittr",
       "Version": "2.0.1",
