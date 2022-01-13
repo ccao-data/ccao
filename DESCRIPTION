@@ -20,7 +20,6 @@ Imports:
     butcher,
     dplyr (>= 1.0.4),
     lightgbm,
-    lubridate,
     magrittr,
     purrr,
     rlang,
