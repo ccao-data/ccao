@@ -3,10 +3,10 @@ Type: Package
 Title: Convenience Functions and Datasets for the Cook County Assessor's Office
 Version: 0.5.1
 Authors@R: c(
-    person(given = "Dan", family = "Snow", email="dsnow@cookcountyassessor.com", role=c("aut", "cre")),
+    person(given = "Dan", family = "Snow", email="daniel.snow@cookcountyil.gov", role=c("aut", "cre")),
     person(given = "Nathan", family = "Dignazio", role=c("ctb"))
     )
-Date: 2021-05-03
+Date: 2022-01-13
 Description: A set of functions used widely through the Cook County Assessor's
     valuation pipeline. The intention is to standardize the usage of critical
     functions across all users and scripts by having them all depend on a single
