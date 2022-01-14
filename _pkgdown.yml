@@ -18,11 +18,10 @@ reference:
   - ccao_prd
   - ccao_prb
 - subtitle: Format data
-  desc: Clean and format Property Index Numbers (PINs) and addresses
+  desc: Clean and format Property Index Numbers (PINs)
 - contents:
   - pin_clean
   - pin_format_pretty
-  - validate_address
 - subtitle: Lookup values
   desc: Convert between township names, assessment years, and triads
 - contents: 
@@ -30,32 +29,18 @@ reference:
   - town_get_assmnt_year
   - town_get_triad
 - subtitle: Manage characteristics
-  desc: Recode characteristic values, fix errors, and handle Home Improvement Exemptions (288s)
+  desc: Recode/rename characteristic columns and fix characteristic errors
 - contents:
   - chars_288_active
   - chars_fix_age
-  - chars_sparsify
-  - chars_update
   - vars_check_class
   - vars_recode
   - vars_rename
-- subtitle: Standardize SQL data
-  desc: Clean and standardize data from CCAO SQL for use in residential modeling
-  contents:
-  - recp_clean_keep_dict_vars
-  - recp_clean_rename
-  - recp_clean_recode
-  - recp_clean_relocate
-  - recp_feat_time
-  - recp_feat_char_inds
-  - recp_feat_arms_length
 - subtitle: Work with Tidymodels
   desc: Clean, save, and work with Tidymodels objects
   contents:
-  - model_get_env
   - model_axe_tune_data
   - model_axe_recipe
-  - model_predict
   - model_lgbm_cap_num_leaves
   - model_lgbm_update_params
   - model_lgbm_save
@@ -65,40 +50,25 @@ reference:
   desc: Apply post-modeling adjustments to raw model values
   contents:
   - val_round_fmv
-  - val_med_pct_adj
   - val_limit_ratios
-  - val_create_ntiles
-  - val_assign_ntile
-  - val_townhomes_by_group
-  - postval_model
-  - predict.postval_model
-- subtitle: Misc. functions
-  desc: Create thematic maps, upload SQL data, format for AS/400 upload, etc.
-- contents:
-  - map_kriging
-  - format_as400
-  - sql_upload
 
 - title: Data
 - subtitle: Dictionaries
-  desc: Lookups and code translations used in functions
+  desc: Lookups for numeric codes used in the assessment system 
 - contents:
   - ends_with("_dict")
+  - ends_with("_dict_legacy")
 - subtitle: Spatial data
-  desc: Spatial boundaries and recodes. Must load `sf` library before using
+  desc: CCAO-specific spatial boundaries. Must load `sf` library before using
 - contents:
-  - nbhd_recode
   - nbhd_shp
   - town_shp
 - subtitle: Sample data
   desc: Sample data frames pulled directly from CCAO SQL
 - contents:
-  - chars_sample_addchars
+  - chars_sample_athena
   - chars_sample_universe
-  - chars_sample_universe_updated
-- subtitle: Utility
-  desc: Miscellaneous data used throughout the department or in specific functions
+- subtitle: Miscellaneous
+  desc: Other data used throughout the department or in specific functions
 - contents:
   - ccao_colors
-  - chars_cols
-  - coe_codes

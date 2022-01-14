@@ -15,7 +15,5 @@ chars_sample_universe
 }
 \description{
 A dataset containing a small subsample of rows from the VW_RES_UNIVERSE view.
-The PINs present in this subsample match those present in
-\code{chars_sample_addchars}.
 }
 \keyword{datasets}

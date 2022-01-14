@@ -5,7 +5,13 @@
 \title{Bulk rename variables from CCAO SQL to standardized or pretty names
 and visa versa}
 \usage{
-vars_rename(data, names_from = "sql", names_to = "standard", type = "inplace")
+vars_rename(
+  data,
+  names_from = NULL,
+  names_to = NULL,
+  type = "inplace",
+  dict = ccao::vars_dict
+)
 }
 \arguments{
 \item{data}{A data frame or tibble with columns to be renamed.}
@@ -17,6 +23,10 @@ vars_rename(data, names_from = "sql", names_to = "standard", type = "inplace")
 \item{type}{Output type. Either \code{"inplace"}, which renames the input
 data frame, or \code{"vector"}, which returns a named character vector with
 the construction new_col_name = old_col_name.}
+
+\item{dict}{The dictionary used to translate names. Uses
+\code{\link{vars_dict}} by default. Use \code{\link{vars_dict_legacy}} for
+legacy data column names.}
 }
 \value{
 The input data frame with columns renamed.
@@ -26,27 +36,56 @@ Bulk rename columns from one type of CCAO data to another. For
 example, rename all columns pulled from SQL to their standard names used
 in modeling. Or, rename all standard modeling names to "pretty" names for
 publication. This function will only rename things specified in
-\code{\link{vars_dict}}, all other names in the data will remain unchanged.
+the user-supplied \code{dict} argument, all other names in the data will
+remain unchanged.
 
-Options for \code{names_from} and \code{names_to} are:
-\itemize{
-\item \code{"sql"} (with names like TAX_YEAR, GAR1_SIZE)
-\item \code{"addchars"} (with names like QU_AGE, QU_GARAGE_SIZE)
-\item \code{"socrata"} (with names like tax_year, gar1_size)
-\item \code{"standard"} (with names like meta_tax_year, meta_gar1_size)
-\item \code{"pretty"} (with names like Year, Garage 1 Size)
-}
+Options for \code{names_from} and \code{names_to} are specific to the
+specified \code{dict}. Run this function with \code{names_from} equal to
+\code{NULL} to see a list of available options for the specified dictionary.
 }
 \examples{
 
 # Rename column names from SQL
 sample_data <- chars_sample_universe[1:5, 18:27]
+sample_data
 
-vars_rename(sample_data)
-vars_rename(sample_data, names_to = "pretty")
+vars_rename(
+  data = sample_data,
+  names_from = "sql",
+  names_to = "standard",
+  dict = ccao::vars_dict_legacy
+)
+vars_rename(
+  data = sample_data,
+  names_from = "sql",
+  names_to = "pretty",
+  dict = ccao::vars_dict_legacy
+)
 
 # No renames will occur since no column names here are from SQL
-vars_rename(class_dict[1:5, 1:5])
+vars_rename(
+  data = class_dict[1:5, 1:5],
+  names_from = "sql",
+  names_to = "pretty",
+  dict = ccao::vars_dict_legacy
+)
+
+# With data from Athena
+sample_data_athena <- chars_sample_athena[1:5, 1:10]
+sample_data_athena
+
+vars_rename(
+  data = sample_data_athena,
+  names_from = "athena",
+  names_to = "model",
+  dict = ccao::vars_dict
+)
+vars_rename(
+  data = sample_data_athena,
+  names_from = "athena",
+  names_to = "pretty",
+  dict = ccao::vars_dict
+)
 }
 \seealso{
 Other vars_funs: 

@@ -1,13 +1,13 @@
 Package: ccao
 Type: Package
 Title: Convenience Functions and Datasets for the Cook County Assessor's Office
-Version: 0.5.1
+Version: 1.0.0
 Authors@R: c(
-    person(given = "Dan", family = "Snow", email="dsnow@cookcountyassessor.com", role=c("aut", "cre")),
+    person(given = "Dan", family = "Snow", email="daniel.snow@cookcountyil.gov", role=c("aut", "cre")),
     person(given = "Nathan", family = "Dignazio", role=c("ctb"))
     )
-Date: 2021-05-03
-Description: A set of functions used widely through the Cook County Assessor's
+Date: 2022-01-13
+Description: A set of functions used throughout the Cook County Assessor's
     valuation pipeline. The intention is to standardize the usage of critical
     functions across all users and scripts by having them all depend on a single
     package.
@@ -18,26 +18,14 @@ LazyData: true
 Imports:
     assessr (>= 0.4.4),
     butcher,
-    DBI,
     dplyr (>= 1.0.4),
-    gstat,
     lightgbm,
-    lubridate,
     magrittr,
-    parsnip,
     purrr,
-    recipes,
     rlang,
-    rvest,
-    sf,
-    stars,
-    stringr,
     tidyr (>= 1.1.0),
-    tidyselect,
-    utils,
-    xml2,
     zip
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     covr,
     devtools,
@@ -46,7 +34,6 @@ Suggests:
     lintr,
     pkgdown,
     rmarkdown,
-    RSQLite,
     scales,
     testthat
 Remotes: 

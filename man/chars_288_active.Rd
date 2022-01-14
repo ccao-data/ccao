@@ -56,8 +56,6 @@ chars_288_active(c(2015, 2017), c("Evanston", "Northfield"))
 }
 \seealso{
 Other chars_funs: 
-\code{\link{chars_fix_age}()},
-\code{\link{chars_sparsify}()},
-\code{\link{chars_update}()}
+\code{\link{chars_fix_age}()}
 }
 \concept{chars_funs}

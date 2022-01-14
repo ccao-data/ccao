@@ -1,17 +1,3 @@
-#' Appeal reason codes used by the CCAO AS/400 system
-#'
-#' A dataset containing a lookup of codes for appeal rejection/acceptance. These
-#' codes are primarily used in the DKEMPL SQL table. See the \href{https://prodassets.cookcountyassessor.com/s3fs-public/form_documents/reasoncodes.pdf}{CCAO website} for a PDF version. # nolint
-#'
-#' @format A data frame with 78 rows and 2 variables:
-#' \describe{
-#'   \item{reason_code}{Numeric code used in the AS/400 system}
-#'   \item{reason_desc}{Text description/translation of the numeric code}
-#' }
-#'
-"appeals_dict"
-
-
 #' Official CCAO color palette
 #'
 #' The CCAO Communications Department created a palette of colors used widely
@@ -23,7 +9,7 @@
 "ccao_colors"
 
 
-#' Codes used by the CCAO to identify certain distinct property situations
+#' Data dictionary of codes used to identify specific property situations
 #'
 #' A dataset containing a lookup of CDU codes. These codes are kind of a mess
 #' and have been created and used inconsistently over the years.
@@ -42,53 +28,21 @@
 "cdu_dict"
 
 
-#' List crosswalk of CCAOSFCHARS columns and their ADDCHARS equivalents
+#' Sample dataset from the vw_pin_universe Athena SQL view
 #'
-#' A list containing vectors of column names that match those found in the
-#' CCAOSFCHARS and ADDCHARS SQL tables. Can be used to translate between
-#' tables.
+#' A dataset containing a small subsample of rows from the
+#' default.vw_pin_universe Athena view.
 #'
-#' @format A list with 4 items:
-#' \describe{
-#'   \item{add_target}{Target columns with additive characteristics}
-#'   \item{add_source}{Columns with data to add to \code{add_target}}
-#'   \item{rep_target}{Target columns with characteristics to be replaced}
-#'   \item{rep_source}{Columns with data to replace in \code{rep_target}}
-#' }
-#'
-"chars_cols"
-
-
-#' Sample dataset from the ADDCHARS SQL table
-#'
-#' A dataset containing a small subsample of rows from the ADDCHARS table. This
-#' sample can be used with \code{chars_sparsify()} to generate sparse data
-#' frames suitable for joining onto \code{chars_sample_universe}.
-#'
-#' @source This data was extracted from SQL manually on 2021-01-20.
-"chars_sample_addchars"
+#' @source This data was extracted from Athena manually on 2022-01-13.
+"chars_sample_athena"
 
 
 #' Sample dataset from the VW_RES_UNIVERSE SQL view
 #'
 #' A dataset containing a small subsample of rows from the VW_RES_UNIVERSE view.
-#' The PINs present in this subsample match those present in
-#' \code{chars_sample_addchars}.
 #'
 #' @source This data was extracted from SQL manually on 2021-01-20.
 "chars_sample_universe"
-
-
-#' Sample dataset from the VW_RES_UNIVERSE SQL view with 288s applied
-#'
-#' A dataset containing the properties in \code{chars_sample_universe}, but
-#' updated with \code{chars_sparsity()} and \code{chars_update()}. This data is
-#' used as a benchmark to unit test the 288-related functions. It was manually
-#' validated against properties updated by the AS/400.
-#'
-#' @source Hand-updated and validated version of \code{chars_sample_universe}
-#' with 288s applied.
-"chars_sample_universe_updated"
 
 
 #' Data dictionary of Cook County property classes
@@ -118,7 +72,7 @@
 "class_dict"
 
 
-#' Data frame of Certificate of Error reason codes
+#' Data dictionary of Certificate of Error reason codes
 #'
 #' A dataset containing numeric codes and corresponding text explanations for
 #' Certificates of Error (CoEs). These are issued when the Assessor's office
@@ -130,43 +84,7 @@
 #'   \item{coe_reason}{The text explaination for the CoE numeric code}
 #' }
 #'
-"coe_codes"
-
-
-#' Data frame of recodes for CCAO modeling neighborhoods
-#'
-#' A dataset of neighborhood recodes for CCAO modeling. These neighborhoods
-#' either don't exist or are errors in the data. Can be easily be used with
-#' dplyr's recode. See examples.
-#'
-#' @format A data frame with 58 rows and 5 variables:
-#' \describe{
-#'   \item{township_name}{Common name of the township}
-#'   \item{township_code}{Two-digit code used to identify the township}
-#'   \item{nbhd}{Three-digit assessor neighborhood code, zero-padded}
-#'   \item{town_nbhd}{Combined township code and neighborhood}
-#'   \item{recode_to}{Neighborhood to recode TO from town_nbhd. In other words,
-#'   values coded as town_nbhd should be replaced with recoded_to}
-#' }
-#'
-#' @examples
-#' \dontrun{
-#'
-#' library(dplyr)
-#'
-#' # Create a named list of recodes to use with dplyr::recode
-#' vals <- ccao::nbhd_recode$recode_to
-#' names(vals) <- ccao::nbhd_recode$town_nbhd
-#'
-#' # Create test recode data
-#' test_nbhds <- c("12122", "28103", "39010", "34220", "12000")
-#'
-#' # Use dplyr to recode all values. Triple !!! expands the named vector vals
-#' # into individual arguments passed to recode()
-#' recode(test_nbhds, !!!recodes)
-#' }
-#'
-"nbhd_recode"
+"coe_dict"
 
 
 #' Simple features (sf) data frame of CCAO neighborhoods
@@ -228,7 +146,56 @@
 "town_shp"
 
 
-#' Data dictionary for CCAO variables
+#' Data dictionary for CCAO data sets and variables
+#'
+#' A crosswalk of CCAO variable names used in iasWorld, AWS, modeling,
+#' and open data. Also includes a translation of numeric character codes
+#' to their human-readable value (ROOF_CNST = 1
+#' becomes ROOF_CNST = Shingle/Asphalt).
+#'
+#' @format A data frame with 442 rows and 17 variables:
+#' \describe{
+#'   \item{var_from_source}{Name of the raw data source that the variable
+#'   was extracted from}
+#'   \item{var_from_table}{Name Athena table containing the variable, if
+#'   applicable}
+#'   \item{var_from_ctas}{Name of the CREATE TABLE AS SELECT statement that
+#'   created the variable, if applicable}
+#'   \item{var_from_view}{Name of the Athena view that contains the variable.
+#'   This is typically the main data source for end users}
+#'   \item{var_name_iasworld}{Column name for variable as stored in the system
+#'   of record (iasWorld)}
+#'   \item{var_name_athena}{Column name used for views and tables in AWS
+#'   Athena}
+#'   \item{var_name_model}{Column name used while data is flowing through
+#'   modeling pipelines}
+#'   \item{var_name_publish}{Human-readable column name used for public data
+#'   sets}
+#'   \item{var_name_pretty}{Human-readable column name used for publication
+#'   and reporting}
+#'   \item{var_type}{Variable type/prefix indicating the variable's function.
+#'   For example, ind_ variables are always indicators (booleans), while char_
+#'   variables are always property characteristics.}
+#'   \item{var_data_type}{R data type variable values should be stored as}
+#'   \item{var_is_published}{Logical value indicating whether to publish in
+#'   open data}
+#'   \item{var_is_predictor}{Logical value indicating whether to use variable
+#'   in modeling on the right-hand side. Left-hand side is always sale price}
+#'   \item{var_code}{Factor value for categorical variable. These are the values
+#'   stored in the system of record}
+#'   \item{var_value}{Human-readable translation of factor value}
+#'   \item{var_value_short}{Human-readable translation of factor value, but as
+#'   short as possible}
+#'   \item{var_notes}{Field descriptions and caveats}
+#' }
+"vars_dict"
+
+
+#' Data dictionary for legacy CCAO data and variables
+#'
+#' NOTE: This dictionary is deprecated for any processes that use current CCAO
+#' data infrastructure. Use \code{\link{vars_dict}} for the most up-to-date
+#' dictionary.
 #'
 #' A crosswalk of CCAO variable names used in SQL, modeling, and open data. Also
 #' includes a translation of numeric character codes to their human-readable
@@ -265,4 +232,4 @@
 #' @source This dictionary was manually created from paper forms as a
 #'   translation of numeric variables. char_value_short is the equivalent of
 #'   what is used on the AS/400 property info screens
-"vars_dict"
+"vars_dict_legacy"

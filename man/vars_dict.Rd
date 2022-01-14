@@ -3,47 +3,51 @@
 \docType{data}
 \name{vars_dict}
 \alias{vars_dict}
-\title{Data dictionary for CCAO variables}
+\title{Data dictionary for CCAO data sets and variables}
 \format{
-A data frame with 202 rows and 14 variables:
+A data frame with 442 rows and 17 variables:
 \describe{
-  \item{var_name_sql}{Column name of variable as stored in CCAO SQL servers}
-  \item{var_name_addchars}{Column name of variable when stored in the
-  ADDCHARS SQL table}
-  \item{var_name_socrata}{Column name used for the Cook County Data Portal}
-  \item{var_name_standard}{Column name used for flat files, open data, and
-  modeling}
-  \item{var_name_pretty}{Human-readable column name used for publication}
-  \item{var_type}{Variable type: meta = identifying information; char =
-  characteristics retrieved from SQL; time = calculated time variable; ind =
-  calculated logical/indicator variable; econ = calculated economic
-  information; geo = attached/calculated geographic information}
+  \item{var_from_source}{Name of the raw data source that the variable
+  was extracted from}
+  \item{var_from_table}{Name Athena table containing the variable, if
+  applicable}
+  \item{var_from_ctas}{Name of the CREATE TABLE AS SELECT statement that
+  created the variable, if applicable}
+  \item{var_from_view}{Name of the Athena view that contains the variable.
+  This is typically the main data source for end users}
+  \item{var_name_iasworld}{Column name for variable as stored in the system
+  of record (iasWorld)}
+  \item{var_name_athena}{Column name used for views and tables in AWS
+  Athena}
+  \item{var_name_model}{Column name used while data is flowing through
+  modeling pipelines}
+  \item{var_name_publish}{Human-readable column name used for public data
+  sets}
+  \item{var_name_pretty}{Human-readable column name used for publication
+  and reporting}
+  \item{var_type}{Variable type/prefix indicating the variable's function.
+  For example, ind_ variables are always indicators (booleans), while char_
+  variables are always property characteristics.}
   \item{var_data_type}{R data type variable values should be stored as}
   \item{var_is_published}{Logical value indicating whether to publish in
   open data}
-  \item{var_is_clustered}{Logical value indicating whether to use variable
-  in comparables clustering algorithm}
   \item{var_is_predictor}{Logical value indicating whether to use variable
   in modeling on the right-hand side. Left-hand side is always sale price}
   \item{var_code}{Factor value for categorical variable. These are the values
-  stored in the AS/400}
+  stored in the system of record}
   \item{var_value}{Human-readable translation of factor value}
   \item{var_value_short}{Human-readable translation of factor value, but as
   short as possible}
   \item{var_notes}{Field descriptions and caveats}
 }
 }
-\source{
-This dictionary was manually created from paper forms as a
-  translation of numeric variables. char_value_short is the equivalent of
-  what is used on the AS/400 property info screens
-}
 \usage{
 vars_dict
 }
 \description{
-A crosswalk of CCAO variable names used in SQL, modeling, and open data. Also
-includes a translation of numeric character codes to their human-readable
-value (ROOF_CNST = 1 becomes ROOF_CNST = Shingle/Asphalt).
+A crosswalk of CCAO variable names used in iasWorld, AWS, modeling,
+and open data. Also includes a translation of numeric character codes
+to their human-readable value (ROOF_CNST = 1
+becomes ROOF_CNST = Shingle/Asphalt).
 }
 \keyword{datasets}

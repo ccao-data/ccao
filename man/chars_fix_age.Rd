@@ -46,8 +46,6 @@ df
 }
 \seealso{
 Other chars_funs: 
-\code{\link{chars_288_active}()},
-\code{\link{chars_sparsify}()},
-\code{\link{chars_update}()}
+\code{\link{chars_288_active}()}
 }
 \concept{chars_funs}

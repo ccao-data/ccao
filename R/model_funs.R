@@ -6,7 +6,7 @@
 #' any objects with "final" in their name.
 #'
 #' @param x Prefix of the objects to be removed from the global environment.
-#' @param keep A character vector of objects with the prefix specific in
+#' @param keep A character vector of objects with the prefix specified in
 #'   \code{x} that should NOT be removed.
 #'
 #' @examples
@@ -22,11 +22,7 @@ rm_intermediate <- function(x, keep = NULL) {
 
   # Get list of environmental variables to remove
   env <- ls(envir = .GlobalEnv)
-  rm_list <- env[
-    stringr::str_starts(env, x) &
-      !stringr::str_detect(env, "final") &
-      !env %in% keep
-  ]
+  rm_list <- env[startsWith(env, x) & grep("final", env) & !env %in% keep]
 
   # Remove vars then garbage collect
   if (length(rm_list) > 0) {
@@ -37,38 +33,6 @@ rm_intermediate <- function(x, keep = NULL) {
     rm(list = rm_list, envir = .GlobalEnv)
     gc()
   }
-}
-
-
-#' Get environmental variable or else a specified default value
-#'
-#' @description Load an environmental variable specified in a .Renviron file OR
-#' load a supplied default value. This function is useful for reports and models
-#' that may depend on the implicit existence of env variables.
-#'
-#' @param x The environmental variable to be loaded, specified as a string.
-#' @param default The default value to load if the environmental variable is
-#'   not set.
-#'
-#' @examples
-#' model_get_env("R_CV_ENABLE", TRUE)
-#' model_get_env("R_CV_NUM_FOLDS", 5)
-#' @return Environmental variable specified in \code{x} or the specified default
-#'   if \code{x} is unset.
-#'
-#' @family model_funs
-#' @export
-model_get_env <- function(x, default) {
-  stopifnot(
-    is.character(x),
-    length(x) == 1,
-    is.vector(x)
-  )
-
-  env <- Sys.getenv(x, unset = NA)
-  env <- ifelse(!is.na(env), env, default)
-
-  return(env)
 }
 
 
@@ -86,7 +50,7 @@ model_get_env <- function(x, default) {
 #' @family model_funs
 #' @export
 model_axe_tune_data <- function(x) {
-  stripped <- dplyr::select(x, -tidyselect::any_of("splits"))
+  stripped <- dplyr::select(x, -dplyr::any_of("splits"))
   attrs <- purrr::list_modify(attributes(x), "names" = names(stripped))
   attributes(stripped) <- attrs
 
@@ -118,36 +82,6 @@ model_axe_recipe <- function(x) {
   class(axed) <- "recipe"
 
   return(axed)
-}
-
-
-#' Predict values using a trained model and recipe
-#'
-#' @description Simple helper function to return predictions from a new data set
-#' given a parsnip specification and recipe. Will exponentiate predictions by
-#' default.
-#'
-#' @param spec A parsnip model specification object. Must be trained.
-#' @param recipe A prepped (trained) recipe object. Must be trained.
-#' @param data New data to get predictions from. Will be preprocessed by the
-#'   specified \code{recipe}.
-#' @param exp Exponentiate the returned prediction (assumed to be log). Default
-#'   TRUE.
-#'
-#' @return A vector of predictions from the model given the data and recipe
-#'   specified.
-#'
-#' @family model_funs
-#' @export
-model_predict <- function(spec, recipe, data, exp = TRUE) {
-  pred <- parsnip::predict.model_fit(
-    object = spec,
-    new_data = recipes::bake(recipe, data, recipes::all_predictors())
-  )$.pred
-
-  if (exp) pred <- exp(pred)
-
-  return(pred)
 }
 
 
@@ -210,7 +144,7 @@ model_lgbm_cap_num_leaves <- function(params) {
 model_lgbm_update_params <- function(wflow, params) {
   wflow$fit$actions$model$spec <- purrr::list_modify(
     wflow$fit$actions$model$spec,
-    as.list(dplyr::select(params, -tidyselect::any_of(".config")))
+    as.list(dplyr::select(params, -dplyr::any_of(".config")))
   )
   return(wflow)
 }
