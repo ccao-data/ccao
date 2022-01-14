@@ -61,12 +61,6 @@ vars_rename(
   names_to = "pretty",
   dict = ccao::vars_dict_legacy
 )
-vars_rename(
-  data = sample_data_athena,
-  names_from = "athena",
-  names_to = "pretty",
-  dict = ccao::vars_dict
-)
 
 # No renames will occur since no column names here are from SQL
 vars_rename(
