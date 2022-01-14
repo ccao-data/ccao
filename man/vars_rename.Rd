@@ -47,6 +47,7 @@ specified \code{dict}. Run this function with \code{names_from} equal to
 
 # Rename column names from SQL
 sample_data <- chars_sample_universe[1:5, 18:27]
+sample_data
 
 vars_rename(
   data = sample_data,
@@ -60,6 +61,12 @@ vars_rename(
   names_to = "pretty",
   dict = ccao::vars_dict_legacy
 )
+vars_rename(
+  data = sample_data_athena,
+  names_from = "athena",
+  names_to = "pretty",
+  dict = ccao::vars_dict
+)
 
 # No renames will occur since no column names here are from SQL
 vars_rename(
@@ -67,6 +74,23 @@ vars_rename(
   names_from = "sql",
   names_to = "pretty",
   dict = ccao::vars_dict_legacy
+)
+
+# With data from Athena
+sample_data_athena <- chars_sample_athena[1:5, 1:10]
+sample_data_athena
+
+vars_rename(
+  data = sample_data_athena,
+  names_from = "athena",
+  names_to = "model",
+  dict = ccao::vars_dict
+)
+vars_rename(
+  data = sample_data_athena,
+  names_from = "athena",
+  names_to = "pretty",
+  dict = ccao::vars_dict
 )
 }
 \seealso{

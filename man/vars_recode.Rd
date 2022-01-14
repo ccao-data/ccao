@@ -84,6 +84,20 @@ vars_recode(
   cols = "GAR1_SIZE",
   dict = ccao::vars_dict_legacy
 )
+
+# Using data from Athena
+sample_data_athena <- chars_sample_athena[1:5, c(1:5, 10:20)]
+sample_data_athena
+vars_recode(
+  data = sample_data_athena,
+  type = "code",
+  dict = ccao::vars_dict_legacy
+)
+vars_recode(
+  data = sample_data_athena,
+  type = "long",
+  dict = ccao::vars_dict_legacy
+)
 }
 \seealso{
 Other vars_funs: 

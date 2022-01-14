@@ -92,7 +92,8 @@ vars_check_class <- function(age, sqft, class) {
 #'
 #' # Rename column names from SQL
 #' sample_data <- chars_sample_universe[1:5, 18:27]
-#'
+#' sample_data
+#' 
 #' vars_rename(
 #'   data = sample_data,
 #'   names_from = "sql",
@@ -105,6 +106,12 @@ vars_check_class <- function(age, sqft, class) {
 #'   names_to = "pretty",
 #'   dict = ccao::vars_dict_legacy
 #' )
+#' vars_rename(
+#'   data = sample_data_athena,
+#'   names_from = "athena",
+#'   names_to = "pretty",
+#'   dict = ccao::vars_dict
+#' )
 #'
 #' # No renames will occur since no column names here are from SQL
 #' vars_rename(
@@ -112,6 +119,23 @@ vars_check_class <- function(age, sqft, class) {
 #'   names_from = "sql",
 #'   names_to = "pretty",
 #'   dict = ccao::vars_dict_legacy
+#' )
+#' 
+#' # With data from Athena
+#' sample_data_athena <- chars_sample_athena[1:5, 1:10]
+#' sample_data_athena
+#' 
+#' vars_rename(
+#'   data = sample_data_athena,
+#'   names_from = "athena",
+#'   names_to = "model",
+#'   dict = ccao::vars_dict
+#' )
+#' vars_rename(
+#'   data = sample_data_athena,
+#'   names_from = "athena",
+#'   names_to = "pretty",
+#'   dict = ccao::vars_dict
 #' )
 #' @md
 #' @family vars_funs
@@ -242,6 +266,20 @@ vars_rename <- function(data,
 #' vars_recode(
 #'   data = gar_sample,
 #'   cols = "GAR1_SIZE",
+#'   dict = ccao::vars_dict_legacy
+#' )
+#' 
+#' # Using data from Athena
+#' sample_data_athena <- chars_sample_athena[1:5, c(1:5, 10:20)]
+#' sample_data_athena
+#' vars_recode(
+#'   data = sample_data_athena,
+#'   type = "code",
+#'   dict = ccao::vars_dict_legacy
+#' )
+#' vars_recode(
+#'   data = sample_data_athena,
+#'   type = "long",
 #'   dict = ccao::vars_dict_legacy
 #' )
 #' @md
