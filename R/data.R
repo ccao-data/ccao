@@ -28,11 +28,18 @@
 "cdu_dict"
 
 
+#' Sample dataset from the vw_pin_universe Athena SQL view
+#'
+#' A dataset containing a small subsample of rows from the
+#' default.vw_pin_universe Athena view.
+#'
+#' @source This data was extracted from Athena manually on 2022-01-13.
+"chars_sample_athena"
+
+
 #' Sample dataset from the VW_RES_UNIVERSE SQL view
 #'
 #' A dataset containing a small subsample of rows from the VW_RES_UNIVERSE view.
-#' The PINs present in this subsample match those present in
-#' \code{chars_sample_addchars}.
 #'
 #' @source This data was extracted from SQL manually on 2021-01-20.
 "chars_sample_universe"
