@@ -75,6 +75,18 @@ test_that("output is as expected", {
     )
   )
   expect_equal(
+    names(vars_rename(
+      data = chars_sample_athena[, 14:19],
+      names_from = "athena",
+      names_to = "pretty",
+      dict = ccao::vars_dict
+    )),
+    c(
+      "Apartments", "Cathedral Ceiling", "Attic Finish",
+      "Garage 1 Attached", "Garage 1 Area Included", "Garage 1 Size"
+    )
+  )
+  expect_equal(
     vars_rename(
       data = c("apts", "condition_desirability_and_utility", "per_ass"),
       names_from = "socrata",
@@ -91,6 +103,15 @@ test_that("output is as expected", {
       dict = ccao::vars_dict_legacy
     ),
     c("char_apts", "char_ext_wall", "char_beds")
+  )
+  expect_equal(
+    vars_rename(
+      data = c("char_apts", "char_ext_wall", "char_beds"),
+      names_from = "athena",
+      names_to = "iasworld",
+      dict = ccao::vars_dict
+    ),
+    c("user14", "extwall", "rmbed")
   )
 })
 
@@ -154,6 +175,14 @@ test_that("invalid data types stop process", {
       dict = ccao::vars_dict_legacy[, 5:10]
     )
   )
+  expect_error(
+    vars_rename(
+      data = chars_sample_universe,
+      names_from = "sql",
+      names_to = "pretty",
+      dict = ccao::vars_dict
+    )
+  )
 })
 
 
@@ -188,6 +217,28 @@ recode_correct <- dplyr::tibble(
   )
 )
 
+recode_test_data_athena <- dplyr::tibble(
+  pin = rep("12345", 4),
+  char_ext_wall = c("1", "2", "0", NA),
+  char_bsmt = c("1", "3", "4", "5"),
+  value = 1000:1003,
+  roof_cnst = c("1", "2", "4", "3")
+)
+
+recode_correct_athena <- dplyr::tibble(
+  PIN = rep("12345", 4),
+  EXT_WALL = factor(
+    c("FRAM", "MASR", NA, NA),
+    levels = c("FRAM", "MASR", "FRMA", "STUC")
+  ),
+  BSMT = factor(
+    c("FL", "PT", "CR", NA),
+    levels = c("FL", "SL", "PT", "CR")
+  ),
+  value = 1000:1003,
+  roof_cnst = c("1", "2", "4", "3")
+)
+
 # Test for expected outputs
 test_that("output is as expected", {
   expect_known_hash(
@@ -197,12 +248,20 @@ test_that("output is as expected", {
     ),
     hash = "8c41990e86"
   )
+  expect_known_hash(
+    vars_recode(data = chars_sample_athena, type = "long"),
+    hash = "93bbec0a4b"
+  )
   expect_equivalent(
     vars_recode(
       data = recode_test_data,
       dict = ccao::vars_dict_legacy
     ),
     recode_correct
+  )
+  expect_equivalent(
+    vars_recode(data = recode_test_data_athena, type = "short"),
+    recode_correct_athena
   )
   expect_equivalent(
     vars_recode(
