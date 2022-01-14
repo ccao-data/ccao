@@ -66,6 +66,7 @@ reference:
 - subtitle: Sample data
   desc: Sample data frames pulled directly from CCAO SQL
 - contents:
+  - chars_sample_athena
   - chars_sample_universe
 - subtitle: Miscellaneous
   desc: Other data used throughout the department or in specific functions
