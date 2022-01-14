@@ -299,7 +299,8 @@ vars_recode <- function(data,
       dplyr::starts_with("var_name_"),
       names_to = "var_type",
       values_to = "var_name"
-    )
+    ) %>%
+    dplyr::distinct(var_code, var_value, var_value_short, var_name)
 
   # For each column listed in the input, check if it's a character column
   # If it is, make a lookup table using dict_long and find the equivalent value
