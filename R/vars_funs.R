@@ -93,7 +93,7 @@ vars_check_class <- function(age, sqft, class) {
 #' # Rename column names from SQL
 #' sample_data <- chars_sample_universe[1:5, 18:27]
 #' sample_data
-#' 
+#'
 #' vars_rename(
 #'   data = sample_data,
 #'   names_from = "sql",
@@ -114,11 +114,11 @@ vars_check_class <- function(age, sqft, class) {
 #'   names_to = "pretty",
 #'   dict = ccao::vars_dict_legacy
 #' )
-#' 
+#'
 #' # With data from Athena
 #' sample_data_athena <- chars_sample_athena[1:5, 1:10]
 #' sample_data_athena
-#' 
+#'
 #' vars_rename(
 #'   data = sample_data_athena,
 #'   names_from = "athena",
@@ -138,8 +138,7 @@ vars_rename <- function(data,
                         names_from = NULL,
                         names_to = NULL,
                         type = "inplace",
-                        dict = ccao::vars_dict
-                        ) {
+                        dict = ccao::vars_dict) {
 
   # Check input data dictionary
   stopifnot(
@@ -243,7 +242,7 @@ vars_rename <- function(data,
 #'   dict = ccao::vars_dict_legacy
 #' )
 #' vars_recode(
-#'   data= sample_data,
+#'   data = sample_data,
 #'   type = "short",
 #'   dict = ccao::vars_dict_legacy
 #' )
@@ -262,7 +261,7 @@ vars_rename <- function(data,
 #'   cols = "GAR1_SIZE",
 #'   dict = ccao::vars_dict_legacy
 #' )
-#' 
+#'
 #' # Using data from Athena
 #' sample_data_athena <- chars_sample_athena[1:5, c(1:5, 10:20)]
 #' sample_data_athena
@@ -285,8 +284,7 @@ vars_recode <- function(data,
                         cols = dplyr::everything(),
                         type = "long",
                         as_factor = TRUE,
-                        dict = ccao::vars_dict
-                        ) {
+                        dict = ccao::vars_dict) {
 
   # Check input data dictionary
   stopifnot(
