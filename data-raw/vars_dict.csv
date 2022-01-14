@@ -50,7 +50,7 @@ iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_
 iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,7,0 cars,0CAR,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,8,4 cars,4CAR,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,fixhalf,char_hbath,char_hbath,num_half_baths,Half Baths,char,numeric,TRUE,TRUE,,,,"Number of half baths, defined as bathrooms without a shower or bathtub."
-iasWorld,iasworld.land,,default.vw_impr_char,sf,char_hd_sf,char_hd_sf,land_sqft,Land Square Feet,char,numeric,TRUE,TRUE,,,,"Square feet of the land (not just the building) of the property. Note that a single PIN can have multiple ""land lines,"" meaning it can be associated with more than one 200-class land lot."
+iasWorld,iasworld.land,,default.vw_impr_char,sf,char_land_sf,char_land_sf,land_sqft,Land Square Feet,char,numeric,TRUE,TRUE,,,,"Square feet of the land (not just the building) of the property. Note that a single PIN can have multiple ""land lines,"" meaning it can be associated with more than one 200-class land lot."
 iasWorld,iasworld.dweldat,,default.vw_impr_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,1,Warm Air Furnace,FURN,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,2,Hot Water Steam,STM,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,3,Electric Heater,ELEC,
@@ -62,9 +62,9 @@ iasWorld,iasworld.dweldat,,default.vw_impr_char,user20,char_ncu,char_ncu,num_com
 ,,,,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,TRUE,TRUE,4,Solar,SOLR,
 ,,,,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,TRUE,TRUE,5,None,NONE,
 ,,,,,char_ot_impr,char_ot_impr,num_other_improvements,Other Improvements,char,numeric,TRUE,FALSE,,,,
+iasWorld,iasworld.dweldat,,default.vw_impr_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,0,None,NONE,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,1,Frame Enclosed,FRAM,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,2,Masonry Enclosed,MSRY,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,3,None,NONE,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,TRUE,FALSE,1,Yes,YES,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,TRUE,FALSE,2,No,NO,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,TRUE,FALSE,1,Above Average,GOOD,"This field is subjective and contains little variation. As such, it is not used for modeling."
@@ -93,8 +93,8 @@ iasWorld,iasworld.dweldat,,default.vw_impr_char,user15,char_use,char_use,single_
 iasWorld,iasworld.dweldat,,default.vw_impr_char,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,TRUE,TRUE,2,Multi-Family,MF,
 ,,,,,char_volume,char_volume,volume,Volume,char,numeric,FALSE,FALSE,,,,
 iasWorld,iasworld.dweldat,,default.vw_impr_char,cdu,cdu,meta_cdu,cdu,"Condition, Desirability, and Utility",meta,character,TRUE,FALSE,,,,"Dozens of codes attached to face sheet that denote a number of seemingly unrelated characteristics associated with a PIN, ranging from condition to types of subsidies. This field does not match across the SQL server/AS-400."
-iasWorld,iasworld.pardat,,default.vw_pin_universe,parid,pin,meta_pin,pin,Property Index Number,meta,character,TRUE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
-Derived,,,default.vw_pin_universe,,pin10,meta_pin10,pin10,Property Index Number (10-digit),meta,character,TRUE,FALSE,,,,First 10 digits of a PIN. Useful for identifying individual buildings since the last 4 digits of a PIN identify units.
+iasWorld,iasworld.pardat,,default.vw_pin_universe,parid,pin,meta_pin,pin,PIN,meta,character,TRUE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
+Derived,,,default.vw_pin_universe,,pin10,meta_pin10,pin10,PIN (10-digit),meta,character,TRUE,FALSE,,,,First 10 digits of a PIN. Useful for identifying individual buildings since the last 4 digits of a PIN identify units.
 iasWorld,iasworld.pardat,,default.vw_pin_universe,class,class,meta_class,class,Property Class,meta,character,TRUE,FALSE,,,,
 iasWorld,iasworld.pardat,,default.vw_pin_universe,taxyr,year,meta_year,year,Year,meta,numeric,TRUE,FALSE,,,,
 Derived,,,default.vw_pin_universe,,township_name,meta_township_name,township_name,Township Name,meta,character,TRUE,FALSE,,,,
@@ -184,7 +184,7 @@ FEMA,spatial.flood_fema,location.environment,default.vw_pin_universe,,env_flood_
 FEMA,spatial.flood_fema,location.environment,default.vw_pin_universe,,env_flood_fema_data_year,loc_env_flood_fema_data_year,flood_fema_data_year,FEMA Data Year,loc,character,TRUE,FALSE,,,,
 First Street,other.flood_first_street,location.environment,default.vw_pin_universe,,env_flood_fs_factor,loc_env_flood_fs_factor,flood_first_street_factor,First Street Factor,loc,character,TRUE,TRUE,,,,
 First Street,other.flood_first_street,location.environment,default.vw_pin_universe,,env_flood_fs_risk_direction,loc_env_flood_fs_risk_direction,flood_first_street_risk_direction,First Street Risk Direction,loc,character,TRUE,TRUE,,,,
-First Street,other.flood_first_street,location.environment,default.vw_pin_universe,,env_flood_fs_data_year,loc_env_flood_fs_data_year,flood_fs_data_year,First Street Data Year,loc,character,TRUE,FALSE,,,,
+First Street,other.flood_first_street,location.environment,default.vw_pin_universe,,env_flood_fs_data_year,loc_env_flood_fs_data_year,flood_first_street_data_year,First Street Data Year,loc,character,TRUE,FALSE,,,,
 Chicago Department of Aviation,spatial.ohare_noise_contour,location.environment,default.vw_pin_universe,,env_ohare_noise_contour_no_buffer_bool,loc_env_ohare_noise_contour_no_buffer_bool,ohare_noise_contour_no_buffer_boolean,O'Hare Noise Contour No Buffer Boolean,loc,logical,TRUE,TRUE,,,,
 Chicago Department of Aviation,spatial.ohare_noise_contour,location.environment,default.vw_pin_universe,,env_ohare_noise_contour_half_mile_buffer_bool,loc_env_ohare_noise_contour_half_mile_buffer_bool,ohare_noise_contour_half_mile_buffer_boolean,O'Hare Noise Contour Half Mile Buffer Boolean,loc,logical,TRUE,FALSE,,,,
 Chicago Department of Aviation,spatial.ohare_noise_contour,location.environment,default.vw_pin_universe,,env_ohare_noise_contour_data_year,loc_env_ohare_noise_contour_data_year,ohare_noise_contour_data_year,O'Hare Noise Contour Data Year,loc,character,TRUE,FALSE,,,,
