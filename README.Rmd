@@ -54,9 +54,10 @@ library(dplyr)
 library(knitr)
 
 # Create a small subsample of data. This is the "raw" data taken from SQL
-sample_data <- chars_sample_universe %>%
-  select(PIN, TAX_YEAR, TOWN_CODE, AGE, GAR1_SIZE, BSMT) %>%
-  slice(c(1, 4, 10))
+sample_data <- chars_sample_athena %>%
+  select(pin, year, char_yrblt, char_gar1_size, char_ext_wall) %>%
+  slice(c(1, 2, 5, 14)) %>%
+  mutate(township_code = c("72", "73", "71", "72"))
 
 sample_data %>%
   kable(digits = 3)
@@ -64,14 +65,16 @@ sample_data %>%
 # Recode/rename/clean data using town_ and vars_ functions from ccao 
 sample_data %>%
   mutate(
-    PIN = pin_format_pretty(PIN),
-    `Township Name` = town_convert(TOWN_CODE),
-    `Township Triad` = town_get_triad(TOWN_CODE, name = TRUE),
-    `Next Reass. Year` = town_get_assmnt_year(TOWN_CODE, round_type = "ceiling"),
-    AGE = chars_fix_age(AGE, TAX_YEAR, TOWN_CODE)
+    pin = pin_format_pretty(pin),
+    township_name = town_convert(township_code),
+    triad_name = town_get_triad(township_code, name = TRUE),
+    `Next Reass. Year` = town_get_assmnt_year(
+      township_code,
+      round_type = "ceiling"
+    )
   ) %>%
   vars_recode(type = "long") %>%
-  vars_rename(names_from = "sql", names_to = "pretty") %>%
+  vars_rename(names_from = "athena", names_to = "pretty") %>%
   kable(digits = 3)
 
 ```
