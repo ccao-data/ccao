@@ -65,7 +65,7 @@ vars_recode(
   dict = ccao::vars_dict_legacy
 )
 vars_recode(
-  data= sample_data,
+  data = sample_data,
   type = "short",
   dict = ccao::vars_dict_legacy
 )

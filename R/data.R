@@ -153,7 +153,7 @@
 #' to their human-readable value (ROOF_CNST = 1
 #' becomes ROOF_CNST = Shingle/Asphalt).
 #'
-#' @format A data frame with 442 rows and 17 variables:
+#' @format A data frame with 447 rows and 17 variables:
 #' \describe{
 #'   \item{var_from_source}{Name of the raw data source that the variable
 #'   was extracted from}
