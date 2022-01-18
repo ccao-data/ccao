@@ -1,7 +1,7 @@
 Package: ccao
 Type: Package
 Title: Convenience Functions and Datasets for the Cook County Assessor's Office
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person(given = "Dan", family = "Snow", email="daniel.snow@cookcountyil.gov", role=c("aut", "cre")),
     person(given = "Nathan", family = "Dignazio", role=c("ctb"))
