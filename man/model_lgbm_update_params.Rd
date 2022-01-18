@@ -33,7 +33,6 @@ Other model_funs:
 \code{\link{model_axe_tune_data}()},
 \code{\link{model_lgbm_cap_num_leaves}()},
 \code{\link{model_lgbm_load}()},
-\code{\link{model_lgbm_save}()},
-\code{\link{rm_intermediate}()}
+\code{\link{model_lgbm_save}()}
 }
 \concept{model_funs}

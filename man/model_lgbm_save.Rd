@@ -23,7 +23,6 @@ Other model_funs:
 \code{\link{model_axe_tune_data}()},
 \code{\link{model_lgbm_cap_num_leaves}()},
 \code{\link{model_lgbm_load}()},
-\code{\link{model_lgbm_update_params}()},
-\code{\link{rm_intermediate}()}
+\code{\link{model_lgbm_update_params}()}
 }
 \concept{model_funs}

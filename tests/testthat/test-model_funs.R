@@ -1,26 +1,3 @@
-context("test rm_intermediate()")
-
-##### TEST rm_intermediate() #####
-
-x <- "50"
-y <- 10
-
-# Test for expected outputs
-test_that("output is as expected", {
-  expect_silent(rm_intermediate(x))
-  expect_silent(rm_intermediate("lgbm"))
-  expect_silent(rm_intermediate("x"))
-  expect_silent(rm_intermediate("x", keep = "y"))
-})
-
-# Test that invalid inputs throw errors
-test_that("invalid data types stop process", {
-  expect_condition(rm_intermediate(50))
-  expect_condition(rm_intermediate(c("800", "202")))
-  expect_condition(rm_intermediate(list("800", "202")))
-})
-
-
 context("test model_axe_tune_data()")
 
 ##### TEST model_axe_tune_data() #####
