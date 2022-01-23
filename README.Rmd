@@ -19,8 +19,6 @@ A package to manage, distribute, and version control *CCAO-specific* functions. 
 
 For detailed documentation on included functions and data, [**visit the full reference list**](https://ccao-data-science---modeling.gitlab.io/packages/ccao/reference/).
 
-For examples of specific tasks you can complete with `ccao` functions, see the [**vignettes page**](https://ccao-data-science---modeling.gitlab.io/packages/ccao/articles/index.html).
-
 ## Installation
 
 You can install the released version of `ccao` directly from GitLab by running the following R command after installing [remotes](https://github.com/r-lib/remotes):
