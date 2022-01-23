@@ -190,3 +190,30 @@ test_that("incomplete data stops execution unless suppressed", {
     list(NA, NA, NA, NA, 0)
   )
 })
+
+
+##### TEST ccao_cod() #####
+
+context("test ccao_generate_id()")
+
+test_that("functions return character vector of length n", {
+  expect_type(ccao_generate_id(), "character")
+  expect_length(ccao_generate_id(), 1)
+  expect_length(ccao_generate_id(10), 10)
+})
+
+test_that("no hanging dashes", {
+  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, suffix = ""))))
+  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, suffix = " "))))
+  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, suffix = NULL))))
+  expect_false(all(grepl("[ -]+$", ccao_generate_id(2, suffix = c(NULL, "")))))
+})
+
+test_that("bad input data stops execution", {
+  expect_condition(ccao_generate_id("10"))
+  expect_condition(ccao_generate_id(2, 2))
+  expect_condition(ccao_generate_id(3, c("cat", "dog")))
+  expect_condition(ccao_generate_id(1, c("cat", "dog")))
+  expect_condition(ccao_generate_id(0))
+  expect_condition(ccao_generate_id(-1))
+})

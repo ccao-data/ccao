@@ -245,3 +245,55 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_CI_MET", "PRB_N")
   return(out)
 }
+
+
+# nolint start
+#' Generate a memorable ID string based on CCAO employee names
+#'
+#' @description Memorable IDs are useful for referencing objects with arbitrary
+#' versions. This function uses the
+#' \href{https://github.com/moby/moby/blob/master/pkg/namesgenerator/names-generator.go}{Docker name generator code}
+#' to create random memorable IDs using CCAO employee names.
+#'
+#' @param n Integer of the number of IDs to generate. Default 1.
+#' @param suffix Suffix to append to the end of each ID, uses the system date
+#'   by default. Set to NULL for no suffix or a vector of length n for multiple
+#'   different suffixes.
+#'
+#' @return An n-long character vector of memorable IDs.
+#'
+#' @examples
+#' # Generate a single ID
+#' ccao_generate_id()
+#'
+#' # Multiple IDs
+#' ccao_generate_id(10)
+#'
+#' # IDs with no suffix
+#' ccao_generate_id(3, NULL)
+#'
+#' # Different suffix for each ID
+#' ccao_generate_id(3, c("type1", "type2", "type3"))
+#' @export
+ccao_generate_id <- function(n = 1L, suffix = as.character(Sys.Date())) {
+  stopifnot(
+    is.numeric(n),
+    n >= 1,
+    is.character(suffix) | is.null(suffix),
+    length(suffix) == 1 | length(suffix) == n | is.null(suffix)
+  )
+
+  l <- names_gen$left
+  r <- names_gen$right
+
+  out <- paste(
+    l[stats::runif(n, 1, length(l))],
+    r[stats::runif(n, 1, length(r))],
+    suffix,
+    sep = "-"
+  )
+
+  out <- gsub("[- ]+$", "", out)
+  return(out)
+}
+# nolint end

@@ -5,7 +5,7 @@ reference:
 
 - title: Functions
 - subtitle: Measure assessment performance
-  desc: > 
+  desc: >
     Calculate assessment performance statistics in accordance with the CCAO
     Data Science Department’s Standard Operating Procedure on Sales Ratio Studies.
     The main changes are enforcement of outlier trimming (top and bottom 5% of
@@ -24,7 +24,7 @@ reference:
   - pin_format_pretty
 - subtitle: Lookup values
   desc: Convert between township names, assessment years, and triads
-- contents: 
+- contents:
   - town_convert
   - town_get_assmnt_year
   - town_get_triad
@@ -36,24 +36,19 @@ reference:
   - vars_check_class
   - vars_recode
   - vars_rename
-- subtitle: Work with Tidymodels
-  desc: Clean, save, and work with Tidymodels objects
-  contents:
-  - model_axe_tune_data
-  - model_axe_recipe
-  - model_lgbm_cap_num_leaves
-  - model_lgbm_update_params
-  - model_lgbm_save
-  - model_lgbm_load
 - subtitle: Adjust estimated values
   desc: Apply post-modeling adjustments to raw model values
   contents:
   - val_round_fmv
   - val_limit_ratios
+- subtitle: Miscellaneous functions
+  desc: Functions with no other suitable category
+  contents:
+  - ccao_generate_id
 
 - title: Data
 - subtitle: Dictionaries
-  desc: Lookups for numeric codes used in the assessment system 
+  desc: Lookups for numeric codes used in the assessment system
 - contents:
   - ends_with("_dict")
   - ends_with("_dict_legacy")
