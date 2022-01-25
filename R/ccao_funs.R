@@ -253,7 +253,8 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
 #' @description Memorable IDs are useful for referencing objects with arbitrary
 #' versions. This function uses the
 #' \href{https://github.com/moby/moby/blob/master/pkg/namesgenerator/names-generator.go}{Docker name generator code}
-#' to create random memorable IDs using CCAO employee names.
+#' to create random memorable IDs using Data Department employee, interns, and
+#' fellow names.
 #'
 #' @param n Integer of the number of IDs to generate. Default 1.
 #' @param suffix Suffix to append to the end of each ID, uses the system date
@@ -283,17 +284,12 @@ ccao_generate_id <- function(n = 1L, suffix = as.character(Sys.Date())) {
     length(suffix) == 1 | length(suffix) == n | is.null(suffix)
   )
 
-  l <- names_gen$left
-  r <- names_gen$right
+  left <- names_gen$left[stats::runif(n, 1, length(names_gen$left))]
+  right <- names_gen$right[stats::runif(n, 1, length(names_gen$right))]
 
-  out <- paste(
-    l[stats::runif(n, 1, length(l))],
-    r[stats::runif(n, 1, length(r))],
-    suffix,
-    sep = "-"
-  )
-
+  out <- paste(left, right, suffix, sep = "-")
   out <- gsub("[- ]+$", "", out)
+
   return(out)
 }
 # nolint end

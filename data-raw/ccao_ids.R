@@ -109,36 +109,33 @@ left <- c(
   "zen"
 )
 
+# Honorary list of Data Department employees, interns, and fellows
 right <- c(
-  "dan",
   "billy",
   "sam",
   "nicole",
-  "fritz",
-  "sarah",
-  "kimberly",
-  "scott",
-  "nate",
+  "dan",
   "manasi",
-  "will",
-  "craig",
-  "marty",
-  "tatia",
-  "mirella",
-  "jonneida",
-  "david",
-  "michael",
-  "amber",
-  "christina",
-  "andy",
   "gabe",
   "patrick",
   "carly",
-  "vince",
-  "kelwin",
-  "angelina",
-  "kajuan",
-  "mike"
+  "jacob",
+  "nathan",
+  "tristan",
+  "eric",
+  "tayun",
+  "kyra",
+  "mike",
+  "antonia",
+  "ida",
+  "ethan",
+  "sean",
+  "matt",
+  "liz",
+  "takuya",
+  "boni",
+  "maya",
+  "damani"
 )
 
 names_gen <- list("left" = left, "right" = right)

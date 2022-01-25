@@ -20,7 +20,8 @@ An n-long character vector of memorable IDs.
 Memorable IDs are useful for referencing objects with arbitrary
 versions. This function uses the
 \href{https://github.com/moby/moby/blob/master/pkg/namesgenerator/names-generator.go}{Docker name generator code}
-to create random memorable IDs using CCAO employee names.
+to create random memorable IDs using Data Department employee, interns, and
+fellow names.
 }
 \examples{
 # Generate a single ID
