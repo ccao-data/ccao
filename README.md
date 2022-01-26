@@ -97,7 +97,4 @@ colors used in the CCAO logo. Typically navy and gold are used for
 discrete values in plots. The hex codes for these colors are available
 via the named list `ccao_colors`.
 
-    #> Warning: It is deprecated to specify `guide = FALSE` to remove a guide. Please
-    #> use `guide = "none"` instead.
-
 <img src="man/figures/README-colors-1.png" width="100%" />

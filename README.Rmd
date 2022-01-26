@@ -81,7 +81,7 @@ sample_data %>%
 
 The CCAO Communications Department created a palette of colors for CCAO press materials and visualizations. Navy, gold, and buttermilk are the colors used in the CCAO logo. Typically navy and gold are used for discrete values in plots. The hex codes for these colors are available via the named list `ccao_colors`.
 
-```{r colors, echo=FALSE, fig.height=1}
+```{r colors, echo=FALSE, fig.height=1, warning=FALSE}
 library(ggplot2)
 
 ggplot() +
@@ -97,7 +97,7 @@ ggplot() +
     vjust = 0.3
   ) +
   scale_color_manual(
-    guide = FALSE,
+    guide = "none",
     values = c("1" = "black", "2" = "white")
   ) +
   scale_x_discrete(expand = c(0, 0)) + 
