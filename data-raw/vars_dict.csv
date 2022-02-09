@@ -1,98 +1,98 @@
 var_from_source,var_from_table,var_from_ctas,var_from_view,var_name_iasworld,var_name_athena,var_name_model,var_name_publish,var_name_pretty,var_type,var_data_type,var_is_published,var_is_predictor,var_code,var_value,var_value_short,var_notes
-iasWorld,iasworld.dweldat,,default.vw_impr_char,yrblt,char_yrblt,char_yrblt,year_built,Year Built,char,numeric,TRUE,TRUE,,,,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user17,char_age,char_age,age,Age,char,numeric,FALSE,FALSE,,,,Deprecated. Use year built instead.
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user7,char_air,char_air,central_air,Central Air Conditioning,char,categorical,TRUE,TRUE,1,Central A/C,YES,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user7,char_air,char_air,central_air,Central Air Conditioning,char,categorical,TRUE,TRUE,2,No Central A/C,NO,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,1,Two,TWO,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,2,Three,THREE,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,3,Four,FOUR,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,4,Five,FIVE,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,5,Six,SIX,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,6,None,NONE,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user6,char_attic_fnsh,char_attic_fnsh,attic_finish,Attic Finish,char,categorical,TRUE,TRUE,1,Living Area,LAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user6,char_attic_fnsh,char_attic_fnsh,attic_finish,Attic Finish,char,categorical,TRUE,TRUE,2,Partial,PT,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user6,char_attic_fnsh,char_attic_fnsh,attic_finish,Attic Finish,char,categorical,TRUE,TRUE,3,None,UNF,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,attic,char_attic_type,char_attic_type,attic_type,Attic Type,char,categorical,TRUE,TRUE,1,Full,FL,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,attic,char_attic_type,char_attic_type,attic_type,Attic Type,char,categorical,TRUE,TRUE,2,Partial,PT,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,attic,char_attic_type,char_attic_type,attic_type,Attic Type,char,categorical,TRUE,TRUE,3,None,NO,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,rmbed,char_beds,char_beds,num_bedrooms,Bedrooms,char,numeric,TRUE,TRUE,,,,"Number of bedrooms in the property, defined based on building square footage and the judgement of the person in the field."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,sfla,char_bldg_sf,char_bldg_sf,building_sqft,Building Square Feet,char,numeric,TRUE,TRUE,,,,As measured from the exterior of the building.
-iasWorld,iasworld.dweldat,,default.vw_impr_char,bsmt,char_bsmt,char_bsmt,basement_type,Basement Type,char,categorical,TRUE,TRUE,1,Full,FL,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,bsmt,char_bsmt,char_bsmt,basement_type,Basement Type,char,categorical,TRUE,TRUE,2,Slab,SL,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,bsmt,char_bsmt,char_bsmt,basement_type,Basement Type,char,categorical,TRUE,TRUE,3,Partial,PT,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,bsmt,char_bsmt,char_bsmt,basement_type,Basement Type,char,categorical,TRUE,TRUE,4,Crawl,CR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user12,char_bsmt_fin,char_bsmt_fin,basement_finish,Basement Finish,char,categorical,TRUE,TRUE,1,Formal Rec Room,REC,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user12,char_bsmt_fin,char_bsmt_fin,basement_finish,Basement Finish,char,categorical,TRUE,TRUE,2,Apartment,APT,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user12,char_bsmt_fin,char_bsmt_fin,basement_finish,Basement Finish,char,categorical,TRUE,TRUE,3,Unfinished,UNF,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,grade,char_cnst_qlty,char_cnst_qlty,construction_quality,Construction Quality,char,categorical,TRUE,FALSE,1,Deluxe,DLXE,"In general, this field is not used consistently and is therefore not useful for analytical purposes."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,grade,char_cnst_qlty,char_cnst_qlty,construction_quality,Construction Quality,char,categorical,TRUE,FALSE,2,Average,AVG,"In general, this field is not used consistently and is therefore not useful for analytical purposes."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,grade,char_cnst_qlty,char_cnst_qlty,construction_quality,Construction Quality,char,categorical,TRUE,FALSE,3,Poor,POOR,"In general, this field is not used consistently and is therefore not useful for analytical purposes."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,extwall,char_ext_wall,char_ext_wall,ext_wall_material,Exterior Wall Material,char,categorical,TRUE,TRUE,1,Frame,FRAM,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,extwall,char_ext_wall,char_ext_wall,ext_wall_material,Exterior Wall Material,char,categorical,TRUE,TRUE,2,Masonry,MASR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,extwall,char_ext_wall,char_ext_wall,ext_wall_material,Exterior Wall Material,char,categorical,TRUE,TRUE,3,Frame + Masonry,FRMA,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,extwall,char_ext_wall,char_ext_wall,ext_wall_material,Exterior Wall Material,char,categorical,TRUE,TRUE,4,Stucco,STUC,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,fixbath,char_fbath,char_fbath,num_full_baths,Full Baths,char,numeric,TRUE,TRUE,,,,"Number of full bathrooms, defined as having a bath or shower. If this value is missing, the default value is set to 1."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,wbfp_o,char_frpl,char_frpl,num_fireplaces,Fireplaces,char,numeric,TRUE,TRUE,,,,"Number of fireplaces, counted as the number of flues one can see from the outside of the building."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user32,char_gar1_area,char_gar1_area,garage_area_included,Garage 1 Area Included,char,categorical,TRUE,TRUE,1,Yes,YES,"Is Garage 1 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user32,char_gar1_area,char_gar1_area,garage_area_included,Garage 1 Area Included,char,categorical,TRUE,TRUE,2,No,NO,"Is Garage 1 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user31,char_gar1_att,char_gar1_att,garage_attached,Garage 1 Attached,char,categorical,TRUE,TRUE,1,Yes,YES,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user31,char_gar1_att,char_gar1_att,garage_attached,Garage 1 Attached,char,categorical,TRUE,TRUE,2,No,NO,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user34,char_gar1_cnst,char_gar1_cnst,garage_ext_wall_material,Garage 1 Ext. Wall Material,char,categorical,TRUE,TRUE,1,Frame,FRAM,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user34,char_gar1_cnst,char_gar1_cnst,garage_ext_wall_material,Garage 1 Ext. Wall Material,char,categorical,TRUE,TRUE,2,Masonry,MASR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user34,char_gar1_cnst,char_gar1_cnst,garage_ext_wall_material,Garage 1 Ext. Wall Material,char,categorical,TRUE,TRUE,3,Frame + Masonry,FRMA,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user34,char_gar1_cnst,char_gar1_cnst,garage_ext_wall_material,Garage 1 Ext. Wall Material,char,categorical,TRUE,TRUE,4,Stucco,STUC,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,1,1 cars,1CAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,2,1.5 cars,1.5CAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,3,2 cars,2CAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,4,2.5 cars,2.5CAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,5,3 cars,3CAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,6,3.5 cars,3.5CAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,7,0 cars,0CAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,8,4 cars,4CAR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,fixhalf,char_hbath,char_hbath,num_half_baths,Half Baths,char,numeric,TRUE,TRUE,,,,"Number of half baths, defined as bathrooms without a shower or bathtub."
-iasWorld,iasworld.land,,default.vw_impr_char,sf,char_land_sf,char_land_sf,land_sqft,Land Square Feet,char,numeric,TRUE,TRUE,,,,"Square feet of the land (not just the building) of the property. Note that a single PIN can have multiple ""land lines,"" meaning it can be associated with more than one 200-class land lot."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,1,Warm Air Furnace,FURN,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,2,Hot Water Steam,STM,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,3,Electric Heater,ELEC,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,4,None,NONE,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user20,char_ncu,char_ncu,num_commercial_units,Number of Commercial Units,char,numeric,TRUE,TRUE,,,,Number of commercial units (the vast majority are for properties with class 212).
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,yrblt,char_yrblt,char_yrblt,year_built,Year Built,char,numeric,TRUE,TRUE,,,,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user17,char_age,char_age,age,Age,char,numeric,FALSE,FALSE,,,,Deprecated. Use year built instead.
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user7,char_air,char_air,central_air,Central Air Conditioning,char,categorical,TRUE,TRUE,1,Central A/C,YES,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user7,char_air,char_air,central_air,Central Air Conditioning,char,categorical,TRUE,TRUE,2,No Central A/C,NO,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,1,Two,TWO,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,2,Three,THREE,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,3,Four,FOUR,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,4,Five,FIVE,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,5,Six,SIX,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user14,char_apts,char_apts,num_apartments,Apartments,char,categorical,TRUE,TRUE,6,None,NONE,"Number of apartments for class 211 and 212 properties. CAUTION: Note the numerically encoded values DO NOT correspond to the number of apartments i.e. code 1 means 2 apartments, code 6 means 0 apartments."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user6,char_attic_fnsh,char_attic_fnsh,attic_finish,Attic Finish,char,categorical,TRUE,TRUE,1,Living Area,LAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user6,char_attic_fnsh,char_attic_fnsh,attic_finish,Attic Finish,char,categorical,TRUE,TRUE,2,Partial,PT,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user6,char_attic_fnsh,char_attic_fnsh,attic_finish,Attic Finish,char,categorical,TRUE,TRUE,3,None,UNF,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,attic,char_attic_type,char_attic_type,attic_type,Attic Type,char,categorical,TRUE,TRUE,1,Full,FL,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,attic,char_attic_type,char_attic_type,attic_type,Attic Type,char,categorical,TRUE,TRUE,2,Partial,PT,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,attic,char_attic_type,char_attic_type,attic_type,Attic Type,char,categorical,TRUE,TRUE,3,None,NO,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,rmbed,char_beds,char_beds,num_bedrooms,Bedrooms,char,numeric,TRUE,TRUE,,,,"Number of bedrooms in the property, defined based on building square footage and the judgement of the person in the field."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,sfla,char_bldg_sf,char_bldg_sf,building_sqft,Building Square Feet,char,numeric,TRUE,TRUE,,,,As measured from the exterior of the building.
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,bsmt,char_bsmt,char_bsmt,basement_type,Basement Type,char,categorical,TRUE,TRUE,1,Full,FL,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,bsmt,char_bsmt,char_bsmt,basement_type,Basement Type,char,categorical,TRUE,TRUE,2,Slab,SL,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,bsmt,char_bsmt,char_bsmt,basement_type,Basement Type,char,categorical,TRUE,TRUE,3,Partial,PT,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,bsmt,char_bsmt,char_bsmt,basement_type,Basement Type,char,categorical,TRUE,TRUE,4,Crawl,CR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user12,char_bsmt_fin,char_bsmt_fin,basement_finish,Basement Finish,char,categorical,TRUE,TRUE,1,Formal Rec Room,REC,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user12,char_bsmt_fin,char_bsmt_fin,basement_finish,Basement Finish,char,categorical,TRUE,TRUE,2,Apartment,APT,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user12,char_bsmt_fin,char_bsmt_fin,basement_finish,Basement Finish,char,categorical,TRUE,TRUE,3,Unfinished,UNF,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,grade,char_cnst_qlty,char_cnst_qlty,construction_quality,Construction Quality,char,categorical,TRUE,FALSE,1,Deluxe,DLXE,"In general, this field is not used consistently and is therefore not useful for analytical purposes."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,grade,char_cnst_qlty,char_cnst_qlty,construction_quality,Construction Quality,char,categorical,TRUE,FALSE,2,Average,AVG,"In general, this field is not used consistently and is therefore not useful for analytical purposes."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,grade,char_cnst_qlty,char_cnst_qlty,construction_quality,Construction Quality,char,categorical,TRUE,FALSE,3,Poor,POOR,"In general, this field is not used consistently and is therefore not useful for analytical purposes."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,extwall,char_ext_wall,char_ext_wall,ext_wall_material,Exterior Wall Material,char,categorical,TRUE,TRUE,1,Frame,FRAM,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,extwall,char_ext_wall,char_ext_wall,ext_wall_material,Exterior Wall Material,char,categorical,TRUE,TRUE,2,Masonry,MASR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,extwall,char_ext_wall,char_ext_wall,ext_wall_material,Exterior Wall Material,char,categorical,TRUE,TRUE,3,Frame + Masonry,FRMA,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,extwall,char_ext_wall,char_ext_wall,ext_wall_material,Exterior Wall Material,char,categorical,TRUE,TRUE,4,Stucco,STUC,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,fixbath,char_fbath,char_fbath,num_full_baths,Full Baths,char,numeric,TRUE,TRUE,,,,"Number of full bathrooms, defined as having a bath or shower. If this value is missing, the default value is set to 1."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,wbfp_o,char_frpl,char_frpl,num_fireplaces,Fireplaces,char,numeric,TRUE,TRUE,,,,"Number of fireplaces, counted as the number of flues one can see from the outside of the building."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user32,char_gar1_area,char_gar1_area,garage_area_included,Garage 1 Area Included,char,categorical,TRUE,TRUE,1,Yes,YES,"Is Garage 1 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user32,char_gar1_area,char_gar1_area,garage_area_included,Garage 1 Area Included,char,categorical,TRUE,TRUE,2,No,NO,"Is Garage 1 physically including within the building area? If yes, the garage area is subtracted from the building square feet calculation by the field agent."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user31,char_gar1_att,char_gar1_att,garage_attached,Garage 1 Attached,char,categorical,TRUE,TRUE,1,Yes,YES,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user31,char_gar1_att,char_gar1_att,garage_attached,Garage 1 Attached,char,categorical,TRUE,TRUE,2,No,NO,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user34,char_gar1_cnst,char_gar1_cnst,garage_ext_wall_material,Garage 1 Ext. Wall Material,char,categorical,TRUE,TRUE,1,Frame,FRAM,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user34,char_gar1_cnst,char_gar1_cnst,garage_ext_wall_material,Garage 1 Ext. Wall Material,char,categorical,TRUE,TRUE,2,Masonry,MASR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user34,char_gar1_cnst,char_gar1_cnst,garage_ext_wall_material,Garage 1 Ext. Wall Material,char,categorical,TRUE,TRUE,3,Frame + Masonry,FRMA,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user34,char_gar1_cnst,char_gar1_cnst,garage_ext_wall_material,Garage 1 Ext. Wall Material,char,categorical,TRUE,TRUE,4,Stucco,STUC,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,1,1 cars,1CAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,2,1.5 cars,1.5CAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,3,2 cars,2CAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,4,2.5 cars,2.5CAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,5,3 cars,3CAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,6,3.5 cars,3.5CAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,7,0 cars,0CAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user33,char_gar1_size,char_gar1_size,garage_size,Garage 1 Size,char,categorical,TRUE,TRUE,8,4 cars,4CAR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,fixhalf,char_hbath,char_hbath,num_half_baths,Half Baths,char,numeric,TRUE,TRUE,,,,"Number of half baths, defined as bathrooms without a shower or bathtub."
+iasWorld,iasworld.land,,default.vw_card_res_char,sf,char_land_sf,char_land_sf,land_sqft,Land Square Feet,char,numeric,TRUE,TRUE,,,,"Square feet of the land (not just the building) of the property. Note that a single PIN can have multiple ""land lines,"" meaning it can be associated with more than one 200-class land lot."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,1,Warm Air Furnace,FURN,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,2,Hot Water Steam,STM,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,3,Electric Heater,ELEC,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,heat,char_heat,char_heat,central_heating,Central Heating,char,categorical,TRUE,TRUE,4,None,NONE,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user20,char_ncu,char_ncu,num_commercial_units,Number of Commercial Units,char,numeric,TRUE,TRUE,,,,Number of commercial units (the vast majority are for properties with class 212).
 ,,,,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,FALSE,FALSE,1,Floor Furnace,FURN,
 ,,,,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,FALSE,FALSE,2,Unit Heater,UNIT,
 ,,,,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,FALSE,FALSE,3,Stove,STVE,
 ,,,,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,FALSE,FALSE,4,Solar,SOLR,
 ,,,,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,FALSE,FALSE,5,None,NONE,
 ,,,,,char_ot_impr,char_ot_impr,num_other_improvements,Other Improvements,char,numeric,FALSE,FALSE,,,,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,0,None,NONE,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,1,Frame Enclosed,FRAM,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,2,Masonry Enclosed,MSRY,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,TRUE,FALSE,1,Yes,YES,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,TRUE,FALSE,2,No,NO,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,TRUE,FALSE,1,Above Average,GOOD,"This field is subjective and contains little variation. As such, it is not used for modeling."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,TRUE,FALSE,2,Average,AVG,"This field is subjective and contains little variation. As such, it is not used for modeling."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,TRUE,FALSE,3,Below Average,POOR,"This field is subjective and contains little variation. As such, it is not used for modeling."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,1,Shingle + Asphalt,SHAS,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,2,Tar + Gravel,TRGR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,3,Slate,SLTE,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,4,Shake,SHKE,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,5,Tile,TILE,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,6,Other,OTHR,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,rmtot,char_rooms,char_rooms,num_rooms,Rooms,char,numeric,TRUE,TRUE,,,,Number of rooms in the property (excluding baths). Not to be confused with bedrooms
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,TRUE,FALSE,1,Beneficial To Value,BTV,This field lacks sufficient variation to be useful for modeling.
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,TRUE,FALSE,2,Not Relevant To Value,NRTV,This field lacks sufficient variation to be useful for modeling.
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,TRUE,FALSE,3,Detracts From Value,DFV,This field lacks sufficient variation to be useful for modeling.
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user4,char_tp_dsgn,char_tp_dsgn,cathedral_ceiling,Cathedral Ceiling,char,categorical,TRUE,TRUE,1,Yes,YES,"This field name comes from a variable that is no longer used, but the field name was not changed to reflect Cathedral Ceiling."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user4,char_tp_dsgn,char_tp_dsgn,cathedral_ceiling,Cathedral Ceiling,char,categorical,TRUE,TRUE,2,No,NO,"This field name comes from a variable that is no longer used, but the field name was not changed to reflect Cathedral Ceiling."
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user4,char_tp_plan,char_tp_plan,design_plan,Design Plan,char,categorical,TRUE,TRUE,1,Architect,ARCT,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user4,char_tp_plan,char_tp_plan,design_plan,Design Plan,char,categorical,TRUE,TRUE,2,Stock Plan,STCK,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,1,1 Story,1STRY,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,2,2 Story,2STRY,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,3,3 Story +,3STRY+,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,4,Split Level,SPLT,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,5,1.5 Story,1.5STRY,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,TRUE,TRUE,1,Single-Family,SF,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,TRUE,TRUE,2,Multi-Family,MF,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,0,None,NONE,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,1,Frame Enclosed,FRAM,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user30,char_porch,char_porch,porch,Porch,char,categorical,TRUE,TRUE,2,Masonry Enclosed,MSRY,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,TRUE,FALSE,1,Yes,YES,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,TRUE,FALSE,2,No,NO,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,TRUE,FALSE,1,Above Average,GOOD,"This field is subjective and contains little variation. As such, it is not used for modeling."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,TRUE,FALSE,2,Average,AVG,"This field is subjective and contains little variation. As such, it is not used for modeling."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,TRUE,FALSE,3,Below Average,POOR,"This field is subjective and contains little variation. As such, it is not used for modeling."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,1,Shingle + Asphalt,SHAS,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,2,Tar + Gravel,TRGR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,3,Slate,SLTE,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,4,Shake,SHKE,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,5,Tile,TILE,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user13,char_roof_cnst,char_roof_cnst,roof_material,Roof Material,char,categorical,TRUE,TRUE,6,Other,OTHR,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,rmtot,char_rooms,char_rooms,num_rooms,Rooms,char,numeric,TRUE,TRUE,,,,Number of rooms in the property (excluding baths). Not to be confused with bedrooms
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,TRUE,FALSE,1,Beneficial To Value,BTV,This field lacks sufficient variation to be useful for modeling.
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,TRUE,FALSE,2,Not Relevant To Value,NRTV,This field lacks sufficient variation to be useful for modeling.
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,TRUE,FALSE,3,Detracts From Value,DFV,This field lacks sufficient variation to be useful for modeling.
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user4,char_tp_dsgn,char_tp_dsgn,cathedral_ceiling,Cathedral Ceiling,char,categorical,TRUE,TRUE,1,Yes,YES,"This field name comes from a variable that is no longer used, but the field name was not changed to reflect Cathedral Ceiling."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user4,char_tp_dsgn,char_tp_dsgn,cathedral_ceiling,Cathedral Ceiling,char,categorical,TRUE,TRUE,2,No,NO,"This field name comes from a variable that is no longer used, but the field name was not changed to reflect Cathedral Ceiling."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user4,char_tp_plan,char_tp_plan,design_plan,Design Plan,char,categorical,TRUE,TRUE,1,Architect,ARCT,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user4,char_tp_plan,char_tp_plan,design_plan,Design Plan,char,categorical,TRUE,TRUE,2,Stock Plan,STCK,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,1,1 Story,1STRY,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,2,2 Story,2STRY,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,3,3 Story +,3STRY+,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,4,Split Level,SPLT,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,TRUE,TRUE,5,1.5 Story,1.5STRY,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,TRUE,TRUE,1,Single-Family,SF,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,TRUE,TRUE,2,Multi-Family,MF,
 ,,,,,char_volume,char_volume,volume,Volume,char,numeric,FALSE,FALSE,,,,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,cdu,cdu,meta_cdu,cdu,"Condition, Desirability, and Utility",meta,character,TRUE,FALSE,,,,"Dozens of codes attached to face sheet that denote a number of seemingly unrelated characteristics associated with a PIN, ranging from condition to types of subsidies. This field does not match across the SQL server/AS-400."
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,cdu,cdu,meta_cdu,cdu,"Condition, Desirability, and Utility",meta,character,TRUE,FALSE,,,,"Dozens of codes attached to face sheet that denote a number of seemingly unrelated characteristics associated with a PIN, ranging from condition to types of subsidies. This field does not match across the SQL server/AS-400."
 iasWorld,iasworld.pardat,,default.vw_pin_universe,parid,pin,meta_pin,pin,PIN,meta,character,TRUE,FALSE,,,,All PINs are 14 digits: 2 digits for area + 2 digits for sub area + 2 digits for block + 2 digits for parcel + 4 digits for the multicode
 Derived,,,default.vw_pin_universe,,pin10,meta_pin10,pin10,PIN (10-digit),meta,character,TRUE,FALSE,,,,First 10 digits of a PIN. Useful for identifying individual buildings since the last 4 digits of a PIN identify units.
 iasWorld,iasworld.pardat,,default.vw_pin_universe,class,class,meta_class,class,Property Class,meta,character,TRUE,FALSE,,,,
@@ -118,12 +118,12 @@ iasWorld,iasworld.legdat,,default.vw_pin_universe,statecode,prop_address_state,l
 iasWorld,iasworld.legdat,,default.vw_pin_universe,zip1,prop_address_zipcode_1,loc_property_zip,property_zip,Property Zip Code,loc,character,TRUE,FALSE,,,,"Property street address, not the address of the taxpayer."
 iasWorld,iasworld.legdat,,default.vw_pin_universe,zip2,prop_address_zipcode_2,,,,loc,character,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer."
 Derived,,,default.vw_pin_universe,,prop_address_full,loc_property_address,property_address,Property Address,loc,character,TRUE,FALSE,,,,"Property street address, not the address of the taxpayer."
-iasWorld,,,default.vw_impr_char,card,card,meta_card_num,card_num,Card Number,meta,character,TRUE,FALSE,,,,Equivalent to legacy MLT_CD (multicode). Represents the building ID if multiple buildings or spaces exist on the same PIN.
-Derived,,,default.vw_impr_char,,pin_is_multicard,ind_pin_is_multicard,pin_is_multicard,Multicard PIN,ind,logical,TRUE,TRUE,,,,"Indicates the PIN contains more than one building (ADU, coach house, etc.)"
-Derived,,,default.vw_impr_char,,pin_num_cards,meta_pin_num_cards,pin_num_cards,Number of Cards on PIN,meta,numeric,TRUE,FALSE,,,,
-Derived,,,default.vw_impr_char,,pin_is_multiland,ind_pin_is_multiland,pin_is_multiland,Multiland PIN,ind,logical,TRUE,FALSE,,,,PIN has more than one landline.
-Derived,,,default.vw_impr_char,,pin_num_landlines,meta_pin_num_landlines,pin_num_landlines,Number of Landlines on PIN,meta,numeric,TRUE,FALSE,,,,
-Derived,,,default.vw_impr_char,,pin_is_prorated,ind_pin_is_prorated,pin_is_prorated,Prorated PIN,ind,logical,TRUE,FALSE,,,,
+iasWorld,,,default.vw_card_res_char,card,card,meta_card_num,card_num,Card Number,meta,character,TRUE,FALSE,,,,Equivalent to legacy MLT_CD (multicode). Represents the building ID if multiple buildings or spaces exist on the same PIN.
+Derived,,,default.vw_card_res_char,,pin_is_multicard,ind_pin_is_multicard,pin_is_multicard,Multicard PIN,ind,logical,TRUE,TRUE,,,,"Indicates the PIN contains more than one building (ADU, coach house, etc.)"
+Derived,,,default.vw_card_res_char,,pin_num_cards,meta_pin_num_cards,pin_num_cards,Number of Cards on PIN,meta,numeric,TRUE,FALSE,,,,
+Derived,,,default.vw_card_res_char,,pin_is_multiland,ind_pin_is_multiland,pin_is_multiland,Multiland PIN,ind,logical,TRUE,FALSE,,,,PIN has more than one landline.
+Derived,,,default.vw_card_res_char,,pin_num_landlines,meta_pin_num_landlines,pin_num_landlines,Number of Landlines on PIN,meta,numeric,TRUE,FALSE,,,,
+Derived,,,default.vw_card_res_char,,pin_is_prorated,ind_pin_is_prorated,pin_is_prorated,Prorated PIN,ind,logical,TRUE,FALSE,,,,
 Cook County GIS,spatial.parcel,,default.vw_pin_universe,,lon,loc_longitude,longitude,Longitude,loc,numeric,TRUE,FALSE,,,,Derived from the centroid of the largest polygon associated with the PIN.
 Cook County GIS,spatial.parcel,,default.vw_pin_universe,,lat,loc_latitude,latitude,Latitude,loc,numeric,TRUE,FALSE,,,,Derived from the centroid of the largest polygon associated with the PIN.
 Cook County GIS,spatial.parcel,,default.vw_pin_universe,,x_3435,loc_x_3435,centroid_x_crs_3435,Centroid X (CRS 3435),loc,numeric,FALSE,FALSE,,,,Derived from the centroid of the largest polygon associated with the PIN.
@@ -378,11 +378,11 @@ ACS5,census.acs5,,census.vw_acs5_stat,,count_household_renter_occupied_3_sel_con
 ACS5,census.acs5,,census.vw_acs5_stat,,count_household_renter_occupied_4_sel_cond,acs5_count_household_renter_occupied_4_sel_cond,acs5_count_household_renter_occupied_4_sel_cond,"Count Occupied Households, Renter, Four Selected Conditions",acs5,numeric,FALSE,FALSE,,,,"Selected conditions, including: incomplete plumbing or kitchens, overcrowding, 30% or more of the household income spent on rent or monthly owner costs."
 ACS5,census.acs5,,census.vw_acs5_stat,,percent_household_owner_occupied_w_sel_cond,acs5_percent_household_owner_occupied_w_sel_cond,acs5_percent_household_owner_occupied_w_sel_cond,"Percent Occupied Households, Owner, One or More Selected Conditions",acs5,numeric,FALSE,FALSE,,,,"Selected conditions, including: incomplete plumbing or kitchens, overcrowding, 30% or more of the household income spent on rent or monthly owner costs."
 ACS5,census.acs5,,census.vw_acs5_stat,,percent_household_renter_occupied_w_sel_cond,acs5_percent_household_renter_occupied_w_sel_cond,acs5_percent_household_renter_occupied_w_sel_cond,"Percent Occupied Households, Renter, One or More Selected Conditions",acs5,numeric,FALSE,FALSE,,,,"Selected conditions, including: incomplete plumbing or kitchens, overcrowding, 30% or more of the household income spent on rent or monthly owner costs."
-DePaul IHS,other.ihs_index,,model.vw_res_input,,other_ihs_avg_year_index,other_ihs_avg_year_index,depaul_ihs_avg_year_index,DePaul IHS Average Year Index,other,numeric,TRUE,TRUE,,,,
-Cook County Clerk,tax.bill_amount,,model.vw_res_input,,other_tax_bill_amount_total,other_tax_bill_amount_total,tax_bill_amount_total,Property Tax Bill Amount Total,other,numeric,TRUE,TRUE,,,,
-Cook County Treasurer,tax.bill_amount,,model.vw_res_input,,other_tax_bill_rate,other_tax_bill_rate,tax_bill_aggregate_rate,Property Tax Bill Aggregate Rate,other,numeric,TRUE,TRUE,,,,
-GreatSchools,other.great_schools_rating,,model.vw_res_input,,other_school_district_elementary_avg_rating,other_school_district_elementary_avg_rating,school_district_elementary_avg_greatschools_rating,School District (Elementary) GreatSchools Rating,other,numeric,TRUE,TRUE,,,,"For CPS, which is a unified school district, the average of schools within attendance boundary is used."
-GreatSchools,other.great_schools_rating,,model.vw_res_input,,other_school_district_secondary_avg_rating,other_school_district_secondary_avg_rating,school_district_secondary_avg_greatschools_rating,School District (Secondary) GreatSchools Rating,other,numeric,TRUE,TRUE,,,,"For CPS, which is a unified school district, the average of schools within attendance boundary is used."
+DePaul IHS,other.ihs_index,,model.vw_card_res_input,,other_ihs_avg_year_index,other_ihs_avg_year_index,depaul_ihs_avg_year_index,DePaul IHS Average Year Index,other,numeric,TRUE,TRUE,,,,
+Cook County Clerk,tax.bill_amount,,model.vw_card_res_input,,other_tax_bill_amount_total,other_tax_bill_amount_total,tax_bill_amount_total,Property Tax Bill Amount Total,other,numeric,TRUE,TRUE,,,,
+Cook County Treasurer,tax.bill_amount,,model.vw_card_res_input,,other_tax_bill_rate,other_tax_bill_rate,tax_bill_aggregate_rate,Property Tax Bill Aggregate Rate,other,numeric,TRUE,TRUE,,,,
+GreatSchools,other.great_schools_rating,,model.vw_card_res_input,,other_school_district_elementary_avg_rating,other_school_district_elementary_avg_rating,school_district_elementary_avg_greatschools_rating,School District (Elementary) GreatSchools Rating,other,numeric,TRUE,TRUE,,,,"For CPS, which is a unified school district, the average of schools within attendance boundary is used."
+GreatSchools,other.great_schools_rating,,model.vw_card_res_input,,other_school_district_secondary_avg_rating,other_school_district_secondary_avg_rating,school_district_secondary_avg_greatschools_rating,School District (Secondary) GreatSchools Rating,other,numeric,TRUE,TRUE,,,,"For CPS, which is a unified school district, the average of schools within attendance boundary is used."
 iasWorld,iasworld.sales,,default.vw_pin_sale,,sale_date,meta_sale_date,sale_date,Sale Date,meta,date,TRUE,FALSE,,,,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,sale_price,meta_sale_price,sale_price,Sale Price,meta,numeric,TRUE,TRUE,,,,
 Derived,,,default.vw_pin_sale,,sale_price_log10,meta_sale_price_log10,sale_price_log10,Sale Price (log10),meta,numeric,FALSE,FALSE,,,,
@@ -396,13 +396,13 @@ iasWorld,iasworld.sales,,default.vw_pin_sale,saletype,sale_type,meta_sale_type,s
 Derived,iasworld.sales,,default.vw_pin_sale,,sale_filter_lower_limit,meta_sale_filter_lower_limit,sale_filter_lower_limit,Sale Filter Lower Limit,meta,numeric,FALSE,FALSE,,,,Calculated boundary used to filter sales. See view definition.
 Derived,iasworld.sales,,default.vw_pin_sale,,sale_filter_upper_limit,meta_sale_filter_upper_limit,sale_filter_upper_limit,Sale Filter Upper Limit,meta,numeric,FALSE,FALSE,,,,Calculated boundary used to filter sales. See view definition.
 Derived,iasworld.sales,,default.vw_pin_sale,,sale_filter_count,meta_sale_filter_count,sale_filter_count,Sale Filter Count,meta,numeric,FALSE,FALSE,,,,Number of sales used to calculate upper and lower boundary.
-iasWorld,iasworld.dweldat,,default.vw_impr_char,who,updated_by,meta_updated_by,record_last_updated_by,Record Last Updated By,meta,character,FALSE,FALSE,,,,
-iasWorld,iasworld.dweldat,,default.vw_impr_char,wen,updated_at,meta_updated_at,record_last_updated_at,Record Last Updated At,meta,date,FALSE,FALSE,,,,
-Derived,,,model.vw_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,0,No Characteristics,NCHARS,
-Derived,,,model.vw_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,1,Single-Family,SF,
-Derived,,,model.vw_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,2,Multi-Family,MF,
-Derived,,,model.vw_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,3,Condominium,CONDO,
-Derived,,,model.vw_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,4,Bed & Breakfast,BB,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,who,updated_by,meta_updated_by,record_last_updated_by,Record Last Updated By,meta,character,FALSE,FALSE,,,,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,wen,updated_at,meta_updated_at,record_last_updated_at,Record Last Updated At,meta,date,FALSE,FALSE,,,,
+Derived,,,model.vw_card_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,0,No Characteristics,NCHARS,
+Derived,,,model.vw_card_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,1,Single-Family,SF,
+Derived,,,model.vw_card_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,2,Multi-Family,MF,
+Derived,,,model.vw_card_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,3,Condominium,CONDO,
+Derived,,,model.vw_card_res_input,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,TRUE,FALSE,4,Bed & Breakfast,BB,
 Derived,,,default.vw_pin_sale,,sale_year,time_sale_year,sale_year,Sale Year,time,numeric,TRUE,TRUE,,,,Sale year calculated as the number of years since 0 B.C.E.
 Derived,,,default.vw_pin_sale,,sale_quarter,time_sale_quarter,sale_quarter,Sale Quarter,time,numeric,TRUE,FALSE,,,,Sale quarter calculated as the number of quarters since January 1997.
 Derived,,,default.vw_pin_sale,,sale_month,time_sale_month,sale_month,Sale Month,time,numeric,TRUE,FALSE,,,,Sale month calculated as the number of months since January 1997.
@@ -441,8 +441,8 @@ Derived,,,default.vw_pin_history,,oneyr_pri_mailed_tot,meta_1yr_pri_mailed_tot,o
 Derived,,,default.vw_pin_history,,twoyr_pri_mailed_bldg,meta_2yr_pri_mailed_bldg,two_yr_pri_mailed_bldg_av,2 Years Prior Mailed Assessed Value (Building),meta,numeric,FALSE,FALSE,,,,Mailed assessed value of building from 2 years prior to observation year.
 Derived,,,default.vw_pin_history,,twoyr_pri_mailed_land,meta_2yr_pri_mailed_land,two_yr_pri_mailed_land_av,2 Years Prior Mailed Assessed Value (Land),meta,numeric,FALSE,FALSE,,,,Mailed assessed value of land from 2 years prior to observation year.
 Derived,,,default.vw_pin_history,,twoyr_pri_mailed_tot,meta_2yr_pri_mailed_tot,two_yr_pri_mailed_tot_av,2 Years Prior Mailed Assessed Value (Total),meta,numeric,FALSE,FALSE,,,,Mailed total assessed value from 2 years prior to observation year.
-Derived,,,model.vw_res_input,,char_land_sf_95_percentile,char_land_sf_95_percentile,land_sqft_95_percentile,Land Square Feet 95th Percentile,char,numeric,TRUE,FALSE,,,,"95th percentile of land square footage, by year and township."
-Derived,,,model.vw_res_input,,char_bldg_sf_95_percentile,char_bldg_sf_95_percentile,bldg_sqft_95_percentile,Building Square Feet 95th Percentile,char,numeric,TRUE,FALSE,,,,"95th percentile of building square footage, by year and township."
-Derived,,,model.vw_res_input,,ind_land_gte_95_percentile,ind_land_gte_95_percentile,land_sqft_gte_95_percentile,Land Square Feet Greater Than or Equal to 95th Percentile,ind,logical,TRUE,TRUE,,,,Indicator if this PIN's land square footage is larger than 95% of other properties' land for this year and township.
-Derived,,,model.vw_res_input,,ind_bldg_gte_95_percentile,ind_bldg_gte_95_percentile,bldg_sqft_gte_95_percentile,Land Square Feet Greater Than or Equal to 95th Percentile,ind,logical,TRUE,TRUE,,,,Indicator if this PIN's building square footage is larger than 95% of other properties' land for this year and township.
-Derived,,,model.vw_res_input,,ind_land_bldg_ratio_gte_10,ind_land_bldg_ratio_gte_10,land_bldg_sqft_ratio_gte_10,Land to Building Square Footage Ratio Greater Than or Equal to 10,ind,logical,TRUE,TRUE,,,,Indicator for PIN's with a ratio of (land sqft / bldg sqft) of greater than or equal to 10. This is intended to capture/identify small houses on very large lots.
+Derived,,,model.vw_card_res_input,,char_land_sf_95_percentile,char_land_sf_95_percentile,land_sqft_95_percentile,Land Square Feet 95th Percentile,char,numeric,TRUE,FALSE,,,,"95th percentile of land square footage, by year and township."
+Derived,,,model.vw_card_res_input,,char_bldg_sf_95_percentile,char_bldg_sf_95_percentile,bldg_sqft_95_percentile,Building Square Feet 95th Percentile,char,numeric,TRUE,FALSE,,,,"95th percentile of building square footage, by year and township."
+Derived,,,model.vw_card_res_input,,ind_land_gte_95_percentile,ind_land_gte_95_percentile,land_sqft_gte_95_percentile,Land Square Feet Greater Than or Equal to 95th Percentile,ind,logical,TRUE,TRUE,,,,Indicator if this PIN's land square footage is larger than 95% of other properties' land for this year and township.
+Derived,,,model.vw_card_res_input,,ind_bldg_gte_95_percentile,ind_bldg_gte_95_percentile,bldg_sqft_gte_95_percentile,Land Square Feet Greater Than or Equal to 95th Percentile,ind,logical,TRUE,TRUE,,,,Indicator if this PIN's building square footage is larger than 95% of other properties' land for this year and township.
+Derived,,,model.vw_card_res_input,,ind_land_bldg_ratio_gte_10,ind_land_bldg_ratio_gte_10,land_bldg_sqft_ratio_gte_10,Land to Building Square Footage Ratio Greater Than or Equal to 10,ind,logical,TRUE,TRUE,,,,Indicator for PIN's with a ratio of (land sqft / bldg sqft) of greater than or equal to 10. This is intended to capture/identify small houses on very large lots.
