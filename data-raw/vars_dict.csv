@@ -407,7 +407,7 @@ Derived,,,default.vw_pin_sale,,sale_year,time_sale_year,sale_year,Sale Year,time
 Derived,,,default.vw_pin_sale,,sale_quarter,time_sale_quarter,sale_quarter,Sale Quarter,time,numeric,TRUE,FALSE,,,,Sale quarter calculated as the number of quarters since January 1997
 Derived,,,default.vw_pin_sale,,sale_month,time_sale_month,sale_month,Sale Month,time,numeric,TRUE,FALSE,,,,Sale month calculated as the number of months since January 1997
 Derived,,,default.vw_pin_sale,,sale_week,time_sale_week,sale_week,Sale Week,time,numeric,TRUE,TRUE,,,,"Sale week calculated as the number of weeks since January 1st, 1997"
-Derived,,,default.vw_pin_sale,,sale_day,time_sale_week,sale_day,Sale Day,time,numeric,TRUE,FALSE,,,,"Sale day calculated as the number of days since January 1st, 1997"
+Derived,,,default.vw_pin_sale,,sale_day,time_sale_day,sale_day,Sale Day,time,numeric,TRUE,FALSE,,,,"Sale day calculated as the number of days since January 1st, 1997"
 Derived,,,default.vw_pin_sale,,sale_quarter_of_year,time_sale_quarter_of_year,sale_quarter_of_year,Sale Quarter of Year,time,character,TRUE,TRUE,,,,Character encoding of quarter of year (Q1 - Q4)
 Derived,,,default.vw_pin_sale,,sale_month_of_year,time_sale_month_of_year,sale_month_of_year,Sale Month of Year,time,character,TRUE,FALSE,,,,Character encoding of month of year (Jan - Dec)
 Derived,,,default.vw_pin_sale,,sale_week_of_year,time_sale_week_of_year,sale_week_of_year,Sale Week of Year,time,numeric,TRUE,TRUE,,,,Numeric encoding of week of year (1 - 52)
