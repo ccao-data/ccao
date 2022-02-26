@@ -5,16 +5,17 @@
 \alias{class_dict}
 \title{Data dictionary of Cook County property classes}
 \format{
-A data frame with 197 rows and 7 variables:
+A data frame with 197 rows and 8 variables:
 \describe{
   \item{major_class_code}{First digit of class code, major class}
   \item{major_class_type}{Human-readable description of the major class}
   \item{assessment_level}{Level of assessment for the property class}
   \item{regression_class}{Boolean indicating whether or not this class is
   included in CAMA regressions}
-  \item{reporting_class}{Reporting class used for internal CCAO reports
+  \item{modeling_group}{Modeling group used for internal CCAO data selection}
+  \item{reporting_group}{Reporting group name used for internal CCAO reports
   and aggregate statistics}
-  \item{class_code}{Full class code of the property sub-class, character}
+  \item{class_code}{Full, 3-digit class code of the property sub-class}
   \item{class_desc}{Human-readable description of the property sub-class}
   \item{min_size}{Integer of minimum size for 200-class property codes}
   \item{max_size}{Integer of maximum size for 200-class property codes}
