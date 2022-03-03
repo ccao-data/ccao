@@ -20,8 +20,8 @@ denominator is the actual sale price. NOTE: CCAO typically uses lagged
 or leading ratios to lessen the effect of sales chasing.}
 
 \item{suppress}{Default FALSE. A boolean value indicating whether or not
-to ignore minimum sample size requirements (N must be >= 30). If TRUE when
-N < 30, will return NAs.}
+to ignore minimum sample size requirements (N must be >= 20). If TRUE when
+N < 20, will return NAs.}
 
 \item{na.rm}{Default FALSE. A boolean value indicating whether or not to
 remove NA values. If missing values are present but not removed the
@@ -50,7 +50,7 @@ to outliers. As a result, the top and bottom 5\\% of the input vector(s) are
 always dropped.
 \item Minimum sample size. Sales ratio performance statistics can be inaccurate
 or misleading when the input sample is small. As a result, samples with less
-than 30 observations after trimming outliers will stop execution or will
+than 20 observations after trimming outliers will stop execution or will
 return NA if \code{suppress = TRUE}.
 }
 

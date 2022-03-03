@@ -42,15 +42,15 @@ test_that("bad input data stops execution", {
 })
 
 test_that("incomplete data stops execution unless suppressed", {
-  expect_condition(ccao_cod(runif(29)))
-  expect_silent(ccao_cod(runif(29), suppress = TRUE))
+  expect_condition(ccao_cod(runif(19)))
+  expect_silent(ccao_cod(runif(19), suppress = TRUE))
   expect_equal(
-    unname(ccao_cod(runif(29), suppress = TRUE)),
-    list(NA, NA, NA, NA, 25)
+    unname(ccao_cod(runif(19), suppress = TRUE)),
+    list(NA, NA, NA, NA, 17)
   )
   expect_equal(
-    unname(ccao_cod(c(ratio[1:29], rep(NA, 10)), suppress = TRUE)),
-    list(NA, NA, NA, NA, 25)
+    unname(ccao_cod(c(ratio[1:19], rep(NA, 10)), suppress = TRUE)),
+    list(NA, NA, NA, NA, 17)
   )
   expect_equal(
     unname(ccao_cod(rep(NA_real_, 40), suppress = TRUE)),
@@ -101,19 +101,19 @@ test_that("bad input data stops execution", {
 })
 
 test_that("incomplete data stops execution unless suppressed", {
-  expect_condition(ccao_prd(runif(29), runif(29)))
-  expect_silent(ccao_prd(runif(29), runif(29), suppress = TRUE))
+  expect_condition(ccao_prd(runif(19), runif(19)))
+  expect_silent(ccao_prd(runif(19), runif(19), suppress = TRUE))
   expect_equal(
-    unname(ccao_prd(runif(29), runif(29), suppress = TRUE)),
-    list(NA, NA, NA, NA, 25)
+    unname(ccao_prd(runif(19), runif(19), suppress = TRUE)),
+    list(NA, NA, NA, NA, 17)
   )
   expect_equal(
     unname(ccao_prd(
-      c(assessed[1:29], rep(NA, 10)),
-      c(sale_price[1:29], rep(NA, 10)),
+      c(assessed[1:19], rep(NA, 10)),
+      c(sale_price[1:19], rep(NA, 10)),
       suppress = TRUE
     )),
-    list(NA, NA, NA, NA, 25)
+    list(NA, NA, NA, NA, 17)
   )
   expect_equal(
     unname(ccao_prd(
@@ -167,19 +167,19 @@ test_that("bad input data stops execution", {
 })
 
 test_that("incomplete data stops execution unless suppressed", {
-  expect_condition(ccao_prb(runif(29), runif(29)))
-  expect_silent(ccao_prb(runif(29), runif(29), suppress = TRUE))
+  expect_condition(ccao_prb(runif(19), runif(19)))
+  expect_silent(ccao_prb(runif(19), runif(19), suppress = TRUE))
   expect_equal(
-    unname(ccao_prb(runif(29), runif(29), suppress = TRUE)),
-    list(NA, NA, NA, NA, 25)
+    unname(ccao_prb(runif(19), runif(19), suppress = TRUE)),
+    list(NA, NA, NA, NA, 17)
   )
   expect_equal(
     unname(ccao_prb(
-      c(assessed[1:29], rep(NA, 10)),
-      c(sale_price[1:29], rep(NA, 10)),
+      c(assessed[1:19], rep(NA, 10)),
+      c(sale_price[1:19], rep(NA, 10)),
       suppress = TRUE
     )),
-    list(NA, NA, NA, NA, 25)
+    list(NA, NA, NA, NA, 17)
   )
   expect_equal(
     unname(ccao_prb(

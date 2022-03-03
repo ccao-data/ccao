@@ -12,7 +12,7 @@
 #'
 #' 2. Minimum sample size. Sales ratio performance statistics can be inaccurate
 #' or misleading when the input sample is small. As a result, samples with less
-#' than 30 observations after trimming outliers will stop execution or will
+#' than 20 observations after trimming outliers will stop execution or will
 #' return NA if \code{suppress = TRUE}.
 #'
 #' For more information on how each statistic or its confidence interval is
@@ -28,8 +28,8 @@
 #' @param sale_price A numeric vector of sale prices. Must be the same length
 #'   as \code{assessed}.
 #' @param suppress Default FALSE. A boolean value indicating whether or not
-#'   to ignore minimum sample size requirements (N must be >= 30). If TRUE when
-#'   N < 30, will return NAs.
+#'   to ignore minimum sample size requirements (N must be >= 20). If TRUE when
+#'   N < 20, will return NAs.
 #' @param na.rm Default FALSE. A boolean value indicating whether or not to
 #'   remove NA values. If missing values are present but not removed the
 #'   function will output NA.
@@ -74,9 +74,9 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
   # Get number of observations used to calculate stat
   cod_n <- length(no_outliers[!is.na(no_outliers)])
 
-  # Only sample with 30+ observations are reliable for sales ratio studies
-  # If less than 30, return only NAs and warn
-  if (cod_n >= 30) {
+  # Only sample with 20+ observations are reliable for sales ratio studies
+  # If less than 20, return only NAs and warn
+  if (cod_n >= 20) {
 
     # Calculate COD of trimmed ratios
     cod_val <- assessr::cod(no_outliers, na.rm = na.rm)
@@ -97,10 +97,10 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
     )
   } else {
 
-    # Generate empty output list and stop if N < 30 unless suppress
+    # Generate empty output list and stop if N < 20 unless suppress
     out <- list(NA, NA, NA, NA, cod_n)
 
-    if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
+    if (!suppress) stop("Too few obs. (N < 20) for reliable ratio statistics")
   }
 
   names(out) <- c("COD", "COD_CI", "COD_MET", "COD_CI_MET", "COD_N")
@@ -135,9 +135,9 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   # Get number of observations used to calculate stat
   prd_n <- nrow(no_outliers_df[!is.na(no_outliers_df$ratio), ])
 
-  # Only sample with 30+ observations are reliable for sales ratio studies
-  # If less than 30, return only NAs and warn
-  if (prd_n >= 30) {
+  # Only sample with 20+ observations are reliable for sales ratio studies
+  # If less than 20, return only NAs and warn
+  if (prd_n >= 20) {
 
     # Calculate PRD of trimmed ratios
     prd_val <- assessr::prd(
@@ -167,10 +167,10 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
     )
   } else {
 
-    # Generate empty output list and stop if N < 30 unless suppress
+    # Generate empty output list and stop if N < 20 unless suppress
     out <- list(NA, NA, NA, NA, prd_n)
 
-    if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
+    if (!suppress) stop("Too few obs. (N < 20) for reliable ratio statistics")
   }
 
   names(out) <- c("PRD", "PRD_CI", "PRD_MET", "PRD_CI_MET", "PRD_N")
@@ -205,9 +205,9 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   # Get number of observations used to calculate stat
   prb_n <- nrow(no_outliers_df[!is.na(no_outliers_df$ratio), ])
 
-  # Only sample with 30+ observations are reliable for sales ratio studies
-  # If less than 30, return only NAs and warn
-  if (prb_n >= 30) {
+  # Only sample with 20+ observations are reliable for sales ratio studies
+  # If less than 20, return only NAs and warn
+  if (prb_n >= 20) {
 
     # Calculate PRD of trimmed ratios
     prb_val <- assessr::prb(
@@ -236,10 +236,10 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
     )
   } else {
 
-    # Generate empty output list and stop if N < 30 unless suppress
+    # Generate empty output list and stop if N < 20 unless suppress
     out <- list(NA, NA, NA, NA, prb_n)
 
-    if (!suppress) stop("Too few obs. (N < 30) for reliable ratio statistics")
+    if (!suppress) stop("Too few obs. (N < 20) for reliable ratio statistics")
   }
 
   names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_CI_MET", "PRB_N")
