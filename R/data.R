@@ -176,8 +176,9 @@
 #'   and reporting}
 #'   \item{var_type}{Variable type/prefix indicating the variable's function.
 #'   For example, ind_ variables are always indicators (booleans), while char_
-#'   variables are always property characteristics.}
+#'   variables are always property characteristics}
 #'   \item{var_data_type}{R data type variable values should be stored as}
+#'   \item{var_model_type}{Model type that uses this variable}
 #'   \item{var_is_published}{Logical value indicating whether to publish in
 #'   open data}
 #'   \item{var_is_predictor}{Logical value indicating whether to use variable
