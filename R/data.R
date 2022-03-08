@@ -28,6 +28,22 @@
 "cdu_dict"
 
 
+#' List crosswalk of Athena columns and their ADDCHARS equivalents
+#'
+#' A nested list containing vectors of column names that match those found in
+#' the iasWorld DWELDAT and legacy ADDCHARS SQL tables. Can be used to translate
+#' between tables.
+#'
+#' @format A nested list with 2 items:
+#' \describe{
+#'   \item{add}{Source and target columns with additive characteristics}
+#'   \item{replace}{Source and target columns with characteristics to be
+#'   replaced}
+#' }
+#'
+"chars_cols"
+
+
 #' Sample dataset from the vw_pin_universe Athena SQL view
 #'
 #' A dataset containing a small subsample of rows from the
