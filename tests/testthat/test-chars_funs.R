@@ -120,6 +120,18 @@ chars_fake_universe <- dplyr::tibble(
   meta_class = rep("206", 11)
 )
 
+chars_fake_correct <- dplyr::tibble(
+  pin = rep("123456", 11),
+  year = c(2013:2018, 2020:2024),
+  town = rep("25", 11),
+  char_age = c(rep(80, 3), rep(83, 3), rep(86, 2), rep(89, 3)),
+  char_beds = c(rep(3, 6), rep(5, 5)),
+  char_bldg_sf = c(900, 900, rep(1100, 4), rep(1300, 5)),
+  char_gar1_size = c(rep(0, 2), rep(3, 9)),
+  meta_class = rep("206", 11),
+  hie_num_active = c(1, 1, rep(2, 4), rep(1, 5))
+)
+
 chars_fake_updated <- chars_fake_universe %>%
   dplyr::left_join(
     chars_sparsify_simple_test,
@@ -128,11 +140,15 @@ chars_fake_updated <- chars_fake_universe %>%
   chars_update(
     additive_target = any_of(ccao::chars_cols$add$target),
     replacement_target = any_of(ccao::chars_cols$replace$target)
-  )
+  ) %>%
+  dplyr::select(-dplyr::starts_with("qu_"))
 
 # Test that output is identical to previous output
 test_that("data is identical to known good output", {
-  expect_known_hash(chars_fake_updated, hash = "a4b0543b65")
+  expect_equivalent(
+    chars_fake_updated,
+    chars_fake_correct
+  )
 })
 
 
