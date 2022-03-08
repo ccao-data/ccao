@@ -3,18 +3,19 @@
 \docType{data}
 \name{chars_sample_athena}
 \alias{chars_sample_athena}
-\title{Sample dataset from the vw_pin_universe Athena SQL view}
+\title{Sample dataset from the vw_card_res_char Athena SQL view}
 \format{
-An object of class \code{data.frame} with 50 rows and 35 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 70 rows and 35 columns.
 }
 \source{
-This data was extracted from Athena manually on 2022-01-13.
+This data was extracted from Athena manually on 2022-03-08.
 }
 \usage{
 chars_sample_athena
 }
 \description{
 A dataset containing a small subsample of rows from the
-default.vw_pin_universe Athena view.
+default.vw_card_res_char Athena view. Matches the PINs in the
+\code{\link{chars_sample_hie}} dataset.
 }
 \keyword{datasets}

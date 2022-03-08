@@ -44,13 +44,24 @@
 "chars_cols"
 
 
-#' Sample dataset from the vw_pin_universe Athena SQL view
+#' Sample dataset from the vw_card_res_char Athena SQL view
 #'
 #' A dataset containing a small subsample of rows from the
-#' default.vw_pin_universe Athena view.
+#' default.vw_card_res_char Athena view. Matches the PINs in the
+#' \code{\link{chars_sample_hie}} dataset.
 #'
-#' @source This data was extracted from Athena manually on 2022-01-13.
+#' @source This data was extracted from Athena manually on 2022-03-08.
 "chars_sample_athena"
+
+
+#' Sample dataset from the ccao.hie Athena SQL table
+#'
+#' A dataset containing a small subsample of rows from the ccao.hie table,
+#' which is a cleaned up version of the AS/400 ADDCHARS table. Matches the PINs
+#' in the \code{\link{chars_sample_athena}} dataset.
+#'
+#' @source This data was extracted from Athena manually on 2022-03-08.
+"chars_sample_hie"
 
 
 #' Sample dataset from the VW_RES_UNIVERSE SQL view
