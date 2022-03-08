@@ -28,13 +28,40 @@
 "cdu_dict"
 
 
-#' Sample dataset from the vw_pin_universe Athena SQL view
+#' List crosswalk of Athena columns and their ADDCHARS equivalents
+#'
+#' A nested list containing vectors of column names that match those found in
+#' the iasWorld DWELDAT and legacy ADDCHARS SQL tables. Can be used to translate
+#' between tables.
+#'
+#' @format A nested list with 2 items:
+#' \describe{
+#'   \item{add}{Source and target columns with additive characteristics}
+#'   \item{replace}{Source and target columns with characteristics to be
+#'   replaced}
+#' }
+#'
+"chars_cols"
+
+
+#' Sample dataset from the vw_card_res_char Athena SQL view
 #'
 #' A dataset containing a small subsample of rows from the
-#' default.vw_pin_universe Athena view.
+#' default.vw_card_res_char Athena view. Matches the PINs in the
+#' \code{\link{chars_sample_hie}} dataset.
 #'
-#' @source This data was extracted from Athena manually on 2022-01-13.
+#' @source This data was extracted from Athena manually on 2022-03-08.
 "chars_sample_athena"
+
+
+#' Sample dataset from the ccao.hie Athena SQL table
+#'
+#' A dataset containing a small subsample of rows from the ccao.hie table,
+#' which is a cleaned up version of the AS/400 ADDCHARS table. Matches the PINs
+#' in the \code{\link{chars_sample_athena}} dataset.
+#'
+#' @source This data was extracted from Athena manually on 2022-03-08.
+"chars_sample_hie"
 
 
 #' Sample dataset from the VW_RES_UNIVERSE SQL view
@@ -164,6 +191,8 @@
 #'   created the variable, if applicable}
 #'   \item{var_from_view}{Name of the Athena view that contains the variable.
 #'   This is typically the main data source for end users}
+#'   \item{var_name_hie}{Column name of variable when stored in the legacy
+#'   ADDCHARS SQL table}
 #'   \item{var_name_iasworld}{Column name for variable as stored in the system
 #'   of record (iasWorld)}
 #'   \item{var_name_athena}{Column name used for views and tables in AWS

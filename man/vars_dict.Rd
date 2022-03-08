@@ -15,6 +15,8 @@ A data frame with 447 rows and 17 variables:
   created the variable, if applicable}
   \item{var_from_view}{Name of the Athena view that contains the variable.
   This is typically the main data source for end users}
+  \item{var_name_hie}{Column name of variable when stored in the legacy
+  ADDCHARS SQL table}
   \item{var_name_iasworld}{Column name for variable as stored in the system
   of record (iasWorld)}
   \item{var_name_athena}{Column name used for views and tables in AWS

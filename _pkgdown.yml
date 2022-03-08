@@ -29,10 +29,12 @@ reference:
   - town_get_assmnt_year
   - town_get_triad
 - subtitle: Manage characteristics
-  desc: Recode/rename characteristic columns and fix characteristic errors
+  desc: Recode/rename characteristic columns, merge HIE data, and fix characteristic errors
 - contents:
   - chars_288_active
   - chars_fix_age
+  - chars_sparsify
+  - chars_update
   - vars_check_class
   - vars_recode
   - vars_rename
@@ -58,11 +60,13 @@ reference:
   - nbhd_shp
   - town_shp
 - subtitle: Sample data
-  desc: Sample data frames pulled directly from CCAO SQL
+  desc: Sample data frames pulled directly from CCAO SQL or Athena
 - contents:
   - chars_sample_athena
+  - chars_sample_hie
   - chars_sample_universe
 - subtitle: Miscellaneous
   desc: Other data used throughout the department or in specific functions
 - contents:
   - ccao_colors
+  - chars_cols
