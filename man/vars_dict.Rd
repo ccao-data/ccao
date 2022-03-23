@@ -5,7 +5,7 @@
 \alias{vars_dict}
 \title{Data dictionary for CCAO data sets and variables}
 \format{
-A data frame with 467 rows and 19 variables:
+A data frame with 472 rows and 19 variables:
 \describe{
   \item{var_from_source}{Name of the raw data source that the variable
   was extracted from}
