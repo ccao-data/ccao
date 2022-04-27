@@ -66,7 +66,7 @@ iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_porch,user30,char_porch,c
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_porch,user30,char_porch,char_porch,porch,Porch,char,categorical,res,TRUE,TRUE,1,Frame Enclosed,FRAM,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_porch,user30,char_porch,char_porch,porch,Porch,char,categorical,res,TRUE,TRUE,2,Masonry Enclosed,MSRY,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_renovation,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,res,TRUE,FALSE,1,Yes,YES,
-iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_renovation,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,res,TRUE,FALSE,0,No,NO,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_renovation,user3,char_renovation,char_renovation,renovation,Renovation,char,categorical,res,TRUE,FALSE,2,No,NO,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_state_of_repair,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,res,TRUE,FALSE,1,Above Average,GOOD,"This field is subjective and contains little variation. As such, it is not used for modeling"
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_state_of_repair,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,res,TRUE,FALSE,2,Average,AVG,"This field is subjective and contains little variation. As such, it is not used for modeling"
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_state_of_repair,user1,char_repair_cnd,char_repair_cnd,repair_condition,Repair Condition,char,categorical,res,TRUE,FALSE,3,Below Average,POOR,"This field is subjective and contains little variation. As such, it is not used for modeling"
