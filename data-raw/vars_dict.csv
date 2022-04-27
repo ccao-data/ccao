@@ -89,6 +89,7 @@ iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_of_res,stories,char_
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_of_res,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,res,TRUE,TRUE,3,3 Story +,3STRY+,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_of_res,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,res,TRUE,TRUE,4,Split Level,SPLT,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_of_res,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,res,TRUE,TRUE,5,1.5 Story,1.5STRY,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_of_res,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,res,TRUE,TRUE,9.9,Missing,MSSNG,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_use,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,res,TRUE,TRUE,1,Single-Family,SF,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_use,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,res,TRUE,TRUE,2,Multi-Family,MF,
 ,,,,qu_vol,,char_volume,char_volume,volume,Volume,char,numeric,res,FALSE,FALSE,,,,
