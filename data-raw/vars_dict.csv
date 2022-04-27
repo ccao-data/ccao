@@ -80,8 +80,8 @@ iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_rooms,rmtot,char_rooms,ch
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_site_desire,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,res,TRUE,FALSE,1,Beneficial To Value,BTV,This field lacks sufficient variation to be useful for modeling
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_site_desire,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,res,TRUE,FALSE,2,Not Relevant To Value,NRTV,This field lacks sufficient variation to be useful for modeling
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_site_desire,user2,char_site,char_site,site_desirability,Site Desirability,char,categorical,res,TRUE,FALSE,3,Detracts From Value,DFV,This field lacks sufficient variation to be useful for modeling
-iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_design,user4,char_tp_dsgn,char_tp_dsgn,cathedral_ceiling,Cathedral Ceiling,char,categorical,res,TRUE,TRUE,1,Yes,YES,
-iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_design,user4,char_tp_dsgn,char_tp_dsgn,cathedral_ceiling,Cathedral Ceiling,char,categorical,res,TRUE,TRUE,2,No,NO,
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_design,user4,char_tp_dsgn,char_tp_dsgn,cathedral_ceiling,Cathedral Ceiling,char,categorical,res,FALSE,TRUE,1,Yes,YES,Field has not been updated recently enough to be useful for modeling.
+iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_design,user4,char_tp_dsgn,char_tp_dsgn,cathedral_ceiling,Cathedral Ceiling,char,categorical,res,FALSE,TRUE,2,No,NO,Field has not been updated recently enough to be useful for modeling.
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_plan,user4,char_tp_plan,char_tp_plan,design_plan,Design Plan,char,categorical,res,TRUE,TRUE,1,Architect,ARCT,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_plan,user4,char_tp_plan,char_tp_plan,design_plan,Design Plan,char,categorical,res,TRUE,TRUE,2,Stock Plan,STCK,
 iasWorld,iasworld.dweldat,,default.vw_card_res_char,qu_type_of_res,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,res,TRUE,TRUE,1,1 Story,1STRY,
@@ -388,12 +388,12 @@ iasWorld,iasworld.sales,,default.vw_pin_sale,,,sale_price,meta_sale_price,sale_p
 Derived,,,default.vw_pin_sale,,,sale_price_log10,meta_sale_price_log10,sale_price_log10,Sale Price (log10),meta,numeric,all,FALSE,FALSE,,,,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,,sale_key,meta_sale_key,sale_key,Sale Key,meta,character,all,FALSE,FALSE,,,,iasWorld internal sale identifier
 iasWorld,iasworld.sales,,default.vw_pin_sale,,transno,doc_no,meta_sale_document_num,sale_document_num,Sale Document Number,meta,character,all,TRUE,FALSE,,,,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,01,Warranty Deed,WD,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,02,Trustee Deed,TD,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,03,Quit Claim Deed,QCD,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,04,Executor Deed,ED,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,05,Other,O,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,06,Beneficial Intrst,BI,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,1,Warranty Deed,WD,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,2,Trustee Deed,TD,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,3,Quit Claim Deed,QCD,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,4,Executor Deed,ED,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,5,Other,O,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,6,Beneficial Intrst,BI,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,99,Unknown,UKNWN,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,oldown,seller_name,meta_sale_seller_name,sale_seller_name,Sale Seller Name,meta,character,all,TRUE,FALSE,,,,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,own1,buyer_name,meta_sale_buyer_name,sale_buyer_name,Sale Buyer Name,meta,character,all,TRUE,FALSE,,,,
