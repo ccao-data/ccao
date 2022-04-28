@@ -118,6 +118,12 @@ iasWorld,iasworld.legdat,,default.vw_pin_universe,,statecode,prop_address_state,
 iasWorld,iasworld.legdat,,default.vw_pin_universe,,zip1,prop_address_zipcode_1,loc_property_zip,property_zip,Property Zip Code,loc,character,all,TRUE,FALSE,,,,"Property street address, not the address of the taxpayer/property owner"
 iasWorld,iasworld.legdat,,default.vw_pin_universe,,zip2,prop_address_zipcode_2,,,,loc,character,all,FALSE,FALSE,,,,"Property street address, not the address of the taxpayer/property owner"
 Derived,,,default.vw_pin_universe,,,prop_address_full,loc_property_address,property_address,Property Address,loc,character,all,TRUE,FALSE,,,,"Property street address, not the address of the taxpayer/property owner"
+Derived,,,default.vw_pin_universe,,,mail_address_name,,mailing_name,Mailing Name,meta,character,all,TRUE,FALSE,,,,Taxpayer/property owner address
+Derived,iasworld.owndat,,default.vw_pin_universe,,,mail_address_full,,mail_address,Mailing Address,meta,character,all,TRUE,FALSE,,,,Taxpayer/property owner address
+iasWorld,iasworld.owndat,,default.vw_pin_universe,,cityname,mail_address_city_name,,mailing_city,Mailing City,meta,character,all,TRUE,FALSE,,,,Taxpayer/property owner address
+iasWorld,iasworld.owndat,,default.vw_pin_universe,,statecode,mail_address_state,,mailing_state,Mailing State,meta,character,all,TRUE,FALSE,,,,Taxpayer/property owner address
+iasWorld,iasworld.owndat,,default.vw_pin_universe,,zip1,mail_address_zipcode_1,,mailing_zip,Mailing Zip Code,meta,character,all,TRUE,FALSE,,,,Taxpayer/property owner address
+iasWorld,iasworld.owndat,,default.vw_pin_universe,,zip2,mail_address_zipcode_2,,,,meta,character,all,FALSE,FALSE,,,,Taxpayer/property owner address
 iasWorld,,,default.vw_card_res_char,qu_mlt_cd,card,card,meta_card_num,card_num,Card Number,meta,character,all,TRUE,FALSE,,,,Equivalent to legacy MLT_CD (multicode). Represents the building ID if multiple buildings or spaces exist on the same PIN
 Derived,,,default.vw_card_res_char,,,pin_is_multicard,ind_pin_is_multicard,pin_is_multicard,Multicard PIN,ind,logical,all,TRUE,TRUE,,,,"Indicator for a PIN with more than one building (ADU, coach house, etc.)"
 Derived,,,default.vw_card_res_char,,,pin_num_cards,meta_pin_num_cards,pin_num_cards,Number of Cards on PIN,meta,numeric,all,TRUE,FALSE,,,,
