@@ -250,7 +250,7 @@ test_that("output is as expected", {
   )
   expect_known_hash(
     vars_recode(data = chars_sample_athena, type = "long"),
-    hash = "1be64af321"
+    hash = "d3f8b1e3cd"
   )
   expect_equivalent(
     vars_recode(
