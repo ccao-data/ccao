@@ -4,14 +4,14 @@
 \alias{ccao_generate_id}
 \title{Generate a memorable ID string based on CCAO employee names}
 \usage{
-ccao_generate_id(n = 1L, suffix = as.character(Sys.Date()))
+ccao_generate_id(n = 1L, prefix = as.character(Sys.Date()))
 }
 \arguments{
 \item{n}{Integer of the number of IDs to generate. Default 1.}
 
-\item{suffix}{Suffix to append to the end of each ID, uses the system date
-by default. Set to NULL for no suffix or a vector of length n for multiple
-different suffixes.}
+\item{prefix}{Prefix to append to the end of each ID, uses the system date
+by default. Set to NULL for no prefix or a vector of length n for multiple
+different prefixes.}
 }
 \value{
 An n-long character vector of memorable IDs.
@@ -30,9 +30,9 @@ ccao_generate_id()
 # Multiple IDs
 ccao_generate_id(10)
 
-# IDs with no suffix
+# IDs with no prefix
 ccao_generate_id(3, NULL)
 
-# Different suffix for each ID
+# Different prefix for each ID
 ccao_generate_id(3, c("type1", "type2", "type3"))
 }
