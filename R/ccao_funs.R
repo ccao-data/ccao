@@ -257,9 +257,9 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
 #' fellow names.
 #'
 #' @param n Integer of the number of IDs to generate. Default 1.
-#' @param suffix Suffix to append to the end of each ID, uses the system date
-#'   by default. Set to NULL for no suffix or a vector of length n for multiple
-#'   different suffixes.
+#' @param prefix Prefix to append to the end of each ID, uses the system date
+#'   by default. Set to NULL for no prefix or a vector of length n for multiple
+#'   different prefixes.
 #'
 #' @return An n-long character vector of memorable IDs.
 #'
@@ -270,24 +270,24 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
 #' # Multiple IDs
 #' ccao_generate_id(10)
 #'
-#' # IDs with no suffix
+#' # IDs with no prefix
 #' ccao_generate_id(3, NULL)
 #'
-#' # Different suffix for each ID
+#' # Different prefix for each ID
 #' ccao_generate_id(3, c("type1", "type2", "type3"))
 #' @export
-ccao_generate_id <- function(n = 1L, suffix = as.character(Sys.Date())) {
+ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
   stopifnot(
     is.numeric(n),
     n >= 1,
-    is.character(suffix) | is.null(suffix),
-    length(suffix) == 1 | length(suffix) == n | is.null(suffix)
+    is.character(prefix) | is.null(prefix),
+    length(prefix) == 1 | length(prefix) == n | is.null(prefix)
   )
 
   left <- names_gen$left[stats::runif(n, 1, length(names_gen$left))]
   right <- names_gen$right[stats::runif(n, 1, length(names_gen$right))]
 
-  out <- paste(left, right, suffix, sep = "-")
+  out <- paste(prefix, left, right, sep = "-")
   out <- gsub("[- ]+$", "", out)
 
   return(out)

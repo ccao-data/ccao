@@ -203,10 +203,10 @@ test_that("functions return character vector of length n", {
 })
 
 test_that("no hanging dashes", {
-  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, suffix = ""))))
-  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, suffix = " "))))
-  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, suffix = NULL))))
-  expect_false(all(grepl("[ -]+$", ccao_generate_id(2, suffix = c(NULL, "")))))
+  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, prefix = ""))))
+  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, prefix = " "))))
+  expect_false(all(grepl("[ -]+$", ccao_generate_id(1, prefix = NULL))))
+  expect_false(all(grepl("[ -]+$", ccao_generate_id(2, prefix = c(NULL, "")))))
 })
 
 test_that("bad input data stops execution", {
