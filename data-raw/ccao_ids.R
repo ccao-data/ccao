@@ -141,7 +141,9 @@ right <- c(
   "takuya",
   "boni",
   "maya",
-  "damani"
+  "damani",
+  "iris",
+  "bowen"
 )
 
 names_gen <- list("left" = left, "right" = right)
