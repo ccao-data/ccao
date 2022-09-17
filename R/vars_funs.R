@@ -187,10 +187,10 @@ vars_rename <- function(data,
 
   # Return names inplace if the input data is a data frame, else return a
   # character vector of new names
-  if (is.data.frame(data) & type == "inplace") {
+  if (is.data.frame(data) && type == "inplace") {
     names(data) <- names_wm
     return(data)
-  } else if (is.character(data) | type == "vector") {
+  } else if (is.character(data) || type == "vector") {
     return(names_wm)
   }
 }
