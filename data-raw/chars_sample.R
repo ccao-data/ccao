@@ -2,11 +2,11 @@ library(DBI)
 library(noctua)
 library(readr)
 
-aws_athena_conn <- DBI::dbConnect(noctua::athena())
+AWS_ATHENA_CONN <- DBI::dbConnect(noctua::athena()) # nolint
 
 # Get sample of Athena residential universe
 chars_sample_athena <- dbGetQuery(
-  aws_athena_conn,
+  AWS_ATHENA_CONN, # nolint
   "
   SELECT
     pin,
@@ -57,7 +57,7 @@ usethis::use_data(chars_sample_athena, overwrite = TRUE)
 
 # Get sample ADDCHARS data
 chars_sample_hie <- dbGetQuery(
-  aws_athena_conn,
+  AWS_ATHENA_CONN, # nolint
   "
   SELECT *
   FROM ccao.hie
