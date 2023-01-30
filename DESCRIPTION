@@ -21,7 +21,7 @@ Imports:
     magrittr,
     rlang,
     tidyr (>= 1.1.0)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.2
 Suggests: 
     covr,
     devtools,

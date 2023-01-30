@@ -395,12 +395,12 @@ iasWorld,iasworld.sales,,default.vw_pin_sale,,,sale_price,meta_sale_price,sale_p
 Derived,,,default.vw_pin_sale,,,sale_price_log10,meta_sale_price_log10,sale_price_log10,Sale Price (log10),meta,numeric,all,FALSE,FALSE,,,,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,,sale_key,meta_sale_key,sale_key,Sale Key,meta,character,all,FALSE,FALSE,,,,iasWorld internal sale identifier
 iasWorld,iasworld.sales,,default.vw_pin_sale,,transno,doc_no,meta_sale_document_num,sale_document_num,Sale Document Number,meta,character,all,TRUE,FALSE,,,,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,01,Warranty Deed,WD,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,02,Trustee Deed,TD,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,03,Quit Claim Deed,QCD,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,04,Executor Deed,ED,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,05,Other,O,
-iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,06,Beneficial Intrst,BI,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,1,Warranty Deed,WD,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,2,Trustee Deed,TD,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,3,Quit Claim Deed,QCD,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,4,Executor Deed,ED,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,5,Other,O,
+iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,6,Beneficial Intrst,BI,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,instrtyp,deed_type,meta_sale_deed_type,sale_deed_type,Sale Deed Type,meta,character,all,TRUE,FALSE,99,Unknown,UKNWN,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,oldown,seller_name,meta_sale_seller_name,sale_seller_name,Sale Seller Name,meta,character,all,TRUE,FALSE,,,,
 iasWorld,iasworld.sales,,default.vw_pin_sale,,own1,buyer_name,meta_sale_buyer_name,sale_buyer_name,Sale Buyer Name,meta,character,all,TRUE,FALSE,,,,
@@ -491,3 +491,6 @@ Derived,,,,,,lag_other_tax_bill_amount_total,lag_other_tax_bill_amount_total,lag
 Derived,,,,,,hie_num_active,hie_num_active,hie_num_active,Number of Active Home Improvement Exemptions,flag,numeric,res,TRUE,FALSE,,,,Number of currently active (unexpired) HIE/288s. These freeze the characteristics of a property to before it was improved
 Derived,,,,,,hie_num_expired,hie_num_expired,hie_num_expired,Number of Expired Home Improvement Exemptions,flag,numeric,res,TRUE,FALSE,,,,Number of HIE/288s that expired for a given year. This effectively adds the characteristics of any improvement to the original property characteristics
 Chicago Department of Aviation,other.airport_noise,location.environment,default.vw_pin_universe,,,env_airport_noise_data_year,loc_env_airport_noise_data_year,airport_noise_data_year,Airport Noise DNL Data Year,loc,character,all,TRUE,FALSE,,,,
+Cook County GIS,,proximity.dist_pin_to_golf_course,default.vw_pin_universe,,,nearest_golf_course_dist_ft,prox_nearest_golf_course_dist_ft,nearest_golf_course_dist_ft,Nearest Golf Course Distance (Feet),prox,numeric,all,TRUE,TRUE,,,,Distance in feet to the nearest golf course (polygon). Taken from Cook County GIS shapefiles and OpenStreetMap
+Cook County GIS,,proximity.dist_pin_to_golf_course,default.vw_pin_universe,,,nearest_golf_course_id,prox_nearest_golf_course_id,nearest_golf_course_id,Nearest Golf Course ID,prox,character,all,TRUE,FALSE,,,,
+Cook County GIS,,proximity.dist_pin_to_golf_course,default.vw_pin_universe,,,nearest_golf_course_data_year,prox_nearest_golf_course_data_year,nearest_golf_course_data_year,Nearest Golf Course Data Year,prox,character,all,TRUE,FALSE,,,,

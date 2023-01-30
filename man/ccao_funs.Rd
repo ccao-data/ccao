@@ -60,13 +60,13 @@ calculated. See its respective function in the
 }
 \section{Functions}{
 \itemize{
-\item \code{ccao_cod}: Return named list of CCAO SOP compliant COD statistics.
+\item \code{ccao_cod()}: Return named list of CCAO SOP compliant COD statistics.
 
-\item \code{ccao_prd}: Return named list of CCAO SOP compliant PRD statistics.
+\item \code{ccao_prd()}: Return named list of CCAO SOP compliant PRD statistics.
 
-\item \code{ccao_prb}: Return named list of CCAO SOP compliant PRB statistics.
+\item \code{ccao_prb()}: Return named list of CCAO SOP compliant PRB statistics.
+
 }}
-
 \examples{
 
 # Load sample data from assessr
