@@ -4,6 +4,7 @@ cellar/
 lock/
 python/
 staging/
+
 # History files
 .Rhistory
 .Rapp.history
@@ -34,9 +35,9 @@ staging/
 *.knit.md
 .Rproj.user
 *.xml
+.DS_Store
 
 # pkgdown files
 public
 pkgdown
 *.png
-

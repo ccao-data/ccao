@@ -16,12 +16,12 @@ License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    assessr (>= 0.4.4),
-    dplyr (>= 1.0.4),
+    assessr (>= 0.4.5),
+    dplyr (>= 1.1.0),
     magrittr,
     rlang,
     tidyr (>= 1.1.0)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Suggests: 
     covr,
     devtools,

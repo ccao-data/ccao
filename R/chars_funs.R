@@ -1,3 +1,5 @@
+utils::globalVariables(c("var_code", "var_value_short"))
+
 #' Fix the age variable in CCAO data
 #'
 #' @description The AGE variable in many CCAO datasets only updates when a
@@ -314,14 +316,18 @@ chars_update <- function(data, additive_target, replacement_target) {
       dplyr::across(
         {{ additive_target }},
         function(x) {
-          source_col <- dplyr::cur_data()[[chars_get_col(dplyr::cur_column())]]
+          source_col <- dplyr::pick(
+            dplyr::all_of(chars_get_col(dplyr::cur_column()))
+          )
           rowSums(cbind(x, source_col), na.rm = TRUE)
         }
       ),
       dplyr::across(
         {{ replacement_target }},
         function(x) {
-          source_col <- dplyr::cur_data()[[chars_get_col(dplyr::cur_column())]]
+          source_col <- dplyr::pick(
+            dplyr::all_of(chars_get_col(dplyr::cur_column()))
+          )
           idx <- !is.na(source_col) & source_col != 0
           replace(x, which(idx), source_col[idx])
         }

@@ -323,7 +323,7 @@ vars_recode <- function(data,
     ) %>%
     dplyr::select(
       dplyr::starts_with("var_name_"),
-      .data$var_code:.data$var_value_short
+      var_code:var_value_short
     ) %>%
     tidyr::pivot_longer(
       dplyr::starts_with("var_name_"),
