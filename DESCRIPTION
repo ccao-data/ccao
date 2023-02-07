@@ -1,12 +1,12 @@
 Package: ccao
 Type: Package
 Title: Convenience Functions and Datasets for the Cook County Assessor's Office
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: c(
     person(given = "Dan", family = "Snow", email="daniel.snow@cookcountyil.gov", role=c("aut", "cre")),
     person(given = "Nathan", family = "Dignazio", role=c("ctb"))
     )
-Date: 2022-03-08
+Date: 2023-02-07
 Description: A set of functions used throughout the Cook County Assessor's
     valuation pipeline. The intention is to standardize the usage of critical
     functions across all users and scripts by having them all depend on a single
@@ -16,11 +16,11 @@ License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    assessr (>= 0.4.5),
+    assessr (>= 0.4.8),
     dplyr (>= 1.1.0),
     magrittr,
     rlang,
-    tidyr (>= 1.1.0)
+    tidyr (>= 1.3.0)
 RoxygenNote: 7.2.3
 Suggests: 
     covr,
