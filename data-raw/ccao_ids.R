@@ -147,7 +147,9 @@ right <- c(
   "yuxin",
   "christian",
   "rina",
-  "rob"
+  "rob",
+  "sam", # again
+  "irene"
 )
 
 names_gen <- list("left" = left, "right" = right)
