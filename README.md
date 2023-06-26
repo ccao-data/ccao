@@ -1,41 +1,39 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# CCAO package <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# CCAO <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
+
+[![R-CMD-check](https://github.com/ccao-data/ccao/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml)
+[![lint](https://github.com/ccao-data/ccao/actions/workflows/lint.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/lint.yaml)
+[![codecov](https://codecov.io/gh/ccao-data/ccao/branch/master/graph/badge.svg)](https://codecov.io/gh/ccao-data/ccao)
 
 A package to manage, distribute, and version control *CCAO-specific*
 functions. These functions are used throughout CCAO applications,
 models, and diagnostics. For generalized versions of assessment-related
-functions, see
-[assessR](https://gitlab.com/ccao-data-science---modeling/packages/assessr).
+functions, see [assessR](https://github.com/ccao-data/assessr).
 
 For detailed documentation on included functions and data, [**visit the
 full reference
-list**](https://ccao-data-science---modeling.gitlab.io/packages/ccao/reference/).
+list**](https://ccao-data.github.io/ccao/reference/index.html).
 
 ## Installation
 
-You can install the released version of `ccao` directly from GitLab by
-running the following R command after installing
-[remotes](https://github.com/r-lib/remotes):
+You can install the released version of `ccao` directly from GitHub with
+one of the following commands:
 
 ``` r
-remotes::install_gitlab("ccao-data-science---modeling/packages/ccao")
-```
+# Using remotes
+remotes::install_github("ccao-data/ccao")
 
-Occasionally, when using brand-new or source versions of packages,
-installation [on Windows will fail with the following
-error](https://github.com/rstudio/renv/issues/162):
+# Using renv
+renv::install("ccao-data/ccao")
 
-    DLL 'package_name' not found: maybe not installed for this architecture?
+# Using pak
+pak::pak("ccao-data/ccao")
 
-If this happens, try using the following installation command:
-
-``` r
-remotes::install_gitlab(
-  repo = "ccao-data-science---modeling/packages/ccao",
-  INSTALL_opts = "--no-multiarch"
-)
+# Append the @ symbol for a specific version
+remotes::install_github("ccao-data/ccao@1.2.0")
 ```
 
 ## Basic usage
@@ -60,12 +58,13 @@ sample_data %>%
 
 | pin            | year | char_yrblt | char_gar1_size | char_ext_wall | township_code |
 |:---------------|:-----|-----------:|:---------------|:--------------|:--------------|
-| 19233270420000 | 2020 |       1950 | 7              | 3             | 72            |
-| 14072030040000 | 2020 |       1908 | 3              | 1             | 73            |
-| 13324160010000 | 2020 |       1920 | 2              | 2             | 71            |
-| 19252040400000 | 2020 |       1916 | 1              | 4             | 72            |
+| 10254170360000 | 2015 |       1948 | 7              | 2             | 72            |
+| 09363230550000 | 2019 |       1923 | 7              | 3             | 73            |
+| 10253190450000 | 2018 |       1951 | 3              | 2             | 71            |
+| 13253230040000 | 2019 |       1969 | 7              | 2             | 72            |
 
 ``` r
+
 # Recode/rename/clean data using town_ and vars_ functions from ccao 
 sample_data %>%
   mutate(
@@ -84,10 +83,10 @@ sample_data %>%
 
 | PIN           | Year | Year Built | Garage 1 Size | Exterior Wall Material | Township Code | Township Name | Triad Name | Next Reass. Year |
 |:--------------|:-----|-----------:|:--------------|:-----------------------|:--------------|:--------------|:-----------|-----------------:|
-| 19-23-327-042 | 2020 |       1950 | 0 cars        | Frame + Masonry        | 72            | Lake          | City       |             2024 |
-| 14-07-203-004 | 2020 |       1908 | 2 cars        | Frame                  | 73            | Lake View     | City       |             2024 |
-| 13-32-416-001 | 2020 |       1920 | 1.5 cars      | Masonry                | 71            | Jefferson     | City       |             2024 |
-| 19-25-204-040 | 2020 |       1916 | 1 cars        | Stucco                 | 72            | Lake          | City       |             2024 |
+| 10-25-417-036 | 2015 |       1948 | 0 cars        | Masonry                | 72            | Lake          | City       |             2024 |
+| 09-36-323-055 | 2019 |       1923 | 0 cars        | Frame + Masonry        | 73            | Lake View     | City       |             2024 |
+| 10-25-319-045 | 2018 |       1951 | 2 cars        | Masonry                | 71            | Jefferson     | City       |             2024 |
+| 13-25-323-004 | 2019 |       1969 | 0 cars        | Masonry                | 72            | Lake          | City       |             2024 |
 
 ## CCAO colors
 

@@ -13,33 +13,33 @@ knitr::opts_chunk$set(
 )
 ```
 
-# CCAO package <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# CCAO <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
-A package to manage, distribute, and version control *CCAO-specific* functions. These functions are used throughout CCAO applications, models, and diagnostics. For generalized versions of assessment-related functions, see [assessR](https://gitlab.com/ccao-data-science---modeling/packages/assessr).
+[![R-CMD-check](https://github.com/ccao-data/ccao/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml)
+[![lint](https://github.com/ccao-data/ccao/actions/workflows/lint.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/lint.yaml)
+[![codecov](https://codecov.io/gh/ccao-data/ccao/branch/master/graph/badge.svg)](https://codecov.io/gh/ccao-data/ccao)
 
-For detailed documentation on included functions and data, [**visit the full reference list**](https://ccao-data-science---modeling.gitlab.io/packages/ccao/reference/).
+A package to manage, distribute, and version control *CCAO-specific* functions. These functions are used throughout CCAO applications, models, and diagnostics. For generalized versions of assessment-related functions, see [assessR](https://github.com/ccao-data/assessr).
+
+For detailed documentation on included functions and data, [**visit the full reference list**](https://ccao-data.github.io/ccao/reference/index.html).
 
 ## Installation
 
-You can install the released version of `ccao` directly from GitLab by running the following R command after installing [remotes](https://github.com/r-lib/remotes):
+You can install the released version of `ccao` directly from GitHub with one of the following commands:
 
 ```{r, eval=FALSE}
-remotes::install_gitlab("ccao-data-science---modeling/packages/ccao")
-```
+# Using remotes
+remotes::install_github("ccao-data/ccao")
 
-Occasionally, when using brand-new or source versions of packages, installation [on Windows will fail with the following error](https://github.com/rstudio/renv/issues/162):
+# Using renv
+renv::install("ccao-data/ccao")
 
-```
-DLL 'package_name' not found: maybe not installed for this architecture?
-```
+# Using pak
+pak::pak("ccao-data/ccao")
 
-If this happens, try using the following installation command:
-
-```{r, eval=FALSE}
-remotes::install_gitlab(
-  repo = "ccao-data-science---modeling/packages/ccao",
-  INSTALL_opts = "--no-multiarch"
-)
+# Append the @ symbol for a specific version
+remotes::install_github("ccao-data/ccao@1.2.0")
 ```
 
 ## Basic usage
