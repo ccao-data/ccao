@@ -32,6 +32,6 @@ Suggests:
     rmarkdown,
     scales,
     testthat
-Remotes: dccao-data/assessr
+Remotes: ccao-data/assessr
 Depends: 
     R (>= 3.5.0)
