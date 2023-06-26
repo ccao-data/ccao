@@ -1,6 +1,5 @@
 destination: public
-url: https://ccao-data-science---modeling.gitlab.io/packages/ccao/
-
+url: https://ccao-data.github.io/ccao/
 reference:
 
 - title: Functions

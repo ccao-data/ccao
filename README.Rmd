@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# CCAO <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# CCAO <a href='https://github.com/ccao-data/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 [![R-CMD-check](https://github.com/ccao-data/ccao/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/R-CMD-check.yaml)
 [![test-coverage](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml)
@@ -60,7 +60,7 @@ sample_data <- chars_sample_athena %>%
 sample_data %>%
   kable(digits = 3)
 
-# Recode/rename/clean data using town_ and vars_ functions from ccao 
+# Recode/rename/clean data using town_ and vars_ functions from ccao
 sample_data %>%
   mutate(
     pin = pin_format_pretty(pin),
@@ -74,7 +74,6 @@ sample_data %>%
   vars_recode(type = "long") %>%
   vars_rename(names_from = "athena", names_to = "pretty") %>%
   kable(digits = 3)
-
 ```
 
 ## CCAO colors
@@ -100,8 +99,8 @@ ggplot() +
     guide = "none",
     values = c("1" = "black", "2" = "white")
   ) +
-  scale_x_discrete(expand = c(0, 0)) + 
-  scale_y_discrete(expand = c(0, 0)) + 
+  scale_x_discrete(expand = c(0, 0)) +
+  scale_y_discrete(expand = c(0, 0)) +
   theme_minimal() +
   theme(
     axis.title = element_blank()

@@ -17,7 +17,7 @@
 #'
 #' For more information on how each statistic or its confidence interval is
 #' calculated. See its respective function in the
-#' \href{https://gitlab.com/ccao-data-science---modeling/packages/assessr}{AssessR package}.
+#' \href{https://github.com/ccao-data/assessr}{AssessR package}.
 #'
 #' @param ratio A numeric vector of ratios centered around 1, where the
 #'   numerator of the ratio is the estimated fair market value and the
@@ -77,7 +77,6 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
   # Only sample with 20+ observations are reliable for sales ratio studies
   # If less than 20, return only NAs and warn
   if (cod_n >= 20) {
-
     # Calculate COD of trimmed ratios
     cod_val <- assessr::cod(no_outliers, na.rm = na.rm)
 
@@ -96,7 +95,6 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
       cod_n
     )
   } else {
-
     # Generate empty output list and stop if N < 20 unless suppress
     out <- list(NA, NA, NA, NA, cod_n)
 
@@ -138,7 +136,6 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   # Only sample with 20+ observations are reliable for sales ratio studies
   # If less than 20, return only NAs and warn
   if (prd_n >= 20) {
-
     # Calculate PRD of trimmed ratios
     prd_val <- assessr::prd(
       no_outliers_df$assessed,
@@ -166,7 +163,6 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
       prd_n
     )
   } else {
-
     # Generate empty output list and stop if N < 20 unless suppress
     out <- list(NA, NA, NA, NA, prd_n)
 
@@ -208,7 +204,6 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   # Only sample with 20+ observations are reliable for sales ratio studies
   # If less than 20, return only NAs and warn
   if (prb_n >= 20) {
-
     # Calculate PRD of trimmed ratios
     prb_val <- assessr::prb(
       no_outliers_df$assessed,
@@ -235,7 +230,6 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
       prb_n
     )
   } else {
-
     # Generate empty output list and stop if N < 20 unless suppress
     out <- list(NA, NA, NA, NA, prb_n)
 

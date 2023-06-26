@@ -56,7 +56,7 @@ return NA if \code{suppress = TRUE}.
 
 For more information on how each statistic or its confidence interval is
 calculated. See its respective function in the
-\href{https://gitlab.com/ccao-data-science---modeling/packages/assessr}{AssessR package}.
+\href{https://github.com/ccao-data/assessr}{AssessR package}.
 }
 \section{Functions}{
 \itemize{

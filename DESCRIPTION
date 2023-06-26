@@ -11,7 +11,7 @@ Description: A set of functions used throughout the Cook County Assessor's
     valuation pipeline. The intention is to standardize the usage of critical
     functions across all users and scripts by having them all depend on a single
     package.
-URL: https://ccao-data-science---modeling.gitlab.io/packages/ccao/, https://gitlab.com/ccao-data-science---modeling/packages/ccao 
+URL: https://ccao-data.github.io/ccao/, https://github.com/ccao-data/ccao
 License: AGPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true

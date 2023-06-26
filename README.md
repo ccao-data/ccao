@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# CCAO <a href='https://gitlab.com/ccao-data-science---modeling/packages/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# CCAO <a href='https://github.com/ccao-data/ccao'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 [![R-CMD-check](https://github.com/ccao-data/ccao/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/R-CMD-check.yaml)
 [![test-coverage](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml)
@@ -65,7 +65,7 @@ sample_data %>%
 
 ``` r
 
-# Recode/rename/clean data using town_ and vars_ functions from ccao 
+# Recode/rename/clean data using town_ and vars_ functions from ccao
 sample_data %>%
   mutate(
     pin = pin_format_pretty(pin),
