@@ -37,7 +37,6 @@ utils::globalVariables(c("var_code", "var_value_short"))
 #' @family chars_funs
 #' @export
 chars_fix_age <- function(age, year, town) {
-
   # Input checking and error handling
   stopifnot(
     is.numeric(age),
@@ -110,7 +109,6 @@ chars_fix_age <- function(age, year, town) {
 #' @export
 # nolint end
 chars_288_active <- function(start_year, town) {
-
   # Input checking and error handling
   stopifnot(
     is.numeric(start_year), # Input years must be numeric
@@ -245,7 +243,6 @@ chars_288_active <- function(start_year, town) {
 #' @export
 chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
                            additive_source, replacement_source) {
-
   # Goal here is to transform our data from single rows specifying 288s that
   # are active for X years to a dataset of X rows with the characteristic
   # updates for each year. To do this, we first eliminate multiple 288s active
@@ -307,7 +304,6 @@ chars_sparsify <- function(data, pin_col, year_col, town_col, upload_date_col,
 #' @family chars_funs
 #' @export
 chars_update <- function(data, additive_target, replacement_target) {
-
   # Given an input dataset, this code will lookup each of the Athena
   # columns specified and ADD or REPLACE their values using the equivalent
   # ADDCHARS column

@@ -18,7 +18,6 @@
 #' town_convert(c("31", "Proviso", "Lyons"))
 #' @export
 town_convert <- function(town) {
-
   # Input error handling
   stopifnot(
     is.vector(town), # input must be vector
@@ -56,7 +55,6 @@ town_convert <- function(town) {
 #' town_get_triad(c("Lyons", "10", "Worth"))
 #' @export
 town_get_triad <- function(town, name = FALSE) {
-
   # Input error handling
   stopifnot(
     is.vector(town), # input must be vector
@@ -114,7 +112,6 @@ town_get_triad <- function(town, name = FALSE) {
 town_get_assmnt_year <- function(town,
                                  year = as.integer(format(Sys.Date(), "%Y")),
                                  round_type = "nearest") {
-
   # Replace NAs, feed through function then return to NA in final output
   year_na_idx <- is.na(year)
   year[year_na_idx] <- as.integer(format(Sys.Date(), "%Y"))
@@ -152,7 +149,6 @@ town_get_assmnt_year <- function(town,
     expr = {
       mapply(
         function(x, y) {
-
           # Depending on the round type, look up the year of the nearest
           # assessment relative to the input year
           switch(round_type,

@@ -27,7 +27,6 @@
 #' @family vars_funs
 #' @export
 vars_check_class <- function(age, sqft, class) {
-
   # Simple error checking
   stopifnot(
     is.numeric(age),
@@ -41,23 +40,24 @@ vars_check_class <- function(age, sqft, class) {
   )
 
   # Element-wise comparison to test that age & sqft return the expected class
-  mapply(function(x, y, z) {
-    idx <- res_classes$min_age <= x &
-      res_classes$max_age >= x &
-      res_classes$min_size <= y &
-      res_classes$max_size >= y
+  mapply(
+    function(x, y, z) {
+      idx <- res_classes$min_age <= x &
+        res_classes$max_age >= x &
+        res_classes$min_size <= y &
+        res_classes$max_size >= y
 
-    possible_classes <- res_classes$class_code[idx]
+      possible_classes <- res_classes$class_code[idx]
 
-    if (length(possible_classes) == 0) {
-      return(NA)
-    } else {
-      return(z %in% possible_classes)
-    }
-  },
-  x = age, y = sqft, z = class,
-  USE.NAMES = FALSE,
-  SIMPLIFY = TRUE
+      if (length(possible_classes) == 0) {
+        return(NA)
+      } else {
+        return(z %in% possible_classes)
+      }
+    },
+    x = age, y = sqft, z = class,
+    USE.NAMES = FALSE,
+    SIMPLIFY = TRUE
   )
 }
 
@@ -139,7 +139,6 @@ vars_rename <- function(data,
                         names_to = NULL,
                         type = "inplace",
                         dict = ccao::vars_dict) {
-
   # Check input data dictionary
   stopifnot(
     is.data.frame(dict),
@@ -285,7 +284,6 @@ vars_recode <- function(data,
                         type = "long",
                         as_factor = TRUE,
                         dict = ccao::vars_dict) {
-
   # Check input data dictionary
   stopifnot(
     is.data.frame(dict),
@@ -343,7 +341,6 @@ vars_recode <- function(data,
       dplyr::all_of(cols),
       function(x, y = dplyr::cur_column()) {
         if (y %in% dict_long$var_name) {
-
           # Find the rows of the dictionary corresponding to column y
           var_rows <- which(dict_long$var_name == y)
           idx <- match(x, dict_long$var_code[var_rows])

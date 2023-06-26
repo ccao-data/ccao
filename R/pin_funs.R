@@ -65,7 +65,6 @@ pin_clean <- function(pin) {
 #' pin_format_pretty(pins)
 #' @export
 pin_format_pretty <- function(pin, full_length = FALSE) {
-
   # Input checking and error handling
   stopifnot(
     is.vector(pin), # Must be vector input

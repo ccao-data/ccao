@@ -1,4 +1,3 @@
-
 # Generate named list of colors
 ccao_colors <- list(
   navy       = "#29428D",

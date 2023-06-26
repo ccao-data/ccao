@@ -29,9 +29,12 @@ Suggests:
     knitr,
     lintr,
     pkgdown,
+    readr,
     rmarkdown,
     scales,
-    testthat
+    sf,
+    testthat,
+    usethis
 Remotes: ccao-data/assessr
 Depends: 
     R (>= 3.5.0)
