@@ -7,6 +7,8 @@
 [![test-coverage](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/test-coverage.yaml)
 [![lint](https://github.com/ccao-data/ccao/actions/workflows/lint.yaml/badge.svg)](https://github.com/ccao-data/ccao/actions/workflows/lint.yaml)
 [![codecov](https://codecov.io/gh/ccao-data/ccao/branch/master/graph/badge.svg)](https://codecov.io/gh/ccao-data/ccao)
+[![pre-commit.ci
+status](https://results.pre-commit.ci/badge/github/ccao-data/ccao/master.svg)](https://results.pre-commit.ci/latest/github/ccao-data/ccao/master)
 
 A package to manage, distribute, and version control *CCAO-specific*
 functions. These functions are used throughout CCAO applications,
