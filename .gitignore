@@ -6,7 +6,6 @@
 *.knit.md
 *.xml
 .Rproj.user/
-inst/
 public/
 pkgdown/
 renv/

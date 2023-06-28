@@ -24,10 +24,12 @@ Imports:
 RoxygenNote: 7.2.3
 Suggests: 
     covr,
+    DBI,
     devtools,
     ggplot2,
     knitr,
     lintr,
+    noctua,
     pkgdown,
     readr,
     rmarkdown,
