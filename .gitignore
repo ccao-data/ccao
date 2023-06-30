@@ -7,6 +7,5 @@
 *.xml
 .Rproj.user/
 public/
-pkgdown/
 renv/
 renv.lock
