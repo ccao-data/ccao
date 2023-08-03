@@ -1,5 +1,14 @@
 destination: public
 url: https://ccao-data.github.io/ccao/
+
+authors:
+  sidebar:
+    roles: [aut, ctb]
+  Dan Snow:
+    href: https://github.com/dfsnow
+  William Ridgeway:
+    href: https://github.com/wrridgeway
+
 reference:
 
 - title: Functions

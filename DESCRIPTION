@@ -4,6 +4,7 @@ Title: Convenience Functions and Datasets for the Cook County Assessor's Office
 Version: 1.2.2
 Authors@R: c(
     person(given = "Dan", family = "Snow", email="daniel.snow@cookcountyil.gov", role=c("aut", "cre")),
+    person(given = "William", family = "Ridgeway", email="william-ridgeway@cookcountyil.gov", role=c("aut", "ctb")),
     person(given = "Nathan", family = "Dignazio", role=c("ctb"))
     )
 Date: 2023-02-07
