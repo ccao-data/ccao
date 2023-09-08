@@ -61,7 +61,6 @@ qu_no_com_unit,user20,char_ncu,char_ncu,num_commercial_units,Number of Commercia
 ,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,3,Stove,STVE
 ,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,4,Solar,SOLR
 ,,char_oheat,char_oheat,other_heating,Other Heating,char,categorical,5,None,NONE
-,,char_ot_impr,char_ot_impr,num_other_improvements,Other Improvements,char,numeric,,,
 qu_porch,user30,char_porch,char_porch,porch,Porch,char,categorical,0,None,NONE
 qu_porch,user30,char_porch,char_porch,porch,Porch,char,categorical,1,Frame Enclosed,FRAM
 qu_porch,user30,char_porch,char_porch,porch,Porch,char,categorical,2,Masonry Enclosed,MSRY
@@ -92,7 +91,6 @@ qu_type_of_res,stories,char_type_resd,char_type_resd,type_of_residence,Type of R
 qu_type_of_res,stories,char_type_resd,char_type_resd,type_of_residence,Type of Residence,char,categorical,9.9,Missing,MSSNG
 qu_use,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,1,Single-Family,SF
 qu_use,user15,char_use,char_use,single_v_multi_family,Single vs. Multi-family Use,char,categorical,2,Multi-Family,MF
-qu_vol,,char_volume,char_volume,volume,Volume,char,numeric,,,
 ,cdu,cdu,meta_cdu,cdu,"Condition, Desirability, and Utility",meta,character,,,
 qu_pin,parid,pin,meta_pin,pin,PIN,meta,character,,,
 ,,pin10,meta_pin10,pin10,PIN (10-digit),meta,character,,,
@@ -483,21 +481,7 @@ qu_mlt_cd,card,card,meta_card_num,card_num,Card Number,meta,character,,,
 ,,ind_pin_is_multilline,ind_pin_is_multilline,ind_pin_is_multilline,MultiLLine PIN,ind,logical,,,
 ,,meta_pin_num_lline,meta_pin_num_lline,pin_num_lline,Number of LLines on PIN,meta,numeric,,,
 ,,char_bldg_is_mixed_use,char_bldg_is_mixed_use,bldg_is_mixed_use,Condominium Building Is Mixed Use,char,logical,,,
-,,strata_1,meta_strata_1,strata_1,Condominium Building Strata 1,meta,character,,,
-,,strata_2,meta_strata_2,strata_2,Condominium Building Strata 2,meta,character,,,
 ,,env_airport_noise_dnl,loc_env_airport_noise_dnl,airport_noise_dnl,Airport Noise DNL,loc,numeric,,,
-,,lag_meta_sale_price,lag_meta_sale_price,lag_sale_price,Spatially Lagged Average Sale Price,lag,numeric,,,
-,,lag_char_bldg_sf,lag_char_bldg_sf,lag_bldg_sf,Spatially Lagged Average Building Square Feet,lag,numeric,,,
-,,lag_char_land_sf,lag_char_land_sf,lag_land_sf,Spatially Lagged Average Land Square Feet,lag,numeric,,,
-,,lag_char_rooms,lag_char_rooms,lag_rooms,Spatially Lagged Average Number of Rooms,lag,numeric,,,
-,,lag_char_beds,lag_char_beds,lag_beds,Spatially Lagged Average Number of Bedrooms,lag,numeric,,,
-,,lag_char_fbath,lag_char_fbath,lag_fbath,Spatially Lagged Average Number of Full Bathrooms,lag,numeric,,,
-,,lag_char_hbath,lag_char_hbath,lag_hbath,Spatially Lagged Average Number of Half Bathrooms,lag,numeric,,,
-,,lag_char_frpl,lag_char_frpl,lag_frpl,Spatially Lagged Average Number of Fireplaces,lag,numeric,,,
-,,lag_char_yrblt,lag_char_yrblt,lag_yrblt,Spatially Lagged Average Year Built,lag,numeric,,,
-,,lag_other_tax_bill_amount_total,lag_other_tax_bill_amount_total,lag_tax_bill_amount_total,Spatially Lagged Average Total Tax Bill Amount,lag,numeric,,,
-,,hie_num_active,hie_num_active,hie_num_active,Number of Active Home Improvement Exemptions,flag,numeric,,,
-,,hie_num_expired,hie_num_expired,hie_num_expired,Number of Expired Home Improvement Exemptions,flag,numeric,,,
 ,,env_airport_noise_data_year,loc_env_airport_noise_data_year,airport_noise_data_year,Airport Noise DNL Data Year,loc,character,,,
 ,,nearest_golf_course_dist_ft,prox_nearest_golf_course_dist_ft,nearest_golf_course_dist_ft,Nearest Golf Course Distance (Feet),prox,numeric,,,
 ,,nearest_golf_course_id,prox_nearest_golf_course_id,nearest_golf_course_id,Nearest Golf Course ID,prox,character,,,
