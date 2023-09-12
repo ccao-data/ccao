@@ -5,16 +5,8 @@
 \alias{vars_dict}
 \title{Data dictionary for CCAO data sets and variables}
 \format{
-A data frame with 496 rows and 19 variables:
+A data frame with 488 rows and 11 variables:
 \describe{
-  \item{var_from_source}{Name of the raw data source that the variable
-  was extracted from}
-  \item{var_from_table}{Name Athena table containing the variable, if
-  applicable}
-  \item{var_from_ctas}{Name of the CREATE TABLE AS SELECT statement that
-  created the variable, if applicable}
-  \item{var_from_view}{Name of the Athena view that contains the variable.
-  This is typically the main data source for end users}
   \item{var_name_hie}{Column name of variable when stored in the legacy
   ADDCHARS SQL table}
   \item{var_name_iasworld}{Column name for variable as stored in the system
@@ -31,17 +23,11 @@ A data frame with 496 rows and 19 variables:
   For example, ind_ variables are always indicators (booleans), while char_
   variables are always property characteristics}
   \item{var_data_type}{R data type variable values should be stored as}
-  \item{var_model_type}{Model type that uses this variable}
-  \item{var_is_published}{Logical value indicating whether to publish in
-  open data}
-  \item{var_is_predictor}{Logical value indicating whether to use variable
-  in modeling on the right-hand side. Left-hand side is always sale price}
   \item{var_code}{Factor value for categorical variable. These are the values
   stored in the system of record}
   \item{var_value}{Human-readable translation of factor value}
   \item{var_value_short}{Human-readable translation of factor value, but as
   short as possible}
-  \item{var_notes}{Field descriptions and caveats}
 }
 }
 \usage{
