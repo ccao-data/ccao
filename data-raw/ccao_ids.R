@@ -13,6 +13,8 @@ left <- c(
   "boring",
   "brave",
   "busy",
+  "calm",
+  "cattywampus",
   "charming",
   "clever",
   "cool",
@@ -24,6 +26,7 @@ left <- c(
   "crazy",
   "dazzling",
   "determined",
+  "didactic",
   "distracted",
   "dreamy",
   "eager",
@@ -50,7 +53,6 @@ left <- c(
   "great",
   "happy",
   "hardcore",
-  "heuristic",
   "hopeful",
   "hungry",
   "infallible",
@@ -69,13 +71,11 @@ left <- c(
   "mystifying",
   "modest",
   "musing",
-  "naughty",
   "nervous",
   "nice",
   "nifty",
   "nostalgic",
   "objective",
-  "over-qualified",
   "optimistic",
   "peaceful",
   "pedantic",
@@ -90,6 +90,7 @@ left <- c(
   "reverent",
   "romantic",
   "sad",
+  "sagacious",
   "serene",
   "sharp",
   "silly",
@@ -153,7 +154,9 @@ right <- c(
   "claire",
   "jean",
   "damon",
-  "michael"
+  "michael",
+  "caroline",
+  "matthew"
 )
 
 names_gen <- list("left" = left, "right" = right)
