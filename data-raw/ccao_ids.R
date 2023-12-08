@@ -38,7 +38,6 @@ left <- c(
   "epic",
   "exciting",
   "fancy-free",
-  "fecund",
   "fervent",
   "festive",
   "flamboyant",
@@ -157,7 +156,7 @@ right <- c(
   "damon",
   "michael",
   "caroline",
-  "matt" # again
+  "matthew"
 )
 
 names_gen <- list("left" = left, "right" = right)
