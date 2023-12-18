@@ -408,9 +408,7 @@ qu_mlt_cd,card,card,meta_card_num,card_num,Card Number,meta,character,,,
 ,saletype,sale_type,meta_sale_type,sale_type,Sale Type,meta,categorical,1,LAND AND BUILDING,LNDBLDG
 ,,is_multisale,meta_is_multisale,is_multisale,Multisale,meta,logical,,,
 ,nopar,num_parcels_sale,meta_num_parcels_sale,num_parcels_sale,Number of Parcels Sold,meta,numeric,,,
-,,sale_filter_lower_limit,meta_sale_filter_lower_limit,sale_filter_lower_limit,Sale Filter Lower Limit,meta,numeric,,,
-,,sale_filter_upper_limit,meta_sale_filter_upper_limit,sale_filter_upper_limit,Sale Filter Upper Limit,meta,numeric,,,
-,,sale_filter_count,meta_sale_filter_count,sale_filter_count,Sale Filter Count,meta,numeric,,,
+,,sv_is_outlier,meta_sv_is_outlier,sv_is_outlier,Sales Validation Outlier,meta,logical,,,
 ,who,updated_by,meta_updated_by,record_last_updated_by,Record Last Updated By,meta,character,,,
 ,wen,updated_at,meta_updated_at,record_last_updated_at,Record Last Updated At,meta,date,,,
 ,,modeling_group,meta_modeling_group,property_group,Property Group,meta,categorical,0,Non-Livable Space,NONLIVABLE
