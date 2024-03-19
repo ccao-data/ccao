@@ -5,7 +5,7 @@
 \alias{vars_dict}
 \title{Data dictionary for CCAO data sets and variables}
 \format{
-A data frame with 488 rows and 11 variables:
+A data frame with 509 rows and 11 variables:
 \describe{
   \item{var_name_hie}{Column name of variable when stored in the legacy
   ADDCHARS SQL table}
