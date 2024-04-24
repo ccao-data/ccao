@@ -156,7 +156,9 @@ right <- c(
   "damon",
   "michael",
   "caroline",
-  "matthew"
+  "matthew",
+  "julia",
+  "megan"
 )
 
 names_gen <- list("left" = left, "right" = right)
