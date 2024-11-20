@@ -41,37 +41,53 @@ def vars_rename(
     a character vector of renamed columns, behavior that is configurable using
     the `output_type` argument.
 
-    :param data: DataFrame or list of column names to rename.
-        The input data with columns to be renamed. If a DataFrame, renames columns directly.
+    :param data:
+        DataFrame or list of column names to rename.
+        If a DataFrame, renames columns directly.
     :type data: pandas.DataFrame or list[str]
 
-    :param names_from: The source naming convention to rename from.
+    :param names_from:
+        The source naming convention to rename from.
         Must match a key in the dictionary.
     :type names_from: str
 
-    :param names_to: The target naming convention to rename to.
+    :param names_to:
+        The target naming convention to rename to.
         Must match a key in the dictionary.
     :type names_to: str
 
-    :param output_type: Output type. Either `"inplace"`, which mutates the
-        input data frame, or `"vector"`, which returns a list of strings with
-        the construction new_col_name = old_col_name.
+    :param output_type:
+        Output type. Either `"inplace"`, which mutates the input data frame,
+        or `"vector"`, which returns a list of strings with the construction
+        new_col_name = old_col_name.
     :type output_type: OutputType or str
 
-    :param dictionary: The dictionary for mapping column names.
+    :param dictionary:
+        The dictionary for mapping column names.
         Must contain keys like `var_name_<names_from>` and `var_name_<names_to>`.
     :type dictionary: pandas.DataFrame
 
     :raises ValueError: If required arguments are invalid or the dictionary does not meet format requirements.
     :raises TypeError: If `data` is neither a DataFrame nor a list of column names.
 
-    :return: Either the input data with renamed columns if `output_type` is
+    :return:
+        Either the input data with renamed columns if `output_type` is
         `"inplace"` and the input data is a DataFrame, otherwise a list of
         renamed columns.
     :rtype: pandas.DataFrame or list[str]
 
     :example:
-        >>> vars_rename(data=sample_data, names_from="model", names_to="athena", output_type="inplace")
+
+    .. code-block:: python
+
+        import ccao
+
+        ccao.vars_rename(
+            data=["char_yrblt"],
+            names_from="athena",
+            names_to="pretty",
+            output_type="vector"
+        )
     """
     # Validate the dictionary schema
     dictionary = dictionary if dictionary is not None else vars_dict
