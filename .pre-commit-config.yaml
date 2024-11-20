@@ -10,6 +10,7 @@ repos:
     -   id: use-tidy-description
     -   id: lintr
     -   id: readme-rmd-rendered
+        exclude: ^python/
     -   id: parsable-R
     -   id: no-browser-statement
     -   id: no-debug-statement
