@@ -12,7 +12,7 @@ dependencies = [
     "pandas>=2.2.3",
 ]
 
-[dependency-groups]
+[project.optional-dependencies]
 dev = [
     "mypy>=1.13.0",
     "pytest>=8.3.3",
