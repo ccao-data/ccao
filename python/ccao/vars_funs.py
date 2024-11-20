@@ -1,3 +1,4 @@
+# Functions for translating variables between different data sources
 import enum
 import importlib.resources
 
@@ -37,9 +38,10 @@ def vars_rename(
 
     This function renames columns in a dataset based on a dictionary that maps
     names from one convention to another. It can rename columns in-place or return
-    a character vector of renamed columns.
+    a character vector of renamed columns, behavior that is configurable using
+    the `output_type` argument.
 
-    :param data: DataFrame or list of column names.
+    :param data: DataFrame or list of column names to rename.
         The input data with columns to be renamed. If a DataFrame, renames columns directly.
     :type data: pandas.DataFrame or list[str]
 
@@ -51,7 +53,7 @@ def vars_rename(
         Must match a key in the dictionary.
     :type names_to: str
 
-    :param output_type: Output type. Either `"inplace"`, which renames the
+    :param output_type: Output type. Either `"inplace"`, which mutates the
         input data frame, or `"vector"`, which returns a list of strings with
         the construction new_col_name = old_col_name.
     :type output_type: OutputType or str
@@ -121,7 +123,7 @@ def vars_rename(
     to = f"{var_name_prefix}_{names_to}"
     mapping = dict(zip(dictionary[from_], dictionary[to]))
 
-    # Handle output differently depending on the input type and `inplace` kwarg
+    # Handle output differently depending on the input and output type args
     if isinstance(data, pd.DataFrame):
         if output_type == OutputType.INPLACE:
             data.rename(columns=mapping, inplace=True)
