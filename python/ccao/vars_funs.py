@@ -8,35 +8,28 @@ import ccao.data
 # Load the default variable dictionary
 _data_path = importlib.resources.files(ccao.data)
 vars_dict = pd.read_csv(str(_data_path / "vars_dict.csv"))
-vars_dict_legacy = pd.read_csv(str(_data_path / "vars_dict_legacy.csv"))
+
+# Prefix we use to identify variable name columns in the variable dictionary
+var_name_prefix = "var_name"
 
 
-class Name(enum.Enum):
-    """Valid sources of names for variables."""
+class OutputType(enum.Enum):
+    """Possible output types for variable renaming"""
 
-    HIE = "hie"
-    IASWORLD = "iasworld"
-    ATHENA = "athena"
-    MODEL = "model"
-    PUBLISH = "publish"
-    PRETTY = "pretty"
+    INPLACE = "inplace"
+    VECTOR = "vector"
 
     @classmethod
     def values(cls) -> list[str]:
-        """Return all possible values for the enum."""
-        return [name.value for name in cls]
-
-    @property
-    def colname(self) -> str:
-        """Get the dictionary column corresponding to this variable name."""
-        return f"var_name_{self.value}"
+        """Get the possible values for this enum"""
+        return [type_.value for type_ in cls]
 
 
 def vars_rename(
     data: list[str] | pd.DataFrame,
-    names_from: Name | str,
-    names_to: Name | str,
-    inplace: bool = True,
+    names_from: str,
+    names_to: str,
+    output_type: OutputType | str = OutputType.INPLACE,
     dictionary: pd.DataFrame | None = None,
 ) -> list[str] | pd.DataFrame:
     """
@@ -52,15 +45,16 @@ def vars_rename(
 
     :param names_from: The source naming convention to rename from.
         Must match a key in the dictionary.
-    :type names_from: Name enum or str
+    :type names_from: str
 
     :param names_to: The target naming convention to rename to.
         Must match a key in the dictionary.
-    :type names_to: Name enum or str
+    :type names_to: str
 
-    :param inplace: Whether to mutate the data in place or return the new names as a list of strings.
-        Only used if the input data is a DataFrame.
-    :type inplace: str
+    :param output_type: Output type. Either `"inplace"`, which renames the
+        input data frame, or `"vector"`, which returns a list of strings with
+        the construction new_col_name = old_col_name.
+    :type output_type: OutputType or str
 
     :param dictionary: The dictionary for mapping column names.
         Must contain keys like `var_name_<names_from>` and `var_name_<names_to>`.
@@ -69,51 +63,74 @@ def vars_rename(
     :raises ValueError: If required arguments are invalid or the dictionary does not meet format requirements.
     :raises TypeError: If `data` is neither a DataFrame nor a list of column names.
 
-    :return: Either the input data with renamed columns if `inplace is True`
-        and the input data is a DataFrame, otherwise a list of renamed columns.
+    :return: Either the input data with renamed columns if `output_type` is
+        `"inplace"` and the input data is a DataFrame, otherwise a list of
+        renamed columns.
     :rtype: pandas.DataFrame or list[str]
 
     :example:
-        >>> vars_rename(data=sample_data, names_from=Name.MODEL, names_to=Name.ATHENA, inplace=False)
+        >>> vars_rename(data=sample_data, names_from="model", names_to="athena", output_type="inplace")
     """
     # Validate the dictionary schema
-    dictionary = dictionary or vars_dict
+    dictionary = dictionary if dictionary is not None else vars_dict
     if not isinstance(dictionary, pd.DataFrame) or len(dictionary) == 0:
         raise ValueError("dictionary must be a non-empty pandas DataFrame")
 
-    if not (isinstance(names_from, Name) or isinstance(names_from, str)) or not (
-        isinstance(names_to, Name) or isinstance(names_to, str)
-    ):
-        raise ValueError("names_from and names_to must be strings or Name instances")
-
-    if isinstance(names_from, str):
-        if names_from.lower() not in Name.values():
-            raise ValueError(f"names_from must be one of: {Name.values()}")
-        names_from = Name[names_from.upper()]
-
-    if isinstance(names_to, str):
-        if names_to.lower() not in Name.values():
-            raise ValueError(f"names_to must be one of: {Name.values()}")
-        names_to = Name[names_to.upper()]
-
-    dictionary_columns = list(dictionary.columns.values)
-    if (
-        names_from.colname not in dictionary_columns
-        or names_to.colname not in dictionary_columns
-    ):
+    # Make sure the dictionary contains variable columns
+    dictionary_var_columns = [
+        col
+        for col in list(dictionary.columns.values)
+        if col.startswith(var_name_prefix)
+    ]
+    if not len(dictionary_var_columns) >= 2:
         raise ValueError(
-            f"{names_from.colname} and {names_to.colname} must be columns in dictionary"
+            f"dictionary must contain at least two columns starting with "
+            f"{var_name_prefix}"
         )
 
-    mapping = dict(zip(dictionary[names_from.colname], dictionary[names_to.colname]))
+    # Get a list of possible names_from and names_to from dictionary
+    possible_names_args = [
+        col.replace(f"{var_name_prefix}_", "") for col in dictionary_var_columns
+    ]
 
+    # Validate names arguments
+    if not isinstance(names_from, str) or not isinstance(names_to, str):
+        raise ValueError("names_from and names_to must be strings")
+
+    # If names arguments aren't possible, throw error and list possible names
+    for label, var in [("names_from", names_from), ("names_to", names_to)]:
+        if var not in possible_names_args:
+            raise ValueError(
+                f"{label} must be one of {possible_names_args} (got '{var}')"
+            )
+
+    # Validate output type and convert it to the enum
+    if not isinstance(output_type, (OutputType, str)):
+        raise ValueError("output_type must be a string or OutputType instance")
+
+    if isinstance(output_type, str):
+        if output_type not in OutputType.values():
+            raise ValueError(
+                f"output_type must be one of {OutputType.values()} "
+                f"(got {output_type})"
+            )
+        output_type = OutputType(output_type)
+
+    # Get a mapping from names_from to names_to
+    from_ = f"{var_name_prefix}_{names_from}"
+    to = f"{var_name_prefix}_{names_to}"
+    mapping = dict(zip(dictionary[from_], dictionary[to]))
+
+    # Handle output differently depending on the input type and `inplace` kwarg
     if isinstance(data, pd.DataFrame):
-        if inplace is True:
+        if output_type == OutputType.INPLACE:
             data.rename(columns=mapping, inplace=True)
             return data
         else:
             return [mapping.get(col, col) for col in list(data.columns.values)]
     elif isinstance(data, list):
+        # If the input data is a list, it's not possible to update it inplace,
+        # so ignore that argument
         return [mapping.get(col, col) for col in data]
     else:
         raise TypeError("data must be a DataFrame or list of column names")
