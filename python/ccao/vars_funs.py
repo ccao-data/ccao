@@ -109,7 +109,8 @@ def vars_rename(
 
     # Get a list of possible names_from and names_to from dictionary
     possible_names_args = [
-        col.replace(f"{var_name_prefix}_", "") for col in dictionary_var_columns
+        col.replace(f"{var_name_prefix}_", "")
+        for col in dictionary_var_columns
     ]
 
     # Validate names arguments

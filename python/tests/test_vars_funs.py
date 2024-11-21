@@ -9,7 +9,10 @@ import ccao.vars_funs
 def test_vars_rename_input_data_is_dataframe(output_type, chars_sample_athena):
     data = chars_sample_athena.iloc[:, 13:19].copy()
     result = ccao.vars_rename(
-        data=data, names_from="athena", names_to="pretty", output_type=output_type
+        data=data,
+        names_from="athena",
+        names_to="pretty",
+        output_type=output_type,
     )
     expected = [
         "Apartments",
@@ -56,8 +59,12 @@ def test_vars_rename_unmatched_cols_unchanged():
     assert result == unmatched_colnames
 
 
-@pytest.mark.parametrize("output_type", ["vector", ccao.vars_funs.OutputType.VECTOR])
-def test_vars_rename_output_type_enum_or_string(output_type, chars_sample_athena):
+@pytest.mark.parametrize(
+    "output_type", ["vector", ccao.vars_funs.OutputType.VECTOR]
+)
+def test_vars_rename_output_type_enum_or_string(
+    output_type, chars_sample_athena
+):
     # Both the enum and string versions of output_type should work
     result = ccao.vars_rename(
         data=chars_sample_athena.iloc[:, 13:19],
@@ -133,14 +140,20 @@ def test_vars_rename_invalid_dictionary_missing_variable_columns():
 @pytest.mark.parametrize("names_from,names_to", [(1, "pretty"), ("pretty", 1)])
 def test_vars_rename_invalid_names_type(names_from, names_to):
     with pytest.raises(ValueError) as exc:
-        ccao.vars_rename(data=["1", "2", "3"], names_from=names_from, names_to=names_to)
+        ccao.vars_rename(
+            data=["1", "2", "3"], names_from=names_from, names_to=names_to
+        )
     assert "must be strings" in str(exc.value)
 
 
-@pytest.mark.parametrize("names_from,names_to", [("1", "pretty"), ("pretty", "1")])
+@pytest.mark.parametrize(
+    "names_from,names_to", [("1", "pretty"), ("pretty", "1")]
+)
 def test_vars_rename_invalid_names_value(names_from, names_to):
     with pytest.raises(ValueError) as exc:
-        ccao.vars_rename(data=["1", "2", "3"], names_from=names_from, names_to=names_to)
+        ccao.vars_rename(
+            data=["1", "2", "3"], names_from=names_from, names_to=names_to
+        )
     assert "must be one of" in str(exc.value)
 
 
