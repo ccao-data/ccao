@@ -38,6 +38,8 @@ jobs:
       run: uv pip install .[test,docs]
 
     - name: Run pytest
+      working-directory: python
+      shell: bash
       run: |
         pytest --doctest-modules \
           --junitxml=junit/test-results-${{ matrix.python-version }}.xmlpytest
@@ -46,5 +48,5 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: pytest-results-${{ matrix.python-version }}
-        path: junit/test-results-${{ matrix.python-version }}.xml
+        name: python/pytest-results-${{ matrix.python-version }}
+        path: python/junit/test-results-${{ matrix.python-version }}.xml
