@@ -25,6 +25,12 @@ docs = [
     "sphinx-pyproject>=0.3.0"
 ]
 
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"*" = ["*.csv"]
+
 [tool.ruff]
 line-length = 79
 
