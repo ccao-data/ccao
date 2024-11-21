@@ -1,7 +1,6 @@
 # Functions for translating variables between different data sources
 import enum
 import importlib.resources
-import typing
 
 import pandas as pd
 
@@ -28,12 +27,12 @@ class OutputType(enum.Enum):
 
 
 def vars_rename(
-    data: typing.Union[list[str], pd.DataFrame],
+    data: list[str] | pd.DataFrame,
     names_from: str,
     names_to: str,
-    output_type: typing.Union[OutputType, str] = OutputType.INPLACE,
-    dictionary: typing.Union[pd.DataFrame, None] = None,
-) -> typing.Union[list[str], pd.DataFrame]:
+    output_type: OutputType | str = OutputType.INPLACE,
+    dictionary: pd.DataFrame | None = None,
+) -> list[str] | pd.DataFrame:
     """
     Rename variables from one naming convention to another.
 
