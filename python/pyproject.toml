@@ -51,7 +51,6 @@ extensions = [
   "sphinx.ext.doctest",
   "myst_parser"
 ]
-# templates_path = ["_templates"]
 highlight_language = "none"
 html_theme = "pydata_sphinx_theme"
 html_logo = "../images/logo.png"
