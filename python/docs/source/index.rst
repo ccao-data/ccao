@@ -22,6 +22,9 @@ used throughout CCAO applications, models, and diagnostics. For generalized
 versions of assessment-related functions, see
 `assesspy <https://github.com/ccao-data/assesspy>`_.
 
+For detailed documentation on included functions and data, `visit the full reference
+list <https://ccao-data.github.io/ccao/python/reference/index.html>`_.
+
 
 Installation
 ------------

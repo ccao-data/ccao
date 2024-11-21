@@ -35,7 +35,7 @@ jobs:
     - name: Install Python dependencies
       working-directory: python
       shell: bash
-      run: uv pip install .[dev]
+      run: uv pip install .[test]
 
     - name: Run pytest
       run: |
