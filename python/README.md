@@ -23,7 +23,7 @@ Create a development environment using [`uv`](https://docs.astral.sh/uv/):
 uv venv
 source .venv/bin/activate
 uv python install
-uv pip install .[dev]
+uv pip install .[test]
 ```
 
 ### Running tests
@@ -31,5 +31,15 @@ uv pip install .[dev]
 Run tests with pytest:
 
 ```
-uv run pytest
+pytest
 ```
+
+### Building docs
+
+Build and serve the docs locally with sphinx:
+
+```
+sphinx-autobuild docs/source _build/html
+```
+
+Navigate to http://localhost:8000 to view the docs.
