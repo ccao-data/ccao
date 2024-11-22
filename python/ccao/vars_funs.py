@@ -14,16 +14,32 @@ vars_dict = pd.read_csv(str(_data_path / "vars_dict.csv"))
 var_name_prefix = "var_name"
 
 
-class OutputType(enum.Enum):
-    """Possible output types for variable renaming"""
-
-    INPLACE = "inplace"
-    VECTOR = "vector"
+class Enum(enum.Enum):
+    """Enum subclass with extra convenience functions"""
 
     @classmethod
     def values(cls) -> list[str]:
         """Get the possible values for this enum"""
         return [type_.value for type_ in cls]
+
+
+class OutputType(Enum):
+    """Possible output types for variable renaming"""
+
+    INPLACE = "inplace"
+    VECTOR = "vector"
+
+
+def _validate_dictionary(
+    dictionary: pd.DataFrame | None,
+    default: pd.DataFrame
+) -> pd.DataFrame:
+    """Helper function to validate `dictionary` arguments that are shared among
+    variable management functions."""
+    # Validate the dictionary schema
+    dictionary = dictionary if dictionary is not None else vars_dict
+    if not isinstance(dictionary, pd.DataFrame) or len(dictionary) == 0:
+        raise ValueError("dictionary must be a non-empty pandas DataFrame")
 
 
 def vars_rename(
@@ -89,10 +105,9 @@ def vars_rename(
             output_type="vector"
         )
     """
-    # Validate the dictionary schema
-    dictionary = dictionary if dictionary is not None else vars_dict
-    if not isinstance(dictionary, pd.DataFrame) or len(dictionary) == 0:
-        raise ValueError("dictionary must be a non-empty pandas DataFrame")
+
+    # Validate input dictionary
+    dictionary = _validate_dictionary(dictionary, default=vars_dict)
 
     # Make sure the dictionary contains variable columns
     dictionary_var_columns = [
@@ -153,3 +168,140 @@ def vars_rename(
         return [mapping.get(col, col) for col in data]
     else:
         raise TypeError("data must be a DataFrame or list of column names")
+
+
+class CodeType(Enum):
+    """Possible code formats for variable recoding"""
+
+    LONG = "long"
+    SHORT = "short"
+    CODE = "code"
+
+
+def vars_recode(
+    data: pd.DataFrame,
+    cols: list[str] | None = None,
+    code_type: CodeType | str = "long",
+    as_factor: bool = True,
+    dictionary: pd.DataFrame | None = None
+) -> pd.DataFrame:
+    """
+    Replace numerically coded variables with human-readable values.
+
+    The system of record stores characteristic values in a numerically encoded
+    format. This function can be used to translate those values into a
+    human-readable format. For example, EXT_WALL = 2 will become
+    EXT_WALL = "Frame + Masonry". Note that the values and their translations
+    must be specified via a user-defined dictionary. The default dictionary is
+    :data:`vars_dict`.
+
+    :param data:
+        A pandas DataFrame with columns to have values replaced.
+    :type data: pandas.DataFrame
+
+    :param cols:
+        A list of column names to be transformed, or None to select all columns.
+    :type cols: list[str]
+
+    :param code_type: The recoding type. Options are:
+        - "long", which transforms EXT_WALL = 1 to EXT_WALL = Frame
+        - "short", which transforms EXT_WALL = 1 to EXT_WALL = FRME
+        - "code", which keeps the original values (useful for removing
+          improperly coded values).
+    :type code_type: CodeType or str
+
+    :param as_factor:
+        If True, re-encoded values will be returned as categorical variables
+        (pandas Categorical).
+        If False, re-encoded values will be returned as plain strings.
+    :type as_factor: bool
+
+    :param dictionary:
+        A pandas DataFrame representing the dictionary used to translate
+        encodings. When None, defaults to :data:`vars_dict`.
+    :type dictionary: pandas.DataFrame
+
+    :raises ValueError:
+        If the dictionary is missing required columns or if invalid input is
+        provided.
+
+    :return:
+        The input DataFrame with re-encoded values for the specified columns.
+    :rtype: pandas.DataFrame
+
+    :note:
+        Values which are in the data but are NOT in the dictionary will be converted to NaN.
+
+    :example:
+
+    .. code-block:: python
+
+        import ccao
+
+        sample_data = ccao.sample_athena
+
+        # Defaults to `long` code type
+        ccao.vars_recode(data=sample_data)
+
+        # Recode to `short` code type
+        ccao.vars_recode(data=sample_data, code_type="short")
+
+        # Recode only specified columns
+        ccao.vars_recode(data=sample_data, cols="GAR1_SIZE")
+    """
+    # Validate input dictionary
+    dictionary =  _validate_dictionary(dictionary, default=vars_dict)
+
+    required_columns = {"var_code", "var_value", "var_value_short"}
+    if not required_columns.issubset(dictionary.columns):
+        raise ValueError(
+            "Input dictionary must contain the following columns: "
+            f"{', '.join(required_columns)}"
+        )
+
+    # Validate code type and convert it to the enum
+    if not isinstance(code_type, (CodeType, str)):
+        raise ValueError("code_type must be a string or CodeType instance")
+
+    if isinstance(code_type, str):
+        if code_type not in CodeType.values():
+            raise ValueError(
+                f"code_type must be one of {CodeType.values()} "
+                f"(got {code_type})"
+            )
+        code_type = CodeType(code_type)
+
+    # Validate input data format
+    if not isinstance(data, pd.DataFrame):
+        raise ValueError("data must be a pandas.DataFrame")
+
+    # Filter and reshape the dictionary for easier lookup
+    dict_long = dictionary[
+        (dictionary["var_type"] == "char") & (dictionary["var_data_type"] == "categorical")
+    ]
+    dict_long = dict_long.melt(
+        id_vars=[col for col in dict.columns if col.startswith("var_name_")],
+        value_vars=["var_code", "var_value", "var_value_short"],
+        var_name="var_type",
+        value_name="value"
+    )
+    dict_long = dict_long.drop_duplicates(subset=["var_code", "var_value", "var_value_short", "var_name"])
+
+    # Function to apply transformation on each column
+    def transform_column(col: pd.Series, var_name: str) -> pd.Series:
+        if var_name in dict_long["var_name"].values:
+            var_rows = dict_long[dict_long["var_name"] == var_name]
+            idx = col.map(dict_long.set_index("var_code")["value"]).index
+            if as_factor:
+                return pd.Categorical(col.map(var_rows["value"].get), categories=var_rows["value"])
+            else:
+                return col.map(var_rows["value"].get)
+        return col
+
+    # Recode specified columns or all columns
+    cols = cols or data.columns
+    for col in cols:
+        if col in data.select_dtypes(include=["object", "category"]).columns:
+            data[col] = transform_column(data[col], col)
+
+    return data
