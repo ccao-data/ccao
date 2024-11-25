@@ -29,7 +29,13 @@ list <https://ccao-data.github.io/ccao/python/reference.html>`_.
 Installation
 ------------
 
-You can install the released version of ``ccao`` directly from GitHub:
+Install the latest release of ``ccao`` from PyPI:
+
+.. code-block:: python
+
+    pip install ccao
+
+You can also install the most recent code directly from GitHub:
 
 .. code-block:: python
 
