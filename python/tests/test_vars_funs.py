@@ -59,30 +59,6 @@ def test_vars_rename_unmatched_cols_unchanged():
     assert result == unmatched_colnames
 
 
-@pytest.mark.parametrize(
-    "output_type", ["vector", ccao.vars_funs.OutputType.VECTOR]
-)
-def test_vars_rename_output_type_enum_or_string(
-    output_type, chars_sample_athena
-):
-    # Both the enum and string versions of output_type should work
-    result = ccao.vars_rename(
-        data=chars_sample_athena.iloc[:, 13:19],
-        names_from="athena",
-        names_to="pretty",
-        output_type=output_type,
-    )
-    expected = [
-        "Apartments",
-        "Cathedral Ceiling",
-        "Attic Finish",
-        "Garage 1 Attached",
-        "Garage 1 Area Included",
-        "Garage 1 Size",
-    ]
-    assert result == expected
-
-
 def test_vars_rename_custom_dictionary():
     result = ccao.vars_rename(
         data=["1", "2", "3"],
@@ -155,17 +131,6 @@ def test_vars_rename_invalid_names_value(names_from, names_to):
             data=["1", "2", "3"], names_from=names_from, names_to=names_to
         )
     assert "must be one of" in str(exc.value)
-
-
-def test_vars_rename_invalid_output_type_type():
-    with pytest.raises(ValueError) as exc:
-        ccao.vars_rename(
-            data=["Apartments", "Cathedral Ceiling"],
-            names_from="pretty",
-            names_to="model",
-            output_type=1,
-        )
-    assert "output_type must be a string or" in str(exc.value)
 
 
 def test_vars_rename_invalid_output_type_value():

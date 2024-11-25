@@ -1,5 +1,4 @@
 # Functions for translating variables between different data sources
-import enum
 import importlib.resources
 
 import pandas as pd
@@ -14,23 +13,11 @@ vars_dict = pd.read_csv(str(_data_path / "vars_dict.csv"))
 VAR_NAME_PREFIX = "var_name"
 
 
-class OutputType(enum.Enum):
-    """Possible output types for variable renaming"""
-
-    INPLACE = "inplace"
-    VECTOR = "vector"
-
-    @classmethod
-    def values(cls) -> list[str]:
-        """Get the possible values for this enum"""
-        return [type_.value for type_ in cls]
-
-
 def vars_rename(
     data: list[str] | pd.DataFrame,
     names_from: str,
     names_to: str,
-    output_type: OutputType | str = OutputType.INPLACE,
+    output_type: str = "inplace",
     dictionary: pd.DataFrame | None = None,
 ) -> list[str] | pd.DataFrame:
     """
@@ -57,22 +44,22 @@ def vars_rename(
     :type names_to: str
 
     :param output_type:
-        Output type. Either `"inplace"`, which mutates the input data frame,
-        or `"vector"`, which returns a list of strings with the construction
+        Output type. Either ``"inplace"``, which mutates the input data frame,
+        or ``"vector"``, which returns a list of strings with the construction
         new_col_name = old_col_name.
-    :type output_type: OutputType or str
+    :type output_type: str
 
     :param dictionary:
         The dictionary for mapping column names.
-        Must contain keys like `var_name_<names_from>` and `var_name_<names_to>`.
+        Must contain keys like ``var_name_<names_from>`` and ``var_name_<names_to>``.
     :type dictionary: pandas.DataFrame
 
     :raises ValueError: If required arguments are invalid or the dictionary does not meet format requirements.
-    :raises TypeError: If `data` is neither a DataFrame nor a list of column names.
+    :raises TypeError: If ``data`` is neither a DataFrame nor a list of column names.
 
     :return:
-        Either the input data with renamed columns if `output_type` is
-        `"inplace"` and the input data is a DataFrame, otherwise a list of
+        Either the input data with renamed columns if ``output_type`` is
+        ``"inplace"`` and the input data is a DataFrame, otherwise a list of
         renamed columns.
     :rtype: pandas.DataFrame or list[str]
 
@@ -123,17 +110,9 @@ def vars_rename(
                 f"{label} must be one of {possible_names_args} (got '{var}')"
             )
 
-    # Validate output type and convert it to the enum
-    if not isinstance(output_type, (OutputType, str)):
-        raise ValueError("output_type must be a string or OutputType instance")
-
-    if isinstance(output_type, str):
-        if output_type not in OutputType.values():
-            raise ValueError(
-                f"output_type must be one of {OutputType.values()} "
-                f"(got {output_type})"
-            )
-        output_type = OutputType(output_type)
+    # Validate output type
+    if output_type not in ["inplace", "vector"]:
+        raise ValueError("output_type must be one of 'inplace' or 'vector'")
 
     # Get a mapping from names_from to names_to
     from_ = f"{VAR_NAME_PREFIX}_{names_from}"
@@ -142,7 +121,7 @@ def vars_rename(
 
     # Handle output differently depending on the input and output type args
     if isinstance(data, pd.DataFrame):
-        if output_type == OutputType.INPLACE:
+        if output_type == "inplace":
             data.rename(columns=mapping, inplace=True)
             return data
         else:
