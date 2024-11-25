@@ -11,7 +11,7 @@ _data_path = importlib.resources.files(ccao.data)
 vars_dict = pd.read_csv(str(_data_path / "vars_dict.csv"))
 
 # Prefix we use to identify variable name columns in the variable dictionary
-var_name_prefix = "var_name"
+VAR_NAME_PREFIX = "var_name"
 
 
 class OutputType(enum.Enum):
@@ -98,17 +98,17 @@ def vars_rename(
     dictionary_var_columns = [
         col
         for col in list(dictionary.columns.values)
-        if col.startswith(var_name_prefix)
+        if col.startswith(VAR_NAME_PREFIX)
     ]
     if not len(dictionary_var_columns) >= 2:
         raise ValueError(
             f"dictionary must contain at least two columns starting with "
-            f"{var_name_prefix}"
+            f"{VAR_NAME_PREFIX}"
         )
 
     # Get a list of possible names_from and names_to from dictionary
     possible_names_args = [
-        col.replace(f"{var_name_prefix}_", "")
+        col.replace(f"{VAR_NAME_PREFIX}_", "")
         for col in dictionary_var_columns
     ]
 
@@ -136,8 +136,8 @@ def vars_rename(
         output_type = OutputType(output_type)
 
     # Get a mapping from names_from to names_to
-    from_ = f"{var_name_prefix}_{names_from}"
-    to = f"{var_name_prefix}_{names_to}"
+    from_ = f"{VAR_NAME_PREFIX}_{names_from}"
+    to = f"{VAR_NAME_PREFIX}_{names_to}"
     mapping = dict(zip(dictionary[from_], dictionary[to]))
 
     # Handle output differently depending on the input and output type args

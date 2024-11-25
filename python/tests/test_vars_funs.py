@@ -134,7 +134,7 @@ def test_vars_rename_invalid_dictionary_missing_variable_columns():
                 }
             ),
         )
-    assert f"starting with {ccao.vars_funs.var_name_prefix}" in str(exc.value)
+    assert f"starting with {ccao.vars_funs.VAR_NAME_PREFIX}" in str(exc.value)
 
 
 @pytest.mark.parametrize("names_from,names_to", [(1, "pretty"), ("pretty", 1)])
