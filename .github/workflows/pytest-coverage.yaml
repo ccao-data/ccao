@@ -41,7 +41,7 @@ jobs:
       working-directory: python
       shell: bash
       run: |
-        pytest --doctest-modules \
+        pytest -v --doctest-modules \
           --junitxml=junit/test-results-${{ matrix.python-version }}.xmlpytest
 
     - name: Upload artifacts
