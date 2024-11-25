@@ -75,17 +75,6 @@ def test_vars_rename_custom_dictionary():
     assert result == expected
 
 
-def test_vars_rename_invalid_dictionary_type():
-    with pytest.raises(ValueError) as exc:
-        ccao.vars_rename(
-            data=["1", "2", "3"],
-            names_from="sql",
-            names_to="char",
-            dictionary={"sql": "char"},
-        )
-    assert "dictionary must be" in str(exc.value)
-
-
 def test_vars_rename_invalid_dictionary_empty():
     with pytest.raises(ValueError) as exc:
         ccao.vars_rename(
@@ -113,19 +102,10 @@ def test_vars_rename_invalid_dictionary_missing_variable_columns():
     assert f"starting with {ccao.vars_funs.VAR_NAME_PREFIX}" in str(exc.value)
 
 
-@pytest.mark.parametrize("names_from,names_to", [(1, "pretty"), ("pretty", 1)])
-def test_vars_rename_invalid_names_type(names_from, names_to):
-    with pytest.raises(ValueError) as exc:
-        ccao.vars_rename(
-            data=["1", "2", "3"], names_from=names_from, names_to=names_to
-        )
-    assert "must be strings" in str(exc.value)
-
-
 @pytest.mark.parametrize(
     "names_from,names_to", [("1", "pretty"), ("pretty", "1")]
 )
-def test_vars_rename_invalid_names_value(names_from, names_to):
+def test_vars_rename_invalid_names(names_from, names_to):
     with pytest.raises(ValueError) as exc:
         ccao.vars_rename(
             data=["1", "2", "3"], names_from=names_from, names_to=names_to
@@ -133,7 +113,7 @@ def test_vars_rename_invalid_names_value(names_from, names_to):
     assert "must be one of" in str(exc.value)
 
 
-def test_vars_rename_invalid_output_type_value():
+def test_vars_rename_invalid_output_type():
     with pytest.raises(ValueError) as exc:
         ccao.vars_rename(
             data=["Apartments", "Cathedral Ceiling"],
@@ -144,7 +124,7 @@ def test_vars_rename_invalid_output_type_value():
     assert "output_type must be one of" in str(exc.value)
 
 
-def test_vars_rename_invalid_data_type():
+def test_vars_rename_invalid_data():
     with pytest.raises(TypeError) as exc:
         ccao.vars_rename(data=1, names_from="athena", names_to="pretty")
     assert str(exc.value).startswith("data must be")

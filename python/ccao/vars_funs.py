@@ -78,7 +78,7 @@ def vars_rename(
     """
     # Validate the dictionary schema
     dictionary = dictionary if dictionary is not None else vars_dict
-    if not isinstance(dictionary, pd.DataFrame) or len(dictionary) == 0:
+    if dictionary.empty:
         raise ValueError("dictionary must be a non-empty pandas DataFrame")
 
     # Make sure the dictionary contains variable columns
@@ -98,10 +98,6 @@ def vars_rename(
         col.replace(f"{VAR_NAME_PREFIX}_", "")
         for col in dictionary_var_columns
     ]
-
-    # Validate names arguments
-    if not isinstance(names_from, str) or not isinstance(names_to, str):
-        raise ValueError("names_from and names_to must be strings")
 
     # If names arguments aren't possible, throw error and list possible names
     for label, var in [("names_from", names_from), ("names_to", names_to)]:
@@ -126,9 +122,7 @@ def vars_rename(
             return data
         else:
             return [mapping.get(col, col) for col in list(data.columns.values)]
-    elif isinstance(data, list):
+    else:
         # If the input data is a list, it's not possible to update it inplace,
         # so ignore that argument
         return [mapping.get(col, col) for col in data]
-    else:
-        raise TypeError("data must be a DataFrame or list of column names")
