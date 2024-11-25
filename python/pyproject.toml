@@ -5,15 +5,15 @@ description = "Convenience Functions and Datasets for the Cook County Assessor's
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    {name = "Dan Snow", email="daniel.snow@cookcountyil.gov"},
     {name = "Jean Cochrane", email="jean.cochrane@cookcountyil.gov"},
+    {name = "Dan Snow", email="daniel.snow@cookcountyil.gov"},
 ]
 dependencies = [
     "pandas>=2.2.3",
 ]
 
 [project.optional-dependencies]
-test = [
+dev = [
     "mypy>=1.13.0",
     "pytest>=8.3.3",
     "ruff>=0.7.4",

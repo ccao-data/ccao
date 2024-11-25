@@ -9,7 +9,13 @@ versions of assessment-related functions, see
 
 ## Installation
 
-You can install the released version of `ccao` directly from GitHub:
+Install the latest release of `ccao` from PyPI:
+
+```bash
+pip install ccao
+```
+
+You can also install the most recent code directly from GitHub:
 
 ```bash
 pip install "git+https://github.com/ccao-data/ccao.git#egg=ccao&subdirectory=python"
@@ -23,7 +29,7 @@ Create a development environment using [`uv`](https://docs.astral.sh/uv/):
 uv venv
 source .venv/bin/activate
 uv python install
-uv pip install .[test]
+uv pip install .[dev,docs]
 ```
 
 ### Running tests

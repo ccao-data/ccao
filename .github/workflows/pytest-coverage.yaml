@@ -35,13 +35,13 @@ jobs:
     - name: Install Python dependencies
       working-directory: python
       shell: bash
-      run: uv pip install .[test,docs]
+      run: uv pip install .[dev,docs]
 
     - name: Run pytest
       working-directory: python
       shell: bash
       run: |
-        pytest --doctest-modules \
+        pytest -v --doctest-modules \
           --junitxml=junit/test-results-${{ matrix.python-version }}.xmlpytest
 
     - name: Upload artifacts
