@@ -29,7 +29,7 @@ Create a development environment using [`uv`](https://docs.astral.sh/uv/):
 uv venv
 source .venv/bin/activate
 uv python install
-uv pip install .[test]
+uv pip install .[dev,docs]
 ```
 
 ### Running tests

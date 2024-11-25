@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = [
+dev = [
     "mypy>=1.13.0",
     "pytest>=8.3.3",
     "ruff>=0.7.4",
