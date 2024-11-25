@@ -122,3 +122,92 @@ class TestVarsRename:
                 output_type="foo",
             )
         assert "output_type must be one of" in str(exc.value)
+
+
+class TestVarsRecode:
+    @pytest.fixture(
+        params=[
+            # iasWorld coded data
+            ("iasworld", pd.DataFrame({
+                "pin": ["12345"] * 4,
+                "extwall": ["1", "2", "0", None],
+                "bsmt": ["1", "3", "4", "5"],
+                "value": range(1000, 1004),
+                "user13": ["1", "2", "4", "3", "0"]
+            })),
+            # Athena coded data
+            ("athena", pd.DataFrame({
+                "pin": ["12345"] * 4,
+                "char_ext_wall": ["1", "2", "0", None],
+                "char_bsmt": ["1", "3", "4", "5"],
+                "value": range(1000, 1004),
+                "char_roof_cnst": ["1", "2", "4", "3", "0"]
+            }))
+        ]
+    )
+    def input_data(cls, request):
+        return request.param
+
+    @pytest.fixture
+    def expected_output_data(cls):
+        return {
+            "short": pd.DataFrame({
+                "pin": ["12345"] * 4,
+                "char_ext_wall": ["FRAM", "MASR", None, None],
+                "char_bsmt": ["FL", "PT", "CR", None],
+                "value": range(1000, 1004),
+                "char_roof_cnst": ["SHAS", "TRGR", "SHKE", "SLTE", None]
+            }),
+            "long": pd.DataFrame({
+                "pin": ["12345"] * 4,
+                "char_ext_wall": ["Frame", "Masonry", None, None],
+                "char_bsmt": ["Full", "Partial", "Crawl", None],
+                "value": range(1000, 1004),
+                "char_roof_cnst": ["Shingle + Asphalt", "Tar + Gravel", "Shake", "Slate", None]
+            }),
+            "code": pd.DataFrame({
+                "pin": ["12345"] * 4,
+                "char_ext_wall": ["1", "2", "0", None],
+                "char_bsmt": ["1", "3", "4", "5"],
+                "value": range(1000, 1004),
+                "char_roof_cnst": ["1", "2", "4", "3", None]
+            })
+        }
+
+    def _rename_output(self, output, format):
+        return ccao.vars_rename(
+            output, names_from="model", names_to=format
+        )
+
+    @pytest.mark.parametrize("code_type", ["short", "long", "code"])
+    def test_vars_recode_code_type(self, input_data, expected_output_data, code_type):
+        input_format, input_data = input_data
+        expected = expected_output_data[code_type]
+        # Rename the expected output data so it's consistent with whatever input
+        # data we're looking at
+        expected_for_code = self._rename_output(expected, input_format)
+        assert ccao.vars_recode(input_data, code_type=code_type) == expected_for_code
+
+    def test_vars_recode_cols(self, input_data):
+        input_format, input_data = input_data
+        expected = expected_output_data["short"]
+        pytest.fail()
+
+    def test_vars_recode_as_factor(self, input_data):
+        pytest.fail()
+
+    def test_vars_recode_raises_on_empty_dictionary(self):
+        with pytest.raises(ValueError) as exc:
+            ccao.vars_recode(pd.DataFrame(), dictionary=pd.DataFrame())
+        assert "non-empty" in str(exc.value)
+
+    def test_vars_recode_raises_on_missing_dictionary_columns(self):
+        dictionary = ccao.vars_dict.drop(columns=["var_code"])
+        with pytest.raises(ValueError) as exc:
+            ccao.vars_recode(pd.DataFrame(), dictionary=dictionary)
+        assert "dictionary must contain" in str(exc.value)
+
+    def test_vars_recode_raises_on_invalid_code_type(self):
+        with pytest.raises(ValueError) as exc:
+            ccao.vars_recode(pd.DataFrame(), code_type="foo")
+        assert "code_type must be one of" in str(exc.value)
