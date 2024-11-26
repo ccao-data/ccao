@@ -145,19 +145,23 @@ def vars_recode(
     must be specified via a user-defined dictionary. The default dictionary is
     :data:`vars_dict`.
 
+    Options for ``code_type`` are:
+
+    - ``"long"``, which transforms EXT_WALL = 1 to EXT_WALL = Frame
+    - ``"short"``, which transforms EXT_WALL = 1 to EXT_WALL = FRME
+    - ``"code"``, which keeps the original values (useful for removing
+      improperly coded values, see the note below)
+
     :param data:
         A pandas DataFrame with columns to have values replaced.
     :type data: pandas.DataFrame
 
     :param cols:
-        A list of column names to be transformed, or None to select all columns.
+        A list of column names to be transformed, or ``None`` to select all columns.
     :type cols: list[str]
 
-    :param code_type: The recoding type. Options are:
-        - "long", which transforms EXT_WALL = 1 to EXT_WALL = Frame
-        - "short", which transforms EXT_WALL = 1 to EXT_WALL = FRME
-        - "code", which keeps the original values (useful for removing
-          improperly coded values).
+    :param code_type:
+        The recoding type. See description above for options.
     :type code_type: str
 
     :param as_factor:
@@ -168,7 +172,7 @@ def vars_recode(
 
     :param dictionary:
         A pandas DataFrame representing the dictionary used to translate
-        encodings. When None, defaults to :data:`vars_dict`.
+        encodings.
     :type dictionary: pandas.DataFrame
 
     :raises ValueError:
