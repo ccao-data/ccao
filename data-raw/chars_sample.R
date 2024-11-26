@@ -54,6 +54,9 @@ chars_sample_athena <- dbGetQuery(
   "
 )
 usethis::use_data(chars_sample_athena, overwrite = TRUE)
+# Write the data to CSV so that the Python version of the package can consume
+# it as well
+readr::write_csv(chars_sample_athena, "data-raw/chars_sample_athena.csv")
 
 # Get sample ADDCHARS data
 chars_sample_hie <- dbGetQuery(
@@ -69,3 +72,4 @@ chars_sample_hie <- dbGetQuery(
   "
 )
 usethis::use_data(chars_sample_hie, overwrite = TRUE)
+readr::write_csv(chars_sample_hie, "data-raw/chars_sample_hie.csv")

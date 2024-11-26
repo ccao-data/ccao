@@ -10,6 +10,7 @@ repos:
     -   id: use-tidy-description
     -   id: lintr
     -   id: readme-rmd-rendered
+        exclude: ^python/
     -   id: parsable-R
     -   id: no-browser-statement
     -   id: no-debug-statement
@@ -33,3 +34,15 @@ repos:
         entry: Cannot commit .Rhistory, .RData, .Rds or .rds.
         language: fail
         files: '\.(Rhistory|RData|Rds|rds)$'
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.7.4
+    hooks:
+      # Python linter. Ruff recommends running this before the formatter to
+      # avoid conflicts when using the --fix flag
+      - id: ruff
+        args:
+          - --fix
+        files: ^python/
+      # Formatter
+      - id: ruff-format
+        files: ^python/
