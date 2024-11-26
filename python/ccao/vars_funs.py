@@ -7,7 +7,7 @@ import ccao.data
 
 # Load the default variable dictionary
 _data_path = importlib.resources.files(ccao.data)
-vars_dict = pd.read_csv(str(_data_path / "vars_dict.csv"))
+vars_dict = pd.read_csv(str(_data_path / "vars_dict.csv"), dtype=str)
 
 # Prefix we use to identify variable name columns in the variable dictionary
 VAR_NAME_PREFIX = "var_name"
@@ -248,11 +248,18 @@ def vars_recode(
     ) -> pd.Series | pd.Categorical:
         if var_name in dict_long["var_name"].values:
             var_rows = dict_long[dict_long["var_name"] == var_name]
-            # Get a dictionary mapping the possible codes to their values
-            var_dict = var_rows.set_index("var_code")[values_to].to_dict()
+            # Get a dictionary mapping the possible codes to their values.
+            # Use `var_code` as the index (keys) for the dictionary, unless
+            # we're selecting `var_code`, in which case we can't set it as the
+            # index and use it for values
+            var_dict = (
+                {code: code for code in var_rows["var_code"].tolist()}
+                if values_to == "var_code"
+                else var_rows.copy().set_index("var_code")[values_to].to_dict()
+            )
             if as_factor:
                 return pd.Categorical(
-                    col.map(var_dict), categories=list(vars_dict.values())
+                    col.map(var_dict), categories=list(var_dict.values())
                 )
             else:
                 return col.map(var_dict)

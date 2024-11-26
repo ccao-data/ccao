@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -125,99 +126,238 @@ class TestVarsRename:
 
 
 class TestVarsRecode:
-    @pytest.fixture(
-        params=[
-            # iasWorld coded data
-            (
-                "iasworld",
-                pd.DataFrame(
-                    {
-                        "pin": ["12345"] * 4,
-                        "extwall": ["1", "2", "0", None],
-                        "bsmt": ["1", "3", "4", "5"],
-                        "value": range(1000, 1004),
-                        "user13": ["1", "2", "4", "3", "0"],
-                    }
-                ),
-            ),
-            # Athena coded data
-            (
-                "athena",
-                pd.DataFrame(
-                    {
-                        "pin": ["12345"] * 4,
-                        "char_ext_wall": ["1", "2", "0", None],
-                        "char_bsmt": ["1", "3", "4", "5"],
-                        "value": range(1000, 1004),
-                        "char_roof_cnst": ["1", "2", "4", "3", "0"],
-                    }
-                ),
-            ),
+    @pytest.fixture(scope="class")
+    def raw_columns(cls) -> list[dict]:
+        """Metadata describing the columns that we use as fixtures for all
+        vars_recode tests. Each element of the list is a dict representing a
+        column"""
+        return [
+            {
+                # Structure of the input column. We parameterize input data in
+                # the `input_data` fixture with one parameter per element of
+                # this dict
+                "input": {
+                    "athena": {"name": "pin", "value": ["12345"] * 4},
+                    "iasworld": {"name": "pin", "value": ["12345"] * 4},
+                },
+                # Structure of the output column. We select the proper column
+                # based on key for different types of tests
+                "expected": {
+                    "short": {"name": "pin", "value": ["12345"] * 4},
+                    "long": {"name": "pin", "value": ["12345"] * 4},
+                    "code": {"name": "pin", "value": ["12345"] * 4},
+                    "factor": {"name": "pin", "value": ["12345"] * 4},
+                    # If `value` is True, expect the column value to be
+                    # recoded to the "long" format; otherwise, expect the
+                    # column value to stay the same as the input value
+                    "col": {"name": "pin", "value": False},
+                },
+            },
+            {
+                "input": {
+                    "athena": {
+                        "name": "char_ext_wall",
+                        "value": ["1", "2", "0", None],
+                    },
+                    "iasworld": {
+                        "name": "extwall",
+                        "value": ["1", "2", "0", None],
+                    },
+                },
+                "expected": {
+                    "short": {
+                        "name": "char_ext_wall",
+                        "value": ["FRAM", "MASR", np.nan, np.nan],
+                    },
+                    "long": {
+                        "name": "char_ext_wall",
+                        "value": ["Frame", "Masonry", np.nan, np.nan],
+                    },
+                    "code": {
+                        "name": "char_ext_wall",
+                        "value": ["1", "2", np.nan, np.nan],
+                    },
+                    "factor": {
+                        "name": "char_ext_wall",
+                        "value": pd.Categorical(
+                            ["1", "2", np.nan, np.nan],
+                            categories=["1", "2", "3", "4"],
+                        ),
+                    },
+                    "col": {"name": "char_ext_wall", "value": True},
+                },
+            },
+            {
+                "input": {
+                    "athena": {
+                        "name": "char_bsmt",
+                        "value": ["1", "3", "4", "5"],
+                    },
+                    "iasworld": {
+                        "name": "bsmt",
+                        "value": ["1", "3", "4", "5"],
+                    },
+                },
+                "expected": {
+                    "short": {
+                        "name": "char_bsmt",
+                        "value": ["FL", "PT", "CR", np.nan],
+                    },
+                    "long": {
+                        "name": "char_bsmt",
+                        "value": ["Full", "Partial", "Crawl", np.nan],
+                    },
+                    "code": {
+                        "name": "char_bsmt",
+                        "value": ["1", "3", "4", np.nan],
+                    },
+                    "factor": {
+                        "name": "char_bsmt",
+                        "value": pd.Categorical(
+                            ["1", "3", "4", np.nan],
+                            categories=["1", "2", "3", "4"],
+                        ),
+                    },
+                    "col": {"name": "char_bsmt", "value": True},
+                },
+            },
+            {
+                "input": {
+                    "athena": {"name": "value", "value": range(1000, 1004)},
+                    "iasworld": {"name": "value", "value": range(1000, 1004)},
+                },
+                "expected": {
+                    "short": {"name": "value", "value": range(1000, 1004)},
+                    "long": {"name": "value", "value": range(1000, 1004)},
+                    "code": {"name": "value", "value": range(1000, 1004)},
+                    "factor": {"name": "value", "value": range(1000, 1004)},
+                    "col": {"name": "value", "value": False},
+                },
+            },
+            {
+                "input": {
+                    "athena": {
+                        "name": "char_roof_cnst",
+                        "value": ["1", "2", "3", "0"],
+                    },
+                    "iasworld": {
+                        "name": "user13",
+                        "value": ["1", "2", "3", "0"],
+                    },
+                },
+                "expected": {
+                    "short": {
+                        "name": "char_roof_cnst",
+                        "value": ["SHAS", "TRGR", "SLTE", np.nan],
+                    },
+                    "long": {
+                        "name": "char_roof_cnst",
+                        "value": [
+                            "Shingle + Asphalt",
+                            "Tar + Gravel",
+                            "Slate",
+                            np.nan,
+                        ],
+                    },
+                    "code": {
+                        "name": "char_roof_cnst",
+                        "value": ["1", "2", "3", np.nan],
+                    },
+                    "factor": {
+                        "name": "char_roof_cnst",
+                        "value": pd.Categorical(
+                            ["1", "2", "3", np.nan],
+                            categories=["1", "2", "3", "4", "5", "6"],
+                        ),
+                    },
+                    "col": {"name": "char_roof_cnst", "value": False},
+                },
+            },
         ]
-    )
-    def input_data(cls, request):
-        return request.param
 
-    @pytest.fixture
-    def expected_output_data(cls):
-        return {
-            "short": pd.DataFrame(
+    @pytest.fixture(params=["athena", "iasworld"])
+    def input_data(cls, request, raw_columns):
+        input_type = request.param
+        return (
+            input_type,
+            pd.DataFrame(
                 {
-                    "pin": ["12345"] * 4,
-                    "char_ext_wall": ["FRAM", "MASR", None, None],
-                    "char_bsmt": ["FL", "PT", "CR", None],
-                    "value": range(1000, 1004),
-                    "char_roof_cnst": ["SHAS", "TRGR", "SHKE", "SLTE", None],
+                    col["input"][input_type]["name"]: col["input"][input_type][
+                        "value"
+                    ]
+                    for col in raw_columns
                 }
             ),
-            "long": pd.DataFrame(
-                {
-                    "pin": ["12345"] * 4,
-                    "char_ext_wall": ["Frame", "Masonry", None, None],
-                    "char_bsmt": ["Full", "Partial", "Crawl", None],
-                    "value": range(1000, 1004),
-                    "char_roof_cnst": [
-                        "Shingle + Asphalt",
-                        "Tar + Gravel",
-                        "Shake",
-                        "Slate",
-                        None,
-                    ],
-                }
-            ),
-            "code": pd.DataFrame(
-                {
-                    "pin": ["12345"] * 4,
-                    "char_ext_wall": ["1", "2", "0", None],
-                    "char_bsmt": ["1", "3", "4", "5"],
-                    "value": range(1000, 1004),
-                    "char_roof_cnst": ["1", "2", "4", "3", None],
-                }
-            ),
-        }
-
-    def _rename_output(self, output, format):
-        return ccao.vars_rename(output, names_from="model", names_to=format)
-
-    @pytest.mark.parametrize("code_type", ["short", "long", "code"])
-    def test_vars_recode_code_type(
-        self, input_data, expected_output_data, code_type
-    ):
-        input_format, input_data = input_data
-        expected = expected_output_data[code_type]
-        # Rename the expected output data so it's consistent with whatever input
-        # data we're looking at
-        expected_for_code = self._rename_output(expected, input_format)
-        assert (
-            ccao.vars_recode(input_data, code_type=code_type)
-            == expected_for_code
         )
 
-    def test_vars_recode_cols(self, input_data):
-        pytest.fail()
+    @pytest.mark.parametrize("code_type", ["short", "long", "code"])
+    def test_vars_recode_code_type(self, input_data, raw_columns, code_type):
+        input_format, input_data = input_data
+        expected_output = pd.DataFrame(
+            {
+                col["expected"][code_type]["name"]: col["expected"][code_type][
+                    "value"
+                ]
+                for col in raw_columns
+            }
+        )
+        # Rename the expected output data so it's consistent with whatever input
+        # data we're looking at
+        expected_renamed = ccao.vars_rename(
+            expected_output, names_from="model", names_to=input_format
+        )
+        recoded = ccao.vars_recode(
+            input_data, code_type=code_type, as_factor=False
+        )
+        assert recoded.equals(expected_renamed)
 
-    def test_vars_recode_as_factor(self, input_data):
-        pytest.fail()
+    def test_vars_recode_cols(self, input_data, raw_columns):
+        input_format, input_data = input_data
+        cols = [
+            col["expected"]["col"]["name"]
+            for col in raw_columns
+            if col["expected"]["col"]["value"] is True
+        ]
+        # Rename the cols so they match the input data schema
+        cols = ccao.vars_rename(
+            cols, names_from="model", names_to=input_format
+        )
+        code_type = "short"
+        expected_output = pd.DataFrame(
+            {
+                col["expected"]["col"]["name"]: (
+                    col["expected"][code_type]["value"]
+                    if col["expected"]["col"]["value"] is True
+                    else col["input"]["athena"]["value"]
+                )
+                for col in raw_columns
+            }
+        )
+        expected_renamed = ccao.vars_rename(
+            expected_output, names_from="model", names_to=input_format
+        )
+        recoded = ccao.vars_recode(
+            input_data, cols=cols, code_type=code_type, as_factor=False
+        )
+        assert recoded.equals(expected_renamed)
+
+    def test_vars_recode_as_factor(self, input_data, raw_columns):
+        input_format, input_data = input_data
+        expected_output = pd.DataFrame(
+            {
+                col["expected"]["factor"]["name"]: col["expected"]["factor"][
+                    "value"
+                ]
+                for col in raw_columns
+            }
+        )
+        expected_renamed = ccao.vars_rename(
+            expected_output, names_from="model", names_to=input_format
+        )
+        recoded = ccao.vars_recode(
+            input_data, code_type="code", as_factor=True
+        )
+        assert recoded.equals(expected_renamed)
 
     def test_vars_recode_raises_on_empty_dictionary(self):
         with pytest.raises(ValueError) as exc:
