@@ -133,7 +133,7 @@ def vars_recode(
     cols: list[str] | None = None,
     code_type: str = "long",
     as_factor: bool = True,
-    dictionary: pd.DataFrame | None = None
+    dictionary: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     """
     Replace numerically coded variables with human-readable values.
@@ -219,11 +219,14 @@ def vars_recode(
     # Filter the dictionary for categoricals only and and pivot it longer for
     # easier lookup
     dict_long = dictionary[
-        (dictionary["var_type"] == "char") & (dictionary["var_data_type"] == "categorical")
+        (dictionary["var_type"] == "char")
+        & (dictionary["var_data_type"] == "categorical")
     ]
     dict_long = dict_long.melt(
         id_vars=["var_code", "var_value", "var_value_short"],
-        value_vars=[col for col in dictionary.columns if col.startswith("var_name_")],
+        value_vars=[
+            col for col in dictionary.columns if col.startswith("var_name_")
+        ],
         value_name="var_name",
         var_name="var_type",
     )
@@ -240,13 +243,17 @@ def vars_recode(
 
     # Function to apply to each column to remap column values based on the
     # vars dict
-    def transform_column(col: pd.Series, var_name: str, values_to: str, as_factor: bool) -> pd.Series | pd.Categorical:
+    def transform_column(
+        col: pd.Series, var_name: str, values_to: str, as_factor: bool
+    ) -> pd.Series | pd.Categorical:
         if var_name in dict_long["var_name"].values:
             var_rows = dict_long[dict_long["var_name"] == var_name]
             # Get a dictionary mapping the possible codes to their values
             var_dict = var_rows.set_index("var_code")[values_to].to_dict()
             if as_factor:
-                return pd.Categorical(col.map(var_dict), categories=list(vars_dict.values()))
+                return pd.Categorical(
+                    col.map(var_dict), categories=list(vars_dict.values())
+                )
             else:
                 return col.map(var_dict)
         return col
@@ -254,7 +261,12 @@ def vars_recode(
     # Recode specified columns, or all columns if none were specified
     cols = cols or data.columns
     for var_name in cols:
-        if var_name in data.select_dtypes(include=["object", "category"]).columns:
-            data[var_name] = transform_column(data[var_name], var_name, values_to, as_factor)
+        if (
+            var_name
+            in data.select_dtypes(include=["object", "category"]).columns
+        ):
+            data[var_name] = transform_column(
+                data[var_name], var_name, values_to, as_factor
+            )
 
     return data
