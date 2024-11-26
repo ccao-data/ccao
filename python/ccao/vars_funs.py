@@ -272,10 +272,7 @@ def vars_recode(
     # Recode specified columns, or all columns if none were specified
     cols = cols or data.columns
     for var_name in cols:
-        if (
-            var_name
-            in data.select_dtypes(include=["object", "category"]).columns
-        ):
+        if var_name in data.columns:
             data[var_name] = transform_column(
                 data[var_name], var_name, values_to, as_factor
             )
