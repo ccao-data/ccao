@@ -26,6 +26,7 @@
 ^man-roxygen$
 ^pkgdown$
 ^public$
+^python
 ^renv$
 ^renv\.lock$
 ^vignettes$
