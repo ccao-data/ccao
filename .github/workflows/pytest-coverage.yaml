@@ -49,11 +49,6 @@ jobs:
       with:
         python-version: ${{ matrix.version.python }}
 
-    - name: Install Python dependencies
-      working-directory: python
-      shell: bash
-      run: uv pip install .[dev,docs]
-
     - name: Install pandas ${{ matrix.version.pandas }} and numpy ${{ matrix.version.numpy }}
       working-directory: python
       shell: bash
@@ -61,6 +56,11 @@ jobs:
         uv pip install \
           pandas==${{ matrix.version.pandas }} \
           numpy==${{ matrix.version.numpy}}
+
+    - name: Install Python dependencies
+      working-directory: python
+      shell: bash
+      run: uv pip install .[dev,docs]
 
     - name: Run pytest
       working-directory: python
