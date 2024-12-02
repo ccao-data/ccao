@@ -9,22 +9,22 @@ authors = [
     {name = "Dan Snow", email="daniel.snow@cookcountyil.gov"},
 ]
 dependencies = [
-    "pandas>=1.4.0,<=2.3.0",
-    "numpy>=1.23.0,<=2.2.0"
+    "pandas>=1.4.3",
+    "numpy>=1.23.1"
 ]
 
 [project.optional-dependencies]
 dev = [
-    "mypy",
-    "pytest",
-    "ruff",
+    "mypy>=1.0.0",
+    "pytest>=7.0.0",
+    "ruff>=0.8.0",
 ]
 docs = [
-    "Sphinx",
-    "myst-parser",
-    "pydata-sphinx-theme",
-    "sphinx-pyproject",
-    "sphinx-autobuild"
+    "Sphinx>=7.0",
+    "myst-parser>=1.0.0",
+    "pydata-sphinx-theme>=0.16.0",
+    "sphinx-pyproject>=0.3.0",
+    "sphinx-autobuild>=2024.10.3"
 ]
 
 [tool.setuptools]
@@ -57,3 +57,35 @@ highlight_language = "none"
 html_theme = "pydata_sphinx_theme"
 html_logo = "../images/logo.png"
 html_show_copyright = false
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-v --cache-clear -rf --doctest-modules"
+console_output_style = "count"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+min_version = 4.0
+envlist =
+    py{39, 310, 311}-lowest
+    py{39, 310, 311, 312, 313}
+
+[gh-actions]
+python =
+    3.9: py39
+    3.10: py310
+    3.11: py311
+    3.12: py312
+    3.13: py313
+
+[testenv]
+extras = dev,docs
+commands = pytest
+
+[testenv:py{39, 310, 311}-lowest]
+uv_resolution = lowest-direct
+
+[testenv:py{310, 311, 312, 313}]
+uv_resolution = highest
+"""
