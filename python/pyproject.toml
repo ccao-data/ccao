@@ -82,6 +82,8 @@ python =
 [testenv]
 extras = dev,docs
 commands = pytest
+passenv =
+    UV_CACHE_DIR
 
 [testenv:py{39, 310, 311}-lowest]
 uv_resolution = lowest-direct
