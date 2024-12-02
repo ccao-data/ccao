@@ -1,5 +1,6 @@
 # Functions for translating variables between different data sources
 import importlib.resources
+import typing
 
 import pandas as pd
 
@@ -14,12 +15,12 @@ VAR_NAME_PREFIX = "var_name"
 
 
 def vars_rename(
-    data: list[str] | pd.DataFrame,
+    data: typing.Union[typing.List[str], pd.DataFrame],
     names_from: str,
     names_to: str,
     output_type: str = "inplace",
-    dictionary: pd.DataFrame | None = None,
-) -> list[str] | pd.DataFrame:
+    dictionary: typing.Optional[pd.DataFrame] = None,
+) -> typing.Union[typing.List[str], pd.DataFrame]:
     """
     Rename variables from one naming convention to another.
 
@@ -130,10 +131,10 @@ def vars_rename(
 
 def vars_recode(
     data: pd.DataFrame,
-    cols: list[str] | None = None,
+    cols: typing.Optional[typing.List[str]] = None,
     code_type: str = "long",
     as_factor: bool = True,
-    dictionary: pd.DataFrame | None = None,
+    dictionary: typing.Optional[pd.DataFrame] = None,
 ) -> pd.DataFrame:
     """
     Replace numerically coded variables with human-readable values.
@@ -259,7 +260,7 @@ def vars_recode(
     # vars dict
     def transform_column(
         col: pd.Series, var_name: str, values_to: str, as_factor: bool
-    ) -> pd.Series | pd.Categorical:
+    ) -> typing.Union[pd.Series, pd.Categorical]:
         if var_name in dict_long["var_name"].values:
             var_rows = dict_long[dict_long["var_name"] == var_name]
             # Get a dictionary mapping the possible codes to their values.
