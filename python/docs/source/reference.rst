@@ -20,7 +20,7 @@ Data
 Dictionaries
 ^^^^^^^^^^^^
 
-Lookups for numeric codes used in the assessment system
+Lookups for numeric codes and variable names used in the assessment system
 
 :doc:`vars_dict <vars_dict>`
 
