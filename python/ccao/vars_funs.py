@@ -227,7 +227,6 @@ def vars_recode(
             "Input dictionary must contain at least one var_name_ column"
         )
 
-    # Validate code type and convert it to the enum
     if code_type not in ["short", "long", "code"]:
         raise ValueError("code_type must be one of 'short', 'long', or 'code'")
 
