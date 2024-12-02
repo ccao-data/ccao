@@ -209,11 +209,22 @@ def vars_recode(
     if dictionary.empty:
         raise ValueError("dictionary must be a non-empty pandas DataFrame")
 
-    required_columns = {"var_code", "var_value", "var_value_short"}
+    required_columns = {
+        "var_code",
+        "var_value",
+        "var_value_short",
+        "var_type",
+        "var_data_type",
+    }
     if not required_columns.issubset(dictionary.columns):
         raise ValueError(
             "Input dictionary must contain the following columns: "
             f"{', '.join(required_columns)}"
+        )
+
+    if not any(col.startswith("var_name_") for col in dictionary.columns):
+        raise ValueError(
+            "Input dictionary must contain at least one var_name_ column"
         )
 
     # Validate code type and convert it to the enum

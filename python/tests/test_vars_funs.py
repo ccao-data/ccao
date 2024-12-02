@@ -368,7 +368,15 @@ class TestVarsRecode:
         dictionary = ccao.vars_dict.drop(columns=["var_code"])
         with pytest.raises(ValueError) as exc:
             ccao.vars_recode(pd.DataFrame(), dictionary=dictionary)
-        assert "dictionary must contain" in str(exc.value)
+        assert "dictionary must contain the following column" in str(exc.value)
+
+    def test_vars_recode_raises_on_missing_var_name_columns(self):
+        dictionary = ccao.vars_dict.drop(
+            columns=list(ccao.vars_dict.filter(regex="var_name_"))
+        )
+        with pytest.raises(ValueError) as exc:
+            ccao.vars_recode(pd.DataFrame(), dictionary=dictionary)
+        assert "dictionary must contain at least one" in str(exc.value)
 
     def test_vars_recode_raises_on_invalid_code_type(self):
         with pytest.raises(ValueError) as exc:
