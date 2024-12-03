@@ -37,7 +37,7 @@ columns.
 The system of record stores characteristic values in a
 numerically encoded format. This function can be used to translate those
 values into a human-readable format. For example, EXT_WALL = 2 will become
-EXT_WALL = "Frame + Masonry". Note that the values and their translations are
+EXT_WALL = "Masonry". Note that the values and their translations are
 must be specified via a user-defined dictionary. The default dictionary is
 \code{\link{vars_dict}}.
 
@@ -101,7 +101,6 @@ vars_recode(
 }
 \seealso{
 Other vars_funs: 
-\code{\link{vars_check_class}()},
 \code{\link{vars_rename}()}
 }
 \concept{vars_funs}

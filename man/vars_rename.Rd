@@ -89,7 +89,6 @@ vars_rename(
 }
 \seealso{
 Other vars_funs: 
-\code{\link{vars_check_class}()},
 \code{\link{vars_recode}()}
 }
 \concept{vars_funs}
