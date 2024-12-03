@@ -43,7 +43,6 @@ reference:
   - chars_fix_age
   - chars_sparsify
   - chars_update
-  - vars_check_class
   - vars_recode
   - vars_rename
 - subtitle: Adjust estimated values
