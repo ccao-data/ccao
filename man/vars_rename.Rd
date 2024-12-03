@@ -85,13 +85,13 @@ vars_rename(
   data = sample_data_athena,
   names_from = "athena",
   names_to = "model",
-  dictionary = ccao::vars_dictionary
+  dictionary = ccao::vars_dict
 )
 vars_rename(
   data = sample_data_athena,
   names_from = "athena",
   names_to = "pretty",
-  dictionary = ccao::vars_dictionary
+  dictionary = ccao::vars_dict
 )
 }
 \seealso{
