@@ -50,6 +50,7 @@ jobs:
 
       - name: Build Python docs
         run: uv run sphinx-build python/docs/source docs/python
+        shell: bash
 
       - name: Configure pages
         uses: actions/configure-pages@v5
