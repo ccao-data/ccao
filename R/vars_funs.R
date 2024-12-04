@@ -48,7 +48,7 @@
 #'
 #' # No renames will occur since no column names here are from SQL
 #' vars_rename(
-#'   data = class_dict[1:5, 1:5],
+#'   data = chars_sample_athena[1:5, 1:10],
 #'   names_from = "sql",
 #'   names_to = "pretty",
 #'   dictionary = ccao::vars_dict_legacy
