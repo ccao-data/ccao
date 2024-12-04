@@ -9,7 +9,6 @@ name: docs
 
 env:
   PYTHONUNBUFFERED: "1"
-  UV_SYSTEM_PYTHON: 1
 
 jobs:
   build:
@@ -33,16 +32,12 @@ jobs:
           needs: website
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
-        with:
-          enable-cache: true
-          cache-dependency-glob: python/pyproject.toml
-          cache-suffix: docs
+        uses: astral-sh/setup-uv@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version-file: python/pyproject.toml
+        shell: bash
+        working-directory: python
+        run: uv venv
 
       - name: Install Python dependencies
         working-directory: python
@@ -54,7 +49,9 @@ jobs:
         shell: Rscript {0}
 
       - name: Build Python docs
-        run: sphinx-build python/docs/source docs/python
+        working-directory: python
+        run: uv run sphinx-build docs/source ../docs/python
+        shell: bash
 
       - name: Configure pages
         uses: actions/configure-pages@v5
