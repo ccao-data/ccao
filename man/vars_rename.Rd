@@ -10,9 +10,7 @@ vars_rename(
   names_from = NULL,
   names_to = NULL,
   output_type = "inplace",
-  dictionary = ccao::vars_dict,
-  type = NULL,
-  dict = NULL
+  dictionary = ccao::vars_dict
 )
 }
 \arguments{
@@ -29,10 +27,6 @@ vector with  the construction new_col_name = old_col_name.}
 \item{dictionary}{The dictionary used to translate names. Uses
 \code{\link{vars_dict}} by default. Use \code{\link{vars_dict_legacy}} for
 legacy data column names.}
-
-\item{type}{Deprecated. Use \code{output_type} instead.}
-
-\item{dict}{Deprecated. Use \code{dictionary} instead.}
 }
 \value{
 The input data frame with columns renamed.

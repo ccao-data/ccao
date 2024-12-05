@@ -80,44 +80,6 @@ test_that("output is as expected", {
   )
 })
 
-test_that("deprecation warnings get emitted", {
-  expect_warning(
-    vars_rename(
-      data = chars_sample_athena[, 14:19],
-      names_from = "athena",
-      names_to = "pretty",
-      type = "vector"
-    ),
-    "'type' is deprecated"
-  )
-  expect_warning(
-    vars_rename(
-      data = chars_sample_athena[, 14:19],
-      names_from = "athena",
-      names_to = "pretty",
-      dict = ccao::vars_dict
-    ),
-    "'dict' is deprecated"
-  )
-  # Test that the deprecated params produce the same output as the new params
-  expect_equal(
-    vars_rename(
-      data = chars_sample_athena[, 14:19],
-      names_from = "athena",
-      names_to = "pretty",
-      type = "vector",
-      dict = ccao::vars_dict
-    ),
-    vars_rename(
-      data = chars_sample_athena[, 14:19],
-      names_from = "athena",
-      names_to = "pretty",
-      output_type = "vector",
-      dictionary = ccao::vars_dict
-    )
-  )
-})
-
 # Test that invalid inputs throw errors
 test_that("invalid data types stop process", {
   expect_condition(vars_rename(1))
@@ -291,30 +253,6 @@ test_that("output is as expected", {
       dictionary = ccao::vars_dict_legacy
     ),
     hash = "aed980d873"
-  )
-})
-
-test_that("deprecation warnings get emitted", {
-  expect_warning(
-    vars_recode(data = recode_test_data_athena, type = "short"),
-    "'type' is deprecated"
-  )
-  expect_warning(
-    vars_recode(data = recode_test_data_athena, dict = ccao::vars_dict),
-    "'dict' is deprecated"
-  )
-  # Test that the deprecated params produce the same output as the new params
-  expect_equal(
-    vars_recode(
-      data = recode_test_data_athena,
-      type = "short",
-      dict = ccao::vars_dict
-    ),
-    vars_recode(
-      data = recode_test_data_athena,
-      code_type = "short",
-      dictionary = ccao::vars_dict
-    )
   )
 })
 

@@ -19,11 +19,9 @@
 #' @param output_type Output type. Either \code{"inplace"}, which renames the
 #'   input data frame, or \code{"vector"}, which returns a named character
 #'   vector with  the construction new_col_name = old_col_name.
-#' @param type Deprecated. Use \code{output_type} instead.
 #' @param dictionary The dictionary used to translate names. Uses
 #'   \code{\link{vars_dict}} by default. Use \code{\link{vars_dict_legacy}} for
 #'   legacy data column names.
-#' @param dict Deprecated. Use \code{dictionary} instead.
 #'
 #' @return The input data frame with columns renamed.
 #'
@@ -77,21 +75,7 @@ vars_rename <- function(data,
                         names_from = NULL,
                         names_to = NULL,
                         output_type = "inplace",
-                        dictionary = ccao::vars_dict,
-                        # Deprecated args
-                        type = NULL,
-                        dict = NULL) {
-  # Check if deprecated arguments are used and override values if so
-  if (!is.null(type)) {
-    warning("'type' is deprecated. Use 'output_type' instead.", call. = FALSE)
-    output_type <- type
-  }
-
-  if (!is.null(dict)) {
-    warning("'dict' is deprecated. Use 'dictionary' instead.", call. = FALSE)
-    dictionary <- dict
-  }
-
+                        dictionary = ccao::vars_dict) {
   # Check input data dictionary
   stopifnot(
     is.data.frame(dictionary),
@@ -169,14 +153,12 @@ vars_rename <- function(data,
 #'   names. Looks for all columns with numerically encoded character
 #'   values by default.
 #' @param code_type Output/recode type. See description for options.
-#' @param type Deprecated. Use \code{code_type} instead.
 #' @param as_factor If \code{TRUE}, re-encoded values will be returned as
 #'   factors with their levels pre-specified by the dictionary. Otherwise, will
 #'   return re-encoded values as characters only.
 #' @param dictionary The dictionary used to translate encodings. Uses
 #'   \code{\link{vars_dict}} by default. Use \code{\link{vars_dict_legacy}} for
 #'   legacy data column encodings.
-#' @param dict Deprecated. Use \code{dictionary} instead.
 #'
 #' @note Values which are in the data but are NOT in \code{\link{vars_dict}}
 #'   will be converted to NA. For example, there is no numeric value 3 for AIR,
@@ -238,21 +220,7 @@ vars_recode <- function(data,
                         cols = dplyr::everything(),
                         code_type = "long",
                         as_factor = TRUE,
-                        dictionary = ccao::vars_dict,
-                        # Deprecated args
-                        type = NULL,
-                        dict = NULL) {
-  # Check if deprecated arguments are used and override values if so
-  if (!is.null(type)) {
-    warning("'type' is deprecated. Use 'code_type' instead.", call. = FALSE)
-    code_type <- type
-  }
-
-  if (!is.null(dict)) {
-    warning("'dict' is deprecated. Use 'dictionary' instead.", call. = FALSE)
-    dictionary <- dict
-  }
-
+                        dictionary = ccao::vars_dict) {
   # Check input data dictionary
   stopifnot(
     is.data.frame(dictionary),

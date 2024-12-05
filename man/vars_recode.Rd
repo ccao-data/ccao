@@ -9,9 +9,7 @@ vars_recode(
   cols = dplyr::everything(),
   code_type = "long",
   as_factor = TRUE,
-  dictionary = ccao::vars_dict,
-  type = NULL,
-  dict = NULL
+  dictionary = ccao::vars_dict
 )
 }
 \arguments{
@@ -30,10 +28,6 @@ return re-encoded values as characters only.}
 \item{dictionary}{The dictionary used to translate encodings. Uses
 \code{\link{vars_dict}} by default. Use \code{\link{vars_dict_legacy}} for
 legacy data column encodings.}
-
-\item{type}{Deprecated. Use \code{code_type} instead.}
-
-\item{dict}{Deprecated. Use \code{dictionary} instead.}
 }
 \value{
 The input data frame with re-encoded values for the specified
