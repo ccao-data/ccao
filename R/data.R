@@ -72,34 +72,6 @@
 "chars_sample_universe"
 
 
-#' Data dictionary of Cook County property classes
-#'
-#' A dataset containing a translation for property class codes to
-#' human-readable class descriptions. Also describes which classes are included
-#' in residential regressions and reporting classes.
-#'
-#' @format A data frame with 197 rows and 8 variables:
-#' \describe{
-#'   \item{major_class_code}{First digit of class code, major class}
-#'   \item{major_class_type}{Human-readable description of the major class}
-#'   \item{assessment_level}{Level of assessment for the property class}
-#'   \item{regression_class}{Boolean indicating whether or not this class is
-#'   included in CAMA regressions}
-#'   \item{modeling_group}{Modeling group used for internal CCAO data selection}
-#'   \item{reporting_group}{Reporting group name used for internal CCAO reports
-#'   and aggregate statistics}
-#'   \item{class_code}{Full, 3-digit class code of the property sub-class}
-#'   \item{class_desc}{Human-readable description of the property sub-class}
-#'   \item{min_size}{Integer of minimum size for 200-class property codes}
-#'   \item{max_size}{Integer of maximum size for 200-class property codes}
-#'   \item{min_age}{Integer of minimum age for 200-class property codes}
-#'   \item{max_age}{Integer of maximum age for 200-class property codes}
-#' }
-#'
-#' @note Includes all Cook County real property classes.
-"class_dict"
-
-
 #' Data dictionary of Certificate of Error reason codes
 #'
 #' A dataset containing numeric codes and corresponding text explanations for

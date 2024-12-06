@@ -9,8 +9,8 @@ vars_rename(
   data,
   names_from = NULL,
   names_to = NULL,
-  type = "inplace",
-  dict = ccao::vars_dict
+  output_type = "inplace",
+  dictionary = ccao::vars_dict
 )
 }
 \arguments{
@@ -20,11 +20,11 @@ vars_rename(
 
 \item{names_to}{The target names. See description}
 
-\item{type}{Output type. Either \code{"inplace"}, which renames the input
-data frame, or \code{"vector"}, which returns a named character vector with
-the construction new_col_name = old_col_name.}
+\item{output_type}{Output type. Either \code{"inplace"}, which renames the
+input data frame, or \code{"vector"}, which returns a named character
+vector with  the construction new_col_name = old_col_name.}
 
-\item{dict}{The dictionary used to translate names. Uses
+\item{dictionary}{The dictionary used to translate names. Uses
 \code{\link{vars_dict}} by default. Use \code{\link{vars_dict_legacy}} for
 legacy data column names.}
 }
@@ -36,12 +36,13 @@ Bulk rename columns from one type of CCAO data to another. For
 example, rename all columns pulled from SQL to their standard names used
 in modeling. Or, rename all standard modeling names to "pretty" names for
 publication. This function will only rename things specified in
-the user-supplied \code{dict} argument, all other names in the data will
-remain unchanged.
+the user-supplied \code{dictionary} argument, all other names in the data
+will remain unchanged.
 
 Options for \code{names_from} and \code{names_to} are specific to the
-specified \code{dict}. Run this function with \code{names_from} equal to
-\code{NULL} to see a list of available options for the specified dictionary.
+specified \code{dictionary}. Run this function with \code{names_from} equal
+'to \code{NULL} to see a list of available options for the specified
+'dictionary.
 }
 \examples{
 
@@ -53,21 +54,21 @@ vars_rename(
   data = sample_data,
   names_from = "sql",
   names_to = "standard",
-  dict = ccao::vars_dict_legacy
+  dictionary = ccao::vars_dict_legacy
 )
 vars_rename(
   data = sample_data,
   names_from = "sql",
   names_to = "pretty",
-  dict = ccao::vars_dict_legacy
+  dictionary = ccao::vars_dict_legacy
 )
 
 # No renames will occur since no column names here are from SQL
 vars_rename(
-  data = class_dict[1:5, 1:5],
+  data = chars_sample_athena[1:5, 1:10],
   names_from = "sql",
   names_to = "pretty",
-  dict = ccao::vars_dict_legacy
+  dictionary = ccao::vars_dict_legacy
 )
 
 # With data from Athena
@@ -78,18 +79,17 @@ vars_rename(
   data = sample_data_athena,
   names_from = "athena",
   names_to = "model",
-  dict = ccao::vars_dict
+  dictionary = ccao::vars_dict
 )
 vars_rename(
   data = sample_data_athena,
   names_from = "athena",
   names_to = "pretty",
-  dict = ccao::vars_dict
+  dictionary = ccao::vars_dict
 )
 }
 \seealso{
 Other vars_funs: 
-\code{\link{vars_check_class}()},
 \code{\link{vars_recode}()}
 }
 \concept{vars_funs}

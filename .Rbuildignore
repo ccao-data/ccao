@@ -16,6 +16,8 @@
 ^\.github$
 ^\.gitlab$
 ^\.pre-commit-config\.yaml$
+^\.pytest_cache$
+^\.ruff_cache$
 ^_pkgdown\.yml$
 ^cache$
 ^ci$
