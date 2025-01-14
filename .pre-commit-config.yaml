@@ -34,6 +34,11 @@ repos:
         entry: Cannot commit .Rhistory, .RData, .Rds or .rds.
         language: fail
         files: '\.(Rhistory|RData|Rds|rds)$'
+    -   id: check-vars-dict
+        name: Validate vars_dict
+        entry: Rscript scripts/check-vars-dict.R
+        files: data/vars_dict.rda
+        language: r
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.7.4
     hooks:

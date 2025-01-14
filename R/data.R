@@ -153,7 +153,7 @@
 #' to their human-readable value (ROOF_CNST = 1
 #' becomes ROOF_CNST = Shingle/Asphalt).
 #'
-#' @format A data frame with 509 rows and 11 variables:
+#' @format A data frame with 518 rows and 11 variables:
 #' \describe{
 #'   \item{var_name_hie}{Column name of variable when stored in the legacy
 #'   ADDCHARS SQL table}
