@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 # Script to check that the `vars_dict` data object is well-formed
 load("data/vars_dict.rda")
 
