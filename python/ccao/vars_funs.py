@@ -8,7 +8,11 @@ import ccao.data
 
 # Load the default variable dictionary
 _data_path = importlib.resources.files(ccao.data)
-vars_dict = pd.read_csv(str(_data_path / "vars_dict.csv"), dtype=str)
+vars_dict = pd.read_csv(
+    str(_data_path / "vars_dict.csv"),
+    dtype=str,
+    keep_default_na=False,
+)
 
 # Prefix we use to identify variable name columns in the variable dictionary
 VAR_NAME_PREFIX = "var_name"
