@@ -12,6 +12,7 @@ vars_dict = pd.read_csv(
     str(_data_path / "vars_dict.csv"),
     dtype=str,
     keep_default_na=False,
+    na_values=[""],
 )
 
 # Prefix we use to identify variable name columns in the variable dictionary
