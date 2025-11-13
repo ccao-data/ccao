@@ -1,15 +1,18 @@
 # Functions for translating variables between different data sources
-import importlib.resources
+import os
 import typing
 
 import pandas as pd
 
-import ccao.data
-
 # Load the default variable dictionary
-_data_path = importlib.resources.files(ccao.data)
 vars_dict = pd.read_csv(
-    str(_data_path / "vars_dict.csv"),
+    os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "..",
+        "..",
+        "data-raw",
+        "vars_dict.csv",
+    ),
     dtype=str,
     keep_default_na=False,
     na_values=[""],
