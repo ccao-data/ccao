@@ -39,7 +39,7 @@ jobs:
           uv build
 
       - name: Publish package distribution to test PyPI
-        if: github.event.action == "prereleased"
+        if: ${{ github.event.action == 'prereleased' }}
         env:
           url: https://test.pypi.org/legacy/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -47,7 +47,7 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
 
       - name: Publish package distribution to PyPI
-        if: github.event.action == "released"
+        if: ${{ github.event.action == 'released' }}
         env:
           url: https://pypi.org/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
