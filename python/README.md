@@ -9,13 +9,7 @@ versions of assessment-related functions, see
 
 ## Installation
 
-Install the latest release of `ccao` from PyPI:
-
-```bash
-pip install ccao
-```
-
-You can also install the most recent code directly from GitHub:
+Install the package from GitHub:
 
 ```bash
 pip install "git+https://github.com/ccao-data/ccao.git#egg=ccao&subdirectory=python"
