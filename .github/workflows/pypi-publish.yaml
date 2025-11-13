@@ -1,5 +1,9 @@
 on:
   workflow_dispatch:
+  # Temporarily enable builds on PRs, for testing
+  pull_request:
+    branch:
+      - master
   release:
     types:
       - released
