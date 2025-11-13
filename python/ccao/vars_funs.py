@@ -5,11 +5,18 @@ import typing
 import pandas as pd
 
 # Load the default variable dictionary
+vars_dict_read_kwargs = {
+    "dtype": "str",
+    "keep_default_na": False,
+    "na_values": [""],
+}
 try:
     # Try loading from the canonical location of the file. This file does
     # not exist in the source code, but we copy it over prior to building the
     # package for PyPI, so it should be available in PyPI installations
-    vars_dict = pd.read_csv(os.path.join("data", "vars_dict.csv"))
+    vars_dict = pd.read_csv(
+        os.path.join("data", "vars_dict.csv"), **vars_dict_read_kwargs
+    )
 except FileNotFoundError:
     # If the file does not exist at the canonical location, we are most likely
     # in a local installation of the package, so we can reference the data
@@ -23,9 +30,7 @@ except FileNotFoundError:
             "data-raw",
             "vars_dict.csv",
         ),
-        dtype=str,
-        keep_default_na=False,
-        na_values=[""],
+        **vars_dict_read_kwargs,
     )
 
 # Prefix we use to identify variable name columns in the variable dictionary
