@@ -15,6 +15,11 @@ Install the latest release of `ccao` from PyPI:
 pip install ccao
 ```
 
+## Usage
+
+See [the documentation](https://ccao-data.github.io/ccao/python/)
+for detailed API reference.
+
 ## Development
 
 Create a development environment using [`uv`](https://docs.astral.sh/uv/):
@@ -44,7 +49,7 @@ sphinx-autobuild docs/source _build/html
 
 Navigate to http://localhost:8000 to view the docs.
 
-## Releasing new versions
+### Releasing new versions
 
 We handle package releases on GitHub. The `pypi-publish` workflow watches
 for release events and pushes new releases to GitHub.
