@@ -15,7 +15,10 @@ try:
     # not exist in the source code, but we copy it over prior to building the
     # package for PyPI, so it should be available in PyPI installations
     vars_dict = pd.read_csv(
-        os.path.join("data", "vars_dict.csv"), **vars_dict_read_kwargs
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "data", "vars_dict.csv"
+        ),
+        **vars_dict_read_kwargs,
     )
 except FileNotFoundError:
     # If the file does not exist at the canonical location, we are most likely
