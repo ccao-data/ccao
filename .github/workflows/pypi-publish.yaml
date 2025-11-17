@@ -1,5 +1,14 @@
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Deployment environment
+        options:
+          - test
+          - prod
+          - skip
+        default: test
   release:
     types:
       - released
@@ -36,7 +45,7 @@ jobs:
 
       - name: Publish package distribution to test PyPI
         working-directory: python
-        if: ${{ github.event.action == 'prereleased' || github.event.action == 'workflow_dispatch'}}
+        if: ${{ github.event.action == 'prereleased' || inputs.environment == 'test' }}
         env:
           url: https://test.pypi.org/legacy/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -45,7 +54,7 @@ jobs:
 
       - name: Publish package distribution to PyPI
         working-directory: python
-        if: ${{ github.event.action == 'released' }}
+        if: ${{ github.event.action == 'released' || inputs.environment == 'prod' }}
         env:
           url: https://pypi.org/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
