@@ -44,17 +44,18 @@ jobs:
           uv build
 
       - name: Publish package distribution to test PyPI
-        working-directory: python
         if: ${{ github.event.action == 'prereleased' || inputs.environment == 'test' }}
         env:
           url: https://test.pypi.org/legacy/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          packages-dir: python/dist/
 
       - name: Publish package distribution to PyPI
-        working-directory: python
         if: ${{ github.event.action == 'released' || inputs.environment == 'prod' }}
         env:
           url: https://pypi.org/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist/
