@@ -46,7 +46,7 @@ extend-select = ["I"]
 github_username = "ccao-data"
 github_repository = "ccao"
 project = "ccao"
-copyright = "2024, Cook County Assessor's Office"
+copyright = "2025, Cook County Assessor's Office"
 language = "en"
 extensions = [
   "sphinx.ext.autodoc",
@@ -55,7 +55,7 @@ extensions = [
 ]
 highlight_language = "none"
 html_theme = "pydata_sphinx_theme"
-html_logo = "../images/logo.png"
+html_logo = "../../../man/figures/logo.png"
 html_show_copyright = false
 
 [tool.pytest.ini_options]
