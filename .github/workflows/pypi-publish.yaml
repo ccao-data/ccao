@@ -36,7 +36,7 @@ jobs:
 
       - name: Publish package distribution to test PyPI
         working-directory: python
-        if: ${{ github.event.action == 'prereleased' }}
+        if: ${{ github.event.action == 'prereleased' || github.event.action == 'workflow_dispatch'}}
         env:
           url: https://test.pypi.org/legacy/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
