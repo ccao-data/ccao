@@ -2,7 +2,7 @@
 name = "ccao"
 version = "1.3.1"
 description = "Convenience Functions and Datasets for the Cook County Assessor's Office"
-readme = "docs/source/index.rst"
+readme = "README.md"
 requires-python = ">=3.9"
 authors = [
     {name = "Jean Cochrane", email="jean.cochrane@cookcountyil.gov"},
