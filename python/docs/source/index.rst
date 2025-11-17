@@ -34,9 +34,3 @@ Install the latest release of ``ccao`` from PyPI:
 .. code-block:: python
 
     pip install ccao
-
-You can also install the most recent code directly from GitHub:
-
-.. code-block:: python
-
-    pip install "git+https://github.com/ccao-data/ccao.git#egg=ccao&subdirectory=python"
