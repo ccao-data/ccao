@@ -35,6 +35,7 @@ jobs:
           uv build
 
       - name: Publish package distribution to test PyPI
+        working-directory: python
         if: ${{ github.event.action == 'prereleased' }}
         env:
           url: https://test.pypi.org/legacy/p/ccao
@@ -43,6 +44,7 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
 
       - name: Publish package distribution to PyPI
+        working-directory: python
         if: ${{ github.event.action == 'released' }}
         env:
           url: https://pypi.org/p/ccao
