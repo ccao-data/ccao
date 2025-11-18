@@ -50,6 +50,12 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          # The build step builds the package distribution in the `python/`
+          # subdirectory, but the `gh-action-pypi-publish` action expects the
+          # package to be located in a `dist/` subdirectory in the root of the
+          # repo by default. Since third-party actions can't use the
+          # `working-directory` attribute, we need to specify the location of
+          # the package distribution here instead
           packages-dir: python/dist/
 
       - name: Publish package distribution to PyPI
