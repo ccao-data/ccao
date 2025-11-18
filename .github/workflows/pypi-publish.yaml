@@ -1,5 +1,14 @@
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Deployment environment
+        options:
+          - test
+          - prod
+          - skip
+        default: test
   release:
     types:
       - released
@@ -35,15 +44,24 @@ jobs:
           uv build
 
       - name: Publish package distribution to test PyPI
-        if: ${{ github.event.action == 'prereleased' }}
+        if: ${{ github.event.action == 'prereleased' || inputs.environment == 'test' }}
         env:
           url: https://test.pypi.org/legacy/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          # The build step builds the package distribution in the `python/`
+          # subdirectory, but the `gh-action-pypi-publish` action expects the
+          # package to be located in a `dist/` subdirectory in the root of the
+          # repo by default. Since third-party actions can't use the
+          # `working-directory` attribute, we need to specify the location of
+          # the package distribution here instead
+          packages-dir: python/dist/
 
       - name: Publish package distribution to PyPI
-        if: ${{ github.event.action == 'released' }}
+        if: ${{ github.event.action == 'released' || inputs.environment == 'prod' }}
         env:
           url: https://pypi.org/p/ccao
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist/

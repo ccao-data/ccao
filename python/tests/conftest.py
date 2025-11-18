@@ -3,7 +3,7 @@ import pathlib
 import pandas as pd
 import pytest
 
-fixture_dir = pathlib.Path(__file__).parent / "fixtures"
+fixture_dir = pathlib.Path(__file__).parent.parent.parent / "data-raw"
 
 
 @pytest.fixture(scope="module")
