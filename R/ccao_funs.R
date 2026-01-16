@@ -287,3 +287,103 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
   return(out)
 }
 # nolint end
+#' Download one or more DVC-tracked input datasets for a given model run
+#'
+#' @param model_run character scalar run_id
+#' @param file character vector of file keys (e.g. c("char", "training"))
+#' @return If one file: a single data.frame; if multiple files: a named list
+ccao_download_input_data <- function(model_run, files) {
+  con <- DBI::dbConnect(noctua::athena())
+
+  on.exit(DBI::dbDisconnect(con), add = TRUE)
+
+  # Pull the DVC hashes for this run_id
+  dvc_params <- DBI::dbGetQuery(
+    con,
+    glue::glue("
+      SELECT
+        assessment_year,
+        assessment_group,
+        dvc_md5_assessment_data,
+        dvc_md5_complex_id_data,
+        dvc_md5_land_nbhd_rate_data,
+        dvc_md5_land_site_rate_data,
+        dvc_md5_training_data,
+        dvc_md5_char_data,
+        dvc_md5_hie_data,
+        dvc_md5_condo_strata_data
+      FROM model.metadata
+      WHERE run_id = '{model_run}'
+    ")
+  )
+
+  # Map file key -> md5 column
+  md5_map <- c(
+    assessment   = "dvc_md5_assessment_data",
+    complex_id   = "dvc_md5_complex_id_data",
+    land_nbhd    = "dvc_md5_land_nbhd_rate_data",
+    land_site    = "dvc_md5_land_site_rate_data",
+    training     = "dvc_md5_training_data",
+    char         = "dvc_md5_char_data",
+    hie          = "dvc_md5_hie_data",
+    condo_strata = "dvc_md5_condo_strata_data"
+  )
+
+  AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
+
+  yr <- (as.integer(dvc_params$assessment_year))
+
+  grp <- (as.character(dvc_params$assessment_group))
+
+  # Folder logic:
+  # - <= 2024: old layout (no model subfolder)
+  # - >= 2025: split by assessment_group
+  model_folder <- if (yr <= 2024) {
+    ""
+  } else if (!is.na(grp) && grp == "condo") {
+    "model-condo-avm"
+  } else {
+    "model-res-avm"
+  }
+
+  # Helper to read a single file
+  read_one <- function(f) {
+    md5_col <- md5_map[[f]]
+    dvc_hash <- dvc_params[[md5_col]]
+
+    if (is.na(dvc_hash) || !nzchar(dvc_hash)) {
+      stop(glue::glue(
+        "Missing/empty {md5_col} for run_id = '{model_run}'"
+      ))
+    }
+
+    s3_path <- glue::glue(
+      AWS_S3_DVC_BUCKET,
+      if (nzchar(model_folder)) glue::glue("/{model_folder}") else "",
+      "/files/md5/",
+      substr(dvc_hash, 1, 2), "/",
+      substr(dvc_hash, 3, 32)
+    )
+
+    arrow::read_parquet(s3_path)
+  }
+
+  result <- lapply(files, read_one)
+  names(result) <- files
+
+  # Return a single object if only one file requested
+  if (length(result) == 1) {
+    return(result[[1]])
+  }
+
+  result
+}
+
+# examples
+char_data <- ccao_download_input_data("2025-01-11-gallant-rina", "char")
+
+inputs <- ccao_download_input_data(
+  "2025-01-11-gallant-rina",
+  c("char", "training", "assessment")
+)
+
