@@ -381,9 +381,9 @@ ccao_download_input_data <- function(model_run, files) {
   grp <- (dvc_params$assessment_group)
 
   # Folder logic:
-  # - <= 2024: old layout (no model subfolder)
-  # - >= 2025: split by assessment_group
-  model_folder <- if (yr <= 2024) {
+  # - <= 2025: old layout (no model subfolder)
+  # - >= 2026: split by assessment_group
+  model_folder <- if (yr <= 2025) {
     ""
   } else if (grp == "condo") {
     "model-condo-avm"
