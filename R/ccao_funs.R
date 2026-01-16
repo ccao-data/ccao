@@ -287,3 +287,139 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
   return(out)
 }
 # nolint end
+
+#' Download one or more DVC-tracked input datasets for a given model run
+#'
+#' @description Downloads one or more model input datasets referenced by a
+#' `run_id` in `model.metadata`. The function reads the appropriate DVC hash
+#' column (e.g. `dvc_md5_char_data`) and constructs the corresponding DVC S3
+#' path (`.../files/md5/<2>/<30>`), then loads the parquet via `arrow`.
+#'
+#' Folder layout depends on the model year and assessment group:
+#' - For `assessment_year <= 2024`, the legacy DVC layout is used (no model
+#'   subfolder under the bucket).
+#' - For `assessment_year >= 2025`, the path includes `model-res-avm` or
+#'   `model-condo-avm` depending on `assessment_group`.
+#'
+#' @param model_run Character `run_id` found in `model.metadata`.
+#' @param files Character vector of file keys to download. Valid keys are:
+#'   `assessment`, `complex_id`, `land_nbhd`, `land_site`, `training`, `char`,
+#'   `hie`, `condo_strata`.
+#'
+#' @return If `files` has length 1, returns a single data frame (as returned by
+#' `arrow::read_parquet()`). If `files` has length > 1, returns a named list of
+#' data frames with names equal to `files`.
+#'
+#' @examples
+#' # Download a single dataset
+#' char_data <- ccao_download_input_data("2025-01-11-gallant-rina", "char")
+#'
+#' # Download multiple datasets (returns a named list)
+#' inputs <- ccao_download_input_data(
+#'   "2025-01-11-gallant-rina",
+#'   c("char", "training", "assessment")
+#' )
+#'
+#' # Access one dataset from the list
+#' training_data <- inputs[["training"]]
+#' @export
+ccao_download_input_data <- function(model_run, files) {
+  con <- DBI::dbConnect(noctua::athena())
+
+  on.exit(DBI::dbDisconnect(con), add = TRUE)
+
+  # Pull the DVC hashes for this run_id
+  dvc_params <- DBI::dbGetQuery(
+    con,
+    glue::glue("
+      SELECT
+        assessment_year,
+        assessment_group,
+        dvc_md5_assessment_data,
+        dvc_md5_complex_id_data,
+        dvc_md5_land_nbhd_rate_data,
+        dvc_md5_land_site_rate_data,
+        dvc_md5_training_data,
+        dvc_md5_char_data,
+        dvc_md5_hie_data,
+        dvc_md5_condo_strata_data
+      FROM model.metadata
+      WHERE run_id = '{model_run}'
+    ")
+  )
+
+  # Map file key -> md5 column
+  md5_map <- c(
+    assessment   = "dvc_md5_assessment_data",
+    complex_id   = "dvc_md5_complex_id_data",
+    land_nbhd    = "dvc_md5_land_nbhd_rate_data",
+    land_site    = "dvc_md5_land_site_rate_data",
+    training     = "dvc_md5_training_data",
+    char         = "dvc_md5_char_data",
+    hie          = "dvc_md5_hie_data",
+    condo_strata = "dvc_md5_condo_strata_data"
+  )
+
+  valid_files <- names(md5_map)
+
+  invalid_files <- setdiff(files, valid_files)
+
+  if (length(invalid_files) > 0) {
+    stop(
+      glue::glue(
+        "Invalid file key(s): {paste(invalid_files, collapse = ', ')}.\n",
+        "Valid options are: {paste(valid_files, collapse = ', ')}."
+      ),
+      call. = FALSE
+    )
+  }
+
+  AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
+
+  yr <- (as.integer(dvc_params$assessment_year))
+
+  grp <- (dvc_params$assessment_group)
+
+  # Folder logic:
+  # - <= 2024: old layout (no model subfolder)
+  # - >= 2025: split by assessment_group
+  model_folder <- if (yr <= 2024) {
+    ""
+  } else if (grp == "condo") {
+    "model-condo-avm"
+  } else {
+    "model-res-avm"
+  }
+
+  # Helper to read a single file
+  read_file <- function(f) {
+    md5_col <- md5_map[[f]]
+    dvc_hash <- dvc_params[[md5_col]]
+
+    if (is.na(dvc_hash) || !nzchar(dvc_hash)) {
+      stop(glue::glue(
+        "Missing/empty {md5_col} for run_id = '{model_run}'"
+      ))
+    }
+
+    s3_path <- glue::glue(
+      AWS_S3_DVC_BUCKET,
+      if (nzchar(model_folder)) glue::glue("/{model_folder}") else "",
+      "/files/md5/",
+      substr(dvc_hash, 1, 2), "/",
+      substr(dvc_hash, 3, 32)
+    )
+
+    arrow::read_parquet(s3_path)
+  }
+
+  result <- lapply(files, read_file)
+  names(result) <- files
+
+  # Return a single object if only one file requested
+  if (length(result) == 1) {
+    return(result[[1]])
+  }
+
+  result
+}
