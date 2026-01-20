@@ -102,6 +102,7 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
   }
 
   names(out) <- c("COD", "COD_CI", "COD_MET", "COD_CI_MET", "COD_N")
+  return(out) # nolint
 }
 
 
@@ -169,6 +170,7 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   }
 
   names(out) <- c("PRD", "PRD_CI", "PRD_MET", "PRD_CI_MET", "PRD_N")
+  return(out) # nolint
 }
 
 
@@ -235,6 +237,7 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   }
 
   names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_CI_MET", "PRB_N")
+  return(out) # nolint
 }
 
 
@@ -317,22 +320,8 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' # Access one dataset from the list
 #' training_data <- inputs[["training"]]
 #' @export
-ccao_download_input_data <- function(
-  model_run,
-  files,
-  s3_staging_dir = "s3://ccao-athena-results-us-east-1/",
-  region_name = "us-east-1",
-  work_group = NULL
-) {
-  # Normalize/validate files early
-  files <- tolower(files)
-
-  con <- DBI::dbConnect(
-    noctua::athena(),
-    s3_staging_dir = s3_staging_dir,
-    region_name = region_name,
-    work_group = work_group
-  )
+ccao_download_input_data <- function(model_run, files) {
+  con <- DBI::dbConnect(noctua::athena())
 
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
@@ -369,6 +358,7 @@ ccao_download_input_data <- function(
   )
 
   valid_files <- names(md5_map)
+
   invalid_files <- setdiff(files, valid_files)
 
   if (length(invalid_files) > 0) {
@@ -383,8 +373,9 @@ ccao_download_input_data <- function(
 
   AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
 
-  yr <- as.integer(dvc_params$assessment_year)
-  grp <- dvc_params$assessment_group
+  yr <- (as.integer(dvc_params$assessment_year))
+
+  grp <- (dvc_params$assessment_group)
 
   # Folder logic:
   # - <= 2025: old layout
@@ -403,10 +394,9 @@ ccao_download_input_data <- function(
     dvc_hash <- dvc_params[[md5_col]]
 
     if (is.na(dvc_hash) || !nzchar(dvc_hash)) {
-      stop(
-        glue::glue("Missing/empty {md5_col} for run_id = '{model_run}'"),
-        call. = FALSE
-      )
+      stop(glue::glue(
+        "Missing/empty {md5_col} for run_id = '{model_run}'"
+      ))
     }
 
     s3_path <- glue::glue(
@@ -423,6 +413,7 @@ ccao_download_input_data <- function(
   result <- lapply(files, read_file)
   names(result) <- files
 
+  # Return a single object if only one file requested
   if (length(result) == 1) {
     return(result[[1]])
   }
