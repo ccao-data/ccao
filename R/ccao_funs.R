@@ -317,8 +317,22 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' # Access one dataset from the list
 #' training_data <- inputs[["training"]]
 #' @export
-ccao_download_input_data <- function(model_run, files) {
-  con <- DBI::dbConnect(noctua::athena())
+ccao_download_input_data <- function(
+  model_run,
+  files,
+  s3_staging_dir = "s3://ccao-athena-results-us-east-1/",
+  region_name = "us-east-1",
+  work_group = NULL
+) {
+  # Normalize/validate files early
+  files <- tolower(files)
+
+  con <- DBI::dbConnect(
+    noctua::athena(),
+    s3_staging_dir = s3_staging_dir,
+    region_name = region_name,
+    work_group = work_group
+  )
 
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
@@ -355,7 +369,6 @@ ccao_download_input_data <- function(model_run, files) {
   )
 
   valid_files <- names(md5_map)
-
   invalid_files <- setdiff(files, valid_files)
 
   if (length(invalid_files) > 0) {
@@ -370,9 +383,8 @@ ccao_download_input_data <- function(model_run, files) {
 
   AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
 
-  yr <- (as.integer(dvc_params$assessment_year))
-
-  grp <- (dvc_params$assessment_group)
+  yr <- as.integer(dvc_params$assessment_year)
+  grp <- dvc_params$assessment_group
 
   # Folder logic:
   # - <= 2025: old layout
@@ -391,9 +403,10 @@ ccao_download_input_data <- function(model_run, files) {
     dvc_hash <- dvc_params[[md5_col]]
 
     if (is.na(dvc_hash) || !nzchar(dvc_hash)) {
-      stop(glue::glue(
-        "Missing/empty {md5_col} for run_id = '{model_run}'"
-      ))
+      stop(
+        glue::glue("Missing/empty {md5_col} for run_id = '{model_run}'"),
+        call. = FALSE
+      )
     }
 
     s3_path <- glue::glue(
@@ -410,7 +423,6 @@ ccao_download_input_data <- function(model_run, files) {
   result <- lapply(files, read_file)
   names(result) <- files
 
-  # Return a single object if only one file requested
   if (length(result) == 1) {
     return(result[[1]])
   }

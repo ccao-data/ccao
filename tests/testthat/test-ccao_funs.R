@@ -225,13 +225,13 @@ context("test ccao_download_input_data()")
 test_that("legacy model returns a list of three files", {
   inputs <- ccao_download_input_data(
     "2025-01-11-gallant-rina",
-    c("char", "training", "assessment")
+    c("complex_id", "land_nbhd", "hie")
   )
 
   expect_type(inputs, "list")
   expect_length(inputs, 3)
   expect_setequal(
     names(inputs),
-    c("char", "training", "assessment")
+    c("complex_id", "land_nbhd", "hie")
   )
 })
