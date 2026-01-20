@@ -217,3 +217,12 @@ test_that("bad input data stops execution", {
   expect_condition(ccao_generate_id(0))
   expect_condition(ccao_generate_id(-1))
 })
+
+##### TEST ccao_download_input_data() #####
+
+context("test ccao_download_input_data()")
+test_that("legacy model works", {
+  inputs <- ccao_download_input_data("2025-01-11-gallant-rina",
+  c("char", "training", "assessment")
+  )
+}
