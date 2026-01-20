@@ -31,7 +31,7 @@ town_convert <- function(town) {
     ccao::town_dict$township_name[match(town, ccao::town_dict$township_code)]
   )
 
-  return(out)
+  return(out) # nolint
 }
 
 
@@ -75,7 +75,7 @@ town_get_triad <- function(town, name = FALSE) {
     )
   }
 
-  return(out)
+  return(out) # nolint
 }
 
 
@@ -172,5 +172,5 @@ town_get_assmnt_year <- function(town,
   # Replace bad inputs with NA
   out <- as.numeric(replace(out, is.na(triads) | year_na_idx, NA))
 
-  return(out)
+  return(out) # nolint
 }
