@@ -221,8 +221,17 @@ test_that("bad input data stops execution", {
 ##### TEST ccao_download_input_data() #####
 
 context("test ccao_download_input_data()")
-test_that("legacy model works", {
-  inputs <- ccao_download_input_data("2025-01-11-gallant-rina",
-  c("char", "training", "assessment")
+
+test_that("legacy model returns a list of three files", {
+  inputs <- ccao_download_input_data(
+    "2025-01-11-gallant-rina",
+    c("char", "training", "assessment")
   )
-}
+
+  expect_type(inputs, "list")
+  expect_length(inputs, 3)
+  expect_setequal(
+    names(inputs),
+    c("char", "training", "assessment")
+  )
+})
