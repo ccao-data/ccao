@@ -291,13 +291,10 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' Download one or more DVC-tracked input datasets for a given model run
 #'
 #' @description Downloads one or more model input datasets referenced by a
-#' `run_id` in `model.metadata`. The function reads the appropriate DVC hash
-#' column (e.g. `dvc_md5_char_data`) and constructs the corresponding DVC S3
-#' path (`.../files/md5/<2>/<30>`), then loads the parquet via `arrow`.
+#' `run_id` in `model.metadata`.
 #'
 #' Folder layout depends on the model year and assessment group:
-#' - For `assessment_year <= 2024`, the legacy DVC layout is used (no model
-#'   subfolder under the bucket).
+#' - For `assessment_year <= 2024`, the legacy DVC layout is used.
 #' - For `assessment_year >= 2025`, the path includes `model-res-avm` or
 #'   `model-condo-avm` depending on `assessment_group`.
 #'
@@ -381,7 +378,7 @@ ccao_download_input_data <- function(model_run, files) {
   grp <- (dvc_params$assessment_group)
 
   # Folder logic:
-  # - <= 2025: old layout (no model subfolder)
+  # - <= 2025: old layout
   # - >= 2026: split by assessment_group
   model_folder <- if (yr <= 2025) {
     ""
