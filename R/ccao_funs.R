@@ -102,7 +102,6 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
   }
 
   names(out) <- c("COD", "COD_CI", "COD_MET", "COD_CI_MET", "COD_N")
-  return(out)
 }
 
 
@@ -170,7 +169,6 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   }
 
   names(out) <- c("PRD", "PRD_CI", "PRD_MET", "PRD_CI_MET", "PRD_N")
-  return(out)
 }
 
 
@@ -237,7 +235,6 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   }
 
   names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_CI_MET", "PRB_N")
-  return(out)
 }
 
 
@@ -321,12 +318,7 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' training_data <- inputs[["training"]]
 #' @export
 ccao_download_input_data <- function(model_run, files) {
-  con <- DBI::dbConnect(
-    noctua::athena(
-      s3_staging_dir = "s3://ccao-athena-results-us-east-1/",
-      region_name = "us-east-1"
-    )
-  )
+  con <- DBI::dbConnect(noctua::athena())
 
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
@@ -376,6 +368,8 @@ ccao_download_input_data <- function(model_run, files) {
     )
   }
 
+  AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
+
   yr <- (as.integer(dvc_params$assessment_year))
 
   grp <- (dvc_params$assessment_group)
@@ -386,9 +380,9 @@ ccao_download_input_data <- function(model_run, files) {
   model_folder <- if (yr <= 2025) {
     ""
   } else if (grp == "condo") {
-    "model-condo-avm/"
+    "model-condo-avm"
   } else {
-    "model-res-avm/"
+    "model-res-avm"
   }
 
   # Helper to read a single file
@@ -403,9 +397,9 @@ ccao_download_input_data <- function(model_run, files) {
     }
 
     s3_path <- glue::glue(
-      s3_staging_dir,
-      if (nzchar(model_folder)) glue::glue("{model_folder}") else "",
-      "files/md5/",
+      AWS_S3_DVC_BUCKET,
+      if (nzchar(model_folder)) glue::glue("/{model_folder}") else "",
+      "/files/md5/",
       substr(dvc_hash, 1, 2), "/",
       substr(dvc_hash, 3, 32)
     )
