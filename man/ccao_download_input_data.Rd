@@ -4,7 +4,11 @@
 \alias{ccao_download_input_data}
 \title{Download one or more DVC-tracked input datasets for a given model run}
 \usage{
-ccao_download_input_data(model_run, files)
+ccao_download_input_data(
+  model_run,
+  files,
+  s3_staging_dir = "s3://ccao-athena-results-us-east-1"
+)
 }
 \arguments{
 \item{model_run}{Character `run_id` found in `model.metadata`.}
