@@ -321,7 +321,12 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' training_data <- inputs[["training"]]
 #' @export
 ccao_download_input_data <- function(model_run, files) {
-  con <- DBI::dbConnect(noctua::athena())
+  con <- DBI::dbConnect(
+    noctua::athena(
+      s3_staging_dir = "s3://ccao-athena-results-us-east-1/",
+      region_name   = "us-east-1"
+    )
+  )
 
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
