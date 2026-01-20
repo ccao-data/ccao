@@ -302,23 +302,12 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' @param files Character vector of file keys to download. Valid keys are:
 #'   `assessment`, `complex_id`, `land_nbhd`, `land_site`, `training`, `char`,
 #'   `hie`, `condo_strata`.
+#' @param s3_staging_dir S3 path to use for Athena query results. This is
+#'   mainly used to pass checks in github.
 #'
 #' @return If `files` has length 1, returns a single data frame (as returned by
 #' `arrow::read_parquet()`). If `files` has length > 1, returns a named list of
 #' data frames with names equal to `files`.
-#'
-#' @examples
-#' # Download a single dataset
-#' char_data <- ccao_download_input_data("2025-01-11-gallant-rina", "char")
-#'
-#' # Download multiple datasets (returns a named list)
-#' inputs <- ccao_download_input_data(
-#'   "2025-01-11-gallant-rina",
-#'   c("char", "training", "assessment")
-#' )
-#'
-#' # Access one dataset from the list
-#' training_data <- inputs[["training"]]
 #' @export
 ccao_download_input_data <- function(
   model_run,
