@@ -15,13 +15,10 @@ def ccao_download_input_data(
     Download one or more DVC-tracked input datasets for a given model run.
 
     Downloads one or more model input datasets referenced by a run_id in
-    model.metadata. The function reads the appropriate DVC hash column
-    (e.g. dvc_md5_char_data) and constructs the corresponding DVC S3 path:
-    .../files/md5/<first2>/<next30>, then loads the parquet via pandas/pyarrow.
+    model.metadata.
 
     Folder layout depends on the model year and assessment group:
-      - For assessment_year <= 2025, the legacy DVC layout is used (no model
-        subfolder under the bucket).
+      - For assessment_year <= 2025, the legacy DVC layout is used.
       - For assessment_year >= 2026, the path includes model-res-avm or
         model-condo-avm depending on assessment_group.
 
@@ -64,7 +61,7 @@ def ccao_download_input_data(
             + "."
         )
 
-    # Athena connection (match your existing env var pattern)
+    # Athena connection
     conn = connect(
         s3_staging_dir=os.getenv(
             "AWS_ATHENA_S3_STAGING_DIR",
@@ -89,7 +86,13 @@ def ccao_download_input_data(
         WHERE run_id = '{model_run}'
     """
 
-    dvc_params = pd.read_sql(sql, conn)
+    with conn.cursor() as cur:
+        cur.execute(sql)
+        rows = cur.fetchall()
+        cols = [d[0] for d in cur.description]
+
+    dvc_params = pd.DataFrame(rows, columns=cols)
+
     if dvc_params.empty:
         raise ValueError(f"No rows found in model.metadata for run_id = '{model_run}'")
 
@@ -100,7 +103,7 @@ def ccao_download_input_data(
     AWS_S3_DVC_BUCKET = "s3://ccao-data-dvc-us-east-1"
 
     # Folder logic:
-    # - <= 2025: old layout (no model subfolder)
+    # - <= 2025: old layout
     # - >= 2026: split by assessment_group
     if yr <= 2025:
         model_folder = ""
