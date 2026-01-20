@@ -324,7 +324,7 @@ ccao_download_input_data <- function(model_run, files) {
   con <- DBI::dbConnect(
     noctua::athena(
       s3_staging_dir = "s3://ccao-athena-results-us-east-1/",
-      region_name   = "us-east-1"
+      region_name = "us-east-1"
     )
   )
 
@@ -376,8 +376,6 @@ ccao_download_input_data <- function(model_run, files) {
     )
   }
 
-  AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
-
   yr <- (as.integer(dvc_params$assessment_year))
 
   grp <- (dvc_params$assessment_group)
@@ -388,9 +386,9 @@ ccao_download_input_data <- function(model_run, files) {
   model_folder <- if (yr <= 2025) {
     ""
   } else if (grp == "condo") {
-    "model-condo-avm"
+    "model-condo-avm/"
   } else {
-    "model-res-avm"
+    "model-res-avm/"
   }
 
   # Helper to read a single file
@@ -405,9 +403,9 @@ ccao_download_input_data <- function(model_run, files) {
     }
 
     s3_path <- glue::glue(
-      AWS_S3_DVC_BUCKET,
-      if (nzchar(model_folder)) glue::glue("/{model_folder}") else "",
-      "/files/md5/",
+      s3_staging_dir,
+      if (nzchar(model_folder)) glue::glue("{model_folder}") else "",
+      "files/md5/",
       substr(dvc_hash, 1, 2), "/",
       substr(dvc_hash, 3, 32)
     )
