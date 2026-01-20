@@ -135,4 +135,3 @@ def ccao_download_input_data(
 # Examples:
 # char_data = ccao_download_input_data("2025-01-11-gallant-rina", "char")
 # inputs = ccao_download_input_data("2025-01-11-gallant-rina", ["char", "training", "assessment"])
-# training_data = inputs["training"]
