@@ -94,7 +94,9 @@ def ccao_download_input_data(
     dvc_params = pd.DataFrame(rows, columns=cols)
 
     if dvc_params.empty:
-        raise ValueError(f"No rows found in model.metadata for run_id = '{model_run}'")
+        raise ValueError(
+            f"No rows found in model.metadata for run_id = '{model_run}'"
+        )
 
     row = dvc_params.iloc[0]
     yr = int(row["assessment_year"])
@@ -117,7 +119,9 @@ def ccao_download_input_data(
         dvc_hash = row[md5_col]
 
         if pd.isna(dvc_hash) or str(dvc_hash).strip() == "":
-            raise ValueError(f"Missing/empty {md5_col} for run_id = '{model_run}'")
+            raise ValueError(
+                f"Missing/empty {md5_col} for run_id = '{model_run}'"
+            )
 
         dvc_hash = str(dvc_hash).strip()
         s3_path = (

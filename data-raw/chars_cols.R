@@ -1,5 +1,4 @@
 chars_cols <- dplyr::lst(
-
   # List of columns in data set that will need to have ADDCHARS values added
   add = list(
     target = c(
