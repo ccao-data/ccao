@@ -3,6 +3,6 @@ linters: linters_with_defaults(
     object_usage_linter = NULL,
     pipe_consistency_linter = pipe_consistency_linter(c("auto")),
     return_linter = NULL,
-    line_length_linter = line_length_linter(35)
+    function_length_linter = function_length_linter(35)
   )
 encoding: "UTF-8"
