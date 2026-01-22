@@ -14,14 +14,6 @@ def ccao_download_input_data(
     """
     Download one or more DVC-tracked input datasets for a given model run.
 
-    Downloads one or more model input datasets referenced by a run_id in
-    model.metadata.
-
-    Folder layout depends on the model year and assessment group:
-      - For assessment_year <= 2025, the legacy DVC layout is used.
-      - For assessment_year >= 2026, the path includes model-res-avm or
-        model-condo-avm depending on assessment_group.
-
     Args:
         model_run: run_id found in model.metadata.
         files: File key or list of file keys to download. Valid keys are:
