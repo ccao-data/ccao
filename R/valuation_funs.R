@@ -43,7 +43,7 @@ val_limit_ratios <- function(truth, estimate, lower, upper) {
   estimate[ratio_high] <- truth[ratio_high] * upper
   estimate[ratio_low] <- truth[ratio_low] * lower
 
-  return(estimate) # nolint
+  return(estimate)
 }
 
 
@@ -121,5 +121,5 @@ val_round_fmv <- function(x, breaks = 1e5, round_to = c(5e3, 1e4), type = "floor
     )
   )
 
-  return(output) # nolint
+  return(output)
 }
