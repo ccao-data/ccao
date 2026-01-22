@@ -1,5 +1,5 @@
 # tests/test_ccao_download_model_input_data.py
-
+import importlib
 import re
 from typing import List
 
@@ -18,15 +18,10 @@ class TestCcaoDownloadModelInputData:
 
     @pytest.fixture
     def called_paths(self) -> List[str]:
-        # fresh per-test
         return []
 
     @pytest.fixture
     def mock_metadata(self, request) -> pd.DataFrame:
-        """
-        Build a single-row metadata frame with 32-char md5s.
-        assessment_year / assessment_group are injected per test via request.param.
-        """
         assessment_year, assessment_group = request.param
         return pd.DataFrame(
             [
@@ -48,14 +43,11 @@ class TestCcaoDownloadModelInputData:
     @pytest.fixture
     def patch_deps(self, monkeypatch, called_paths, mock_metadata):
         """
-        Patch DB + parquet readers in the module under test.
-        Adjust module_path if your function lives elsewhere.
+        Import the module under test and patch its dependencies.
+        Adjust module_name to match where your function actually lives.
         """
-        module_path = "ccao_funs.ccao_download_model_input_data"
-
-        import importlib
-
-        mod = importlib.import_module(module_path)
+        module_name = "ccao.ccao_funs"  # <-- file: ccao/ccao_funs.py
+        mod = importlib.import_module(module_name)
 
         class MockAthenaConnection:
             pass
@@ -73,31 +65,28 @@ class TestCcaoDownloadModelInputData:
             called_paths.append(path)
             return pd.DataFrame({".mock": [True]})
 
-        # Patch common symbols (use raising=False so it works across impl variants)
+        # Patch names as they are referenced inside ccao_download_model_input_data
+        monkeypatch.setattr(mod, "dbConnect", mock_dbConnect, raising=False)
         monkeypatch.setattr(
-            f"{module_path}.dbConnect", mock_dbConnect, raising=False
+            mod, "dbDisconnect", mock_dbDisconnect, raising=False
         )
+        monkeypatch.setattr(mod, "dbGetQuery", mock_dbGetQuery, raising=False)
+
+        # Patch parquet readers (depending on your implementation)
         monkeypatch.setattr(
-            f"{module_path}.dbDisconnect", mock_dbDisconnect, raising=False
-        )
-        monkeypatch.setattr(
-            f"{module_path}.dbGetQuery", mock_dbGetQuery, raising=False
+            mod, "read_parquet", mock_read_parquet, raising=False
         )
 
-        # Patch parquet reader (cover common patterns)
-        monkeypatch.setattr(
-            f"{module_path}.read_parquet", mock_read_parquet, raising=False
-        )
-        monkeypatch.setattr(
-            f"{module_path}.arrow.read_parquet",
-            mock_read_parquet,
-            raising=False,
-        )
-        monkeypatch.setattr(
-            f"{module_path}.pq.read_table",
-            lambda path, **k: mock_read_parquet(path),
-            raising=False,
-        )
+        # If your module imports pyarrow.parquet as pq
+        if hasattr(mod, "pq"):
+            monkeypatch.setattr(
+                mod.pq,
+                "read_table",
+                lambda path, **k: mock_read_parquet(path),
+                raising=False,
+            )
+
+        # If your module imports pyarrow.dataset as ds, etc., patch those similarly.
 
         return mod
 
@@ -146,15 +135,12 @@ class TestCcaoDownloadModelInputData:
 
         data = mod.ccao_download_model_input_data(run_id, file_keys)
 
-        # Basic structure checks
         assert isinstance(data, dict)
         assert len(data) == len(file_keys)
         assert set(data.keys()) == set(file_keys)
 
-        # One parquet read per file
         assert len(called_paths) == len(file_keys)
 
-        # Path checks
         for rx in expected_path_regexes:
             assert any(re.search(rx, p) for p in called_paths), (
                 f"missing path {rx}"
