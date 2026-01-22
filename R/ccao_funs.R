@@ -102,7 +102,7 @@ ccao_cod <- function(ratio, suppress = FALSE, na.rm = FALSE) { # nolint
   }
 
   names(out) <- c("COD", "COD_CI", "COD_MET", "COD_CI_MET", "COD_N")
-  return(out) # nolint
+  return(out)
 }
 
 
@@ -170,7 +170,7 @@ ccao_prd <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   }
 
   names(out) <- c("PRD", "PRD_CI", "PRD_MET", "PRD_CI_MET", "PRD_N")
-  return(out) # nolint
+  return(out)
 }
 
 
@@ -237,8 +237,7 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   }
 
   names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_CI_MET", "PRB_N")
-  return(out) # nolint
-}
+  return(out)
 
 
 # nolint start
