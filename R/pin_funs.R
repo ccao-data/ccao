@@ -38,7 +38,7 @@ pin_clean <- function(pin) {
   # Remove trailing and leading whitespace
   out <- trimws(out)
 
-  return(out) # nolint
+  return(out)
 }
 
 
@@ -93,5 +93,5 @@ pin_format_pretty <- function(pin, full_length = FALSE) {
   # Replace any NA values in the output
   final_pin <- replace(dash_pin, is.na(pin), NA_character_)
 
-  return(final_pin) # nolint
+  return(final_pin)
 }
