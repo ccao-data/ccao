@@ -293,6 +293,8 @@ test_ccao_download_input_data <- function(
     # Path checks
     for (rx in expected_path_regexes) {
       expect_true(any(grepl(rx, called_paths)))
+
+      # Expect error for bad path
     }
   })
 }

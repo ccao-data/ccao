@@ -299,19 +299,19 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #'   `model-condo-avm` depending on `assessment_group`.
 #'
 #' @param run_id Character `run_id` found in `model.metadata`.
-#' @param files Character vector of file keys to download. Valid keys are:
+#' @param file_keys Character vector of file keys to download. Valid keys are:
 #'   `assessment`, `complex_id`, `land_nbhd`, `land_site`, `training`, `char`,
 #'   `hie`, `condo_strata`.
 #' @param s3_staging_dir S3 path to use for Athena query results. This is
 #'   mainly used to pass checks in github.
 #'
-#' @return If `files` has length 1, returns a single data frame (as returned by
-#' `arrow::read_parquet()`). If `files` has length > 1, returns a named list of
-#' data frames with names equal to `files`.
+#' @return If `file_keys` has length 1, returns a data frame (as returned by
+#' `arrow::read_parquet()`). If `file_keys` has length > 1, returns a named list
+#' of data frames with names equal to `file_keys`.
 #' @export
 ccao_download_input_data <- function(
   run_id,
-  files,
+  file_keys,
   s3_staging_dir = "s3://ccao-athena-results-us-east-1"
 ) {
   con <- DBI::dbConnect(
@@ -355,7 +355,7 @@ ccao_download_input_data <- function(
 
   valid_files <- names(md5_map)
 
-  invalid_files <- setdiff(files, valid_files)
+  invalid_files <- setdiff(file_keys, valid_files)
 
   if (length(invalid_files) > 0) {
     stop(
@@ -407,7 +407,7 @@ ccao_download_input_data <- function(
   }
 
   result <- lapply(files, read_file)
-  names(result) <- files
+  names(result) <- file_keys
 
   # Return a single object if only one file requested
   if (length(result) == 1) {

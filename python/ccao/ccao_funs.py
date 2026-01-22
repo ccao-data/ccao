@@ -9,26 +9,31 @@ from pyathena import connect
 
 def ccao_download_model_input_data(
     run_id: str,
-    files: Union[str, List[str]],
+    file_keys: Union[str, List[str]],
 ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
     """
     Download one or more DVC-tracked input datasets for a given model run.
 
     Args:
         run_id: run_id found in model.metadata.
-        files: File key or list of file keys to download. Valid keys are:
+        file_keys: File key or list of file keys to download. Valid keys are:
             assessment, complex_id, land_nbhd, land_site, training, char,
             hie, condo_strata.
 
     Returns:
         If `files` is a single key, returns a single DataFrame.
         If `files` is a list, returns a dict of DataFrames keyed by file key.
+
+    # Examples:
+    # char_data = ccao_download_input_data("2025-01-11-gallant-rina", "char")
+    # inputs = ccao_download_input_data("2025-01-11-gallant-rina", ["char", "training", "assessment"])
+
     """
-    if isinstance(files, str):
-        files_list = [files]
+    if isinstance(file_keys, str):
+        files_list = [file_keys]
         single = True
     else:
-        files_list = list(files)
+        files_list = list(file_keys)
         single = False
 
     md5_map: Dict[str, str] = {
@@ -126,8 +131,3 @@ def ccao_download_model_input_data(
 
     out: Dict[str, pd.DataFrame] = {k: _read_file(k) for k in files_list}
     return out[files_list[0]] if single else out
-
-
-# Examples:
-# char_data = ccao_download_input_data("2025-01-11-gallant-rina", "char")
-# inputs = ccao_download_input_data("2025-01-11-gallant-rina", ["char", "training", "assessment"])
