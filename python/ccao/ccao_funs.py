@@ -7,8 +7,8 @@ import pandas as pd
 from pyathena import connect
 
 
-def ccao_download_input_data(
-    model_run: str,
+def ccao_download_model_input_data(
+    run_id: str,
     files: Union[str, List[str]],
 ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
     """
@@ -23,7 +23,7 @@ def ccao_download_input_data(
         model-condo-avm depending on assessment_group.
 
     Args:
-        model_run: run_id found in model.metadata.
+        run_id: run_id found in model.metadata.
         files: File key or list of file keys to download. Valid keys are:
             assessment, complex_id, land_nbhd, land_site, training, char,
             hie, condo_strata.
@@ -83,7 +83,7 @@ def ccao_download_input_data(
             dvc_md5_hie_data,
             dvc_md5_condo_strata_data
         FROM model.metadata
-        WHERE run_id = '{model_run}'
+        WHERE run_id = '{run_id}'
     """
 
     with conn.cursor() as cur:
@@ -95,7 +95,7 @@ def ccao_download_input_data(
 
     if dvc_params.empty:
         raise ValueError(
-            f"No rows found in model.metadata for run_id = '{model_run}'"
+            f"No rows found in model.metadata for run_id = '{run_id}'"
         )
 
     row = dvc_params.iloc[0]
@@ -120,7 +120,7 @@ def ccao_download_input_data(
 
         if pd.isna(dvc_hash) or str(dvc_hash).strip() == "":
             raise ValueError(
-                f"Missing/empty {md5_col} for run_id = '{model_run}'"
+                f"Missing/empty {md5_col} for run_id = '{run_id}'"
             )
 
         dvc_hash = str(dvc_hash).strip()

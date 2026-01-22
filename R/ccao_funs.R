@@ -298,7 +298,7 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' - For `assessment_year >= 2025`, the path includes `model-res-avm` or
 #'   `model-condo-avm` depending on `assessment_group`.
 #'
-#' @param model_run Character `run_id` found in `model.metadata`.
+#' @param run_id Character `run_id` found in `model.metadata`.
 #' @param files Character vector of file keys to download. Valid keys are:
 #'   `assessment`, `complex_id`, `land_nbhd`, `land_site`, `training`, `char`,
 #'   `hie`, `condo_strata`.
@@ -310,7 +310,7 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' data frames with names equal to `files`.
 #' @export
 ccao_download_input_data <- function(
-  model_run,
+  run_id,
   files,
   s3_staging_dir = "s3://ccao-athena-results-us-east-1"
 ) {
@@ -337,7 +337,7 @@ ccao_download_input_data <- function(
         dvc_md5_hie_data,
         dvc_md5_condo_strata_data
       FROM model.metadata
-      WHERE run_id = '{model_run}'
+      WHERE run_id = '{run_id}'
     ")
   )
 
@@ -391,7 +391,7 @@ ccao_download_input_data <- function(
 
     if (is.na(dvc_hash) || !nzchar(dvc_hash)) {
       stop(glue::glue(
-        "Missing/empty {md5_col} for run_id = '{model_run}'"
+        "Missing/empty {md5_col} for run_id = '{run_id}'"
       ))
     }
 
