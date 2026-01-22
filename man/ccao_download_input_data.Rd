@@ -5,15 +5,15 @@
 \title{Download one or more DVC-tracked input datasets for a given model run}
 \usage{
 ccao_download_input_data(
-  model_run,
-  files,
+  run_id,
+  file_keys,
   s3_staging_dir = "s3://ccao-athena-results-us-east-1"
 )
 }
 \arguments{
-\item{model_run}{Character `run_id` found in `model.metadata`.}
+\item{run_id}{Character `run_id` found in `model.metadata`.}
 
-\item{files}{Character vector of file keys to download. Valid keys are:
+\item{file_keys}{Character vector of file keys to download. Valid keys are:
 `assessment`, `complex_id`, `land_nbhd`, `land_site`, `training`, `char`,
 `hie`, `condo_strata`.}
 
@@ -21,9 +21,9 @@ ccao_download_input_data(
 mainly used to pass checks in github.}
 }
 \value{
-If `files` has length 1, returns a single data frame (as returned by
-`arrow::read_parquet()`). If `files` has length > 1, returns a named list of
-data frames with names equal to `files`.
+If `file_keys` has length 1, returns a data frame (as returned by
+`arrow::read_parquet()`). If `file_keys` has length > 1, returns a named list
+of data frames with names equal to `file_keys`.
 }
 \description{
 Downloads one or more model input datasets referenced by a
