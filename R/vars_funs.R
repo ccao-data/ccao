@@ -125,9 +125,9 @@ vars_rename <- function(data,
   # character vector of new names
   if (is.data.frame(data) && output_type == "inplace") {
     names(data) <- names_wm
-    return(data) # nolint
+    return(data)
   } else if (is.character(data) || output_type == "vector") {
-    return(names_wm) # nolint
+    return(names_wm)
   }
 }
 
@@ -295,9 +295,9 @@ vars_recode <- function(data,
           } else {
             out <- dict_long[[var]][var_rows][idx]
           }
-          return(out) # nolint
+          return(out)
         } else {
-          return(x) # nolint
+          return(x)
         }
       }
     )
