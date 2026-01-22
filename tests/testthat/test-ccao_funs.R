@@ -304,7 +304,7 @@ test_ccao_download_model_input_data <- function(
     called_paths <- character(0)
     expect_error(
       ccao_download_model_input_data(run_id, "bad_file_key"),
-      regexp = "bad_file_key|invalid|Valid keys|possible inputs|Unknown file",
+      regexp = "Invalid file key",
       ignore.case = TRUE
     )
     expect_equal(length(called_paths), 0)
