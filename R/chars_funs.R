@@ -55,7 +55,7 @@ chars_fix_age <- function(age, year, town) {
     stop("Longer argument must be a multiple of length of shorter")
   }
 
-  return(age + year_diff) # nolint
+  return(age + year_diff)
 }
 
 
@@ -122,7 +122,7 @@ chars_288_active <- function(start_year, town) {
       mapply(
         function(x, y) {
           if (is.na(x) | is.na(y)) {
-            return(NA_real_) # nolint
+            return(NA_real_)
           } else {
             potentially_active_years <- x:(x + 8)
 
@@ -132,7 +132,7 @@ chars_288_active <- function(start_year, town) {
                 ccao::town_get_assmnt_year(y, x + 4, round_type = "ceiling")
               )
 
-            return(potentially_active_years[idx]) # nolint
+            return(potentially_active_years[idx])
           }
         },
         x = start_year,
@@ -146,7 +146,7 @@ chars_288_active <- function(start_year, town) {
     }
   )
 
-  return(out) # nolint
+  return(out)
 }
 
 
