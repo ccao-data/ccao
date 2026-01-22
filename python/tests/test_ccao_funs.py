@@ -51,7 +51,7 @@ class TestCcaoDownloadModelInputData:
         Patch DB + parquet readers in the module under test.
         Adjust module_path if your function lives elsewhere.
         """
-        module_path = "your_package.ccao_download_model_input_data"
+        module_path = "ccao_funs.ccao_download_model_input_data"
 
         import importlib
 
