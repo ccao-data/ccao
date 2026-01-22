@@ -238,7 +238,7 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
 
   names(out) <- c("PRB", "PRB_CI", "PRB_MET", "PRB_CI_MET", "PRB_N")
   return(out)
-
+}
 
 # nolint start
 #' Generate a memorable ID string based on CCAO employee names
@@ -308,7 +308,7 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' `arrow::read_parquet()`). If `file_keys` has length > 1, returns a named list
 #' of data frames with names equal to `file_keys`.
 #' @export
-ccao_download_input_data <- function(
+ccao_download_model_input_data <- function(
   run_id,
   file_keys,
   s3_staging_dir = "s3://ccao-athena-results-us-east-1"
@@ -405,7 +405,7 @@ ccao_download_input_data <- function(
     arrow::read_parquet(s3_path)
   }
 
-  result <- lapply(files, read_file)
+  result <- lapply(file_keys, read_file)
   names(result) <- file_keys
 
   # Return a single object if only one file requested

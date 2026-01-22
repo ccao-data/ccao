@@ -25,8 +25,8 @@ def ccao_download_model_input_data(
         If `files` is a list, returns a dict of DataFrames keyed by file key.
 
     # Examples:
-    # char_data = ccao_download_input_data("2025-01-11-gallant-rina", "char")
-    # inputs = ccao_download_input_data("2025-01-11-gallant-rina", ["char", "training", "assessment"])
+    # char_data = ccao_download_model_input_data("2025-01-11-gallant-rina", "char")
+    # inputs = ccao_download_model_input_data("2025-01-11-gallant-rina", ["char", "training", "assessment"])
 
     """
     if isinstance(file_keys, str):

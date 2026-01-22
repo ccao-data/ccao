@@ -218,28 +218,32 @@ test_that("bad input data stops execution", {
   expect_condition(ccao_generate_id(-1))
 })
 
-##### TEST ccao_download_input_data() #####
+##### TEST ccao_download_model_input_data() #####
 
-context("test ccao_download_input_data()")
+context("test ccao_download_model_input_data()")
 
 # This uses mock paths since we cannot connect to Athena during our tests.
 # It solely checks if we return objects of the correct type / length
 # and create the correct paths
-test_ccao_download_input_data <- function(
+
+# nolint start: line_length_linter.
+
+test_ccao_download_model_input_data <- function(
   test_name,
   assessment_year,
   assessment_group,
   expected_path_regexes,
   run_id = "2025-01-11-gallant-rina",
-  files = c("complex_id", "land_nbhd", "hie")
+  file_keys = c("complex_id", "land_nbhd", "hie")
 ) {
   test_that(test_name, {
     called_paths <- character(0)
 
     mock_con <- structure(list(), class = "MockAthenaConnection")
 
-    mock_dbConnect <- mockery::mock(mock_con)
-    mock_dbDisconnect <- mockery::mock(invisible(TRUE))
+    # IMPORTANT: cycle=TRUE so we can call the function multiple times
+    mock_dbConnect <- mockery::mock(mock_con, cycle = TRUE)
+    mock_dbDisconnect <- mockery::mock(invisible(TRUE), cycle = TRUE)
 
     # Build metadata row with 32-char md5s for the three requested files.
     mock_dbGetQuery <- mockery::mock(
@@ -255,7 +259,8 @@ test_ccao_download_input_data <- function(
         dvc_md5_hie_data = paste0(rep("c", 32), collapse = ""),
         dvc_md5_condo_strata_data = NA_character_,
         stringsAsFactors = FALSE
-      )
+      ),
+      cycle = TRUE
     )
 
     mock_read_parquet <- function(path, ...) {
@@ -264,43 +269,50 @@ test_ccao_download_input_data <- function(
     }
 
     mockery::stub(
-      ccao_download_input_data,
+      ccao_download_model_input_data,
       "DBI::dbConnect", mock_dbConnect
     )
     mockery::stub(
-      ccao_download_input_data,
+      ccao_download_model_input_data,
       "DBI::dbDisconnect", mock_dbDisconnect
     )
     mockery::stub(
-      ccao_download_input_data,
+      ccao_download_model_input_data,
       "DBI::dbGetQuery", mock_dbGetQuery
     )
     mockery::stub(
-      ccao_download_input_data,
+      ccao_download_model_input_data,
       "arrow::read_parquet", mock_read_parquet
     )
 
-    data <- ccao_download_input_data(run_id, files)
+    data <- ccao_download_model_input_data(run_id, file_keys)
 
     # Basic structure checks
     expect_type(data, "list")
-    expect_length(data, length(files))
-    expect_setequal(names(data), files)
+    expect_length(data, length(file_keys))
+    expect_setequal(names(data), file_keys)
 
     # One parquet read per file
-    expect_equal(length(called_paths), length(files))
+    expect_equal(length(called_paths), length(file_keys))
 
     # Path checks
     for (rx in expected_path_regexes) {
       expect_true(any(grepl(rx, called_paths)))
-
-      # Expect error for bad path
     }
+
+    # Invalid file key alone should error and not read any parquet
+    called_paths <- character(0)
+    expect_error(
+      ccao_download_model_input_data(run_id, "bad_file_key"),
+      regexp = "bad_file_key|invalid|Valid keys|possible inputs|Unknown file",
+      ignore.case = TRUE
+    )
+    expect_equal(length(called_paths), 0)
   })
 }
 
 # 2025 res (legacy layout)
-test_ccao_download_input_data(
+test_ccao_download_model_input_data(
   test_name = "2025 res returns correct object and path",
   assessment_year = 2025L,
   assessment_group = "res",
@@ -312,7 +324,7 @@ test_ccao_download_input_data(
 )
 
 # 2026 res (model-res-avm in path)
-test_ccao_download_input_data(
+test_ccao_download_model_input_data(
   test_name = "2026 res returns correct object and path",
   assessment_year = 2026L,
   assessment_group = "res",
@@ -324,7 +336,7 @@ test_ccao_download_input_data(
 )
 
 # 2026 condo (model-condo-avm in path)
-test_ccao_download_input_data(
+test_ccao_download_model_input_data(
   test_name = "2026 condo returns correct object and path",
   assessment_year = 2026L,
   assessment_group = "condo",
@@ -334,3 +346,5 @@ test_ccao_download_input_data(
     "model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
   )
 )
+
+# nolint end
