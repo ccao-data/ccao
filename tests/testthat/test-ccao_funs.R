@@ -227,7 +227,6 @@ context("test ccao_download_model_input_data()")
 # and create the correct paths
 
 # nolint start: line_length_linter.
-
 test_ccao_download_model_input_data <- function(
   test_name,
   assessment_year,
@@ -241,11 +240,11 @@ test_ccao_download_model_input_data <- function(
 
     mock_con <- structure(list(), class = "MockAthenaConnection")
 
-    # IMPORTANT: cycle=TRUE so we can call the function multiple times
+    # cycle=TRUE so we can call the function multiple times
     mock_dbConnect <- mockery::mock(mock_con, cycle = TRUE)
     mock_dbDisconnect <- mockery::mock(invisible(TRUE), cycle = TRUE)
 
-    # Build metadata row with 32-char md5s for the three requested files.
+    # Build metadata row with 32-char md5s
     mock_dbGetQuery <- mockery::mock(
       data.frame(
         assessment_year = as.integer(assessment_year),
@@ -285,9 +284,9 @@ test_ccao_download_model_input_data <- function(
       "arrow::read_parquet", mock_read_parquet
     )
 
+    # Multiple files, returns a list
     data <- ccao_download_model_input_data(run_id, file_keys)
 
-    # Basic structure checks
     expect_type(data, "list")
     expect_length(data, length(file_keys))
     expect_setequal(names(data), file_keys)
@@ -300,7 +299,49 @@ test_ccao_download_model_input_data <- function(
       expect_true(any(grepl(rx, called_paths)))
     }
 
-    # Invalid file key alone should error and not read any parquet
+    # Single file, return the object, not a list
+    called_paths <- character(0)
+
+    single_data <- ccao_download_model_input_data(run_id, file_keys[1])
+
+    expect_true(is.data.frame(single_data))
+    expect_equal(length(called_paths), 1)
+
+    # Missing / empty DVC hash should error
+    called_paths <- character(0)
+
+    mock_dbGetQuery_missing <- mockery::mock(
+      data.frame(
+        assessment_year = as.integer(assessment_year),
+        assessment_group = as.character(assessment_group),
+        dvc_md5_assessment_data = NA_character_,
+        dvc_md5_complex_id_data = NA_character_, # <- add missing hash
+        dvc_md5_land_nbhd_rate_data = NA_character_,
+        dvc_md5_land_site_rate_data = NA_character_,
+        dvc_md5_training_data = NA_character_,
+        dvc_md5_char_data = NA_character_,
+        dvc_md5_hie_data = NA_character_,
+        dvc_md5_condo_strata_data = NA_character_,
+        stringsAsFactors = FALSE
+      ),
+      cycle = TRUE
+    )
+
+    mockery::stub(
+      ccao_download_model_input_data,
+      "DBI::dbGetQuery", mock_dbGetQuery_missing
+    )
+
+    expect_error(
+      ccao_download_model_input_data(run_id, "complex_id"),
+      regexp = "Missing/empty.*run_id",
+      ignore.case = TRUE
+    )
+
+    # Ensure the parquet was never read
+    expect_equal(length(called_paths), 0)
+
+    # Invalid file key alone should error and not read parquet
     called_paths <- character(0)
     expect_error(
       ccao_download_model_input_data(run_id, "bad_file_key"),

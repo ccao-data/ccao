@@ -103,15 +103,14 @@ def _run_case(
         "ccao.ccao_funs.pd.read_parquet", _fake_read_parquet, raising=True
     )
 
-    # Call function
+    # Multiple files, dict return
     data = ccao_download_model_input_data(run_id, list(file_keys))
 
-    # Basic structure checks
     assert isinstance(data, dict), f"{test_name}: expected dict output"
     assert len(data) == len(file_keys), f"{test_name}: wrong dict length"
     assert set(data.keys()) == set(file_keys), f"{test_name}: wrong dict keys"
 
-    # One parquet read per file
+    # One parquet read per file key
     assert len(called_paths) == len(file_keys), (
         f"{test_name}: wrong number of parquet reads"
     )
@@ -123,10 +122,64 @@ def _run_case(
             f"Called paths were: {called_paths}"
         )
 
+    # Single file, return a single DataFrame
+    called_paths.clear()
+
+    single_data = ccao_download_model_input_data(run_id, file_keys[0])
+
+    assert isinstance(single_data, pd.DataFrame), (
+        f"{test_name}: expected DataFrame when requesting a single file key"
+    )
+    assert len(called_paths) == 1, (
+        f"{test_name}: expected exactly 1 parquet read for single-key request; "
+        f"got {len(called_paths)}"
+    )
+
+    # Missing/empty DVC hash should raise and not read parquet
+    called_paths.clear()
+
+    cols_missing = cols
+
+    # Same row shape, but set the md5 for complex_id to None/empty
+    row_missing = (
+        int(assessment_year),
+        str(assessment_group),
+        None,  # dvc_md5_assessment_data
+        None,  # dvc_md5_complex_id_data  <- missing/empty hash
+        "b" * 32,  # dvc_md5_land_nbhd_rate_data
+        None,  # dvc_md5_land_site_rate_data
+        None,  # dvc_md5_training_data
+        None,  # dvc_md5_char_data
+        "c" * 32,  # dvc_md5_hie_data
+        None,  # dvc_md5_condo_strata_data
+    )
+
+    def _fake_connect_missing(*args: Any, **kwargs: Any) -> _FakeConn:
+        return _FakeConn(rows=[row_missing], cols=cols_missing)
+
+    monkeypatch.setattr(
+        "ccao.ccao_funs.connect", _fake_connect_missing, raising=True
+    )
+
+    with pytest.raises(ValueError) as excinfo:
+        ccao_download_model_input_data(run_id, "complex_id")
+
+    assert re.search(
+        rf"Missing/empty.*run_id\s*=\s*['\"]{re.escape(run_id)}['\"]",
+        str(excinfo.value),
+        re.IGNORECASE,
+    ), f"{test_name}: unexpected missing-hash error message: {excinfo.value}"
+
+    assert len(called_paths) == 0, (
+        f"{test_name}: parquet was read during missing-hash error"
+    )
+
     # Invalid file key alone should error and not read any parquet
     called_paths.clear()
+
     with pytest.raises(ValueError) as excinfo:
         ccao_download_model_input_data(run_id, "bad_file_key")
+
     assert re.search(
         r"Invalid file key",
         str(excinfo.value),
