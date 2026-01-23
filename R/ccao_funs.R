@@ -299,9 +299,8 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' @param s3_staging_dir S3 path to use for Athena query results. This is
 #'   mainly used to pass checks in github.
 #'
-#' @return If `file_keys` has length 1, returns a data frame (as returned by
-#' `arrow::read_parquet()`). If `file_keys` has length > 1, returns a named list
-#' of data frames with names equal to `file_keys`.
+#' @return If `file_keys` is a single key, returns a single DataFrame.
+#' If `file_keys` is a list, returns a dict of DataFrames keyed by file key.
 #' @export
 ccao_download_model_input_data <- function(
   run_id,
