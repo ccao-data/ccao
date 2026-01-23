@@ -292,11 +292,6 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #' @description Downloads one or more model input datasets referenced by a
 #' `run_id` in `model.metadata`.
 #'
-#' Folder layout depends on the model year and assessment group:
-#' - For `assessment_year <= 2024`, the legacy DVC layout is used.
-#' - For `assessment_year >= 2025`, the path includes `model-res-avm` or
-#'   `model-condo-avm` depending on `assessment_group`.
-#'
 #' @param run_id Character `run_id` found in `model.metadata`.
 #' @param file_keys Character vector of file keys to download. Valid keys are:
 #'   `assessment`, `complex_id`, `land_nbhd`, `land_site`, `training`, `char`,
