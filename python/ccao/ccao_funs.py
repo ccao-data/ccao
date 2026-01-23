@@ -21,8 +21,8 @@ def ccao_download_model_input_data(
             hie, condo_strata.
 
     Returns:
-        If `files` is a single key, returns a single DataFrame.
-        If `files` is a list, returns a dict of DataFrames keyed by file key.
+        If `file_keys` is a single key, returns a single DataFrame.
+        If `file_keys` is a list, returns a dict of DataFrames keyed by file key.
 
     # Examples:
     # char_data = ccao_download_model_input_data("2025-01-11-gallant-rina", "char")
