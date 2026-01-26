@@ -6,6 +6,9 @@ from typing import Dict, List, Union
 import pandas as pd
 from pyathena import connect
 
+# Bucket that we will use to pull DVC model input data
+AWS_S3_DVC_BUCKET = "s3://ccao-data-dvc-us-east-1"
+
 
 def ccao_download_model_input_data(
     run_id: str,
@@ -98,8 +101,6 @@ def ccao_download_model_input_data(
     row = dvc_params.iloc[0]
     yr = int(row["assessment_year"])
     grp = str(row["assessment_group"])
-
-    AWS_S3_DVC_BUCKET = "s3://ccao-data-dvc-us-east-1"
 
     # Folder logic:
     # - <= 2025: old layout
