@@ -14,23 +14,17 @@ ccao_download_model_input_data(
 \item{run_id}{Character `run_id` found in `model.metadata`.}
 
 \item{file_keys}{Character vector of file keys to download. Valid keys are:
-`assessment`, `complex_id`, `land_nbhd`, `land_site`, `training`, `char`,
-`hie`, `condo_strata`.}
+`assessment`, `complex_id`, `land_nbhd_rate`, `land_site_rate`,
+`training`, `char`, `hie`, `condo_strata`.}
 
 \item{s3_staging_dir}{S3 path to use for Athena query results. This is
 mainly used to pass checks in github.}
 }
 \value{
-If `file_keys` has length 1, returns a data frame (as returned by
-`arrow::read_parquet()`). If `file_keys` has length > 1, returns a named list
-of data frames with names equal to `file_keys`.
+If `file_keys` is a single key, returns a single DataFrame.
+If `file_keys` is a list, returns a dict of DataFrames keyed by file key.
 }
 \description{
 Downloads one or more model input datasets referenced by a
 `run_id` in `model.metadata`.
-
-Folder layout depends on the model year and assessment group:
-- For `assessment_year <= 2024`, the legacy DVC layout is used.
-- For `assessment_year >= 2025`, the path includes `model-res-avm` or
-  `model-condo-avm` depending on `assessment_group`.
 }
