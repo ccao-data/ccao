@@ -307,10 +307,11 @@ ccao_download_model_input_data <- function(
   file_keys,
   s3_staging_dir = "s3://ccao-athena-results-us-east-1"
 ) {
-  con <- DBI::dbConnect(
+con <- DBI::dbConnect(
     noctua::athena(),
-    s3_staging_dir = s3_staging_dir
-  )
+    s3_staging_dir = s3_staging_dir,
+    rstudio_conn_tab = FALSE
+)
 
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
