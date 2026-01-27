@@ -12,6 +12,7 @@ dependencies = [
     "pandas>=1.4.3",
     "numpy>=1.23.1",
     "pyathena>=3.20.0",
+    "pyarrow>=21.0.0",
 ]
 
 [project.optional-dependencies]
