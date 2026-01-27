@@ -22,6 +22,7 @@ Imports:
     dplyr (>= 1.1.0),
     glue,
     magrittr,
+    noctua,
     rlang,
     tidyr (>= 1.3.0)
 RoxygenNote: 7.3.3
@@ -33,7 +34,6 @@ Suggests:
     knitr,
     lintr,
     mockery,
-    noctua,
     pkgdown,
     readr,
     rmarkdown,
