@@ -39,8 +39,8 @@ def ccao_download_model_input_data(
     md5_map: Dict[str, str] = {
         "assessment": "dvc_md5_assessment_data",
         "complex_id": "dvc_md5_complex_id_data",
-        "land_nbhd": "dvc_md5_land_nbhd_rate_data",
-        "land_site": "dvc_md5_land_site_rate_data",
+        "land_nbhd_rate": "dvc_md5_land_nbhd_rate_data",
+        "land_site_rate": "dvc_md5_land_site_rate_data",
         "training": "dvc_md5_training_data",
         "char": "dvc_md5_char_data",
         "hie": "dvc_md5_hie_data",
