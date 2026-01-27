@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 import re
-from typing import Any, List, Sequence, Tuple
+from typing import Any, List, Tuple
 
 import pandas as pd
 import pytest
 
-from ccao.ccao_funs import ccao_download_model_input_data
+from ccao.ccao_funs import AWS_S3_DVC_BUCKET, ccao_download_model_input_data
 
 
 class _FakeCursor:
@@ -41,10 +41,16 @@ class _FakeConn:
         return _FakeCursor(self._rows, self._cols)
 
 
-def _mk_metadata_cols_and_rows(
+def mock_cursor_execute(
+    monkeypatch: pytest.MonkeyPatch,
     assessment_year: int,
     assessment_group: str,
 ) -> Tuple[List[str], List[tuple]]:
+    """Helper function to mock a pyathena Connection and its Cursor object
+    such that it returns deterministic output without making API calls.
+
+    This needs to be a function instead of a fixture because it needs to return
+    different input depending on the assessment year/group being requested."""
     cols = [
         "assessment_year",
         "assessment_group",
@@ -58,40 +64,34 @@ def _mk_metadata_cols_and_rows(
         "dvc_md5_condo_strata_data",
     ]
 
-    row = (
-        int(assessment_year),
-        str(assessment_group),
-        None,  # dvc_md5_assessment_data
-        "a" * 32,  # dvc_md5_complex_id_data
-        "b" * 32,  # dvc_md5_land_nbhd_rate_data
-        None,  # dvc_md5_land_site_rate_data
-        None,  # dvc_md5_training_data
-        None,  # dvc_md5_char_data
-        "c" * 32,  # dvc_md5_hie_data
-        None,  # dvc_md5_condo_strata_data
-    )
-
-    return cols, [row]
-
-
-def _run_case(
-    monkeypatch: pytest.MonkeyPatch,
-    *,
-    test_name: str,
-    assessment_year: int,
-    assessment_group: str,
-    expected_path_regexes: Sequence[str],
-    run_id: str = "2025-01-11-gallant-rina",
-    file_keys: Sequence[str] = ("complex_id", "land_nbhd", "hie"),
-) -> None:
-    called_paths: List[str] = []
-
-    cols, rows = _mk_metadata_cols_and_rows(assessment_year, assessment_group)
+    rows = [
+        (
+            assessment_year,
+            assessment_group,
+            None,  # dvc_md5_assessment_data (missing hash)
+            "a" * 32,  # dvc_md5_complex_id_data
+            "b" * 32,  # dvc_md5_land_nbhd_rate_data
+            None,  # dvc_md5_land_site_rate_data (missing hash)
+            None,  # dvc_md5_training_data (missing hash)
+            None,  # dvc_md5_char_data (missing hash)
+            "c" * 32,  # dvc_md5_hie_data
+            None,  # dvc_md5_condo_strata_data (missing hash)
+        )
+    ]
 
     def _fake_connect(*args: Any, **kwargs: Any) -> _FakeConn:
         return _FakeConn(rows=rows, cols=cols)
 
     monkeypatch.setattr("ccao.ccao_funs.connect", _fake_connect, raising=True)
+
+    return cols, rows
+
+
+@pytest.fixture
+def mock_read_parquet(monkeypatch) -> List[str]:
+    """Mock pandas.read_parquet() and return a list storing the arguments used
+    to call it"""
+    called_paths: List[str] = []
 
     def _fake_read_parquet(
         path: str, *args: Any, **kwargs: Any
@@ -103,136 +103,134 @@ def _run_case(
         "ccao.ccao_funs.pd.read_parquet", _fake_read_parquet, raising=True
     )
 
-    # Multiple files, dict return
-    data = ccao_download_model_input_data(run_id, list(file_keys))
+    return called_paths
 
-    assert isinstance(data, dict), f"{test_name}: expected dict output"
-    assert len(data) == len(file_keys), f"{test_name}: wrong dict length"
-    assert set(data.keys()) == set(file_keys), f"{test_name}: wrong dict keys"
 
-    # One parquet read per file key
-    assert len(called_paths) == len(file_keys), (
-        f"{test_name}: wrong number of parquet reads"
-    )
+@pytest.mark.parametrize(
+    "assessment_year,assessment_group,file_keys,expected_paths",
+    [
+        # Single-key, pre-2026, res
+        (
+            2025,
+            "res",
+            "complex_id",
+            ["files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+        ),
+        # Multi-key, pre-2026, res
+        (
+            2025,
+            "res",
+            ["complex_id", "land_nbhd", "hie"],
+            [
+                "files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "files/md5/cc/cccccccccccccccccccccccccccccc",
+            ],
+        ),
+        # Multi-key, post-2026, res
+        (
+            2026,
+            "res",
+            ["complex_id", "land_nbhd", "hie"],
+            [
+                "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc",
+            ],
+        ),
+        # Multi-key, post-2026, condo
+        (
+            2026,
+            "condo",
+            ["complex_id", "land_nbhd", "hie"],
+            [
+                "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc",
+            ],
+        ),
+    ],
+    ids=[
+        "2025_res_single_key",
+        "2025_res_multi_key",
+        "2026_res_multi_key",
+        "2026_condo_multi_key",
+    ],
+)
+def test_ccao_download_model_input_data_returns_correct_object_and_path(
+    assessment_year,
+    assessment_group,
+    file_keys,
+    expected_paths,
+    monkeypatch,
+    mock_read_parquet,
+) -> None:
+    mock_cursor_execute(monkeypatch, assessment_year, assessment_group)
 
-    # Path checks: each regex should match at least one called path
-    for rx in expected_path_regexes:
-        assert any(re.search(rx, p) for p in called_paths), (
-            f"{test_name}: no called path matched regex {rx!r}. "
-            f"Called paths were: {called_paths}"
+    data = ccao_download_model_input_data("2025-01-11-gallant-rina", file_keys)
+
+    if isinstance(file_keys, list):
+        assert isinstance(data, dict), "expected dict output"
+        assert len(data) == len(file_keys), "wrong dict length"
+        assert set(data.keys()) == set(file_keys), "wrong dict keys"
+        assert len(mock_read_parquet) == len(file_keys), (
+            "wrong number of parquet reads"
+        )
+    elif isinstance(file_keys, str):
+        assert isinstance(data, pd.DataFrame), (
+            "expected DataFrame when requesting a single file key"
+        )
+        assert len(mock_read_parquet) == 1, (
+            "expected exactly 1 parquet read for single-key request; "
+            f"got {len(mock_read_parquet)}"
+        )
+    else:
+        raise ValueError(
+            f"Unexpected input type for file_keys: {type(file_keys)}"
         )
 
-    # Single file, return a single DataFrame
-    called_paths.clear()
+    # Path checks: each regex should match at least one called path
+    for path in expected_paths:
+        bucket_path = f"{AWS_S3_DVC_BUCKET}/{path}"
+        assert bucket_path in mock_read_parquet, (
+            f"no called path matched {bucket_path}. "
+            f"Called paths were: {mock_read_parquet}"
+        )
 
-    single_data = ccao_download_model_input_data(run_id, file_keys[0])
 
-    assert isinstance(single_data, pd.DataFrame), (
-        f"{test_name}: expected DataFrame when requesting a single file key"
-    )
-    assert len(called_paths) == 1, (
-        f"{test_name}: expected exactly 1 parquet read for single-key request; "
-        f"got {len(called_paths)}"
-    )
-
-    # Missing/empty DVC hash should raise and not read parquet
-    called_paths.clear()
-
-    cols_missing = cols
-
-    # Same row shape, but set the md5 for complex_id to None/empty
-    row_missing = (
-        int(assessment_year),
-        str(assessment_group),
-        None,  # dvc_md5_assessment_data
-        None,  # dvc_md5_complex_id_data  <- missing/empty hash
-        "b" * 32,  # dvc_md5_land_nbhd_rate_data
-        None,  # dvc_md5_land_site_rate_data
-        None,  # dvc_md5_training_data
-        None,  # dvc_md5_char_data
-        "c" * 32,  # dvc_md5_hie_data
-        None,  # dvc_md5_condo_strata_data
-    )
-
-    def _fake_connect_missing(*args: Any, **kwargs: Any) -> _FakeConn:
-        return _FakeConn(rows=[row_missing], cols=cols_missing)
-
-    monkeypatch.setattr(
-        "ccao.ccao_funs.connect", _fake_connect_missing, raising=True
-    )
+def test_ccao_download_model_input_data_raises_for_missing_dvc_hash(
+    monkeypatch, mock_read_parquet
+):
+    mock_cursor_execute(monkeypatch, "2025", "res")
+    run_id = "2025-01-11-gallant-rina"
 
     with pytest.raises(ValueError) as excinfo:
-        ccao_download_model_input_data(run_id, "complex_id")
+        ccao_download_model_input_data(run_id, "assessment")
 
     assert re.search(
         rf"Missing/empty.*run_id\s*=\s*['\"]{re.escape(run_id)}['\"]",
         str(excinfo.value),
         re.IGNORECASE,
-    ), f"{test_name}: unexpected missing-hash error message: {excinfo.value}"
+    ), "unexpected missing-hash error message: {excinfo.value}"
 
-    assert len(called_paths) == 0, (
-        f"{test_name}: parquet was read during missing-hash error"
+    assert len(mock_read_parquet) == 0, (
+        "parquet was read during missing-hash error"
     )
 
-    # Invalid file key alone should error and not read any parquet
-    called_paths.clear()
 
+def test_ccao_download_model_input_data_raises_on_invalid_file_key(
+    mock_read_parquet,
+):
     with pytest.raises(ValueError) as excinfo:
-        ccao_download_model_input_data(run_id, "bad_file_key")
+        ccao_download_model_input_data(
+            "2025-01-11-gallant-rina", "bad_file_key"
+        )
 
     assert re.search(
         r"Invalid file key",
         str(excinfo.value),
         re.IGNORECASE,
     )
-    assert len(called_paths) == 0, (
-        f"{test_name}: parquet was read during invalid-key error"
-    )
-
-
-def test_2025_res_returns_correct_object_and_path(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    _run_case(
-        monkeypatch,
-        test_name="2025 res returns correct object and path",
-        assessment_year=2025,
-        assessment_group="res",
-        expected_path_regexes=[
-            r"/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
-            r"/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
-            r"/files/md5/cc/cccccccccccccccccccccccccccccc$",
-        ],
-    )
-
-
-def test_2026_res_returns_correct_object_and_path(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    _run_case(
-        monkeypatch,
-        test_name="2026 res returns correct object and path",
-        assessment_year=2026,
-        assessment_group="res",
-        expected_path_regexes=[
-            r"model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
-            r"model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
-            r"model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc$",
-        ],
-    )
-
-
-def test_2026_condo_returns_correct_object_and_path(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    _run_case(
-        monkeypatch,
-        test_name="2026 condo returns correct object and path",
-        assessment_year=2026,
-        assessment_group="condo",
-        expected_path_regexes=[
-            r"model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
-            r"model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
-            r"model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc$",
-        ],
+    assert len(mock_read_parquet) == 0, (
+        "parquet was read during invalid-key error"
     )
