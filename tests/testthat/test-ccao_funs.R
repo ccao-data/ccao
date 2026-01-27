@@ -232,7 +232,7 @@ test_ccao_download_model_input_data <- function(
   assessment_group,
   expected_path_regexes,
   run_id = "2025-01-11-gallant-rina",
-  file_keys = c("complex_id", "land_nbhd", "hie")
+  file_keys = c("complex_id", "land_nbhd_rate", "hie")
 ) {
   test_that(test_name, {
     called_paths <- character(0)

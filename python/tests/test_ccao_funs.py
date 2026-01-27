@@ -120,7 +120,7 @@ def mock_read_parquet(monkeypatch) -> List[str]:
         (
             2025,
             "res",
-            ["complex_id", "land_nbhd", "hie"],
+            ["complex_id", "land_nbhd_rate", "hie"],
             [
                 "files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
@@ -131,7 +131,7 @@ def mock_read_parquet(monkeypatch) -> List[str]:
         (
             2026,
             "res",
-            ["complex_id", "land_nbhd", "hie"],
+            ["complex_id", "land_nbhd_rate", "hie"],
             [
                 "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
@@ -142,7 +142,7 @@ def mock_read_parquet(monkeypatch) -> List[str]:
         (
             2026,
             "condo",
-            ["complex_id", "land_nbhd", "hie"],
+            ["complex_id", "land_nbhd_rate", "hie"],
             [
                 "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 "model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",

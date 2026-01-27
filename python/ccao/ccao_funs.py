@@ -20,7 +20,7 @@ def ccao_download_model_input_data(
     Args:
         run_id: run_id found in model.metadata.
         file_keys: File key or list of file keys to download. Valid keys are:
-            assessment, complex_id, land_nbhd, land_site, training, char,
+            assessment, complex_id, land_nbhd_rate, land_site_rate, training, char,
             hie, condo_strata.
 
     Returns:

@@ -294,8 +294,8 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 #'
 #' @param run_id Character `run_id` found in `model.metadata`.
 #' @param file_keys Character vector of file keys to download. Valid keys are:
-#'   `assessment`, `complex_id`, `land_nbhd`, `land_site`, `training`, `char`,
-#'   `hie`, `condo_strata`.
+#'   `assessment`, `complex_id`, `land_nbhd_rate`, `land_site_rate`,
+#'   `training`, `char`, `hie`, `condo_strata`.
 #' @param s3_staging_dir S3 path to use for Athena query results. This is
 #'   mainly used to pass checks in github.
 #'
@@ -307,11 +307,11 @@ ccao_download_model_input_data <- function(
   file_keys,
   s3_staging_dir = "s3://ccao-athena-results-us-east-1"
 ) {
-con <- DBI::dbConnect(
+  con <- DBI::dbConnect(
     noctua::athena(),
     s3_staging_dir = s3_staging_dir,
     rstudio_conn_tab = FALSE
-)
+  )
 
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
@@ -337,13 +337,13 @@ con <- DBI::dbConnect(
 
   # Map file key -> md5 column
   md5_map <- c(
-    assessment   = "dvc_md5_assessment_data",
-    complex_id   = "dvc_md5_complex_id_data",
-    land_nbhd    = "dvc_md5_land_nbhd_rate_data",
-    land_site    = "dvc_md5_land_site_rate_data",
-    training     = "dvc_md5_training_data",
-    char         = "dvc_md5_char_data",
-    hie          = "dvc_md5_hie_data",
+    assessment = "dvc_md5_assessment_data",
+    complex_id = "dvc_md5_complex_id_data",
+    land_nbhd_rate = "dvc_md5_land_nbhd_rate_data",
+    land_site_rate = "dvc_md5_land_site_rate_data",
+    training = "dvc_md5_training_data",
+    char = "dvc_md5_char_data",
+    hie = "dvc_md5_hie_data",
     condo_strata = "dvc_md5_condo_strata_data"
   )
 
