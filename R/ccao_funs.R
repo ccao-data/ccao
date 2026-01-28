@@ -286,5 +286,6 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
 
   return(out)
 }
+# nolint end
 
 # Test cosmetic change
