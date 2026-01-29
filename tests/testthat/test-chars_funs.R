@@ -100,7 +100,19 @@ test_that("data is identical to known good output", {
     chars_sparsify_simple_test,
     chars_sparsify_simple_correct
   )
-  expect_known_hash(chars_sample_hie_sparse, hash = "0276a27ad5")
+
+  # Temporarily upgrade to 3rd edition of testthat so that we can use the
+  # latest snapshot testing interface. Eventually we should switch the
+  # entire test suite over to the 3rd edition, but for now, we only
+  # really need it for this one test
+  local_edition(3)
+  expect_snapshot_value(
+    chars_sample_hie_sparse,
+    # The `json2` serialization style includes more metadata about column
+    # definitions than the `json` style
+    style = "json2",
+    variant = "chars_sample_hie_sparse"
+  )
 })
 
 

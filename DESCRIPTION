@@ -17,12 +17,15 @@ License: AGPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
+    arrow,
     assessr (>= 0.4.8),
     dplyr (>= 1.1.0),
+    glue,
     magrittr,
+    noctua,
     rlang,
     tidyr (>= 1.3.0)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Suggests: 
     covr,
     DBI,
@@ -30,7 +33,7 @@ Suggests:
     ggplot2,
     knitr,
     lintr,
-    noctua,
+    mockery,
     pkgdown,
     readr,
     rmarkdown,

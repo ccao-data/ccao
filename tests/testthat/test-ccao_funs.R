@@ -217,3 +217,173 @@ test_that("bad input data stops execution", {
   expect_condition(ccao_generate_id(0))
   expect_condition(ccao_generate_id(-1))
 })
+
+##### TEST ccao_download_model_input_data() #####
+
+context("test ccao_download_model_input_data()")
+
+# This uses mock paths since we cannot connect to Athena during our tests.
+# It solely checks if we return objects of the correct type / length
+# and create the correct paths
+
+# nolint start: object_length_linter.
+test_ccao_download_model_input_data <- function(
+  test_name,
+  assessment_year,
+  assessment_group,
+  expected_path_regexes,
+  run_id = "2025-01-11-gallant-rina",
+  file_keys = c("complex_id", "land_nbhd_rate", "hie")
+) {
+  test_that(test_name, {
+    called_paths <- character(0)
+
+    mock_con <- structure(list(), class = "MockAthenaConnection")
+
+    # cycle=TRUE so we can call the function multiple times
+    mock_dbConnect <- mockery::mock(mock_con, cycle = TRUE)
+    mock_dbDisconnect <- mockery::mock(invisible(TRUE), cycle = TRUE)
+
+    # Build metadata row with 32-char md5s
+    mock_dbGetQuery <- mockery::mock(
+      data.frame(
+        assessment_year = as.integer(assessment_year),
+        assessment_group = as.character(assessment_group),
+        dvc_md5_assessment_data = NA_character_,
+        dvc_md5_complex_id_data = paste0(rep("a", 32), collapse = ""),
+        dvc_md5_land_nbhd_rate_data = paste0(rep("b", 32), collapse = ""),
+        dvc_md5_land_site_rate_data = NA_character_,
+        dvc_md5_training_data = NA_character_,
+        dvc_md5_char_data = NA_character_,
+        dvc_md5_hie_data = paste0(rep("c", 32), collapse = ""),
+        dvc_md5_condo_strata_data = NA_character_,
+        stringsAsFactors = FALSE
+      ),
+      cycle = TRUE
+    )
+
+    mock_read_parquet <- function(path, ...) {
+      called_paths <<- c(called_paths, path)
+      data.frame(.mock = TRUE, stringsAsFactors = FALSE)
+    }
+
+    mockery::stub(
+      ccao_download_model_input_data,
+      "DBI::dbConnect", mock_dbConnect
+    )
+    mockery::stub(
+      ccao_download_model_input_data,
+      "DBI::dbDisconnect", mock_dbDisconnect
+    )
+    mockery::stub(
+      ccao_download_model_input_data,
+      "DBI::dbGetQuery", mock_dbGetQuery
+    )
+    mockery::stub(
+      ccao_download_model_input_data,
+      "arrow::read_parquet", mock_read_parquet
+    )
+
+    # Multiple files, returns a list
+    data <- ccao_download_model_input_data(run_id, file_keys)
+
+    expect_type(data, "list")
+    expect_length(data, length(file_keys))
+    expect_setequal(names(data), file_keys)
+
+    # One parquet read per file
+    expect_equal(length(called_paths), length(file_keys))
+
+    # Path checks
+    for (rx in expected_path_regexes) {
+      expect_true(any(grepl(rx, called_paths)))
+    }
+
+    # Single file, return the object, not a list
+    called_paths <- character(0)
+
+    single_data <- ccao_download_model_input_data(run_id, file_keys[1])
+
+    expect_true(is.data.frame(single_data))
+    expect_equal(length(called_paths), 1)
+
+    # Missing / empty DVC hash should error
+    called_paths <- character(0)
+
+    mock_dbGetQuery_missing <- mockery::mock(
+      data.frame(
+        assessment_year = as.integer(assessment_year),
+        assessment_group = as.character(assessment_group),
+        dvc_md5_assessment_data = NA_character_,
+        dvc_md5_complex_id_data = NA_character_, # <- add missing hash
+        dvc_md5_land_nbhd_rate_data = NA_character_,
+        dvc_md5_land_site_rate_data = NA_character_,
+        dvc_md5_training_data = NA_character_,
+        dvc_md5_char_data = NA_character_,
+        dvc_md5_hie_data = NA_character_,
+        dvc_md5_condo_strata_data = NA_character_,
+        stringsAsFactors = FALSE
+      ),
+      cycle = TRUE
+    )
+
+    mockery::stub(
+      ccao_download_model_input_data,
+      "DBI::dbGetQuery", mock_dbGetQuery_missing
+    )
+
+    expect_error(
+      ccao_download_model_input_data(run_id, "complex_id"),
+      regexp = "Missing/empty.*run_id",
+      ignore.case = TRUE
+    )
+
+    # Ensure the parquet was never read
+    expect_equal(length(called_paths), 0)
+
+    # Invalid file key alone should error and not read parquet
+    called_paths <- character(0)
+    expect_error(
+      ccao_download_model_input_data(run_id, "bad_file_key"),
+      regexp = "Invalid file key",
+      ignore.case = TRUE
+    )
+    expect_equal(length(called_paths), 0)
+  })
+} # nolint end
+
+# 2025 res (legacy layout)
+test_ccao_download_model_input_data(
+  test_name = "2025 res returns correct object and path",
+  assessment_year = 2025L,
+  assessment_group = "res",
+  expected_path_regexes = c(
+    "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "/files/md5/cc/cccccccccccccccccccccccccccccc$"
+  )
+)
+
+# 2026 res (model-res-avm in path)
+test_ccao_download_model_input_data(
+  test_name = "2026 res returns correct object and path",
+  assessment_year = 2026L,
+  assessment_group = "res",
+  expected_path_regexes = c(
+    "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
+  )
+)
+
+# 2026 condo (model-condo-avm in path)
+test_ccao_download_model_input_data(
+  test_name = "2026 condo returns correct object and path",
+  assessment_year = 2026L,
+  assessment_group = "condo",
+  expected_path_regexes = c(
+    "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
+  )
+)

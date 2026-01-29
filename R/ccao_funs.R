@@ -240,7 +240,6 @@ ccao_prb <- function(assessed, sale_price, suppress = FALSE, na.rm = FALSE) { # 
   return(out)
 }
 
-
 # nolint start
 #' Generate a memorable ID string based on CCAO employee names
 #'
@@ -287,3 +286,127 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
   return(out)
 }
 # nolint end
+
+#' Download one or more DVC-tracked input datasets for a given model run
+#'
+#' @description Downloads one or more model input datasets referenced by a
+#' `run_id` in `model.metadata`.
+#'
+#' @param run_id Character `run_id` found in `model.metadata`.
+#' @param file_keys Character vector of file keys to download. Valid keys are:
+#'   `assessment`, `complex_id`, `land_nbhd_rate`, `land_site_rate`,
+#'   `training`, `char`, `hie`, `condo_strata`.
+#' @param s3_staging_dir S3 path to use for Athena query results. This is
+#'   mainly used to pass checks in github.
+#'
+#' @return If `file_keys` is a single key, returns a single DataFrame.
+#' If `file_keys` is a list, returns a dict of DataFrames keyed by file key.
+#' @export
+ccao_download_model_input_data <- function(
+  run_id,
+  file_keys,
+  s3_staging_dir = "s3://ccao-athena-results-us-east-1"
+) {
+  con <- DBI::dbConnect(
+    noctua::athena(),
+    s3_staging_dir = s3_staging_dir,
+    rstudio_conn_tab = FALSE
+  )
+
+  on.exit(DBI::dbDisconnect(con), add = TRUE)
+
+  # Pull the DVC hashes for this run_id
+  dvc_params <- DBI::dbGetQuery(
+    con,
+    glue::glue("
+      SELECT
+        assessment_year,
+        assessment_group,
+        dvc_md5_assessment_data,
+        dvc_md5_complex_id_data,
+        dvc_md5_land_nbhd_rate_data,
+        dvc_md5_land_site_rate_data,
+        dvc_md5_training_data,
+        dvc_md5_char_data,
+        dvc_md5_hie_data,
+        dvc_md5_condo_strata_data
+      FROM model.metadata
+      WHERE run_id = '{run_id}'
+    ")
+  )
+
+  # Map file key -> md5 column
+  md5_map <- c(
+    assessment = "dvc_md5_assessment_data",
+    complex_id = "dvc_md5_complex_id_data",
+    land_nbhd_rate = "dvc_md5_land_nbhd_rate_data",
+    land_site_rate = "dvc_md5_land_site_rate_data",
+    training = "dvc_md5_training_data",
+    char = "dvc_md5_char_data",
+    hie = "dvc_md5_hie_data",
+    condo_strata = "dvc_md5_condo_strata_data"
+  )
+
+  valid_files <- names(md5_map)
+
+  invalid_files <- setdiff(file_keys, valid_files)
+
+  if (length(invalid_files) > 0) {
+    stop(
+      glue::glue(
+        "Invalid file key(s): {paste(invalid_files, collapse = ', ')}.\n",
+        "Valid options are: {paste(valid_files, collapse = ', ')}."
+      ),
+      call. = FALSE
+    )
+  }
+
+  AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
+
+  yr <- (as.integer(dvc_params$assessment_year))
+
+  grp <- (dvc_params$assessment_group)
+
+  # Folder logic:
+  # - <= 2025: old layout
+  # - >= 2026: split by assessment_group
+  model_folder <- if (yr <= 2025) {
+    ""
+  } else if (grp == "condo") {
+    "model-condo-avm"
+  } else {
+    "model-res-avm"
+  }
+
+  # Helper to read a single file
+  read_file <- function(f) {
+    md5_col <- md5_map[[f]]
+    dvc_hash <- dvc_params[[md5_col]]
+
+    if (is.na(dvc_hash) || !nzchar(dvc_hash)) {
+      stop(glue::glue(
+        "Missing/empty {md5_col} for run_id = '{run_id}'"
+      ))
+    }
+
+    s3_path <- glue::glue(
+      AWS_S3_DVC_BUCKET,
+      if (nzchar(model_folder)) glue::glue("/{model_folder}") else "",
+      "/files/md5/",
+      substr(dvc_hash, 1, 2), "/",
+      substr(dvc_hash, 3, 32)
+    )
+
+    arrow::read_parquet(s3_path)
+  }
+
+  result <- lapply(file_keys, read_file)
+  names(result) <- file_keys
+
+  # Return a single object if only one file requested
+  if (length(result) == 1) {
+    return(result[[1]])
+  }
+
+  result
+}
