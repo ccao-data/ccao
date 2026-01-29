@@ -226,6 +226,7 @@ context("test ccao_download_model_input_data()")
 # It solely checks if we return objects of the correct type / length
 # and create the correct paths
 
+# nolint start: object_length_linter.
 test_ccao_download_model_input_data <- function(
   test_name,
   assessment_year,
@@ -349,7 +350,7 @@ test_ccao_download_model_input_data <- function(
     )
     expect_equal(length(called_paths), 0)
   })
-} # nolint: object_length_linter
+} # nolint end
 
 # 2025 res (legacy layout)
 test_ccao_download_model_input_data(
