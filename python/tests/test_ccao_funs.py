@@ -1,4 +1,3 @@
-# test_ccao_download_model_input_data.py
 from __future__ import annotations
 
 import re
@@ -106,17 +105,47 @@ def mock_read_parquet(monkeypatch) -> List[str]:
     return called_paths
 
 
+@pytest.fixture
+def mock_read_parquet_first_fails(monkeypatch) -> List[str]:
+    """Mock pandas.read_parquet() so the first attempt for each file raises
+    FileNotFoundError, forcing fallback to the second path. Returns a list of
+    all paths attempted."""
+    called_paths: List[str] = []
+    # Track how many times each base hash has been attempted so we can fail
+    # only on the first try per file.
+    attempt_counts: dict[str, int] = {}
+
+    def _fake_read_parquet(
+        path: str, *args: Any, **kwargs: Any
+    ) -> pd.DataFrame:
+        called_paths.append(path)
+        # Use the last path segment (the hash portion) as the per-file key so
+        # we know whether this is the first or second attempt for a given file.
+        hash_key = path.split("/")[-1]
+        attempt_counts[hash_key] = attempt_counts.get(hash_key, 0) + 1
+        if attempt_counts[hash_key] == 1:
+            raise FileNotFoundError(f"Simulated missing file: {path}")
+        return pd.DataFrame({".mock": [True]})
+
+    monkeypatch.setattr(
+        "ccao.ccao_funs.pd.read_parquet", _fake_read_parquet, raising=True
+    )
+
+    return called_paths
+
+
 @pytest.mark.parametrize(
     "assessment_year,assessment_group,file_keys,expected_paths",
     [
-        # Single-key, pre-2026, res
+        # ── pre-2026 ──────────────────────────────────────────────────────────
+        # Single key, 2025 res: no folder prefix.
         (
             2025,
             "res",
             "complex_id",
             ["files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
         ),
-        # Multi-key, pre-2026, res
+        # Multi-key, 2025 res: no folder prefix.
         (
             2025,
             "res",
@@ -127,9 +156,33 @@ def mock_read_parquet(monkeypatch) -> List[str]:
                 "files/md5/cc/cccccccccccccccccccccccccccccc",
             ],
         ),
-        # Multi-key, post-2026, res
+        # ── 2026 (tries old path first; mock succeeds immediately) ────────────
+        # Multi-key, 2026 res: old-style path is tried first and succeeds.
         (
             2026,
+            "res",
+            ["complex_id", "land_nbhd_rate", "hie"],
+            [
+                "files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "files/md5/cc/cccccccccccccccccccccccccccccc",
+            ],
+        ),
+        # Multi-key, 2026 condo: old-style path is tried first and succeeds.
+        (
+            2026,
+            "condo",
+            ["complex_id", "land_nbhd_rate", "hie"],
+            [
+                "files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "files/md5/cc/cccccccccccccccccccccccccccccc",
+            ],
+        ),
+        # ── post-2026 ─────────────────────────────────────────────────────────
+        # Multi-key, 2027 res: only the model-res-avm-prefixed path is tried.
+        (
+            2027,
             "res",
             ["complex_id", "land_nbhd_rate", "hie"],
             [
@@ -138,9 +191,9 @@ def mock_read_parquet(monkeypatch) -> List[str]:
                 "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc",
             ],
         ),
-        # Multi-key, post-2026, condo
+        # Multi-key, 2027 condo: only the model-condo-avm-prefixed path is tried.
         (
-            2026,
+            2027,
             "condo",
             ["complex_id", "land_nbhd_rate", "hie"],
             [
@@ -153,8 +206,10 @@ def mock_read_parquet(monkeypatch) -> List[str]:
     ids=[
         "2025_res_single_key",
         "2025_res_multi_key",
-        "2026_res_multi_key",
-        "2026_condo_multi_key",
+        "2026_res_multi_key_old_path_succeeds",
+        "2026_condo_multi_key_old_path_succeeds",
+        "2027_res_multi_key",
+        "2027_condo_multi_key",
     ],
 )
 def test_ccao_download_model_input_data_returns_correct_object_and_path(
@@ -189,12 +244,78 @@ def test_ccao_download_model_input_data_returns_correct_object_and_path(
             f"Unexpected input type for file_keys: {type(file_keys)}"
         )
 
-    # Path checks: each regex should match at least one called path
+    # Each expected path must appear in the list of paths actually called.
     for path in expected_paths:
         bucket_path = f"{AWS_S3_DVC_BUCKET}/{path}"
         assert bucket_path in mock_read_parquet, (
             f"no called path matched {bucket_path}. "
             f"Called paths were: {mock_read_parquet}"
+        )
+
+
+@pytest.mark.parametrize(
+    "assessment_year,assessment_group,file_keys,expected_paths",
+    [
+        # 2026 res: old path fails → falls back to model-res-avm path.
+        (
+            2026,
+            "res",
+            ["complex_id", "land_nbhd_rate", "hie"],
+            [
+                "files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "files/md5/cc/cccccccccccccccccccccccccccccc",
+                "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc",
+            ],
+        ),
+        # 2026 condo: old path fails → falls back to model-condo-avm path.
+        (
+            2026,
+            "condo",
+            ["complex_id", "land_nbhd_rate", "hie"],
+            [
+                "files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "files/md5/cc/cccccccccccccccccccccccccccccc",
+                "model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc",
+            ],
+        ),
+    ],
+    ids=[
+        "2026_res_fallback_to_new_path",
+        "2026_condo_fallback_to_new_path",
+    ],
+)
+def test_ccao_download_model_input_data_2026_fallback(
+    assessment_year,
+    assessment_group,
+    file_keys,
+    expected_paths,
+    monkeypatch,
+    mock_read_parquet_first_fails,
+) -> None:
+    """For assessment_year == 2026, the function tries the old (no-prefix) path
+    first and falls back to the split-folder path if the first attempt raises.
+    Verify that both paths are attempted and the returned data uses the fallback
+    path successfully."""
+    mock_cursor_execute(monkeypatch, assessment_year, assessment_group)
+
+    data = ccao_download_model_input_data("2025-01-11-gallant-rina", file_keys)
+
+    assert isinstance(data, dict), "expected dict output"
+    assert set(data.keys()) == set(file_keys), "wrong dict keys"
+
+    # Every path in expected_paths (both the initial attempt and the fallback)
+    # must have been called.
+    for path in expected_paths:
+        bucket_path = f"{AWS_S3_DVC_BUCKET}/{path}"
+        assert bucket_path in mock_read_parquet_first_fails, (
+            f"expected path not attempted: {bucket_path}. "
+            f"Called paths were: {mock_read_parquet_first_fails}"
         )
 
 
@@ -211,7 +332,7 @@ def test_ccao_download_model_input_data_raises_for_missing_dvc_hash(
         rf"Missing/empty.*run_id\s*=\s*['\"]{re.escape(run_id)}['\"]",
         str(excinfo.value),
         re.IGNORECASE,
-    ), "unexpected missing-hash error message: {excinfo.value}"
+    ), f"unexpected missing-hash error message: {excinfo.value}"
 
     assert len(mock_read_parquet) == 0, (
         "parquet was read during missing-hash error"

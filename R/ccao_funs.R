@@ -286,7 +286,6 @@ ccao_generate_id <- function(n = 1L, prefix = as.character(Sys.Date())) {
   return(out)
 }
 # nolint end
-
 #' Download one or more DVC-tracked input datasets for a given model run
 #'
 #' @description Downloads one or more model input datasets referenced by a
@@ -335,6 +334,15 @@ ccao_download_model_input_data <- function(
     ")
   )
 
+  if (nrow(dvc_params) == 0) {
+    stop(
+      glue::glue("No rows found in model.metadata for run_id = '{run_id}'"),
+      call. = FALSE
+    )
+  }
+
+  dvc_params <- dvc_params[1, , drop = FALSE]
+
   # Map file key -> md5 column
   md5_map <- c(
     assessment = "dvc_md5_assessment_data",
@@ -348,7 +356,6 @@ ccao_download_model_input_data <- function(
   )
 
   valid_files <- names(md5_map)
-
   invalid_files <- setdiff(file_keys, valid_files)
 
   if (length(invalid_files) > 0) {
@@ -363,19 +370,25 @@ ccao_download_model_input_data <- function(
 
   AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
 
-  yr <- (as.integer(dvc_params$assessment_year))
-
-  grp <- (dvc_params$assessment_group)
+  yr <- as.integer(dvc_params$assessment_year)
+  grp <- as.character(dvc_params$assessment_group)
 
   # Folder logic:
-  # - <= 2025: old layout
-  # - >= 2026: split by assessment_group
-  model_folder <- if (yr <= 2025) {
-    ""
+  # - < 2026: old layout only
+  # - = 2026: try both old and split layouts
+  # - > 2026: split by assessment_group only
+  model_folders <- if (yr < 2026) {
+    c("")
+  } else if (yr == 2026) {
+    if (grp == "condo") {
+      c("", "model-condo-avm")
+    } else {
+      c("", "model-res-avm")
+    }
   } else if (grp == "condo") {
-    "model-condo-avm"
+    c("model-condo-avm")
   } else {
-    "model-res-avm"
+    c("model-res-avm")
   }
 
   # Helper to read a single file
@@ -384,20 +397,51 @@ ccao_download_model_input_data <- function(
     dvc_hash <- dvc_params[[md5_col]]
 
     if (is.na(dvc_hash) || !nzchar(dvc_hash)) {
-      stop(glue::glue(
-        "Missing/empty {md5_col} for run_id = '{run_id}'"
-      ))
+      stop(
+        glue::glue("Missing/empty {md5_col} for run_id = '{run_id}'"),
+        call. = FALSE
+      )
     }
 
-    s3_path <- glue::glue(
-      AWS_S3_DVC_BUCKET,
-      if (nzchar(model_folder)) glue::glue("/{model_folder}") else "",
-      "/files/md5/",
-      substr(dvc_hash, 1, 2), "/",
-      substr(dvc_hash, 3, 32)
+    dvc_hash <- trimws(as.character(dvc_hash))
+
+    paths_to_try <- vapply(
+      model_folders,
+      FUN.VALUE = character(1),
+      function(model_folder) {
+        paste0(
+          AWS_S3_DVC_BUCKET,
+          if (nzchar(model_folder)) paste0("/", model_folder) else "",
+          "/files/md5/",
+          substr(dvc_hash, 1, 2), "/",
+          substr(dvc_hash, 3, 32)
+        )
+      }
     )
 
-    arrow::read_parquet(s3_path)
+    last_error <- NULL
+
+    for (s3_path in paths_to_try) {
+      try_result <- tryCatch(
+        arrow::read_parquet(s3_path),
+        error = function(e) {
+          last_error <<- e
+          NULL
+        }
+      )
+
+      if (!is.null(try_result)) {
+        return(try_result)
+      }
+    }
+
+    stop(
+      glue::glue(
+        "Could not find {f} for run_id = '{run_id}' in any expected path: ",
+        paste(paths_to_try, collapse = ", ")
+      ),
+      call. = FALSE
+    )
   }
 
   result <- lapply(file_keys, read_file)

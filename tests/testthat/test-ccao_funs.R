@@ -231,6 +231,7 @@ test_ccao_download_model_input_data <- function(
   assessment_year,
   assessment_group,
   expected_path_regexes,
+  expected_called_paths = NULL,
   run_id = "2025-01-11-gallant-rina",
   file_keys = c("complex_id", "land_nbhd_rate", "hie")
 ) {
@@ -263,6 +264,25 @@ test_ccao_download_model_input_data <- function(
 
     mock_read_parquet <- function(path, ...) {
       called_paths <<- c(called_paths, path)
+
+      # For 2026 only, the function should try the legacy path first,
+      # then fall back to the split model folder path.
+      if (assessment_year == 2026L) {
+        if (
+          assessment_group == "res" &&
+            !grepl("model-res-avm", path)
+        ) {
+          stop("Mock file not found in legacy path")
+        }
+
+        if (
+          assessment_group == "condo" &&
+            !grepl("model-condo-avm", path)
+        ) {
+          stop("Mock file not found in legacy path")
+        }
+      }
+
       data.frame(.mock = TRUE, stringsAsFactors = FALSE)
     }
 
@@ -290,12 +310,13 @@ test_ccao_download_model_input_data <- function(
     expect_length(data, length(file_keys))
     expect_setequal(names(data), file_keys)
 
-    # One parquet read per file
-    expect_equal(length(called_paths), length(file_keys))
-
     # Path checks
     for (rx in expected_path_regexes) {
       expect_true(any(grepl(rx, called_paths)))
+    }
+
+    if (!is.null(expected_called_paths)) {
+      expect_equal(length(called_paths), expected_called_paths)
     }
 
     # Single file, return the object, not a list
@@ -304,7 +325,12 @@ test_ccao_download_model_input_data <- function(
     single_data <- ccao_download_model_input_data(run_id, file_keys[1])
 
     expect_true(is.data.frame(single_data))
-    expect_equal(length(called_paths), 1)
+
+    if (assessment_year == 2026L) {
+      expect_equal(length(called_paths), 2)
+    } else {
+      expect_equal(length(called_paths), 1)
+    }
 
     # Missing / empty DVC hash should error
     called_paths <- character(0)
@@ -360,29 +386,64 @@ test_ccao_download_model_input_data(
     "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
     "/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
     "/files/md5/cc/cccccccccccccccccccccccccccccc$"
-  )
+  ),
+  expected_called_paths = 3
 )
 
-# 2026 res (model-res-avm in path)
+# 2026 res (tries legacy first, then model-res-avm)
 test_ccao_download_model_input_data(
-  test_name = "2026 res returns correct object and path",
+  test_name = "2026 res tries legacy and model-res-avm paths",
   assessment_year = 2026L,
+  assessment_group = "res",
+  expected_path_regexes = c(
+    "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "/files/md5/cc/cccccccccccccccccccccccccccccc$",
+    "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
+  ),
+  expected_called_paths = 6
+)
+
+# 2026 condo (tries legacy first, then model-condo-avm)
+test_ccao_download_model_input_data(
+  test_name = "2026 condo tries legacy and model-condo-avm paths",
+  assessment_year = 2026L,
+  assessment_group = "condo",
+  expected_path_regexes = c(
+    "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "/files/md5/cc/cccccccccccccccccccccccccccccc$",
+    "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
+  ),
+  expected_called_paths = 6
+)
+
+# 2027 res (split layout only)
+test_ccao_download_model_input_data(
+  test_name = "2027 res returns correct object and path",
+  assessment_year = 2027L,
   assessment_group = "res",
   expected_path_regexes = c(
     "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
     "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
     "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
-  )
+  ),
+  expected_called_paths = 3
 )
 
-# 2026 condo (model-condo-avm in path)
+# 2027 condo (split layout only)
 test_ccao_download_model_input_data(
-  test_name = "2026 condo returns correct object and path",
-  assessment_year = 2026L,
+  test_name = "2027 condo returns correct object and path",
+  assessment_year = 2027L,
   assessment_group = "condo",
   expected_path_regexes = c(
     "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
     "model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
     "model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
-  )
+  ),
+  expected_called_paths = 3
 )
