@@ -122,7 +122,6 @@ def make_mock_read_parquet(
 
 
 # Parametrized test: correct object type, paths, and fallback behaviour
-# ---------------------------------------------------------------------------
 
 
 @pytest.mark.parametrize(
@@ -272,7 +271,6 @@ def test_ccao_download_model_input_data_paths(
 
 
 # All paths fail
-# ---------------------------------------------------------------------------
 
 
 @pytest.mark.parametrize(
@@ -297,9 +295,7 @@ def test_ccao_download_model_input_data_all_paths_fail(
     )
 
 
-# ---------------------------------------------------------------------------
 # Error cases
-# ---------------------------------------------------------------------------
 
 
 def test_ccao_download_model_input_data_raises_for_missing_dvc_hash(
