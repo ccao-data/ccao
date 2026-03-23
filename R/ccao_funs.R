@@ -311,10 +311,8 @@ ccao_download_model_input_data <- function(
     s3_staging_dir = s3_staging_dir,
     rstudio_conn_tab = FALSE
   )
-
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
-  # Pull the DVC hashes for this run_id
   dvc_params <- DBI::dbGetQuery(
     con,
     glue::glue("
@@ -333,17 +331,14 @@ ccao_download_model_input_data <- function(
       WHERE run_id = '{run_id}'
     ")
   )
-
   if (nrow(dvc_params) == 0) {
     stop(
       glue::glue("No rows found in model.metadata for run_id = '{run_id}'"),
       call. = FALSE
     )
   }
-
   dvc_params <- dvc_params[1, , drop = FALSE]
 
-  # Map file key -> md5 column
   md5_map <- c(
     assessment = "dvc_md5_assessment_data",
     complex_id = "dvc_md5_complex_id_data",
@@ -357,7 +352,6 @@ ccao_download_model_input_data <- function(
 
   valid_files <- names(md5_map)
   invalid_files <- setdiff(file_keys, valid_files)
-
   if (length(invalid_files) > 0) {
     stop(
       glue::glue(
@@ -369,58 +363,48 @@ ccao_download_model_input_data <- function(
   }
 
   AWS_S3_DVC_BUCKET <- "s3://ccao-data-dvc-us-east-1"
-
-  yr <- as.integer(dvc_params$assessment_year)
   grp <- as.character(dvc_params$assessment_group)
 
-  # Folder logic:
-  # - < 2026: old layout only
-  # - = 2026: try both old and split layouts
-  # - > 2026: split by assessment_group only
-  model_folders <- if (yr < 2026) {
-    c("")
-  } else if (yr == 2026) {
-    if (grp == "condo") {
-      c("", "model-condo-avm")
-    } else {
-      c("", "model-res-avm")
-    }
-  } else if (grp == "condo") {
-    c("model-condo-avm")
-  } else {
-    c("model-res-avm")
-  }
+  # Try the group-specific folder first, then fall back to the root
+  model_folder <- if (grp == "condo") "model-condo-avm" else "model-res-avm"
+  model_folders <- c(model_folder, "")
 
-  # Helper to read a single file
   read_file <- function(f) {
     md5_col <- md5_map[[f]]
     dvc_hash <- dvc_params[[md5_col]]
-
     if (is.na(dvc_hash) || !nzchar(dvc_hash)) {
       stop(
         glue::glue("Missing/empty {md5_col} for run_id = '{run_id}'"),
         call. = FALSE
       )
     }
-
     dvc_hash <- trimws(as.character(dvc_hash))
 
-    paths_to_try <- vapply(
-      model_folders,
-      FUN.VALUE = character(1),
-      function(model_folder) {
-        paste0(
-          AWS_S3_DVC_BUCKET,
-          if (nzchar(model_folder)) paste0("/", model_folder) else "",
-          "/files/md5/",
-          substr(dvc_hash, 1, 2), "/",
-          substr(dvc_hash, 3, 32)
-        )
-      }
+    paths_to_try <- c(
+      # 1. group-specific folder, md5 layout (2026 and later)
+      paste0(
+        AWS_S3_DVC_BUCKET, "/", model_folder,
+        "/files/md5/",
+        substr(dvc_hash, 1, 2), "/",
+        substr(dvc_hash, 3, 32)
+      ),
+      # 2. files, md5 layout (2023-2026)
+      paste0(
+        AWS_S3_DVC_BUCKET,
+        "/files/md5/",
+        substr(dvc_hash, 1, 2), "/",
+        substr(dvc_hash, 3, 32)
+      ),
+      # 3. root (2023)
+      paste0(
+        AWS_S3_DVC_BUCKET,
+        "/",
+        substr(dvc_hash, 1, 2), "/",
+        substr(dvc_hash, 3, 32)
+      )
     )
 
     last_error <- NULL
-
     for (s3_path in paths_to_try) {
       try_result <- tryCatch(
         arrow::read_parquet(s3_path),
@@ -429,7 +413,6 @@ ccao_download_model_input_data <- function(
           NULL
         }
       )
-
       if (!is.null(try_result)) {
         return(try_result)
       }
@@ -447,10 +430,8 @@ ccao_download_model_input_data <- function(
   result <- lapply(file_keys, read_file)
   names(result) <- file_keys
 
-  # Return a single object if only one file requested
   if (length(result) == 1) {
     return(result[[1]])
   }
-
   result
 }

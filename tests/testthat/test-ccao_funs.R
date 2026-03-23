@@ -228,10 +228,10 @@ context("test ccao_download_model_input_data()")
 
 test_ccao_download_model_input_data <- function(
   test_name,
-  assessment_year,
   assessment_group,
   expected_path_regexes,
   expected_called_paths = NULL,
+  succeed_on = "group_folder", # "group_folder", "root_md5", "root", or "none"
   run_id = "2025-01-11-gallant-rina",
   file_keys = c("complex_id", "land_nbhd_rate", "hie")
 ) {
@@ -240,14 +240,12 @@ test_ccao_download_model_input_data <- function(
 
     mock_con <- structure(list(), class = "MockAthenaConnection")
 
-    # cycle=TRUE so we can call the function multiple times
     mock_dbConnect <- mockery::mock(mock_con, cycle = TRUE)
     mock_dbDisconnect <- mockery::mock(invisible(TRUE), cycle = TRUE)
 
-    # Build metadata row with 32-char md5s
     mock_dbGetQuery <- mockery::mock(
       data.frame(
-        assessment_year = as.integer(assessment_year),
+        assessment_year = 2026L,
         assessment_group = as.character(assessment_group),
         dvc_md5_assessment_data = NA_character_,
         dvc_md5_complex_id_data = paste0(rep("a", 32), collapse = ""),
@@ -262,27 +260,30 @@ test_ccao_download_model_input_data <- function(
       cycle = TRUE
     )
 
+    expected_folder <- if (assessment_group == "condo") {
+      "model-condo-avm"
+    } else {
+      "model-res-avm"
+    }
+
     mock_read_parquet <- function(path, ...) {
       called_paths <<- c(called_paths, path)
-
-      # For 2026 only, the function should try the legacy path first,
-      # then fall back to the split model folder path.
-      if (assessment_year == 2026L) {
-        if (
-          assessment_group == "res" &&
-            !grepl("model-res-avm", path)
-        ) {
-          stop("Mock file not found in legacy path")
-        }
-
-        if (
-          assessment_group == "condo" &&
-            !grepl("model-condo-avm", path)
-        ) {
-          stop("Mock file not found in legacy path")
-        }
-      }
-
+      ok <- switch(succeed_on,
+        group_folder = grepl(
+          expected_folder,
+          path
+        ),
+        root_md5 = !grepl(
+          expected_folder,
+          path
+        ) && grepl("/files/md5/", path),
+        root_flat = !grepl(
+          expected_folder,
+          path
+        ) && !grepl("/files/md5/", path),
+        none = FALSE
+      )
+      if (!ok) stop("Mock file not found")
       data.frame(.mock = TRUE, stringsAsFactors = FALSE)
     }
 
@@ -303,44 +304,54 @@ test_ccao_download_model_input_data <- function(
       "arrow::read_parquet", mock_read_parquet
     )
 
-    # Multiple files, returns a list
-    data <- ccao_download_model_input_data(run_id, file_keys)
-
-    expect_type(data, "list")
-    expect_length(data, length(file_keys))
-    expect_setequal(names(data), file_keys)
-
-    # Path checks
-    for (rx in expected_path_regexes) {
-      expect_true(any(grepl(rx, called_paths)))
-    }
-
-    if (!is.null(expected_called_paths)) {
-      expect_equal(length(called_paths), expected_called_paths)
-    }
-
-    # Single file, return the object, not a list
-    called_paths <- character(0)
-
-    single_data <- ccao_download_model_input_data(run_id, file_keys[1])
-
-    expect_true(is.data.frame(single_data))
-
-    if (assessment_year == 2026L) {
-      expect_equal(length(called_paths), 2)
+    if (succeed_on == "none") {
+      expect_error(
+        ccao_download_model_input_data(run_id, file_keys[1]),
+        regexp = "Could not find",
+        ignore.case = TRUE
+      )
+      if (!is.null(expected_called_paths)) {
+        expect_equal(length(called_paths), expected_called_paths)
+      }
     } else {
-      expect_equal(length(called_paths), 1)
+      # Multiple files, returns a list
+      data <- ccao_download_model_input_data(run_id, file_keys)
+
+      expect_type(data, "list")
+      expect_length(data, length(file_keys))
+      expect_setequal(names(data), file_keys)
+
+      for (rx in expected_path_regexes) {
+        expect_true(any(grepl(rx, called_paths)))
+      }
+
+      if (!is.null(expected_called_paths)) {
+        expect_equal(length(called_paths), expected_called_paths)
+      }
+
+      # Single file returns the object directly, succeeds on first path tried
+      called_paths <- character(0)
+      single_data <- ccao_download_model_input_data(run_id, file_keys[1])
+      expect_true(is.data.frame(single_data))
+      expect_equal(
+        length(called_paths),
+        switch(succeed_on,
+          group_folder = 1L,
+          root_md5 = 2L,
+          root_flat = 3L
+        )
+      )
     }
 
-    # Missing / empty DVC hash should error
+    # Missing / empty DVC hash should error without reading parquet
     called_paths <- character(0)
 
     mock_dbGetQuery_missing <- mockery::mock(
       data.frame(
-        assessment_year = as.integer(assessment_year),
+        assessment_year = 2026L,
         assessment_group = as.character(assessment_group),
         dvc_md5_assessment_data = NA_character_,
-        dvc_md5_complex_id_data = NA_character_, # <- add missing hash
+        dvc_md5_complex_id_data = NA_character_,
         dvc_md5_land_nbhd_rate_data = NA_character_,
         dvc_md5_land_site_rate_data = NA_character_,
         dvc_md5_training_data = NA_character_,
@@ -362,11 +373,9 @@ test_ccao_download_model_input_data <- function(
       regexp = "Missing/empty.*run_id",
       ignore.case = TRUE
     )
-
-    # Ensure the parquet was never read
     expect_equal(length(called_paths), 0)
 
-    # Invalid file key alone should error and not read parquet
+    # Invalid file key should error without reading parquet
     called_paths <- character(0)
     expect_error(
       ccao_download_model_input_data(run_id, "bad_file_key"),
@@ -377,73 +386,100 @@ test_ccao_download_model_input_data <- function(
   })
 }
 
-# 2025 res (legacy layout)
+# --- res ---
+
 test_ccao_download_model_input_data(
-  test_name = "2025 res returns correct object and path",
-  assessment_year = 2025L,
+  test_name = "res succeeds on group folder (path 1)",
   assessment_group = "res",
+  succeed_on = "group_folder",
   expected_path_regexes = c(
+    "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
+  ),
+  expected_called_paths = 3
+)
+
+test_ccao_download_model_input_data(
+  test_name = "res falls back to root md5 (path 2)",
+  assessment_group = "res",
+  succeed_on = "root_md5",
+  expected_path_regexes = c(
+    "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
     "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
     "/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
     "/files/md5/cc/cccccccccccccccccccccccccccccc$"
   ),
-  expected_called_paths = 3
-)
-
-# 2026 res (tries legacy first, then model-res-avm)
-test_ccao_download_model_input_data(
-  test_name = "2026 res tries legacy and model-res-avm paths",
-  assessment_year = 2026L,
-  assessment_group = "res",
-  expected_path_regexes = c(
-    "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
-    "/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
-    "/files/md5/cc/cccccccccccccccccccccccccccccc$",
-    "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
-    "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
-    "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
-  ),
   expected_called_paths = 6
 )
 
-# 2026 condo (tries legacy first, then model-condo-avm)
 test_ccao_download_model_input_data(
-  test_name = "2026 condo tries legacy and model-condo-avm paths",
-  assessment_year = 2026L,
-  assessment_group = "condo",
-  expected_path_regexes = c(
-    "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
-    "/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
-    "/files/md5/cc/cccccccccccccccccccccccccccccc$",
-    "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
-    "model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
-    "model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
-  ),
-  expected_called_paths = 6
-)
-
-# 2027 res (split layout only)
-test_ccao_download_model_input_data(
-  test_name = "2027 res returns correct object and path",
-  assessment_year = 2027L,
+  test_name = "res falls back to root flat (path 3)",
   assessment_group = "res",
+  succeed_on = "root_flat",
   expected_path_regexes = c(
     "model-res-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
-    "model-res-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
-    "model-res-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
+    "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "/cc/cccccccccccccccccccccccccccccc$"
   ),
+  expected_called_paths = 9
+)
+
+test_ccao_download_model_input_data(
+  test_name = "res errors when all paths fail",
+  assessment_group = "res",
+  succeed_on = "none",
+  expected_path_regexes = c(),
   expected_called_paths = 3
 )
 
-# 2027 condo (split layout only)
+# --- condo ---
+
 test_ccao_download_model_input_data(
-  test_name = "2027 condo returns correct object and path",
-  assessment_year = 2027L,
+  test_name = "condo succeeds on group folder (path 1)",
   assessment_group = "condo",
+  succeed_on = "group_folder",
   expected_path_regexes = c(
     "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
     "model-condo-avm/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
     "model-condo-avm/files/md5/cc/cccccccccccccccccccccccccccccc$"
   ),
+  expected_called_paths = 3
+)
+
+test_ccao_download_model_input_data(
+  test_name = "condo falls back to root md5 (path 2)",
+  assessment_group = "condo",
+  succeed_on = "root_md5",
+  expected_path_regexes = c(
+    "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/files/md5/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "/files/md5/cc/cccccccccccccccccccccccccccccc$"
+  ),
+  expected_called_paths = 6
+)
+
+test_ccao_download_model_input_data(
+  test_name = "condo falls back to root flat (path 3)",
+  assessment_group = "condo",
+  succeed_on = "root_flat",
+  expected_path_regexes = c(
+    "model-condo-avm/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/files/md5/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/aa/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$",
+    "/bb/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$",
+    "/cc/cccccccccccccccccccccccccccccc$"
+  ),
+  expected_called_paths = 9
+)
+
+test_ccao_download_model_input_data(
+  test_name = "condo errors when all paths fail",
+  assessment_group = "condo",
+  succeed_on = "none",
+  expected_path_regexes = c(),
   expected_called_paths = 3
 )

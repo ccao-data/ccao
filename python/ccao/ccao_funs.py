@@ -6,7 +6,6 @@ from typing import Dict, List, Union
 import pandas as pd
 from pyathena import connect
 
-# Bucket that we will use to pull DVC model input data
 AWS_S3_DVC_BUCKET = "s3://ccao-data-dvc-us-east-1"
 
 
@@ -30,7 +29,6 @@ def ccao_download_model_input_data(
     # Examples:
     # char_data = ccao_download_model_input_data("2025-01-11-gallant-rina", "char")
     # inputs = ccao_download_model_input_data("2025-01-11-gallant-rina", ["char", "training", "assessment"])
-
     """
     if isinstance(file_keys, str):
         files_list = [file_keys]
@@ -61,7 +59,6 @@ def ccao_download_model_input_data(
             + "."
         )
 
-    # Athena connection
     conn = connect(
         s3_staging_dir=os.getenv(
             "AWS_ATHENA_S3_STAGING_DIR",
@@ -99,24 +96,10 @@ def ccao_download_model_input_data(
         )
 
     row = dvc_params.iloc[0]
-    yr = int(row["assessment_year"])
     grp = str(row["assessment_group"])
 
-    # Folder logic:
-    # - < 2026: old layout only
-    # - = 2026: try both old and split layouts
-    # - > 2026: split by assessment_group only
-    if yr < 2026:
-        model_folder = [""]
-    elif yr == 2026:
-        if grp == "condo":
-            model_folder = ["", "model-condo-avm"]
-        else:
-            model_folder = ["", "model-res-avm"]
-    elif grp == "condo":
-        model_folder = "model-condo-avm"
-    else:
-        model_folder = "model-res-avm"
+    # Try group-specific folder first, then root md5, then root
+    model_folder = "model-condo-avm" if grp == "condo" else "model-res-avm"
 
     def _read_file(file_key: str) -> pd.DataFrame:
         md5_col = md5_map[file_key]
@@ -130,12 +113,12 @@ def ccao_download_model_input_data(
         dvc_hash = str(dvc_hash).strip()
 
         paths_to_try = [
-            (
-                f"{AWS_S3_DVC_BUCKET}"
-                + (f"/{model_folder}" if model_folder else "")
-                + f"/files/md5/{dvc_hash[:2]}/{dvc_hash[2:32]}"
-            )
-            for model_folder in model_folder
+            # 1. group-specific folder, md5 layout
+            f"{AWS_S3_DVC_BUCKET}/{model_folder}/files/md5/{dvc_hash[:2]}/{dvc_hash[2:32]}",
+            # 2. root, md5 layout
+            f"{AWS_S3_DVC_BUCKET}/files/md5/{dvc_hash[:2]}/{dvc_hash[2:32]}",
+            # 3. root
+            f"{AWS_S3_DVC_BUCKET}/{dvc_hash[:2]}/{dvc_hash[2:32]}",
         ]
 
         last_error = None
