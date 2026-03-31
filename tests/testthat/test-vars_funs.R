@@ -1,5 +1,3 @@
-context("test vars_rename()")
-
 ##### TEST vars_rename() #####
 
 # Test for expected outputs
@@ -150,8 +148,6 @@ test_that("invalid data types stop process", {
   )
 })
 
-
-context("test vars_recode()")
 
 ##### TEST vars_recode() #####
 
