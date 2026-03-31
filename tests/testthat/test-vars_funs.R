@@ -202,17 +202,6 @@ recode_correct_athena <- dplyr::tibble(
 
 # Test for expected outputs
 test_that("output is as expected", {
-  expect_known_hash(
-    vars_recode(
-      data = chars_sample_universe,
-      dictionary = ccao::vars_dict_legacy
-    ),
-    hash = "8c41990e86"
-  )
-  expect_known_hash(
-    vars_recode(data = chars_sample_athena, code_type = "long"),
-    hash = "d3f8b1e3cd"
-  )
   expect_equivalent(
     vars_recode(
       data = recode_test_data,
@@ -233,22 +222,46 @@ test_that("output is as expected", {
     recode_correct %>%
       dplyr::mutate(dplyr::across(where(is.factor), as.character))
   )
-  expect_known_hash(
+})
+
+# Snapshot tests for output formats
+test_that("vars_recode properly recodes chars_sample_universe", {
+  expect_snapshot_value(
+    vars_recode(
+      data = chars_sample_universe,
+      dictionary = ccao::vars_dict_legacy
+    ),
+    style = "json2",
+  )
+})
+
+test_that("vars_recode properly recodes chars_sample_athena with long codes", {
+  expect_snapshot_value(
+    vars_recode(data = chars_sample_athena, code_type = "long"),
+    style = "json2",
+  )
+})
+
+test_that("vars_recode formats chars_sample_universe with short codes", {
+  expect_snapshot_value(
     vars_recode(
       data = chars_sample_universe,
       code_type = "short",
       dictionary = ccao::vars_dict_legacy
     ),
-    hash = "ecd0d79b5d"
+    style = "json2"
   )
-  expect_known_hash(
+})
+
+test_that("vars_recode formats chars_sample_universe without factors", {
+  expect_snapshot_value(
     vars_recode(
       data = chars_sample_universe,
       code_type = "short",
       as_factor = FALSE,
       dictionary = ccao::vars_dict_legacy
     ),
-    hash = "aed980d873"
+    style = "json2",
   )
 })
 
