@@ -102,8 +102,7 @@ test_that("data is identical to known good output", {
     chars_sample_hie_sparse,
     # The `json2` serialization style includes more metadata about column
     # definitions than the `json` style
-    style = "json2",
-    variant = "chars_sample_hie_sparse"
+    style = "json2"
   )
 })
 
