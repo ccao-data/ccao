@@ -643,12 +643,7 @@
         "class": {
           "type": "character",
           "attributes": {},
-          "value": ["data.table", "data.frame"]
-        },
-        ".internal.selfref": {
-          "type": "externalptr",
-          "attributes": {},
-          "value": {}
+          "value": ["data.frame"]
         }
       },
       "value": [

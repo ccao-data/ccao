@@ -240,7 +240,11 @@ test_that("vars_recode properly recodes chars_sample_universe", {
 
 test_that("vars_recode properly recodes chars_sample_athena with long codes", {
   expect_snapshot_value(
-    vars_recode(data = chars_sample_athena, code_type = "long"),
+    vars_recode(data = chars_sample_athena, code_type = "long") %>%
+      # Convert from data.table to data.frame to avoid snapshotting data.table
+      # external pointer attribute `.internal.selfref`, which raises errors
+      # when testthat attempts to deserialize it from a snapshot
+      as.data.frame(),
     style = "json2",
   )
 })
