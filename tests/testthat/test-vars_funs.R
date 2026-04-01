@@ -202,25 +202,28 @@ recode_correct_athena <- dplyr::tibble(
 
 # Test for expected outputs
 test_that("output is as expected", {
-  expect_equivalent(
+  expect_equal(
     vars_recode(
       data = recode_test_data,
       dictionary = ccao::vars_dict_legacy
     ),
-    recode_correct
+    recode_correct,
+    ignore_attr = TRUE
   )
-  expect_equivalent(
+  expect_equal(
     vars_recode(data = recode_test_data_athena, code_type = "short"),
-    recode_correct_athena
+    recode_correct_athena,
+    ignore_attr = TRUE
   )
-  expect_equivalent(
+  expect_equal(
     vars_recode(
       data = recode_test_data,
       as_factor = FALSE,
       dictionary = ccao::vars_dict_legacy
     ),
     recode_correct %>%
-      dplyr::mutate(dplyr::across(where(is.factor), as.character))
+      dplyr::mutate(dplyr::across(where(is.factor), as.character)),
+    ignore_attr = TRUE
   )
 })
 
