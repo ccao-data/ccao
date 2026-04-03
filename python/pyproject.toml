@@ -9,7 +9,7 @@ authors = [
     {name = "Dan Snow", email="daniel.snow@cookcountyil.gov"},
 ]
 dependencies = [
-    "pandas>=1.4.3",
+    "pandas>=1.5.0",
     "numpy>=1.23.1",
     "pyathena>=3.20.0",
     "pyarrow>=21.0.0",

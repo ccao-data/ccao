@@ -1,5 +1,3 @@
-context("test val_limit_ratios()")
-
 ##### TEST val_limit_ratios() #####
 
 sales <- c(20000, 15000, 30000, NA, 55000, 40000, NA, 100000)
@@ -25,8 +23,6 @@ test_that("invalid data types stop process", {
   expect_condition(val_limit_ratios(list(sales), estimates, 0.7, 2.0))
 })
 
-
-context("test val_round_fmv()")
 
 ##### TEST val_round_fmv() #####
 

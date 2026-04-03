@@ -1,5 +1,3 @@
-context("test chars_288_active()")
-
 ##### TEST chars_288_active() #####
 
 chars_288_out <- chars_288_active(2016, "77")
@@ -46,8 +44,6 @@ test_that("bad input data stops execution", {
 
 
 ##### TEST chars_sparsify() #####
-
-context("test chars_sparsify()")
 
 # Create simple test case using fake data
 chars_sparsify_simple_data <- dplyr::tibble(
@@ -96,29 +92,22 @@ chars_sample_hie_sparse <- chars_sample_hie %>%
 
 # Test dataset equivalence
 test_that("data is identical to known good output", {
-  expect_equivalent(
+  expect_equal(
     chars_sparsify_simple_test,
-    chars_sparsify_simple_correct
+    chars_sparsify_simple_correct,
+    ignore_attr = TRUE
   )
 
-  # Temporarily upgrade to 3rd edition of testthat so that we can use the
-  # latest snapshot testing interface. Eventually we should switch the
-  # entire test suite over to the 3rd edition, but for now, we only
-  # really need it for this one test
-  local_edition(3)
   expect_snapshot_value(
     chars_sample_hie_sparse,
     # The `json2` serialization style includes more metadata about column
     # definitions than the `json` style
-    style = "json2",
-    variant = "chars_sample_hie_sparse"
+    style = "json2"
   )
 })
 
 
 ##### TEST chars_update() #####
-
-context("test chars_update()")
 
 # Test mock dataset with only addchars columns
 chars_fake_universe <- dplyr::tibble(
@@ -157,16 +146,15 @@ chars_fake_updated <- chars_fake_universe %>%
 
 # Test that output is identical to previous output
 test_that("data is identical to known good output", {
-  expect_equivalent(
+  expect_equal(
     chars_fake_updated,
-    chars_fake_correct
+    chars_fake_correct,
+    ignore_attr = TRUE
   )
 })
 
 
 ##### TEST chars_fix_age() #####
-
-context("test chars_fix_age()")
 
 age_test <- dplyr::tibble(
   age = c(120, 120, 123),

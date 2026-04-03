@@ -1,5 +1,3 @@
-context("load data")
-
 # Load the ratios sample dataset for testing
 library(assessr)
 data("ratios_sample")
@@ -11,8 +9,6 @@ assessed <- ratios_sample$assessed
 
 
 ##### TEST ccao_cod() #####
-
-context("test ccao_cod()")
 
 # Calculate COD
 cod_out <- ccao_cod(ratio)
@@ -60,8 +56,6 @@ test_that("incomplete data stops execution unless suppressed", {
 
 
 ##### TEST ccao_prd() #####
-
-context("test ccao_prd()")
 
 # Calculate PRD from sample
 prd_out <- ccao_prd(assessed, sale_price)
@@ -128,8 +122,6 @@ test_that("incomplete data stops execution unless suppressed", {
 
 ##### TEST ccao_prb() #####
 
-context("test ccao_prb()")
-
 # Create a vector of sales the same length as ratio
 prb_out <- ccao_prb(assessed, sale_price)
 prb_out_w_outliers <- ccao_prb(
@@ -194,8 +186,6 @@ test_that("incomplete data stops execution unless suppressed", {
 
 ##### TEST ccao_cod() #####
 
-context("test ccao_generate_id()")
-
 test_that("functions return character vector of length n", {
   expect_type(ccao_generate_id(), "character")
   expect_length(ccao_generate_id(), 1)
@@ -219,8 +209,6 @@ test_that("bad input data stops execution", {
 })
 
 ##### TEST ccao_download_model_input_data() #####
-
-context("test ccao_download_model_input_data()")
 
 # This uses mock paths since we cannot connect to Athena during our tests.
 # It solely checks if we return objects of the correct type / length

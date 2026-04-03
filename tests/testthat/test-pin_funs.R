@@ -1,5 +1,3 @@
-context("test pin_clean()")
-
 ##### TEST pin_clean() #####
 
 # Create vector of sample pins
@@ -21,8 +19,6 @@ test_that("incorrect inputs throw warning", {
 
 
 ##### TEST pin_format_pretty() #####
-
-context("test pin_format_pretty()")
 
 # Create a vector of clean PINs with no dashes
 pins <- c("04341060080001", "01222040030030", "1417227008")
