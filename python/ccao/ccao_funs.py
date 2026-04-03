@@ -69,7 +69,6 @@ def ccao_download_model_input_data(
 
     sql = f"""
         SELECT
-            assessment_year,
             assessment_group,
             dvc_md5_assessment_data,
             dvc_md5_complex_id_data,
