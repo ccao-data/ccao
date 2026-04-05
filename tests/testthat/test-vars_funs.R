@@ -1,5 +1,3 @@
-context("test vars_rename()")
-
 ##### TEST vars_rename() #####
 
 # Test for expected outputs
@@ -151,8 +149,6 @@ test_that("invalid data types stop process", {
 })
 
 
-context("test vars_recode()")
-
 ##### TEST vars_recode() #####
 
 recode_test_data <- dplyr::tibble(
@@ -206,53 +202,73 @@ recode_correct_athena <- dplyr::tibble(
 
 # Test for expected outputs
 test_that("output is as expected", {
-  expect_known_hash(
-    vars_recode(
-      data = chars_sample_universe,
-      dictionary = ccao::vars_dict_legacy
-    ),
-    hash = "8c41990e86"
-  )
-  expect_known_hash(
-    vars_recode(data = chars_sample_athena, code_type = "long"),
-    hash = "d3f8b1e3cd"
-  )
-  expect_equivalent(
+  expect_equal(
     vars_recode(
       data = recode_test_data,
       dictionary = ccao::vars_dict_legacy
     ),
-    recode_correct
+    recode_correct,
+    ignore_attr = TRUE
   )
-  expect_equivalent(
+  expect_equal(
     vars_recode(data = recode_test_data_athena, code_type = "short"),
-    recode_correct_athena
+    recode_correct_athena,
+    ignore_attr = TRUE
   )
-  expect_equivalent(
+  expect_equal(
     vars_recode(
       data = recode_test_data,
       as_factor = FALSE,
       dictionary = ccao::vars_dict_legacy
     ),
     recode_correct %>%
-      dplyr::mutate(dplyr::across(where(is.factor), as.character))
+      dplyr::mutate(dplyr::across(where(is.factor), as.character)),
+    ignore_attr = TRUE
   )
-  expect_known_hash(
+})
+
+# Snapshot tests for output formats
+test_that("vars_recode properly recodes chars_sample_universe", {
+  expect_snapshot_value(
+    vars_recode(
+      data = chars_sample_universe,
+      dictionary = ccao::vars_dict_legacy
+    ),
+    style = "json2",
+  )
+})
+
+test_that("vars_recode properly recodes chars_sample_athena with long codes", {
+  expect_snapshot_value(
+    vars_recode(data = chars_sample_athena, code_type = "long") %>%
+      # Convert from data.table to data.frame to avoid snapshotting data.table
+      # external pointer attribute `.internal.selfref`, which raises errors
+      # when testthat attempts to deserialize it from a snapshot
+      as.data.frame(),
+    style = "json2",
+  )
+})
+
+test_that("vars_recode formats chars_sample_universe with short codes", {
+  expect_snapshot_value(
     vars_recode(
       data = chars_sample_universe,
       code_type = "short",
       dictionary = ccao::vars_dict_legacy
     ),
-    hash = "ecd0d79b5d"
+    style = "json2"
   )
-  expect_known_hash(
+})
+
+test_that("vars_recode formats chars_sample_universe without factors", {
+  expect_snapshot_value(
     vars_recode(
       data = chars_sample_universe,
       code_type = "short",
       as_factor = FALSE,
       dictionary = ccao::vars_dict_legacy
     ),
-    hash = "aed980d873"
+    style = "json2",
   )
 })
 

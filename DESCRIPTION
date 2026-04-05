@@ -44,3 +44,4 @@ Suggests:
 Remotes: ccao-data/assessr
 Depends: 
     R (>= 3.5.0)
+Config/testthat/edition: 3

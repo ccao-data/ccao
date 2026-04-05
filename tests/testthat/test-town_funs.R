@@ -1,5 +1,3 @@
-context("test convert_town()")
-
 ##### TEST town_convert() #####
 
 towns <- c("Evanston", "Lyons", "25", "10")
@@ -35,8 +33,6 @@ test_that("incorrect inputs throw errors", {
 
 ##### TEST town_get_triad() #####
 
-context("test town_get_triad()")
-
 towns <- c("Evanston", "Lyons", "25", "10", "77", "West Chicago")
 
 test_that("output is correct", {
@@ -65,8 +61,6 @@ test_that("incorrect inputs throw errors", {
 
 
 ##### TEST town_get_assmnt_year() #####
-
-context("test town_get_assmnt_year()")
 
 towns <- c("Evanston", "Lyons", "25", "10", "77", "West Chicago")
 
