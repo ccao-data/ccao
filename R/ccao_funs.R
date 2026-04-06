@@ -366,7 +366,6 @@ ccao_download_model_input_data <- function(
 
   # Try the group-specific folder first, then fall back to the root
   model_folder <- if (grp == "condo") "model-condo-avm" else "model-res-avm"
-  model_folders <- c(model_folder, "")
 
   read_file <- function(f) {
     md5_col <- md5_map[[f]]
@@ -420,7 +419,8 @@ ccao_download_model_input_data <- function(
     stop(
       glue::glue(
         "Could not find {f} for run_id = '{run_id}' in any expected path: ",
-        paste(paths_to_try, collapse = ", ")
+        paste(paths_to_try, collapse = ", "),
+        "\nLast error: {conditionMessage(last_error)}"
       ),
       call. = FALSE
     )
