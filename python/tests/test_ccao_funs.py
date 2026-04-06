@@ -357,18 +357,19 @@ def test_ccao_download_model_input_data_raises_on_invalid_file_key() -> None:
     assert len(called_paths) == 0, "parquet was read during invalid-key error"
 
 
+# Empty metadata for wrong run_id
 def test_ccao_download_model_input_data_raises_for_empty_metadata(
     monkeypatch,
 ) -> None:
-    run_id = "2025-01-11-gallant-rina"
+    wrong_run_id = "2099-99-99-nonexistent-run"
     mock_cursor_execute_empty(monkeypatch)
     called_paths = make_mock_read_parquet(monkeypatch, "group_folder", "res")
 
     with pytest.raises(ValueError) as excinfo:
-        ccao_download_model_input_data(run_id, "complex_id")
+        ccao_download_model_input_data(wrong_run_id, "complex_id")
 
     assert re.search(
-        rf"No rows found in model\.metadata for run_id\s*=\s*['\"]{re.escape(run_id)}['\"]",
+        rf"No rows found in model\.metadata for run_id\s*=\s*['\"]{re.escape(wrong_run_id)}['\"]",
         str(excinfo.value),
         re.IGNORECASE,
     ), f"unexpected empty-metadata error message: {excinfo.value}"

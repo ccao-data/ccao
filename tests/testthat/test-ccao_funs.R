@@ -471,10 +471,9 @@ test_ccao_download_model_input_data(
   expected_path_regexes = c(),
   expected_called_paths = 3
 )
-
 # --- empty metadata result ---
 test_that("empty metadata result errors", {
-  run_id <- "2025-01-11-gallant-rina"
+  wrong_run_id <- "2099-99-99-nonexistent-run"
   mock_con <- structure(list(), class = "MockAthenaConnection")
 
   mockery::stub(
@@ -491,9 +490,9 @@ test_that("empty metadata result errors", {
   )
 
   expect_error(
-    ccao_download_model_input_data(run_id, "complex_id"),
+    ccao_download_model_input_data(wrong_run_id, "complex_id"),
     regexp = glue::glue(
-      "No rows found in model.metadata for run_id = '{run_id}'"
+      "No rows found in model.metadata for run_id = '{wrong_run_id}'"
     ),
     fixed = TRUE
   )
