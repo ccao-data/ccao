@@ -6,7 +6,6 @@ from typing import Dict, List, Union
 import pandas as pd
 from pyathena import connect
 
-# Bucket that we will use to pull DVC model input data
 AWS_S3_DVC_BUCKET = "s3://ccao-data-dvc-us-east-1"
 
 
@@ -30,7 +29,6 @@ def ccao_download_model_input_data(
     # Examples:
     # char_data = ccao_download_model_input_data("2025-01-11-gallant-rina", "char")
     # inputs = ccao_download_model_input_data("2025-01-11-gallant-rina", ["char", "training", "assessment"])
-
     """
     if isinstance(file_keys, str):
         files_list = [file_keys]
@@ -61,7 +59,6 @@ def ccao_download_model_input_data(
             + "."
         )
 
-    # Athena connection
     conn = connect(
         s3_staging_dir=os.getenv(
             "AWS_ATHENA_S3_STAGING_DIR",
@@ -72,7 +69,6 @@ def ccao_download_model_input_data(
 
     sql = f"""
         SELECT
-            assessment_year,
             assessment_group,
             dvc_md5_assessment_data,
             dvc_md5_complex_id_data,
@@ -99,18 +95,10 @@ def ccao_download_model_input_data(
         )
 
     row = dvc_params.iloc[0]
-    yr = int(row["assessment_year"])
     grp = str(row["assessment_group"])
 
-    # Folder logic:
-    # - <= 2025: old layout
-    # - >= 2026: split by assessment_group
-    if yr <= 2025:
-        model_folder = ""
-    elif grp == "condo":
-        model_folder = "model-condo-avm"
-    else:
-        model_folder = "model-res-avm"
+    # Try group-specific folder first, then root md5, then root
+    model_folder = "model-condo-avm" if grp == "condo" else "model-res-avm"
 
     def _read_file(file_key: str) -> pd.DataFrame:
         md5_col = md5_map[file_key]
@@ -122,13 +110,27 @@ def ccao_download_model_input_data(
             )
 
         dvc_hash = str(dvc_hash).strip()
-        s3_path = (
-            f"{AWS_S3_DVC_BUCKET}"
-            + (f"/{model_folder}" if model_folder else "")
-            + f"/files/md5/{dvc_hash[:2]}/{dvc_hash[2:32]}"
-        )
 
-        return pd.read_parquet(s3_path, engine="pyarrow")
+        paths_to_try = [
+            # 1. group-specific folder, md5 layout
+            f"{AWS_S3_DVC_BUCKET}/{model_folder}/files/md5/{dvc_hash[:2]}/{dvc_hash[2:32]}",
+            # 2. root, md5 layout
+            f"{AWS_S3_DVC_BUCKET}/files/md5/{dvc_hash[:2]}/{dvc_hash[2:32]}",
+            # 3. root
+            f"{AWS_S3_DVC_BUCKET}/{dvc_hash[:2]}/{dvc_hash[2:32]}",
+        ]
+
+        last_error = None
+        for s3_path in paths_to_try:
+            try:
+                return pd.read_parquet(s3_path, engine="pyarrow")
+            except Exception as e:
+                last_error = e
+
+        raise FileNotFoundError(
+            f"Could not find {file_key} for run_id = '{run_id}' in any expected path: "
+            + ", ".join(paths_to_try)
+        ) from last_error
 
     out: Dict[str, pd.DataFrame] = {k: _read_file(k) for k in files_list}
     return out[files_list[0]] if single else out

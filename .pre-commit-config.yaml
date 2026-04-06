@@ -2,7 +2,7 @@
 # R specific hooks: https://github.com/lorenzwalthert/precommit
 repos:
 -   repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.4.3.9020
+    rev: v0.4.3.9021
     hooks:
     -   id: style-files
         args: [--style_pkg=styler, --style_fun=tidyverse_style]
@@ -40,7 +40,7 @@ repos:
         files: data/vars_dict.rda
         language: r
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.13
+    rev: v0.15.7
     hooks:
       # Python linter. Ruff recommends running this before the formatter to
       # avoid conflicts when using the --fix flag
