@@ -233,7 +233,6 @@ test_ccao_download_model_input_data <- function(
 
     mock_dbGetQuery <- mockery::mock(
       data.frame(
-        assessment_year = 2026L,
         assessment_group = as.character(assessment_group),
         dvc_md5_assessment_data = NA_character_,
         dvc_md5_complex_id_data = paste0(rep("a", 32), collapse = ""),
@@ -336,7 +335,6 @@ test_ccao_download_model_input_data <- function(
 
     mock_dbGetQuery_missing <- mockery::mock(
       data.frame(
-        assessment_year = 2026L,
         assessment_group = as.character(assessment_group),
         dvc_md5_assessment_data = NA_character_,
         dvc_md5_complex_id_data = NA_character_,
