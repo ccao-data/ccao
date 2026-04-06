@@ -301,19 +301,9 @@ def test_ccao_download_model_input_data_all_paths_fail(
 def test_ccao_download_model_input_data_raises_for_missing_dvc_hash(
     monkeypatch,
 ) -> None:
-    called_paths: List[str] = []
-
-    def _fake_read_parquet(
-        path: str, *args: Any, **kwargs: Any
-    ) -> pd.DataFrame:
-        called_paths.append(path)
-        return pd.DataFrame({".mock": [True]})
-
-    monkeypatch.setattr(
-        "ccao.ccao_funs.pd.read_parquet", _fake_read_parquet, raising=True
-    )
-
     mock_cursor_execute(monkeypatch, "res")
+    called_paths = make_mock_read_parquet(monkeypatch, "group_folder", "res")
+
     run_id = "2025-01-11-gallant-rina"
 
     with pytest.raises(ValueError) as excinfo:
