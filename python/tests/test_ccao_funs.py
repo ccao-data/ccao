@@ -80,6 +80,29 @@ def mock_cursor_execute(
     return cols, rows
 
 
+def mock_cursor_execute_empty(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Helper to mock a pyathena Connection and Cursor returning no rows,
+    simulating a run_id that does not exist in model.metadata."""
+    cols = [
+        "assessment_group",
+        "dvc_md5_assessment_data",
+        "dvc_md5_complex_id_data",
+        "dvc_md5_land_nbhd_rate_data",
+        "dvc_md5_land_site_rate_data",
+        "dvc_md5_training_data",
+        "dvc_md5_char_data",
+        "dvc_md5_hie_data",
+        "dvc_md5_condo_strata_data",
+    ]
+
+    def _fake_connect(*args: Any, **kwargs: Any) -> _FakeConn:
+        return _FakeConn(rows=[], cols=cols)
+
+    monkeypatch.setattr("ccao.ccao_funs.connect", _fake_connect, raising=True)
+
+
 def make_mock_read_parquet(
     monkeypatch, succeed_on: str, assessment_group: str
 ) -> List[str]:
@@ -332,3 +355,24 @@ def test_ccao_download_model_input_data_raises_on_invalid_file_key() -> None:
         re.IGNORECASE,
     )
     assert len(called_paths) == 0, "parquet was read during invalid-key error"
+
+
+def test_ccao_download_model_input_data_raises_for_empty_metadata(
+    monkeypatch,
+) -> None:
+    run_id = "2025-01-11-gallant-rina"
+    mock_cursor_execute_empty(monkeypatch)
+    called_paths = make_mock_read_parquet(monkeypatch, "group_folder", "res")
+
+    with pytest.raises(ValueError) as excinfo:
+        ccao_download_model_input_data(run_id, "complex_id")
+
+    assert re.search(
+        rf"No rows found in model\.metadata for run_id\s*=\s*['\"]{re.escape(run_id)}['\"]",
+        str(excinfo.value),
+        re.IGNORECASE,
+    ), f"unexpected empty-metadata error message: {excinfo.value}"
+
+    assert len(called_paths) == 0, (
+        "parquet was read during empty-metadata error"
+    )

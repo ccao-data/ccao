@@ -471,3 +471,30 @@ test_ccao_download_model_input_data(
   expected_path_regexes = c(),
   expected_called_paths = 3
 )
+
+# --- empty metadata result ---
+test_that("empty metadata result errors", {
+  run_id <- "2025-01-11-gallant-rina"
+  mock_con <- structure(list(), class = "MockAthenaConnection")
+
+  mockery::stub(
+    ccao_download_model_input_data, "DBI::dbConnect",
+    mockery::mock(mock_con, cycle = TRUE)
+  )
+  mockery::stub(
+    ccao_download_model_input_data, "DBI::dbDisconnect",
+    mockery::mock(invisible(TRUE), cycle = TRUE)
+  )
+  mockery::stub(
+    ccao_download_model_input_data, "DBI::dbGetQuery",
+    mockery::mock(data.frame(), cycle = TRUE)
+  )
+
+  expect_error(
+    ccao_download_model_input_data(run_id, "complex_id"),
+    regexp = glue::glue(
+      "No rows found in model.metadata for run_id = '{run_id}'"
+    ),
+    fixed = TRUE
+  )
+})
