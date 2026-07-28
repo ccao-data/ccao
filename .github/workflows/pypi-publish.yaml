@@ -47,7 +47,7 @@ jobs:
         if: ${{ github.event.action == 'prereleased' || inputs.environment == 'test' }}
         env:
           url: https://test.pypi.org/legacy/p/ccao
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
+        uses: pypa/gh-action-pypi-publish@v1.14.1
         with:
           repository-url: https://test.pypi.org/legacy/
           # The build step builds the package distribution in the `python/`
@@ -62,6 +62,6 @@ jobs:
         if: ${{ github.event.action == 'released' || inputs.environment == 'prod' }}
         env:
           url: https://pypi.org/p/ccao
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
+        uses: pypa/gh-action-pypi-publish@v1.14.1
         with:
           packages-dir: python/dist/
