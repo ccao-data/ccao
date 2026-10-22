@@ -41,7 +41,9 @@ Suggests:
     sf,
     testthat,
     usethis
-Remotes: ccao-data/assessr
+Remotes:
+    ccao-data/assessr,
+    DyfanJones/noctua
 Depends: 
     R (>= 3.5.0)
 Config/testthat/edition: 3

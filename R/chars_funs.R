@@ -121,7 +121,7 @@ chars_288_active <- function(start_year, town) {
     expr = {
       mapply(
         function(x, y) {
-          if (is.na(x) | is.na(y)) {
+          if (is.na(x) || is.na(y)) {
             return(NA_real_)
           } else {
             potentially_active_years <- x:(x + 8)
