@@ -187,15 +187,23 @@ recode_test_data_athena <- dplyr::tibble(
 )
 
 recode_correct_athena <- dplyr::tibble(
-  PIN = rep("12345", 4),
-  EXT_WALL = factor(
+  pin = rep("12345", 4),
+  char_ext_wall = factor(
     c("FRAM", "MASR", NA, NA),
     levels = c("FRAM", "MASR", "FRMA", "STUC")
   ),
-  BSMT = factor(
+  char_bsmt = factor(
     c("FL", "PT", "CR", NA),
     levels = c("FL", "SL", "PT", "CR")
   ),
+  value = 1000:1003,
+  roof_cnst = c("1", "2", "4", "3")
+)
+
+recode_correct_athena_code <- dplyr::tibble(
+  pin = rep("12345", 4),
+  char_ext_wall = c("1", "2", NA, NA),
+  char_bsmt = c("1", "3", "4", NA),
   value = 1000:1003,
   roof_cnst = c("1", "2", "4", "3")
 )
@@ -213,6 +221,15 @@ test_that("output is as expected", {
   expect_equal(
     vars_recode(data = recode_test_data_athena, code_type = "short"),
     recode_correct_athena,
+    ignore_attr = TRUE
+  )
+  expect_equal(
+    vars_recode(
+      data = recode_test_data_athena,
+      code_type = "code",
+      as_factor = FALSE
+    ),
+    recode_correct_athena_code,
     ignore_attr = TRUE
   )
   expect_equal(
